@@ -1,22 +1,25 @@
-package com.mckuai.imc;
+package com.mckuai.imc.Fragment;
 
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.mckuai.imc.Base.BaseFragment;
+import com.mckuai.imc.R;
+
 /**
  * A placeholder fragment containing a simple view.
  */
-public class MainActivityFragment extends Fragment {
+public class CartoonFragment extends BaseFragment {
 
-    public MainActivityFragment() {
+    public CartoonFragment() {
+        mTitleResId = R.string.fragment_cartoon;
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_main, container, false);
+        return inflater.inflate(R.layout.fragment_cartoon, container, false);
     }
 }

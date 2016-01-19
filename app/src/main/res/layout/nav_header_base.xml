@@ -10,12 +10,6 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     android:theme="@style/ThemeOverlay.AppCompat.Dark">
 
-    <android.support.v4.widget.CircleImageView
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:src="@color/colorYellow"
-        android:layout_centerInParent="true" />
-
     <android.support.v7.widget.AppCompatImageView
         android:id="@+id/imageView"
         android:layout_width="wrap_content"

@@ -1,34 +1,89 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 
-<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    style="@style/AppTheme"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    style="@style/AppTheme"
     tools:context="com.tars.rongcloudtest.MainActivity">
 
-    <include layout="@layout/actionbar_layout" />
 
-    <FrameLayout
+    <include
+        android:id="@+id/actionbar"
+        layout="@layout/actionbar_layout" />
+
+    <RadioGroup
+        android:id="@+id/nav"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:layout_alignParentBottom="true"
+        android:orientation="horizontal"
+        android:visibility="visible">
+
+        <android.support.v7.widget.AppCompatRadioButton
+            android:id="@+id/nav_cartoon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:button="@null"
+            android:drawableTop="@mipmap/ic_launcher"
+            android:text="@string/nav_cartoon" />
+
+        <android.support.v7.widget.AppCompatRadioButton
+            android:id="@+id/nav_chat"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:button="@null"
+            android:drawableTop="@mipmap/ic_launcher"
+            android:text="@string/nav_chat" />
+
+        <android.support.v7.widget.AppCompatRadioButton
+            android:id="@+id/nav_create"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@mipmap/ic_launcher"
+            android:button="@null" />
+
+        <android.support.v7.widget.AppCompatRadioButton
+            android:id="@+id/nav_community"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:button="@null"
+            android:drawableTop="@mipmap/ic_launcher"
+            android:text="@string/nav_community" />
+
+        <android.support.v7.widget.AppCompatRadioButton
+            android:id="@+id/nav_mine"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:button="@null"
+            android:drawableTop="@mipmap/ic_launcher"
+            android:text="@string/nav_mine" />
+    </RadioGroup>
+
+    <RelativeLayout
         android:id="@+id/context"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+        android:fitsSystemWindows="true"
+        android:layout_above="@id/nav"
+        android:layout_below="@id/actionbar">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="111111" />
-    </FrameLayout>
+    </RelativeLayout>
 
     <android.support.v4.widget.DrawerLayout
         android:id="@+id/drawer_layout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:fitsSystemWindows="true"
+        android:layout_height="0dp"
+        android:layout_alignTop="@id/context"
+        android:layout_alignBottom="@id/context"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
         tools:openDrawer="start">
 
@@ -37,13 +92,13 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_gravity="start"
+            android:background="@color/colorPrimary"
             android:fitsSystemWindows="true"
             app:headerLayout="@layout/nav_header_base"
-            app:menu="@menu/activity_base_drawer"
-            android:background="@color/colorPrimary" />
+            app:menu="@menu/activity_base_drawer" />
     </android.support.v4.widget.DrawerLayout>
 
-</android.support.design.widget.CoordinatorLayout>
+</RelativeLayout>
 
 
 

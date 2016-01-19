@@ -2,7 +2,36 @@
     <string name="app_name">MCKuai7</string>
     <string name="action_settings">Settings</string>
 
-    //侧边栏
+    <!--侧边栏-->
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <!--底部导航-->
+    <string name="nav_cartoon">漫画</string>
+    <string name="nav_chat">聊天</string>
+    <string name="nav_community">社区</string>
+    <string name="nav_mine">我的</string>
+
+    <!--activity-->
+    <string name="activity_boot">启动页</string>
+    <string name="activity_leady">引导页</string>
+    <string name="activity_main">主页</string>
+    <string name="activity_create">创造漫画</string>
+
+    <!--fragment-->
+    <string name="fragment_cartoon">漫画</string>
+    <string name="fragment_chat">聊天</string>
+    <string name="fragment_community">社区</string>
+    <string name="fragment_mine">我的</string>
+
+
+    <!--漫画首页-->
+    <string name="cartoon_type_new">最新鲜</string>
+    <string name="cartoon_type_hot">最热门</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_activity_create">CreateActivity</string>
+
+
 </resources>

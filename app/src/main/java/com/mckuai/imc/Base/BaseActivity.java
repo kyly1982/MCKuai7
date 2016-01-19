@@ -4,6 +4,7 @@ import android.app.Fragment;
 import android.app.FragmentManager;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
+import android.support.design.widget.Snackbar;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -26,6 +27,7 @@ public class BaseActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_base);
         this.mApplication = MCKuai.instence;
+        this.mFragmentManager = getFragmentManager();
     }
 
     @Override
@@ -47,6 +49,7 @@ public class BaseActivity extends AppCompatActivity {
      */
     public void initToolbar(int toolbarId, int navigationIconId, View.OnClickListener navigationOnClickListener) {
         mToolbar = (Toolbar) findViewById(toolbarId);
+        mToolbar.setTitle("");
         setSupportActionBar(mToolbar);
         if (0 != navigationIconId) {
             mToolbar.setNavigationIcon(navigationIconId);
@@ -118,6 +121,31 @@ public class BaseActivity extends AppCompatActivity {
      */
     public void callLogin(int requestId) {
 
+    }
+
+
+    public void showMessage(String msg, String action, View.OnClickListener listener) {
+        Snackbar snackbar = Snackbar.make(mToolbar, msg, Snackbar.LENGTH_LONG);
+        if (null != action) {
+            snackbar.setAction(action, listener).setActionTextColor(getResources().getColor(R.color.colorPrimary));
+        }
+        snackbar.show();
+    }
+
+    public void showWarning(String msg, String action, View.OnClickListener listener) {
+        Snackbar snackbar = Snackbar.make(mToolbar, msg, Snackbar.LENGTH_LONG);
+        if (null != action) {
+            snackbar.setAction(action, listener).setActionTextColor(getResources().getColor(R.color.colorWarning));
+        }
+        snackbar.show();
+    }
+
+    public void showError(String msg, String action, View.OnClickListener listener) {
+        Snackbar snackbar = Snackbar.make(mToolbar, msg, Snackbar.LENGTH_LONG);
+        if (null != action && !action.isEmpty()) {
+            snackbar.setAction(action, listener).setActionTextColor(getResources().getColor(R.color.colorError));
+        }
+        snackbar.show();
     }
 
 }
