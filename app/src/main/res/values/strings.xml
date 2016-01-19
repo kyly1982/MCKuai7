@@ -2,6 +2,34 @@
     <string name="app_name">MCKuai7</string>
     <string name="action_settings">Settings</string>
 
+    <!--配置-->
+    <string name="preferences_filename">config</string>
+    <string name="preferences_isFirstBoot">FIRSTBOOT</string>
+    <string name="preferences_token">TOKEN</string>
+    <string name="preferences_tokentime">CERTIFIEDTIME</string>
+    <string name="preferences_tokenexpires">INVALIDTIME</string>
+    <string name="preferences_tokentype">TOKENTYPE</string>
+    <string name="preferences_id">USER_ID</string>
+    <string name="preferences_level">USER_LEVEL</string>
+    <string name="preferences_process">MC_PROCESS</string>
+    <string name="preferences_addr">MC_ADDR</string>
+    <string name="preferences_cover">USER_COVER</string>
+    <string name="preferences_username">USER_NAME</string>
+    <string name="preferences_nickname">USER_NICKNAME</string>
+    <string name="preferences_gender">USER_GENDER</string>
+    <string name="preferences_score">SCORE</string>
+    <string name="preferences_wa_score">WA_SCORE</string>
+    <string name="preferences_wa_answercount">WA_ANSERCOUNT</string>
+    <string name="preferences_wa_uploadcount">WA_UPLOADCOUNT</string>
+    <string name="preferences_wa_scorerank">WA_SCORERANK</string>
+    <string name="preferences_wa_ranking">WA_RANKING</string>
+
+    <!--缓存-->
+    <string name="cache_root">cache</string>
+    <string name="imagecache_dir">image</string>
+    <string name="cache_rankinglist">rank.dat</string>
+    <string name="preferences_file">config</string>
+
     <!--侧边栏-->
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
