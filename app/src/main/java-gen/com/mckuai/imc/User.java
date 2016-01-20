@@ -57,7 +57,7 @@ public class User {
         this.city = city;
     }
 
-    public User(@NonNull MCUser user) {
+    public User(@NonNull MCUser user){
     }
 
     public Long getId() {
@@ -148,16 +148,12 @@ public class User {
         this.process = process;
     }
 
-    /**
-     * Not-null value.
-     */
+    /** Not-null value. */
     public String getName() {
         return name;
     }
 
-    /**
-     * Not-null value; ensure this value is available before it is saved to the database.
-     */
+    /** Not-null value; ensure this value is available before it is saved to the database. */
     public void setName(String name) {
         this.name = name;
     }
