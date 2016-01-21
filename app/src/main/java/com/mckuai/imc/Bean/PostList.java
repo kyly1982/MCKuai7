@@ -1,19 +1,24 @@
 package com.mckuai.imc.Bean;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class MCMessageBean {
-    private ArrayList<MCMessage> data;
-    private int allCount;
-    private int page;
-    private int pageCount;
-    private int pageSize;
+public class PostList implements Serializable {
+    /**
+     *
+     */
+    private static final long serialVersionUID = 8232839695607120404L;
+    private int allCount = 0;
+    private ArrayList<Post> data;
+    private int page = 0;
+    private int pageCount = 0;
+    private int pageSize = 20;
 
-    public ArrayList<MCMessage> getData() {
+    public ArrayList<Post> getdata() {
         return data;
     }
 
-    public void setData(ArrayList<MCMessage> data) {
+    public void setdata(ArrayList<Post> data) {
         this.data = data;
     }
 
@@ -22,6 +27,9 @@ public class MCMessageBean {
     }
 
     public void setAllCount(int allCount) {
+        if (0 != pageSize) {
+            pageCount = allCount / pageSize + (0 == allCount % pageSize ? 0 : 1);
+        }
         this.allCount = allCount;
     }
 
@@ -31,6 +39,10 @@ public class MCMessageBean {
 
     public void setPage(int page) {
         this.page = page;
+        if (0 != pageSize) {
+            pageCount = allCount / pageSize + (0 == allCount % pageSize ? 0 : 1);
+        }
+
     }
 
     public int getNextPage() {
@@ -38,7 +50,6 @@ public class MCMessageBean {
     }
 
     public int getPageCount() {
-        pageCount = allCount / pageSize + (0 == allCount % pageSize ? 0 : 1);
         return pageCount;
     }
 
@@ -51,6 +62,9 @@ public class MCMessageBean {
     }
 
     public void setPageSize(int pageSize) {
+        if (0 != pageSize) {
+            pageCount = allCount / pageSize + (0 == allCount % pageSize ? 0 : 1);
+        }
         this.pageSize = pageSize;
     }
 
@@ -64,4 +78,5 @@ public class MCMessageBean {
     public void resetPage() {
         this.page = 0;
     }
+
 }

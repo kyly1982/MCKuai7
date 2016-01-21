@@ -20,7 +20,7 @@ public class User {
     private Integer messageNum;
     private Integer workNum;
     private Integer level;
-    private Integer token;
+    private Long token;
     private Float process;
     /**
      * Not-null value.
@@ -34,12 +34,12 @@ public class User {
     public User() {
     }
 
-    public User(Long id) {
-        this.id = id;
+    public User(Integer id) {
+        this.id = Long.valueOf((long) id);
     }
 
-    public User(Long id, Integer score, Integer isServerActor, Integer postCount, Integer chatRoomNum, Integer dynamicNum, Integer messageNum, Integer workNum, Integer level, Integer token, Float process, String name, String nickName, String cover, String gender, String city) {
-        this.id = id;
+    public User(Integer id, Integer score, Integer isServerActor, Integer postCount, Integer chatRoomNum, Integer dynamicNum, Integer messageNum, Integer workNum, Integer level, Long token, Float process, String name, String nickName, String cover, String gender, String city) {
+        this.id = Long.valueOf((long) id);
         this.score = score;
         this.isServerActor = isServerActor;
         this.postCount = postCount;
@@ -57,15 +57,52 @@ public class User {
         this.city = city;
     }
 
+
     public User(@NonNull MCUser user){
+        this.id = Long.valueOf((long) user.getId());
+        this.score = user.getScore();
+        this.isServerActor = user.getIsServerActor();
+        this.postCount = user.getTalkNum();
+        this.chatRoomNum = user.getHomeNum();
+        this.dynamicNum = user.getDynamicNum();
+        this.messageNum = user.getMessageNum();
+        this.workNum = user.getWorkNum();
+        this.level = user.getLevel();
+        //this.token = user.getToken();
+        this.process = user.getProcess();
+        this.name = user.getName();
+        this.nickName = user.getNike();
+        this.cover = user.getHeadImg();
+        this.gender = user.getGender();
+        this.city = user.getAddr();
     }
 
-    public Long getId() {
-        return id;
+    public MCUser toMCUser() {
+        MCUser user = new MCUser();
+        user.setId(id.intValue());
+        user.setScore(score);
+        user.setIsServerActor(isServerActor);
+        user.setTalkNum(postCount);
+        user.setHomeNum(chatRoomNum);
+        user.setDynamicNum(dynamicNum);
+        user.setMessageNum(messageNum);
+        user.setWorkNum(workNum);
+        user.setLevel(level);
+        user.setProcess(process);
+        user.setName(name);
+        user.setNike(nickName);
+        user.setHeadImg(cover);
+        user.setGender(gender);
+        user.setAddr(city);
+        return user;
     }
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public Long getId() {
+        return id;
     }
 
     public Integer getScore() {
@@ -132,11 +169,11 @@ public class User {
         this.level = level;
     }
 
-    public Integer getToken() {
+    public Long getToken() {
         return token;
     }
 
-    public void setToken(Integer token) {
+    public void setToken(Long token) {
         this.token = token;
     }
 

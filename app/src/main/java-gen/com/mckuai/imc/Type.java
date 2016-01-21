@@ -20,8 +20,8 @@ public class Type {
         this.id = id;
     }
 
-    public Type(Long id, Integer subId, String name) {
-        this.id = id;
+    public Type(Integer id, Integer subId, String name) {
+        this.id = Long.valueOf((long) id);
         this.subId = subId;
         this.name = name;
     }

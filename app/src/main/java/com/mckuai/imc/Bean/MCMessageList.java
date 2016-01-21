@@ -1,24 +1,19 @@
 package com.mckuai.imc.Bean;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 
-public class PostBaen implements Serializable {
-    /**
-     *
-     */
-    private static final long serialVersionUID = 8232839695607120404L;
-    private int allCount = 0;
-    private ArrayList<Post> data;
-    private int page = 0;
-    private int pageCount = 0;
-    private int pageSize = 20;
+public class MCMessageList {
+    private ArrayList<MCMessage> data;
+    private int allCount;
+    private int page;
+    private int pageCount;
+    private int pageSize;
 
-    public ArrayList<Post> getdata() {
+    public ArrayList<MCMessage> getData() {
         return data;
     }
 
-    public void setdata(ArrayList<Post> data) {
+    public void setData(ArrayList<MCMessage> data) {
         this.data = data;
     }
 
@@ -27,9 +22,6 @@ public class PostBaen implements Serializable {
     }
 
     public void setAllCount(int allCount) {
-        if (0 != pageSize) {
-            pageCount = allCount / pageSize + (0 == allCount % pageSize ? 0 : 1);
-        }
         this.allCount = allCount;
     }
 
@@ -39,10 +31,6 @@ public class PostBaen implements Serializable {
 
     public void setPage(int page) {
         this.page = page;
-        if (0 != pageSize) {
-            pageCount = allCount / pageSize + (0 == allCount % pageSize ? 0 : 1);
-        }
-
     }
 
     public int getNextPage() {
@@ -50,6 +38,7 @@ public class PostBaen implements Serializable {
     }
 
     public int getPageCount() {
+        pageCount = allCount / pageSize + (0 == allCount % pageSize ? 0 : 1);
         return pageCount;
     }
 
@@ -62,9 +51,6 @@ public class PostBaen implements Serializable {
     }
 
     public void setPageSize(int pageSize) {
-        if (0 != pageSize) {
-            pageCount = allCount / pageSize + (0 == allCount % pageSize ? 0 : 1);
-        }
         this.pageSize = pageSize;
     }
 
@@ -78,5 +64,4 @@ public class PostBaen implements Serializable {
     public void resetPage() {
         this.page = 0;
     }
-
 }

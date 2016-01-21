@@ -2,6 +2,9 @@
     <string name="app_name">MCKuai7</string>
     <string name="action_settings">Settings</string>
 
+    <!--数据库名称-->
+    <string name="dbname">MCData.db</string>
+
     <!--配置-->
     <string name="preferences_filename">config</string>
     <string name="preferences_isFirstBoot">FIRSTBOOT</string>

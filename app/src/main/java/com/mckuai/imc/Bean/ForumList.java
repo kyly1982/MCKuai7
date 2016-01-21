@@ -2,7 +2,7 @@ package com.mckuai.imc.Bean;
 
 import java.util.ArrayList;
 
-public class ForumBean {
+public class ForumList {
     private String state;
     private ArrayList<ForumInfo> dataObject;
 

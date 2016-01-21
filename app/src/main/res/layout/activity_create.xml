@@ -7,7 +7,7 @@
 
     <include
         android:id="@+id/actionbar"
-        layout="@layout/actionbar_layout"></include>
+        layout="@layout/actionbar_main_layout"></include>
 
     <Button
         android:id="@+id/btn"

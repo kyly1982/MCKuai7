@@ -13,7 +13,7 @@
 
     <include
         android:id="@+id/actionbar"
-        layout="@layout/actionbar_layout" />
+        layout="@layout/actionbar_main_layout" />
 
     <RadioGroup
         android:id="@+id/nav"

@@ -21,7 +21,7 @@ public class UserDao extends AbstractDao<User, Long> {
      * Can be used for QueryBuilder and for referencing column names.
      */
     public static class Properties {
-        public final static Property Id = new Property(0, Long.class, "id", true, "_id");
+        public final static Property Id = new Property(0, Integer.class, "id", true, "_id");
         public final static Property Score = new Property(1, Integer.class, "score", false, "score");
         public final static Property IsServerActor = new Property(2, Integer.class, "isServerActor", false, "isServerActor");
         public final static Property PostCount = new Property(3, Integer.class, "postCount", false, "postCount");
@@ -83,8 +83,8 @@ public class UserDao extends AbstractDao<User, Long> {
     protected void bindValues(SQLiteStatement stmt, User entity) {
         stmt.clearBindings();
 
-        Long id = entity.getId();
-        if (id != null) {
+        int id = entity.getId();
+        if (id != 0) {
             stmt.bindLong(1, id);
         }
 
@@ -170,7 +170,7 @@ public class UserDao extends AbstractDao<User, Long> {
     @Override
     public User readEntity(Cursor cursor, int offset) {
         User entity = new User( //
-                cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0), // id
+                cursor.isNull(offset + 0) ? null : cursor.getInt(offset + 0), // id
                 cursor.isNull(offset + 1) ? null : cursor.getInt(offset + 1), // score
                 cursor.isNull(offset + 2) ? null : cursor.getInt(offset + 2), // isServerActor
                 cursor.isNull(offset + 3) ? null : cursor.getInt(offset + 3), // postCount
@@ -193,7 +193,7 @@ public class UserDao extends AbstractDao<User, Long> {
     /** @inheritdoc */
     @Override
     public void readEntity(Cursor cursor, User entity, int offset) {
-        entity.setId(cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0));
+        entity.setId(cursor.isNull(offset + 0) ? null : cursor.getInt(offset + 0));
         entity.setScore(cursor.isNull(offset + 1) ? null : cursor.getInt(offset + 1));
         entity.setIsServerActor(cursor.isNull(offset + 2) ? null : cursor.getInt(offset + 2));
         entity.setPostCount(cursor.isNull(offset + 3) ? null : cursor.getInt(offset + 3));
@@ -214,9 +214,10 @@ public class UserDao extends AbstractDao<User, Long> {
     /** @inheritdoc */
     @Override
     protected Long updateKeyAfterInsert(User entity, long rowId) {
-        entity.setId(rowId);
+        entity.setId((int) rowId);
         return rowId;
     }
+
 
     /** @inheritdoc */
     @Override

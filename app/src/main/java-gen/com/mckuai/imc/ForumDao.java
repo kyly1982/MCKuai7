@@ -21,7 +21,7 @@ public class ForumDao extends AbstractDao<Forum, Long> {
      * Can be used for QueryBuilder and for referencing column names.
      */
     public static class Properties {
-        public final static Property Id = new Property(0, Long.class, "id", true, "_id");
+        public final static Property Id = new Property(0, Integer.class, "id", true, "_id");
         public final static Property PostCount = new Property(1, Integer.class, "postCount", false, "postCount");
         public final static Property Name = new Property(2, String.class, "name", false, "name");
         public final static Property Cover = new Property(3, String.class, "cover", false, "cover");
@@ -61,8 +61,8 @@ public class ForumDao extends AbstractDao<Forum, Long> {
     protected void bindValues(SQLiteStatement stmt, Forum entity) {
         stmt.clearBindings();
 
-        Long id = entity.getId();
-        if (id != null) {
+        int id = entity.getId();
+        if (id > 0) {
             stmt.bindLong(1, id);
         }
 
@@ -97,7 +97,7 @@ public class ForumDao extends AbstractDao<Forum, Long> {
     @Override
     public Forum readEntity(Cursor cursor, int offset) {
         Forum entity = new Forum( //
-                cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0), // id
+                cursor.isNull(offset + 0) ? null : cursor.getInt(offset + 0), // id
                 cursor.isNull(offset + 1) ? null : cursor.getInt(offset + 1), // postCount
                 cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2), // name
                 cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3), // cover
@@ -109,7 +109,7 @@ public class ForumDao extends AbstractDao<Forum, Long> {
     /** @inheritdoc */
     @Override
     public void readEntity(Cursor cursor, Forum entity, int offset) {
-        entity.setId(cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0));
+        entity.setId(cursor.isNull(offset + 0) ? null : cursor.getInt(offset + 0));
         entity.setPostCount(cursor.isNull(offset + 1) ? null : cursor.getInt(offset + 1));
         entity.setName(cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2));
         entity.setCover(cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3));
@@ -119,7 +119,7 @@ public class ForumDao extends AbstractDao<Forum, Long> {
     /** @inheritdoc */
     @Override
     protected Long updateKeyAfterInsert(Forum entity, long rowId) {
-        entity.setId(rowId);
+        entity.setId((int) rowId);
         return rowId;
     }
 

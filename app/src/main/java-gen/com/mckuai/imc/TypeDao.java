@@ -57,8 +57,8 @@ public class TypeDao extends AbstractDao<Type, Long> {
     protected void bindValues(SQLiteStatement stmt, Type entity) {
         stmt.clearBindings();
 
-        Long id = entity.getId();
-        if (id != null) {
+        int id = entity.getId();
+        if (id != 0) {
             stmt.bindLong(1, id);
         }
 
@@ -79,7 +79,7 @@ public class TypeDao extends AbstractDao<Type, Long> {
     @Override
     public Type readEntity(Cursor cursor, int offset) {
         Type entity = new Type( //
-                cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0), // id
+                cursor.isNull(offset + 0) ? null : cursor.getInt(offset + 0), // id
                 cursor.isNull(offset + 1) ? null : cursor.getInt(offset + 1), // subId
                 cursor.getString(offset + 2) // name
         );
@@ -89,7 +89,7 @@ public class TypeDao extends AbstractDao<Type, Long> {
     /** @inheritdoc */
     @Override
     public void readEntity(Cursor cursor, Type entity, int offset) {
-        entity.setId(cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0));
+        entity.setId(cursor.isNull(offset + 0) ? null : cursor.getInt(offset + 0));
         entity.setSubId(cursor.isNull(offset + 1) ? null : cursor.getInt(offset + 1));
         entity.setName(cursor.getString(offset + 2));
     }
@@ -97,7 +97,7 @@ public class TypeDao extends AbstractDao<Type, Long> {
     /** @inheritdoc */
     @Override
     protected Long updateKeyAfterInsert(Type entity, long rowId) {
-        entity.setId(rowId);
+        entity.setId((int) rowId);
         return rowId;
     }
 

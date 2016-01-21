@@ -2,11 +2,15 @@ package com.mckuai.imc.Base;
 
 import android.app.Application;
 import android.content.SharedPreferences;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Environment;
 
 import com.mckuai.imc.Bean.MCUser;
-import com.mckuai.imc.Bean.Token;
+import com.mckuai.imc.DaoMaster;
+import com.mckuai.imc.DaoSession;
 import com.mckuai.imc.R;
+import com.mckuai.imc.Token;
+import com.mckuai.imc.Util.MCDBOpenHelper;
 import com.nostra13.universalimageloader.cache.disc.impl.UnlimitedDiskCache;
 import com.nostra13.universalimageloader.cache.disc.naming.Md5FileNameGenerator;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
@@ -14,6 +18,7 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
 import com.nostra13.universalimageloader.core.download.BaseImageDownloader;
+import com.umeng.socialize.PlatformConfig;
 
 import java.io.File;
 
@@ -25,13 +30,15 @@ import io.rong.imkit.RongIM;
 public class MCKuai extends Application {
     public static MCKuai instence;
     public MCUser user;
-    public boolean isFirstBoot = true;
+    public DaoSession daoSession;
+
 
     private final int IMAGE_POOL_SIZE = 3;// 线程池数量
     private final int CONNECT_TIME = 15 * 1000;// 连接时间
     private final int TIME_OUT = 30 * 1000;// 超时时间
 
     private String mCacheDir;
+    public boolean isFirstBoot = true;
 
     @Override
     public void onCreate() {
@@ -47,6 +54,14 @@ public class MCKuai extends Application {
 
     private void init() {
         RongIM.init(this);
+        initImageLoader();
+        initUMPlatform();
+    }
+
+    private void initUMPlatform() {
+        PlatformConfig.setWeixin("", "");
+        PlatformConfig.setQQZone("101155101", "");
+
     }
 
     private void initImageLoader() {
@@ -77,7 +92,7 @@ public class MCKuai extends Application {
                 token.setToken(preferences.getString(getString(R.string.preferences_token), null));
                 token.setType(preferences.getInt(getString(R.string.preferences_tokentype), 0));
                 user = new MCUser();
-                user.setToken(token);
+                user.setToken(token.getToken());
                 user.setId(preferences.getInt(getString(R.string.preferences_id), 0));                    //id
                 user.setName(preferences.getString(getString(R.string.preferences_username), null));      //姓名,实为wx的access_token或者qq的openId
                 user.setNike(preferences.getString(getString(R.string.preferences_nickname), null));      // 显示名
@@ -87,11 +102,11 @@ public class MCKuai extends Application {
                 user.setScore(preferences.getInt(getString(R.string.preferences_score), 0));              //积分
                 user.setLevel(preferences.getInt(getString(R.string.preferences_level), 0));              //level
                 user.setAddr(preferences.getString(getString(R.string.preferences_addr), null));           //地址
-                user.setAllScore(preferences.getLong(getString(R.string.preferences_wa_score), 0));       //mcwa积分
+              /*  user.setAllScore(preferences.getLong(getString(R.string.preferences_wa_score), 0));       //mcwa积分
                 user.setRanking(preferences.getLong(getString(R.string.preferences_wa_ranking), 0));      //mcwa积分排行
                 user.setScoreRank(preferences.getInt(getString(R.string.preferences_wa_scorerank), 0));   //mcwa积分排行
                 user.setAnswerNum(preferences.getInt(getString(R.string.preferences_wa_answercount), 0)); //mcwa回答数
-                user.setUploadNum(preferences.getInt(getString(R.string.preferences_wa_uploadcount), 0)); //mcwa贡献数
+                user.setUploadNum(preferences.getInt(getString(R.string.preferences_wa_uploadcount), 0)); //mcwa贡献数*/
             }
         }
         return user;
@@ -102,10 +117,10 @@ public class MCKuai extends Application {
         SharedPreferences.Editor editor = preferences.edit();
         editor.putBoolean(getString(R.string.preferences_isFirstBoot), false);
         if (null != user && null != user.getToken()) {
-            editor.putInt(getString(R.string.preferences_tokentype), user.getToken().getType());
+           /* editor.putInt(getString(R.string.preferences_tokentype), user.getToken().getType());
             editor.putLong(getString(R.string.preferences_tokentime), user.getToken().getBirthday());
             editor.putLong(getString(R.string.preferences_tokenexpires), user.getToken().getExpires());
-            editor.putString(getString(R.string.preferences_token), user.getToken().getToken());
+            editor.putString(getString(R.string.preferences_token), user.getToken().getToken());*/
         }
         if (null != user && user.isUserValid()) {
             editor.putInt(getString(R.string.preferences_id), user.getId());          //id
@@ -117,11 +132,11 @@ public class MCKuai extends Application {
             editor.putFloat(getString(R.string.preferences_process), user.getProcess());    //进度
             editor.putInt(getString(R.string.preferences_level), user.getLevel());          //level
             editor.putString(getString(R.string.preferences_addr), user.getAddr());         //地址
-            editor.putLong(getString(R.string.preferences_wa_score), user.getAllScore());   //mcwa积分
+           /* editor.putLong(getString(R.string.preferences_wa_score), user.getAllScore());   //mcwa积分
             editor.putLong(getString(R.string.preferences_wa_ranking), user.getRanking());   //mcwa积分排行
             editor.putInt(getString(R.string.preferences_wa_scorerank), user.getScoreRank());//mcwa积分排行
             editor.putInt(getString(R.string.preferences_wa_answercount), user.getAnswerNum());//mcwa回答数
-            editor.putInt(getString(R.string.preferences_wa_uploadcount), user.getUploadNum());//mcwa贡献数
+            editor.putInt(getString(R.string.preferences_wa_uploadcount), user.getUploadNum());//mcwa贡献数*/
             editor.commit();
         }
     }
@@ -158,9 +173,27 @@ public class MCKuai extends Application {
         return null != user && user.getId() > 0;
     }
 
+    public DaoSession getDaoSession() {
+        if (null == daoSession) {
+            MCDBOpenHelper helper = new MCDBOpenHelper(this);
+            SQLiteDatabase db = helper.getWritableDatabase();
+            DaoMaster daoMaster = new DaoMaster(db);
+            daoSession = daoMaster.newSession();
+        }
+        return daoSession;
+    }
+
     public void logout() {
-        user.getToken().setExpires(0);
-        saveProfile();
+
         user = null;
+    }
+
+    public void handleExit() {
+        if (null != daoSession) {
+            SQLiteDatabase db = daoSession.getDatabase();
+            //db.close();
+            daoSession.clear();
+            db.close();
+        }
     }
 }

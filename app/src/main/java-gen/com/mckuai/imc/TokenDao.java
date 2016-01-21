@@ -23,9 +23,10 @@ public class TokenDao extends AbstractDao<Token, Long> {
     public static class Properties {
         public final static Property Id = new Property(0, Long.class, "id", true, "_id");
         public final static Property Type = new Property(1, Integer.class, "type", false, "type");
-        public final static Property Birthday = new Property(2, Long.class, "birthday", false, "birthday");
-        public final static Property Expires = new Property(3, Long.class, "expires", false, "expires");
-        public final static Property Token = new Property(4, String.class, "token", false, "token");
+        public final static Property UserId = new Property(2, Integer.class, "userId", false, "userId");
+        public final static Property Birthday = new Property(3, Long.class, "birthday", false, "birthday");
+        public final static Property Expires = new Property(4, Long.class, "expires", false, "expires");
+        public final static Property Token = new Property(5, String.class, "token", false, "token");
     }
 
 
@@ -43,11 +44,13 @@ public class TokenDao extends AbstractDao<Token, Long> {
     public static void createTable(SQLiteDatabase db, boolean ifNotExists) {
         String constraint = ifNotExists ? "IF NOT EXISTS ": "";
         db.execSQL("CREATE TABLE " + constraint + "\"Token\" (" + //
-                "\"_id\" INTEGER PRIMARY KEY ," + // 0: id
+                "\"_id\" INTEGER PRIMARY KEY AUTOINCREMENT ," + // 0: id
                 "\"type\" INTEGER," + // 1: type
-                "\"birthday\" INTEGER," + // 2: birthday
-                "\"expires\" INTEGER," + // 3: expires
-                "\"token\" TEXT NOT NULL );"); // 4: token
+                "\"userId\" INTEGER," + // 2: userId
+                "\"birthday\" INTEGER," + // 3: birthday
+                "\"expires\" INTEGER," + // 4: expires
+                "\"token\" TEXT NOT NULL );" +// 5: token
+                ""); //5:userId
     }
 
     /** Drops the underlying database table. */
@@ -71,16 +74,21 @@ public class TokenDao extends AbstractDao<Token, Long> {
             stmt.bindLong(2, type);
         }
 
+        Integer userId = entity.getUserId();
+        if (userId != null) {
+            stmt.bindLong(3, userId);
+        }
+
         Long birthday = entity.getBirthday();
         if (birthday != null) {
-            stmt.bindLong(3, birthday);
+            stmt.bindLong(4, birthday);
         }
 
         Long expires = entity.getExpires();
         if (expires != null) {
-            stmt.bindLong(4, expires);
+            stmt.bindLong(5, expires);
         }
-        stmt.bindString(5, entity.getToken());
+        stmt.bindString(6, entity.getToken());
     }
 
     /** @inheritdoc */
@@ -92,12 +100,13 @@ public class TokenDao extends AbstractDao<Token, Long> {
     /** @inheritdoc */
     @Override
     public Token readEntity(Cursor cursor, int offset) {
-        Token entity = new Token( //
+        Token entity = new Token(
                 cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0), // id
                 cursor.isNull(offset + 1) ? null : cursor.getInt(offset + 1), // type
-                cursor.isNull(offset + 2) ? null : cursor.getLong(offset + 2), // birthday
-                cursor.isNull(offset + 3) ? null : cursor.getLong(offset + 3), // expires
-                cursor.getString(offset + 4) // token
+                cursor.isNull(offset + 2) ? null : cursor.getInt(offset + 2), // userId
+                cursor.isNull(offset + 3) ? null : cursor.getLong(offset + 3), // birthday
+                cursor.isNull(offset + 4) ? null : cursor.getLong(offset + 4), // expires
+                cursor.getString(offset + 5) // token
         );
         return entity;
     }
@@ -107,9 +116,10 @@ public class TokenDao extends AbstractDao<Token, Long> {
     public void readEntity(Cursor cursor, Token entity, int offset) {
         entity.setId(cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0));
         entity.setType(cursor.isNull(offset + 1) ? null : cursor.getInt(offset + 1));
-        entity.setBirthday(cursor.isNull(offset + 2) ? null : cursor.getLong(offset + 2));
-        entity.setExpires(cursor.isNull(offset + 3) ? null : cursor.getLong(offset + 3));
-        entity.setToken(cursor.getString(offset + 4));
+        entity.setUserId(cursor.isNull(offset + 2) ? null : cursor.getInt(offset + 2));
+        entity.setBirthday(cursor.isNull(offset + 3) ? null : cursor.getLong(offset + 3));
+        entity.setExpires(cursor.isNull(offset + 4) ? null : cursor.getLong(offset + 4));
+        entity.setToken(cursor.getString(offset + 5));
     }
 
     /** @inheritdoc */
@@ -127,6 +137,30 @@ public class TokenDao extends AbstractDao<Token, Long> {
         } else {
             return null;
         }
+    }
+
+    @Override
+    public long insertOrReplace(Token entity) {
+        //return super.insertOrReplace(entity);
+        if (null == entity.getId()) {
+            return insert(entity);
+        } else if (isTokenExist(entity)) {
+            update(entity);
+        } else {
+            return insert(entity);
+        }
+
+        return super.insertOrReplace(entity);
+    }
+
+    private boolean isTokenExist(Token token) {
+        return true;
+    }
+
+    @Override
+    public long insert(Token entity) {
+
+        return super.insert(entity);
     }
 
     /** @inheritdoc */

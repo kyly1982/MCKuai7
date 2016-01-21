@@ -2,7 +2,7 @@ package com.mckuai.imc.Bean;
 
 import java.util.ArrayList;
 
-public class MCDynamicBean {
+public class MCDynamicList {
     private ArrayList<MCDynamic> data;
     private int allCount;
     private int page;

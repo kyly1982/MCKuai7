@@ -3,7 +3,19 @@
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
     <dimen name="fab_margin">16dp</dimen>
-    //侧边栏
+    <!--通用-->
+    <dimen name="usercover_width">33.5dp</dimen>
+
+    <!--字体-->
+    <dimen name="font_title">16sp</dimen>
+    <dimen name="font_accent">14sp</dimen>
+    <dimen name="font_normal">12sp</dimen>
+    <dimen name="font_hint">10sp</dimen>
+
+    <!--侧边栏-->
     <dimen name="nav_header_vertical_spacing">16dp</dimen>
     <dimen name="nav_header_height">160dp</dimen>
+    <!--cartoonfragment-->
+    <dimen name="margin_cartoon_layout">20dp</dimen>
+    <dimen name="margin_cartoon_content">9dp</dimen>
 </resources>
