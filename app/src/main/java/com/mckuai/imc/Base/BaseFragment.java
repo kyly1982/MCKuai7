@@ -12,7 +12,6 @@ public class BaseFragment extends Fragment {
 
     public interface OnFragmentEventListener {
         void onShow(int titleResId);
-
         void onAttach(int titleResId);
     }
 

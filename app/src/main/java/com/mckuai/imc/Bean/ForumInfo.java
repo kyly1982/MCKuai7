@@ -1,6 +1,5 @@
 package com.mckuai.imc.Bean;
 
-import com.mckuai.imc.Type;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -11,9 +10,12 @@ public class ForumInfo implements Serializable {
     private int talkNum;
     private String name;
     private String icon;
-    private ArrayList<Type> includeType;
+    private ArrayList<PostType> includeType;
 
-    public ForumInfo(int id, String name, String icon, int talkNum, ArrayList<Type> types) {
+    public ForumInfo() {
+    }
+
+    public ForumInfo(int id, String name, String icon, int talkNum, ArrayList<PostType> types) {
         this.icon = icon;
         this.id = id;
         this.name = name;
@@ -46,11 +48,11 @@ public class ForumInfo implements Serializable {
     }
 
 
-    public ArrayList<Type> getIncludeType() {
+    public ArrayList<PostType> getIncludeType() {
         return includeType;
     }
 
-    public void setIncludeType(ArrayList<Type> includeType) {
+    public void setIncludeType(ArrayList<PostType> includeType) {
         this.includeType = includeType;
     }
 

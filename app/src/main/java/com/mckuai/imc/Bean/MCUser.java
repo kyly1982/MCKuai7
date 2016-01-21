@@ -25,7 +25,7 @@ public class MCUser implements Serializable {
     //private String userType;
     private String addr;// 定位
     private String name;// 登录后的openid
-    private String token;//融云的token
+    private Token token;//融云的token
 
 
     public MCUser() {
@@ -184,11 +184,11 @@ public class MCUser implements Serializable {
         this.name = name;
     }
 
-    public String getToken() {
+    public Token getToken() {
         return token;
     }
 
-    public void setToken(String token) {
+    public void setToken(Token token) {
         this.token = token;
     }
 

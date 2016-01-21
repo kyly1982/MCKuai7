@@ -11,9 +11,7 @@
         android:id="@+id/cartoonlist"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/cartoon_toolbar">
-
-    </com.malinskiy.superrecyclerview.SuperRecyclerView>
+        android:layout_below="@id/cartoon_toolbar"/>
 
 
 </RelativeLayout>

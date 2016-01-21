@@ -3,8 +3,8 @@ package com.mckuai.imc.Util;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 
-import com.mckuai.imc.DaoMaster;
 import com.mckuai.imc.R;
+import com.mckuai.imc.Util.MCDao.DaoMaster;
 
 /**
  * Created by kyly on 2016/1/21.

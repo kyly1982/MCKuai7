@@ -27,11 +27,74 @@
     <string name="preferences_wa_scorerank">WA_SCORERANK</string>
     <string name="preferences_wa_ranking">WA_RANKING</string>
 
+    <!--错误提示-->
+    <string name="error_pretreatmentres_ponsefalse">预解析失败，原因:%1$s</string>
+    <string name="error_pretreatmentres_nullerror">返回数据为空或长度不足！</string>
+    <string name="error_pretreatmentres_format">预解析失败，原因未知！</string>
+    <string name="error_serverfalse_unknow">服务器返回失败，原因未知！</string>
+    <string name="error_serverfalse">服务器返回失败，原因:%1$s</string>
+    <string name="error_parsefalse">解析返回数据时失败，请重试！</string>
+    <string name="error_requestfalse">请求失败，原因：%1$s</string>
+    <string name="error_userformat_noself">返回的用户信息不正确！</string>
+    <string name="error_serverreturn_unkonw">服务器返回数据格式不正确！</string>
+    <string name="error_loginfaile_mc">登录到服务器失败，原因：%1$s</string>
+    <string name="error_loginfaile_wx">微信授权失败，请重试！</string>
+    <string name="error_code">错误代码：%1$d</string>
+
     <!--缓存-->
     <string name="cache_root">cache</string>
     <string name="imagecache_dir">image</string>
     <string name="cache_rankinglist">rank.dat</string>
     <string name="preferences_file">config</string>
+    <string name="jsoncache_dir">json</string>
+    <string name="jsoncache_file">jsonCache.dat</string>
+
+    <!--接口-->
+    <string name="interface_domainName">http://api.mckuai.com/</string>
+    <!-- 搜索-->
+    <string name="interface_search">interface.do?act=search</string>
+    <string name="interface_forumList">interface.do?act=forumList</string>
+    <string name="interface_postList">interface.do?act=talkList</string>
+    <string name="interface_showPost">interface.do?act=talkOne</string>
+    <!-- 打赏 -->
+    <string name="interface_reward">interface.do?act=daShang</string>
+    <!-- 收藏帖子interface.do?act=toCollect&userId=&talkId= // -->
+    <string name="interface_collectpost">interface.do?act=toCollect</string>
+    <!-- 收藏的帖子接口，参数：id=userid,page=页数 -->
+    <string name="interface_collectpostlist">interface.do?act=collectTalk</string>
+    <!-- 取消收藏帖子interface.do?act=cancleCollect&userId=&talkId= -->
+    <string name="interface_cancle_collectpost">interface.do?act=cancleCollect</string>
+    <!-- 跟帖，跟帖前取参数window.interface.setparameters(),window.interface.getParameters() -->
+    <string name="interface_replypost">interface.do?act=followTalk</string>
+    <!-- 回复楼层 -->
+    <string name="interface_replyfloor">interface.do?act=replyTalk</string>
+    <!-- 上传图片 回图片路径字符串  http://cdn.mckuai.com/xxx.jpg 需加在content 帖子内容后面 -->
+    <string name="interface_uploadpic">group.do?act=uploadImg</string>
+    <string name="interface_sendpost">interface.do?act=addTalk</string>
+    <!-- 是否打赏或收藏 -->
+    <string name="interface_getpostmark">interface.do?act=isCollect</string>
+    <!-- 个人中心接口，参数：id=用户id&page=&type=&messageType=    type{message（消息）,dynamic（动态）,work（作品）}; messageType{ system（系统）,reply（@）} -->
+    <string name="interface_userCenter">interface.do?act=center</string>
+    <!-- 检查更新 -->
+    <string name="interface_checkupgread">interface.do?act=androidUpdate</string>
+    <!--登录-->
+    <string name="interface_login">interface.do?act=login</string>
+    <!-- 更新位置，参数：id=&addr= -->
+    <string name="interface_updateLocation">interface.do?act=updateAddr</string>
+    <!-- 更新昵称 -->
+    <string name="interface_update_userinfo">interface.do?act=saveUser</string>
+    <!-- 更新头像 -->
+    <string name="interface_update_cover">interface.do?act=headImg</string>
+    <!-- 关注的用户列表接口，参数：id=用户id&page=页数 -->
+    <string name="interface_fellowuserlist">interface.do?act=attentionUser</string>
+    <!-- 关注用户接口，参数：ownerId=当前用户id&otherId=被关注的用户id -->
+    <string name="interface_fellowuser">interface.do?act=attention</string>
+    <!-- 取消关注用户 -->
+    <string name="interface_cancle_fellowuser">/interface.do?act=cancleAttention</string>
+    <!-- 用户是否被关注 -->
+    <string name="interface_getusermark">interface.do?act=isAttention</string>
+    <!-- quick reply -->
+    <string name="interface_quickreply">interface.do?act=addReplyByCenter</string>
 
     <!--侧边栏-->
     <string name="navigation_drawer_open">Open navigation drawer</string>
