@@ -3,7 +3,6 @@ package com.mckuai.imc.Base;
 
 import android.app.Fragment;
 import android.content.Context;
-import android.os.Bundle;
 
 
 public class BaseFragment extends Fragment {
@@ -17,12 +16,6 @@ public class BaseFragment extends Fragment {
 
     public void setFragmentEventListener(OnFragmentEventListener l) {
         this.mOnFragmentEventListener = l;
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
     }
 
     @Override

@@ -13,6 +13,12 @@ public class Page implements Serializable {
     private int pageSize = 20;
     private int pageCount;
 
+    public Page(int allCount, int page, int pageSize) {
+        this.allCount = allCount;
+        this.page = page;
+        this.pageSize = pageSize;
+    }
+
     public int getPage() {
         return page;
     }
@@ -42,8 +48,8 @@ public class Page implements Serializable {
             return true;
         }
 
-        int pagecount = (0 == (allCount % pageSize) ? (allCount / pageSize) : ((allCount / pageSize) + 1));
-        return page == pagecount;
+        pageCount = (0 == (allCount % pageSize) ? (allCount / pageSize) : ((allCount / pageSize) + 1));
+        return page == pageCount;
     }
 
     public int getNextPage() {

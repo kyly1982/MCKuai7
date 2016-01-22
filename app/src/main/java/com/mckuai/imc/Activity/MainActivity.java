@@ -3,12 +3,14 @@ package com.mckuai.imc.Activity;
 import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.AppCompatRadioButton;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.RadioGroup;
+import android.widget.RelativeLayout;
 
 import com.mckuai.imc.Base.BaseActivity;
 import com.mckuai.imc.Base.BaseFragment;
@@ -25,10 +27,12 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
     private ArrayList<BaseFragment> fragments;
     private int fragmentIndex = 0;
     private ActionBar mActionBar;
+    private RelativeLayout content;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_base);
         initToolbar(R.id.toolbar, R.mipmap.ic_launcher, this);
         initDrawer(R.id.drawer_layout, R.id.nav_view, this);
         initView();
@@ -52,32 +56,43 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         mToolbar.setVisibility(View.GONE);
         mToolbar.setTitle("");
         mActionBar.setWindowTitle("aaaaaa");
+        content = (RelativeLayout) findViewById(R.id.context);
         //mActionBar.hide();
     }
 
     private void initFragment() {
-        CartoonFragment cartoonFragment = new CartoonFragment();
-        ChatFragment chatFragment = new ChatFragment();
-        CommunityFragment communityFragment = new CommunityFragment();
-        MineFragment mineFragment = new MineFragment();
+        if (null== fragments) {
+            CartoonFragment cartoonFragment = new CartoonFragment();
+            ChatFragment chatFragment = new ChatFragment();
+            CommunityFragment communityFragment = new CommunityFragment();
+            MineFragment mineFragment = new MineFragment();
 
-        cartoonFragment.setFragmentEventListener(this);
+            cartoonFragment.setFragmentEventListener(this);
 
-        fragments = new ArrayList<>(4);
-        fragments.add(cartoonFragment);
-        fragments.add(chatFragment);
-        fragments.add(communityFragment);
-        fragments.add(mineFragment);
+            fragments = new ArrayList<>(4);
+            fragments.add(cartoonFragment);
+            fragments.add(chatFragment);
+            fragments.add(communityFragment);
+            fragments.add(mineFragment);
 
-        if (null == mFragmentManager) {
-            mFragmentManager = getFragmentManager();
-        }
-        FragmentTransaction transaction = mFragmentManager.beginTransaction();
+            if (null == mFragmentManager) {
+                mFragmentManager = getFragmentManager();
+            }
+
+            FragmentTransaction transaction = mFragmentManager.beginTransaction();
         /*for (BaseFragment fragment:fragments){
             transaction.add(R.id.main_context,fragment,fragment.getTitleResId()).hide(fragment);
         }*/
-        transaction.replace(R.id.context, cartoonFragment);
-        transaction.commit();
+            //transaction.replace(R.id.context, cartoonFragment);
+            for (BaseFragment fragment : fragments) {
+                transaction.add(content.getId(), fragment);
+            }
+            transaction.show(fragments.get(0));
+            for (int i = 1; i < 4; i++) {
+                transaction.hide(fragments.get(i));
+            }
+            transaction.commit();
+        }
     }
 
     @Override
@@ -99,7 +114,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
 
     @Override
     public void onClick(View v) {
-
+        Snackbar.make(mToolbar,""+v.toString(),Snackbar.LENGTH_LONG).show();
     }
 
     @Override
@@ -135,7 +150,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
                     mActionBar.show();
                     break;
             }
-            transaction.replace(R.id.context, fragments.get(fragmentIndex)).commit();
+            transaction.show(fragments.get(fragmentIndex)).commit();
         }
 
     }

@@ -2,7 +2,6 @@ package com.mckuai.imc.Base;
 
 import android.app.Fragment;
 import android.app.FragmentManager;
-import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
 import android.support.v4.view.GravityCompat;
@@ -16,19 +15,13 @@ import com.mckuai.imc.R;
 
 public class BaseActivity extends AppCompatActivity {
 
-    public MCKuai mApplication;
+    public MCKuai mApplication = MCKuai.instence;
     public FragmentManager mFragmentManager;
     public android.support.v4.app.FragmentManager mFragmentManager_V4;
     public Toolbar mToolbar;
     private DrawerLayout mDrawer;
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_base);
-        this.mApplication = MCKuai.instence;
-        this.mFragmentManager = getFragmentManager();
-    }
+
 
     @Override
     protected void onResume() {

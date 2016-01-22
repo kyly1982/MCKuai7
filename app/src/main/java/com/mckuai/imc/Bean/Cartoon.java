@@ -1,6 +1,8 @@
 package com.mckuai.imc.Bean;
 
 import java.io.Serializable;
+import java.sql.Date;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
 /**
@@ -8,8 +10,9 @@ import java.util.ArrayList;
  */
 public class Cartoon implements Serializable {
     private int prise;                      //赞
+    private long time;                      //创建时间
     private String image;                   //图片url
-    private MCBasicUser owner;              //所有者
+    private User owner;                     //所有者
     private ArrayList<Lable> lables;        //标签
     private ArrayList<Comment> comments;    //评论
     private Page commentPage;               //评论分页信息
@@ -17,7 +20,13 @@ public class Cartoon implements Serializable {
     public Cartoon() {
     }
 
-    public Cartoon(String image, ArrayList<Lable> lables, MCBasicUser owner, ArrayList<Comment> comments, int prise) {
+    public Cartoon(String image, int prise, long time) {
+        this.image = image;
+        this.prise = prise;
+        this.time = time;
+    }
+
+    public Cartoon(String image, ArrayList<Lable> lables, User owner, ArrayList<Comment> comments, int prise) {
         this.comments = comments;
         this.image = image;
         this.lables = lables;
@@ -25,7 +34,7 @@ public class Cartoon implements Serializable {
         this.prise = prise;
     }
 
-    public Cartoon(String image, ArrayList<Lable> lables, MCBasicUser owner, ArrayList<Comment> comments, int prise, Page page) {
+    public Cartoon(String image, ArrayList<Lable> lables, User owner, ArrayList<Comment> comments, int prise, Page page) {
         this.comments = comments;
         this.image = image;
         this.lables = lables;
@@ -50,11 +59,11 @@ public class Cartoon implements Serializable {
         this.lables = lables;
     }
 
-    public MCBasicUser getOwner() {
+    public User getOwner() {
         return owner;
     }
 
-    public void setOwner(MCBasicUser owner) {
+    public void setOwner(User owner) {
         this.owner = owner;
     }
 
@@ -80,5 +89,23 @@ public class Cartoon implements Serializable {
 
     public void setCommentPage(Page commentPage) {
         this.commentPage = commentPage;
+    }
+
+    public long getTime() {
+        return time;
+    }
+
+    public void setTime(long time) {
+        this.time = time;
+    }
+
+    public String getTimeEx(){
+        SimpleDateFormat sdf = new SimpleDateFormat("MM月dd日");
+        Date date = new Date(time);
+        return sdf.format(date);
+    }
+
+    public String getCommentEx(){
+        return null == comments ? "0":comments.size() +"";
     }
 }

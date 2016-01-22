@@ -59,6 +59,7 @@ public class MCKuai extends Application {
         RongIM.init(this);
         initImageLoader();
         initUMPlatform();
+        netEngine = new MCNetEngine();
     }
 
     private void initUMPlatform() {

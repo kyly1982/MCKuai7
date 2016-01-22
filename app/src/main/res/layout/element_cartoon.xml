@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -9,7 +10,8 @@
         android:layout_width="@dimen/usercover_width"
         android:layout_height="@dimen/usercover_width"
         android:layout_margin="@dimen/margin_cartoon_content"
-        android:background="@color/colorAccent" />
+        android:background="@color/colorAccent"
+        android:clickable="true" />
 
     <android.support.v7.widget.AppCompatImageButton
         android:id="@+id/cartoon_shar"
@@ -31,7 +33,7 @@
         android:textSize="@dimen/font_accent" />
 
     <android.support.v7.widget.AppCompatTextView
-        android:id="@+id/cartoon_time"
+        android:id="@+id/cartoon_createtime"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignBottom="@id/cartoon_usercover"
@@ -40,58 +42,49 @@
         android:text="01月15日"
         android:textSize="@dimen/font_hint" />
 
-    <ScrollView
+
+    <android.support.v7.widget.AppCompatImageView
+        android:id="@+id/cartoon_image"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_below="@id/cartoon_usercover"
+        android:background="@color/colorAccent" />
+
+    <View
+        android:id="@+id/cartoon_center"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_centerInParent="true" />
+
+    <android.support.v7.widget.AppCompatButton
+        android:id="@+id/cartoon_comment"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@id/cartoon_image"
+        android:layout_margin="@dimen/margin_cartoon_content"
+        android:layout_toLeftOf="@id/cartoon_center"
+        android:text="评论" />
+
+    <android.support.v7.widget.AppCompatButton
+        android:id="@+id/cartoon_prise"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_below="@id/cartoon_image"
+        android:layout_margin="@dimen/margin_cartoon_content"
+        android:layout_toRightOf="@id/cartoon_center"
+        android:text="赞" />
+
+    <com.malinskiy.superrecyclerview.SuperRecyclerView
+        android:id="@+id/cartoon_commentlist"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/cartoon_usercover"
-        android:fillViewport="true">
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <android.support.v7.widget.AppCompatImageView
-                android:id="@+id/cartoon_image"
-                android:layout_width="match_parent"
-                android:layout_height="350dp"
-                android:layout_alignParentTop="true"
-                android:background="@color/colorAccent" />
-
-            <View
-                android:id="@+id/cartoon_center"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:layout_centerInParent="true" />
-
-            <android.support.v7.widget.AppCompatButton
-                android:id="@+id/cartoon_comment"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:layout_below="@id/cartoon_image"
-                android:layout_margin="@dimen/margin_cartoon_content"
-                android:layout_toLeftOf="@id/cartoon_center"
-                android:text="评论" />
-
-            <android.support.v7.widget.AppCompatButton
-                android:id="@+id/cartoon_praise"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_below="@id/cartoon_image"
-                android:layout_margin="@dimen/margin_cartoon_content"
-                android:layout_toRightOf="@id/cartoon_center"
-                android:text="赞" />
-
-            <com.malinskiy.superrecyclerview.SuperRecyclerView
-                android:id="@+id/cartoon_commentlist"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:minHeight="100dp"
-                android:layout_below="@id/cartoon_comment"
-                android:layout_marginLeft="@dimen/margin_cartoon_content"
-                android:layout_marginRight="@dimen/margin_cartoon_content"></com.malinskiy.superrecyclerview.SuperRecyclerView>
-        </RelativeLayout>
-    </ScrollView>
+        android:layout_below="@id/cartoon_comment"
+        android:layout_marginLeft="@dimen/margin_cartoon_content"
+        android:layout_marginRight="@dimen/margin_cartoon_content"
+        android:minHeight="100dp"
+        android:orientation="vertical"
+        app:layout_empty="@layout/emptyview"></com.malinskiy.superrecyclerview.SuperRecyclerView>
 
 </RelativeLayout>

@@ -11,7 +11,6 @@ import com.mckuai.imc.Bean.Cartoon;
 import com.mckuai.imc.Bean.MCUser;
 import com.mckuai.imc.R;
 
-
 import org.apache.http.Header;
 import org.json.JSONObject;
 
@@ -21,7 +20,13 @@ import java.util.ArrayList;
  * Created by kyly on 2016/1/22.
  */
 public class MCNetEngine {
-    private AsyncHttpClient httpClient = new AsyncHttpClient();
+    private AsyncHttpClient httpClient;
+
+
+    public MCNetEngine() {
+        httpClient = new AsyncHttpClient();
+        httpClient.setTimeout(10);
+    }
 
     public void cancle(){
         httpClient.cancelAllRequests(true);
@@ -64,12 +69,12 @@ public class MCNetEngine {
         });
     }
 
-    public interface OnCartoonListResponse{
+    public interface OnCartoonListResponseListener{
         public void onSuccess(ArrayList<Cartoon> cartoons);
         public void onFaile(String msg);
     }
 
-    public void loadCartoonList(final Context context,String cartoonType){
+    public void loadCartoonList(final Context context,String cartoonType,final OnCartoonListResponseListener listener){
         String url = context.getString(R.string.interface_domainName) + context.getString(R.string.interface_domainName);
         RequestParams params = new RequestParams();
         params.put("type",cartoonType);
@@ -77,11 +82,23 @@ public class MCNetEngine {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                 super.onSuccess(statusCode, headers, response);
+                if (null != listener){
+                    listener.onSuccess(new ArrayList<Cartoon>());
+                }
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                super.onFailure(statusCode, headers, responseString, throwable);
+                if (null != listener){
+                    listener.onFaile("onFailure");
+                }
             }
 
             @Override
             public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
                 super.onFailure(statusCode, headers, throwable, errorResponse);
+                listener.onFaile("onFailure");
             }
         });
     }

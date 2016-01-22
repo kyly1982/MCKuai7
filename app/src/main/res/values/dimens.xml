@@ -5,6 +5,7 @@
     <dimen name="fab_margin">16dp</dimen>
     <!--通用-->
     <dimen name="usercover_width">33.5dp</dimen>
+    <dimen name="usercover_width_small">21.5dp</dimen>
 
     <!--字体-->
     <dimen name="font_title">16sp</dimen>

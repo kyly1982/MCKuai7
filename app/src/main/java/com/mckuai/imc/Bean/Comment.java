@@ -1,5 +1,7 @@
 package com.mckuai.imc.Bean;
 
+import com.mckuai.imc.Util.TimestampConverter;
+
 import java.io.Serializable;
 
 /**
@@ -7,13 +9,14 @@ import java.io.Serializable;
  * Created by kyly on 2016/1/21.
  */
 public class Comment implements Serializable {
-    private MCBasicUser owner;  //评论者
+    private User owner;  //评论者
     private String content;     //评论内容
+    private long time;
 
     public Comment() {
     }
 
-    public Comment(MCBasicUser owner, String content) {
+    public Comment(User owner, String content) {
         this.content = content;
         this.owner = owner;
     }
@@ -26,11 +29,23 @@ public class Comment implements Serializable {
         this.content = content;
     }
 
-    public MCBasicUser getOwner() {
+    public User getOwner() {
         return owner;
     }
 
-    public void setOwner(MCBasicUser owner) {
+    public void setOwner(User owner) {
         this.owner = owner;
+    }
+
+    public long getTime() {
+        return time;
+    }
+
+    public void setTime(long time) {
+        this.time = time;
+    }
+
+    public String getTimeEx(){
+        return TimestampConverter.toString(time);
     }
 }
