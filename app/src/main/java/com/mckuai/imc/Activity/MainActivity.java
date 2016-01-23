@@ -32,7 +32,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_base);
+        setContentView(R.layout.activity_main);
         initToolbar(R.id.toolbar, R.mipmap.ic_launcher, this);
         initDrawer(R.id.drawer_layout, R.id.nav_view, this);
         initView();
@@ -78,12 +78,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
             if (null == mFragmentManager) {
                 mFragmentManager = getFragmentManager();
             }
-
             FragmentTransaction transaction = mFragmentManager.beginTransaction();
-        /*for (BaseFragment fragment:fragments){
-            transaction.add(R.id.main_context,fragment,fragment.getTitleResId()).hide(fragment);
-        }*/
-            //transaction.replace(R.id.context, cartoonFragment);
             for (BaseFragment fragment : fragments) {
                 transaction.add(content.getId(), fragment);
             }
@@ -135,19 +130,19 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
             switch (checkedId) {
                 case R.id.nav_cartoon:
                     fragmentIndex = 0;
-                    mActionBar.hide();
+                    //mActionBar.hide();
                     break;
                 case R.id.nav_chat:
                     fragmentIndex = 1;
-                    mActionBar.show();
+                    //mActionBar.show();
                     break;
                 case R.id.nav_community:
                     fragmentIndex = 2;
-                    mActionBar.show();
+                    //mActionBar.show();
                     break;
                 case R.id.nav_mine:
                     fragmentIndex = 3;
-                    mActionBar.show();
+                    //mActionBar.show();
                     break;
             }
             transaction.show(fragments.get(fragmentIndex)).commit();

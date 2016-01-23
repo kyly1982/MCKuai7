@@ -164,9 +164,16 @@ public class CartoonFragment extends BaseFragment implements RadioGroup.OnChecke
     }
 
     private void dataMaker() {
+        ArrayList<String> image = new ArrayList<>(3);
+        image.add("http://h.hiphotos.baidu.com/image/h%3D300/sign=33c2003d1ed8bc3ed90800cab28ba6c8/e7cd7b899e510fb35067c290de33c895d1430cbe.jpg");
+        image.add("http://f.hiphotos.baidu.com/image/h%3D300/sign=8e8ffcee8a1001e9513c120f880e7b06/a71ea8d3fd1f4134ba49b079221f95cad1c85ebe.jpg");
+        image.add("http://b.hiphotos.bdimg.com/imgad/pic/item/a71ea8d3fd1f413476aefc7d221f95cad1c85e1c.jpg");
+        image.add("http://g.hiphotos.bdimg.com/imgad/pic/item/c83d70cf3bc79f3d16bc1d33bda1cd11728b2950.jpg");
+        image.add("http://e.hiphotos.baidu.com/zhidao/wh%3D450%2C600/sign=ddc1e95dc3cec3fd8b6baf71e3b8f809/2e2eb9389b504fc2b1b1a494e5dde71191ef6db0.jpg");
+
         ArrayList<Cartoon> cartoons = new ArrayList<>(10);
         for (int i = 0; i < 10; i++) {
-            Cartoon cartoon = new Cartoon("http://e.hiphotos.baidu.com/zhidao/wh%3D450%2C600/sign=ddc1e95dc3cec3fd8b6baf71e3b8f809/2e2eb9389b504fc2b1b1a494e5dde71191ef6db0.jpg", 5, 116 * 365 * 24 * 60 * 1000);
+            Cartoon cartoon = new Cartoon(image.get(i % 5), 5, 116 * 365 * 24 * 60* 60 * 1000);
             cartoon.setCommentPage(pageMaker());
             cartoon.setLables(lableMaker());
             cartoon.setOwner(ownerMaker());
@@ -204,6 +211,7 @@ public class CartoonFragment extends BaseFragment implements RadioGroup.OnChecke
         ArrayList<Comment> comments = new ArrayList<>(5);
         for (int i = 0; i < 5; i++) {
             Comment comment = new Comment(ownerMaker(), "哈哈哈" + i);
+            comment.setTime(System.currentTimeMillis() - 1000 * 60 *30);
             comments.add(comment);
         }
         return comments;

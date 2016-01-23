@@ -63,9 +63,11 @@ public class BaseActivity extends AppCompatActivity {
     public void initDrawer(int drawerLayoutId, int navViewId, NavigationView.OnNavigationItemSelectedListener listener) {
         mDrawer = (DrawerLayout) findViewById(drawerLayoutId);
         NavigationView navigationView = (NavigationView) findViewById(navViewId);
+
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, mDrawer, mToolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         mDrawer.setDrawerListener(toggle);
         toggle.syncState();
+
         if (null != listener) {
             navigationView.setNavigationItemSelectedListener(listener);
         }
