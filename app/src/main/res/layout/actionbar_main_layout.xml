@@ -11,11 +11,44 @@
         android:layout_height="?attr/actionBarSize"
         app:popupTheme="@style/AppTheme.PopupOverlay">
 
-        <TextView
+        <FrameLayout
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_gravity="center"
-            android:text="11111" />
+            >
+            <android.support.v7.widget.AppCompatTextView
+                android:id="@+id/actionbar_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:textColor="@color/textPrimary"/>
+            <RadioGroup
+                android:id="@+id/actionbar_cartoon_rg"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:layout_gravity="center">
+                <android.support.v7.widget.AppCompatRadioButton
+                    android:id="@+id/cartoon_type_new"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:padding="@dimen/margin_cartoon_layout"
+                    android:textColor="@color/checkable_text_color_selector"
+                    android:checked="true"
+                    android:text="@string/cartoon_type_new"
+                    android:button="@null"/>
+                <android.support.v7.widget.AppCompatRadioButton
+                    android:id="@+id/cartoon_type_hot"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:padding="@dimen/margin_cartoon_layout"
+                    android:textColor="@color/checkable_text_color_selector"
+                    android:text="@string/cartoon_type_hot"
+                    android:button="@null"/>
+
+            </RadioGroup>
+        </FrameLayout>
+
     </android.support.v7.widget.Toolbar>
 
 

@@ -4,8 +4,11 @@
     <color name="colorPrimaryDark">#0097A7</color>
     <color name="colorPrimaryLight">#B2EBF2</color>
     <color name="icons">#FFFFFF</color>
-    <color name="textPrimary">#212121</color>
+    <color name="textPrimary">#4D4D4D</color>
     <color name="textSecondary">#727272</color>
+    <color name="textAccent">#FFFFFF</color>
+    <color name="textHint">#B2B0AE</color>
+    <color name="textGreen">#31B765</color>
     <color name="colorAccent">#FFC107</color>
     <color name="colorDivider">#727272</color>
 

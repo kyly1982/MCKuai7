@@ -6,6 +6,8 @@
     <!--通用-->
     <dimen name="usercover_width">33.5dp</dimen>
     <dimen name="usercover_width_small">21.5dp</dimen>
+    <dimen name="margin_content">9dp</dimen>
+    <dimen name="padding_content">4.5dp</dimen>
 
     <!--字体-->
     <dimen name="font_title">16sp</dimen>
@@ -19,4 +21,12 @@
     <!--cartoonfragment-->
     <dimen name="margin_cartoon_layout">20dp</dimen>
     <dimen name="margin_cartoon_content">9dp</dimen>
+
+    <!--communityfragment-->
+    <dimen name="community_forumlist_height">66dp</dimen>
+    <dimen name="community_forum_height">46dp</dimen>
+    <dimen name="community_forum_radius">23dp</dimen>
+    <dimen name="community_margin_layout">16dp</dimen>
+    <dimen name="community_margin_content">5dp</dimen>
+    <dimen name="community_item_postheight_normal">74dp</dimen>
 </resources>

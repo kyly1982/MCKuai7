@@ -1,15 +1,80 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context="com.mckuai.imc.Fragment.CommunityFragment">
+    android:layout_height="match_parent">
 
-    <!-- TODO: Update blank fragment layout -->
-    <android.support.v7.widget.AppCompatButton
+    <com.malinskiy.superrecyclerview.SuperRecyclerView
+        android:id="@+id/community_forumlist"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/community_forumlist_height"
+        android:paddingTop="@dimen/margin_content"
+        android:paddingBottom="@dimen/margin_content"
+        app:layout_empty="@layout/emptyview"
+        >
+
+    </com.malinskiy.superrecyclerview.SuperRecyclerView>
+
+    <RadioGroup
+        android:id="@+id/posttype_indicator"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:layout_below="@id/community_forumlist"
+        android:orientation="horizontal" >
+
+        <android.support.v7.widget.AppCompatRadioButton
+            android:id="@+id/rb_lastPost"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:button="@null"
+            android:background="@null"
+            android:checked="true"
+            android:gravity="center"
+            android:text="@string/community_postlable_new"
+            android:textColor="@color/community_postlable_type_textclolr" />
+
+        <android.support.v7.widget.AppCompatRadioButton
+            android:id="@+id/rb_essencePost"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:button="@null"
+            android:background="@null"
+            android:gravity="center"
+            android:text="@string/community_postlable_essence"
+            android:textColor="@color/community_postlable_type_textclolr" />
+
+        <android.support.v7.widget.AppCompatRadioButton
+            android:id="@+id/rb_topPost"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:button="@null"
+            android:background="@null"
+            android:gravity="center"
+            android:text="@string/community_postlable_top"
+            android:textColor="@color/community_postlable_type_textclolr" />
+    </RadioGroup>
+
+    <com.malinskiy.superrecyclerview.SuperRecyclerView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/posttype_indicator"
+        android:layout_alignParentBottom="true"
+        app:layout_empty="@layout/emptyview"
+        android:background="@color/icons"
+        >
+
+    </com.malinskiy.superrecyclerview.SuperRecyclerView>
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/community_showpublish"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:text="社区" />
+        android:layout_alignParentRight="true"
+        android:src="@android:drawable/ic_input_add"
+        android:layout_margin="@dimen/community_margin_layout"/>
 
 
 </RelativeLayout>

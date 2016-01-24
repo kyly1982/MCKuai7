@@ -57,8 +57,8 @@
                 android:id="@+id/cartoon_image"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:minHeight="150dp"
-                android:scaleType="centerInside" />
+                android:scaleType="centerInside"
+                android:background="@color/colorYellow"/>
 
             <View
                 android:id="@+id/cartoon_center"
@@ -76,6 +76,7 @@
                 android:layout_toLeftOf="@id/cartoon_center"
                 android:background="@drawable/btn_cartoon_comment"
                 android:paddingLeft="10dp"
+                android:textColor="@color/checkable_text_color_selector"
                 android:text="  8888" />
 
             <android.support.v7.widget.AppCompatButton
@@ -88,6 +89,7 @@
                 android:layout_toRightOf="@id/cartoon_center"
                 android:background="@drawable/btn_cartoon_prise"
                 android:paddingLeft="15dp"
+                android:textColor="@color/checkable_text_color_selector"
                 android:text="      8888" />
 
             <LinearLayout

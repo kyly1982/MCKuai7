@@ -4,4 +4,10 @@
         <item>new</item>
         <item>hot</item>
     </string-array>
+
+    <string-array name="postLable">
+        <item>lastChangeTime</item>
+        <item>isJing</item>
+        <item>isDing</item>
+    </string-array>
 </resources>

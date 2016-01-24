@@ -37,26 +37,44 @@ public class CartoonFragment extends BaseFragment implements RadioGroup.OnChecke
     private int typeIndex = 0;
     private MCKuai mApplication = MCKuai.instence;
 
-
-    private View mView;
     private SuperRecyclerView mCartoonListView;
-    private RadioGroup mType;
-    private AppCompatRadioButton mNew;
-    private AppCompatImageButton mNav;
-
+    private View view;
 
     public CartoonFragment() {
         mTitleResId = R.string.fragment_cartoon;
     }
 
+    public void setTypeChanged(int type){
+        if (typeIndex != type){
+            typeIndex = type;
+            switch (type){
+                case 0:
+                    if (null == mNewCartoon || mNewCartoon.isEmpty()){
+                        loadData();
+                    } else {
+                        showData();
+                    }
+                    break;
+                case 1:
+                    if (null == mHotCartoon || mHotCartoon.isEmpty()){
+                        loadData();
+                    } else {
+                        showData();
+                    }
+                    break;
+            }
+        }
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        if (null != mView){
-            container.removeView(mView);
+        if (null != view){
+            container.removeView(view);
         }
-        mView = inflater.inflate(R.layout.fragment_cartoon, container, false);
-        return mView;
+        view = inflater.inflate(R.layout.fragment_cartoon, container, false);
+        mCartoonType = getResources().getStringArray(R.array.cartoon_ordertype);
+        return mCartoonListView;
     }
 
     @Override
@@ -68,23 +86,14 @@ public class CartoonFragment extends BaseFragment implements RadioGroup.OnChecke
     }
 
     private void initView() {
-        mCartoonType = getResources().getStringArray(R.array.cartoon_ordertype);
 
-        mCartoonListView = (SuperRecyclerView) mView.findViewById(R.id.cartoonlist);
-        mType = (RadioGroup) mView.findViewById(R.id.cartoon_type);
-        //mHot = (AppCompatRadioButton) mView.findViewById(R.id.cartoon_type_hot);
-        mNew = (AppCompatRadioButton) mView.findViewById(R.id.cartoon_type_new);
-        mNav = (AppCompatImageButton) mView.findViewById(R.id.cartoon_toolbar_nav);
-
+        mCartoonListView = (SuperRecyclerView) view.findViewById(R.id.cartoonlist);
         RecyclerView.LayoutManager manager = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
         manager.offsetChildrenVertical(100);
         //mAdapter = new CartoonAdapter(getActivity().getApplicationContext(),this);
         mCartoonListView.setLayoutManager(manager);
         //mCartoonListView.setAdapter(mAdapter);
 
-        mType.setOnCheckedChangeListener(this);
-        mNav.setOnClickListener(this);
-        mNew.setChecked(true);
     }
 
     private void loadData() {

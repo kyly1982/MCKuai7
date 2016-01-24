@@ -6,6 +6,7 @@ import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.AppCompatRadioButton;
+import android.support.v7.widget.AppCompatTextView;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -14,6 +15,7 @@ import android.widget.RelativeLayout;
 
 import com.mckuai.imc.Base.BaseActivity;
 import com.mckuai.imc.Base.BaseFragment;
+import com.mckuai.imc.Bean.Cartoon;
 import com.mckuai.imc.Fragment.CartoonFragment;
 import com.mckuai.imc.Fragment.ChatFragment;
 import com.mckuai.imc.Fragment.CommunityFragment;
@@ -26,8 +28,10 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
     private RadioGroup nav;
     private ArrayList<BaseFragment> fragments;
     private int fragmentIndex = 0;
-    private ActionBar mActionBar;
     private RelativeLayout content;
+    private AppCompatTextView title;
+    private RadioGroup cartoonType;
+    private AppCompatRadioButton mNewType;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,15 +53,16 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
 
     private void initView() {
         nav = (RadioGroup) findViewById(R.id.nav);
+        title = (AppCompatTextView) findViewById(R.id.actionbar_title);
+        cartoonType = (RadioGroup) findViewById(R.id.actionbar_cartoon_rg);
+        content = (RelativeLayout) findViewById(R.id.context);
+        mNewType = (AppCompatRadioButton) findViewById(R.id.cartoon_type_new);
+
         nav.setVisibility(View.VISIBLE);
         nav.setOnCheckedChangeListener(this);
         ((AppCompatRadioButton) findViewById(R.id.nav_cartoon)).setChecked(true);
-        mActionBar = getSupportActionBar();
-        mToolbar.setVisibility(View.GONE);
-        mToolbar.setTitle("");
-        mActionBar.setWindowTitle("aaaaaa");
-        content = (RelativeLayout) findViewById(R.id.context);
-        //mActionBar.hide();
+        cartoonType.setOnCheckedChangeListener(this);
+        mNewType.setChecked(true);
     }
 
     private void initFragment() {
@@ -129,20 +134,30 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
             transaction.hide(fragments.get(fragmentIndex));
             switch (checkedId) {
                 case R.id.nav_cartoon:
+                    cartoonType.setVisibility(View.VISIBLE);
+                    title.setVisibility(View.GONE);
                     fragmentIndex = 0;
-                    //mActionBar.hide();
                     break;
                 case R.id.nav_chat:
+                    cartoonType.setVisibility(View.GONE);
+                    title.setVisibility(View.VISIBLE);
                     fragmentIndex = 1;
-                    //mActionBar.show();
                     break;
                 case R.id.nav_community:
+                    cartoonType.setVisibility(View.GONE);
+                    title.setVisibility(View.VISIBLE);
                     fragmentIndex = 2;
-                    //mActionBar.show();
                     break;
                 case R.id.nav_mine:
+                    cartoonType.setVisibility(View.GONE);
+                    title.setVisibility(View.VISIBLE);
                     fragmentIndex = 3;
-                    //mActionBar.show();
+                    break;
+                case R.id.cartoon_type_hot:
+                    ((CartoonFragment)fragments.get(0)).setTypeChanged(1);
+                    break;
+                case R.id.cartoon_type_new:
+                    ((CartoonFragment)fragments.get(0)).setTypeChanged(0);
                     break;
             }
             transaction.show(fragments.get(fragmentIndex)).commit();

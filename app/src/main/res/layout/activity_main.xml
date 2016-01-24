@@ -39,6 +39,8 @@
                     android:layout_weight="1"
                     android:button="@null"
                     android:drawableTop="@drawable/btn_nav_cartoon"
+                    android:gravity="center_horizontal"
+                    android:textColor="@color/checkable_text_color_selector"
                     android:text="@string/nav_cartoon" />
 
                 <android.support.v7.widget.AppCompatRadioButton
@@ -47,16 +49,18 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:button="@null"
-                    android:drawableTop="@mipmap/ic_launcher"
+                    android:drawableTop="@drawable/btn_nav_chat"
+                    android:gravity="center_horizontal"
+                    android:textColor="@color/checkable_text_color_selector"
                     android:text="@string/nav_chat" />
 
-                <android.support.v7.widget.AppCompatRadioButton
+                <android.support.v7.widget.AppCompatImageButton
                     android:id="@+id/nav_create"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:background="@mipmap/ic_launcher"
-                    android:button="@null" />
+                    android:src="@drawable/btn_nav_create"
+                    android:background="@null"/>
 
                 <android.support.v7.widget.AppCompatRadioButton
                     android:id="@+id/nav_community"
@@ -64,7 +68,9 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:button="@null"
-                    android:drawableTop="@mipmap/ic_launcher"
+                    android:drawableTop="@drawable/btn_nav_community"
+                    android:gravity="center_horizontal"
+                    android:textColor="@color/checkable_text_color_selector"
                     android:text="@string/nav_community" />
 
                 <android.support.v7.widget.AppCompatRadioButton
@@ -73,7 +79,9 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:button="@null"
-                    android:drawableTop="@mipmap/ic_launcher"
+                    android:drawableTop="@drawable/btn_nav_mine"
+                    android:gravity="center_horizontal"
+                    android:textColor="@color/checkable_text_color_selector"
                     android:text="@string/nav_mine" />
             </RadioGroup>
 

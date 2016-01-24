@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 
 import com.mckuai.imc.Bean.Cartoon;
 import com.mckuai.imc.Bean.Comment;
@@ -76,17 +77,16 @@ public class CartoonAdapter extends RecyclerView.Adapter<CartoonAdapter.ViewHold
         layoutParams.height = height;
         view.setLayoutParams(layoutParams);
         final ViewHolder holder = new ViewHolder(view);
+        RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) holder.image.getLayoutParams();
+        params.width = width - width / 5;
+        params.height = width - width / 5;
+        holder.image.setLayoutParams(params);
         return holder;
     }
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         if (null != mCartoons && !mCartoons.isEmpty() && -1 < position && position < mCartoons.size()){
-            if (0 == position){
-                holder.itemView.setPadding(width / 5,0,0,0);
-            } else if (position == mCartoons.size() - 1){
-                holder.itemView.setPadding(0,0,width / 5,0);
-            }
             Cartoon cartoon = mCartoons.get(position);
             bindData(cartoon,holder);
             setListener(cartoon,holder,position);
@@ -119,15 +119,15 @@ public class CartoonAdapter extends RecyclerView.Adapter<CartoonAdapter.ViewHold
     }
 
     private void bindData(Cartoon cartoon,ViewHolder holder){
-        showImage(cartoon.getImage(),holder.image,false);
+        showImage(cartoon.getImage(), holder.image, false);
         showImage(cartoon.getOwner().getCover(), holder.userCover, true);
         showComment(cartoon.getComments(), holder.commentList);
         holder.userName.setText(cartoon.getOwner().getNickEx());
         holder.time.setText(cartoon.getTimeEx());
-        ViewGroup.LayoutParams layoutParams = holder.image.getLayoutParams();
+       /* ViewGroup.LayoutParams layoutParams = holder.image.getLayoutParams();
         layoutParams.width = width;
         layoutParams.height = width;
-        holder.image.setLayoutParams(layoutParams);
+        holder.image.setLayoutParams(layoutParams);*/
         holder.comment.setTag(cartoon);
         holder.prise.setTag(cartoon);
         holder.userCover.setTag(cartoon.getOwner());

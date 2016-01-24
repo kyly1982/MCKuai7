@@ -187,7 +187,7 @@ public class MCDaoHelper {
     public static ArrayList<PostType> getPostTypeByIdS(String typeIds){
 
         if (null != typeIds){
-            String[] ids = typeIds.split("|");
+            String ids[] = typeIds.split("|");
             if (null != ids && ids.length >0){
                 TypeDao dao = MCKuai.instence.getDaoSession().getTypeDao();
                 QueryBuilder queryBuilder = dao.queryBuilder();
