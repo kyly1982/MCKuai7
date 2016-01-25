@@ -4,49 +4,44 @@ import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.mckuai.imc.Base.BaseActivity;
+import com.mckuai.imc.Fragment.CreateCartoonFragment;
 import com.mckuai.imc.R;
 
-public class CreateActivity extends AppCompatActivity
+public class CreateActivity extends BaseActivity
         implements NavigationView.OnNavigationItemSelectedListener {
+    CreateCartoonFragment createFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_create);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-
-
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.setDrawerListener(toggle);
-        toggle.syncState();
-
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
+        setContentView(R.layout.activity_main);
+        initToolbar(R.id.toolbar, 0, null);
+        initDrawer();
+        initView();
     }
 
     @Override
-    public void onBackPressed() {
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        if (drawer.isDrawerOpen(GravityCompat.START)) {
-            drawer.closeDrawer(GravityCompat.START);
-        } else {
-            super.onBackPressed();
+    protected void onResume() {
+        super.onResume();
+        if (null == createFragment){
+            createFragment = new CreateCartoonFragment();
+            setContentFragment(R.id.context,createFragment);
         }
     }
+
+    private void initView(){
+
+    }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.create, menu);
+        getMenuInflater().inflate(R.menu.menu_createcartoon, menu);
         return true;
     }
 

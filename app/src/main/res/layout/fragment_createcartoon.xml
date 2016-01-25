@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <com.mckuai.imc.Widget.TouchableLayout.TouchableLayout
+        android:id="@+id/createcartoon_imagebuilder"
+        android:layout_width="match_parent"
+        android:layout_height="350dp"
+        android:minHeight="350dp"
+        android:layout_alignParentTop="true"
+        android:background="@drawable/frame_black_bolad"
+        android:layout_margin="@dimen/createcartoon_margin_builder"
+        />
+
+    <View
+        android:id="@+id/createcartoon_divier"
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:background="@color/colorDivider"
+        android:layout_below="@id/createcartoon_imagebuilder"
+        />
+
+    <FrameLayout
+        android:id="@+id/createcartoon_operation"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_alignParentBottom="true"
+        android:layout_below="@id/createcartoon_divier"
+        />
+
+
+
+
+</RelativeLayout>

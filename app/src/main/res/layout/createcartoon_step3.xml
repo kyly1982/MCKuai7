@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="@dimen/createcartoon_margin_builder"
+    android:background="@drawable/frame_black_normal">
+
+    <android.support.v7.widget.AppCompatTextView
+        android:id="@+id/createcartoon_hint3_1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:drawablePadding="@dimen/createcartoon_frame_builder"
+        android:drawableLeft="@mipmap/ic_createcartoon_hint"
+        android:text="@string/createcartoon_hint_step3_1"
+        android:textColor="@color/icons"/>
+
+    <android.support.v7.widget.AppCompatButton
+        android:id="@+id/createcartoon_addtalk"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@color/textGreen"
+        android:textColor="@color/icons"
+        android:text="@string/createcartoon_addtalk"/>
+
+    <android.support.design.widget.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_above="@id/createcartoon_addtalk"
+        android:layout_below="@id/createcartoon_hint3_1"
+        >
+        <android.support.v7.widget.AppCompatEditText
+            android:id="@+id/createcartoon_talk"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:textColorHint="@color/textSecondary"
+            android:hint="@string/createcartoon_hint_step3_2"/>
+    </android.support.design.widget.TextInputLayout>
+
+</RelativeLayout>

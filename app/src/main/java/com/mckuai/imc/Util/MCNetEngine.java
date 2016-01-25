@@ -8,7 +8,10 @@ import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 import com.mckuai.imc.Bean.Cartoon;
+import com.mckuai.imc.Bean.ForumInfo;
 import com.mckuai.imc.Bean.MCUser;
+import com.mckuai.imc.Bean.Page;
+import com.mckuai.imc.Bean.Post;
 import com.mckuai.imc.R;
 
 import org.apache.http.Header;
@@ -36,6 +39,11 @@ public class MCNetEngine {
         void onSuccess(MCUser user);
         void onFalse(String msg);
     }
+
+
+    /***************************************************************************
+     * 登录
+     ***************************************************************************/
 
     public void loginServer(@NonNull final Context context, @NonNull final MCUser user, @NonNull String token, @NonNull final OnLoginServerListener listener) {
         String url = context.getString(R.string.interface_domainName) + context.getString(R.string.interface_login);
@@ -69,6 +77,10 @@ public class MCNetEngine {
         });
     }
 
+    /***************************************************************************
+     * 获取动漫列表
+     ***************************************************************************/
+
     public interface OnCartoonListResponseListener{
         public void onSuccess(ArrayList<Cartoon> cartoons);
         public void onFaile(String msg);
@@ -77,12 +89,12 @@ public class MCNetEngine {
     public void loadCartoonList(final Context context,String cartoonType,final OnCartoonListResponseListener listener){
         String url = context.getString(R.string.interface_domainName) + context.getString(R.string.interface_domainName);
         RequestParams params = new RequestParams();
-        params.put("type",cartoonType);
-        httpClient.get(context,url,params,new JsonHttpResponseHandler(){
+        params.put("type", cartoonType);
+        httpClient.get(context, url, params, new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                 super.onSuccess(statusCode, headers, response);
-                if (null != listener){
+                if (null != listener) {
                     listener.onSuccess(new ArrayList<Cartoon>());
                 }
             }
@@ -90,7 +102,7 @@ public class MCNetEngine {
             @Override
             public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
                 super.onFailure(statusCode, headers, responseString, throwable);
-                if (null != listener){
+                if (null != listener) {
                     listener.onFaile("onFailure");
                 }
             }
@@ -102,6 +114,72 @@ public class MCNetEngine {
             }
         });
     }
+
+    /***************************************************************************
+     * 获取版块列表
+     ***************************************************************************/
+
+    public interface OnForumListResponseListener{
+        public void onForumSuccess(ArrayList<ForumInfo> forums);
+        public void onForumFaile(String msg);
+    }
+
+    public void getForumList(final Context context,final OnForumListResponseListener listener){
+
+    }
+
+
+    /***************************************************************************
+     * 获取帖子列表
+     ***************************************************************************/
+
+    public interface OnPostListResponseListener{
+        public void onPostSuccess(ArrayList<Post> posts);
+        public void onPostFaile(String msg);
+    }
+
+    public void getPostList(final  Context context,int forumId,Page page,final OnPostListResponseListener listener){
+
+    }
+
+
+    /***************************************************************************
+     * 获取人物列表
+     ***************************************************************************/
+
+    public interface OnCharacterListResponseListener{
+        public void onSuccess(ArrayList<String> characters);
+        public void onFaile(String msg);
+    }
+
+    public void loadCharacterList(final Context context,Page page,final OnCharacterListResponseListener listener){
+
+    }
+
+
+
+    /***************************************************************************
+     * 对获取工具列表
+     ***************************************************************************/
+
+    public interface OnToolListResponseListener{
+        public void onSuccess(ArrayList<String> tools);
+        public void onFaile(String msg);
+    }
+
+    public void loadToolList(final Context context,Page page,final OnToolListResponseListener listener){
+
+    }
+
+
+
+
+
+
+
+    /***************************************************************************
+     * 对获取的结果进行预处理
+     ***************************************************************************/
 
     static class PretreatmentResult {
         boolean isSuccess = false;

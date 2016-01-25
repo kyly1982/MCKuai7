@@ -1,10 +1,10 @@
 package com.mckuai.imc.Activity;
 
 import android.app.FragmentTransaction;
+import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
-import android.support.v7.app.ActionBar;
+import android.support.v7.widget.AppCompatImageButton;
 import android.support.v7.widget.AppCompatRadioButton;
 import android.support.v7.widget.AppCompatTextView;
 import android.view.Menu;
@@ -15,7 +15,6 @@ import android.widget.RelativeLayout;
 
 import com.mckuai.imc.Base.BaseActivity;
 import com.mckuai.imc.Base.BaseFragment;
-import com.mckuai.imc.Bean.Cartoon;
 import com.mckuai.imc.Fragment.CartoonFragment;
 import com.mckuai.imc.Fragment.ChatFragment;
 import com.mckuai.imc.Fragment.CommunityFragment;
@@ -24,12 +23,13 @@ import com.mckuai.imc.R;
 
 import java.util.ArrayList;
 
-public class MainActivity extends BaseActivity implements View.OnClickListener, NavigationView.OnNavigationItemSelectedListener, RadioGroup.OnCheckedChangeListener, BaseFragment.OnFragmentEventListener {
+public class MainActivity extends BaseActivity implements View.OnClickListener,  RadioGroup.OnCheckedChangeListener, BaseFragment.OnFragmentEventListener {
     private RadioGroup nav;
     private ArrayList<BaseFragment> fragments;
     private int fragmentIndex = 0;
     private RelativeLayout content;
     private AppCompatTextView title;
+    private AppCompatImageButton createCartoon;
     private RadioGroup cartoonType;
     private AppCompatRadioButton mNewType;
 
@@ -37,8 +37,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        initToolbar(R.id.toolbar, R.mipmap.ic_launcher, this);
-        initDrawer(R.id.drawer_layout, R.id.nav_view, this);
+        initToolbar(R.id.toolbar, 0, null);
+        initDrawer();
         initView();
         initFragment();
     }
@@ -57,11 +57,14 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         cartoonType = (RadioGroup) findViewById(R.id.actionbar_cartoon_rg);
         content = (RelativeLayout) findViewById(R.id.context);
         mNewType = (AppCompatRadioButton) findViewById(R.id.cartoon_type_new);
+        createCartoon = (AppCompatImageButton) findViewById(R.id.nav_create);
 
+        cartoonType.setVisibility(View.VISIBLE);
         nav.setVisibility(View.VISIBLE);
         nav.setOnCheckedChangeListener(this);
         ((AppCompatRadioButton) findViewById(R.id.nav_cartoon)).setChecked(true);
         cartoonType.setOnCheckedChangeListener(this);
+        createCartoon.setOnClickListener(this);
         mNewType.setChecked(true);
     }
 
@@ -114,15 +117,13 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
 
     @Override
     public void onClick(View v) {
-        Snackbar.make(mToolbar,""+v.toString(),Snackbar.LENGTH_LONG).show();
-    }
-
-    @Override
-    public boolean onNavigationItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-
+        Snackbar.make(mToolbar, "" + v.toString(), Snackbar.LENGTH_LONG).show();
+        switch (v.getId()){
+            case R.id.nav_create:
+                Intent intent = new Intent(this,CreateActivity.class);
+                startActivity(intent);
+                break;
         }
-        return true;
     }
 
     @Override

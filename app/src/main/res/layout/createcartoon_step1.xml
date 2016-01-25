@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@null">
+
+    <android.support.v7.widget.AppCompatImageButton
+        android:id="@+id/createcartoon_takephoto"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/btn_createcartoon_takephoto"
+        android:layout_centerInParent="true"
+        android:background="@null"/>
+
+    <android.support.v7.widget.AppCompatButton
+        android:id="@+id/createcartoon_mcstorager"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/createcartoon_margin_step1_button"
+        android:paddingTop="25dp"
+        android:layout_centerVertical="true"
+        android:background="@drawable/btn_createcartoon_storager"
+        android:text="@string/createcartoon_storage"
+        android:textColor="@color/icons"/>
+
+    <android.support.v7.widget.AppCompatButton
+        android:id="@+id/createcartoon_photo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/createcartoon_margin_step1_button"
+        android:paddingTop="25dp"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:background="@drawable/btn_createcartoon_photo"
+        android:textColor="@color/icons"
+        android:text="@string/createcartoon_photo"/>
+
+
+
+</RelativeLayout>

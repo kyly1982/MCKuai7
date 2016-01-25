@@ -51,6 +51,14 @@
     <string name="jsoncache_dir">json</string>
     <string name="jsoncache_file">jsonCache.dat</string>
 
+    <!--菜单-->
+    <string name="createcartoon_next">下一步</string>
+    <string name="createcartoon_publish">发布</string>
+
+
+    <!--标题-->
+    <string name="createcartoon">创作</string>
+
     <!--接口-->
     <string name="interface_domainName">http://api.mckuai.com/</string>
     <!-- 搜索-->
@@ -129,6 +137,23 @@
     <string name="community_postlable_new">最新</string>
     <string name="community_postlable_essence">精华</string>
     <string name="community_postlable_top">推荐</string>
+
+    <!--创作-->
+    <string name="createcartoon_hint_step1">第一步 创建一个背景</string>
+    <string name="createcartoon_hint_step2">第二步 添加人物和工具</string>
+    <string name="createcartoon_hint_step3">第三步 添加人物对话</string>
+    <string name="createcartoon_hint_step3_1">选择一个人物，为他添加对话</string>
+    <string name="createcartoon_hint_step3_2">输入人物对话</string>
+    <string name="createcartoon_hint_step4">第四步 发布你的大作</string>
+    <string name="createcartoon_hint_step4_1">创作完成了，发布你的大作吧</string>
+    <string name="createcartoon_hint_step4_2">起一个名字</string>
+    <string name="createcartoon_storage">MC图库</string>
+    <string name="createcartoon_photo">我的相册</string>
+    <string name="createcartoon_character">人物</string>
+    <string name="createcartoon_tool">工具</string>
+    <string name="createcartoon_addtalk">发送对话</string>
+    <string name="createcartoon_share">同步：</string>
+
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>

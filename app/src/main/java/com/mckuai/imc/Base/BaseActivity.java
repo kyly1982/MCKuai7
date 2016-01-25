@@ -9,18 +9,18 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
 import android.view.View;
 
 import com.mckuai.imc.R;
 
-public class BaseActivity extends AppCompatActivity {
+public class BaseActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     public MCKuai mApplication = MCKuai.instence;
     public FragmentManager mFragmentManager;
     public android.support.v4.app.FragmentManager mFragmentManager_V4;
     public Toolbar mToolbar;
     private DrawerLayout mDrawer;
-
 
 
     @Override
@@ -70,7 +70,20 @@ public class BaseActivity extends AppCompatActivity {
 
         if (null != listener) {
             navigationView.setNavigationItemSelectedListener(listener);
+        } else {
+            navigationView.setNavigationItemSelectedListener(this);
         }
+    }
+
+
+    public void initDrawer() {
+        mDrawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, mDrawer, mToolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        mDrawer.setDrawerListener(toggle);
+        toggle.syncState();
+        navigationView.setNavigationItemSelectedListener(this);
     }
 
     /**
@@ -107,6 +120,14 @@ public class BaseActivity extends AppCompatActivity {
         } else {
             super.onBackPressed();
         }
+    }
+
+    @Override
+    public boolean onNavigationItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+
+        }
+        return false;
     }
 
     /**
