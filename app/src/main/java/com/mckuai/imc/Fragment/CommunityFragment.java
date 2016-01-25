@@ -50,7 +50,9 @@ public class CommunityFragment extends BaseFragment {
             container.removeView(view);
         }
         view =  inflater.inflate(R.layout.fragment_community, container, false);
-        if (null == mf)
+        if (null == mForumList){
+            initView();
+        }
         return view;
     }
 
