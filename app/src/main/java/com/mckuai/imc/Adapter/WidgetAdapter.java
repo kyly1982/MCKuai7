@@ -45,7 +45,7 @@ public class WidgetAdapter extends RecyclerView.Adapter<WidgetAdapter.ViewHolder
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context).inflate(R.layout.item_widget,parent,false);
+        View view = LayoutInflater.from(context).inflate(R.layout.item_createcartoon_imageview,parent,false);
         ViewHolder holder = new ViewHolder(view);
         return holder;
     }

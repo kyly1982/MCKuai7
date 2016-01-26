@@ -1,7 +1,6 @@
 package com.mckuai.imc.Widget.CreateCartoonStepView;
 
 import android.content.Context;
-import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.RelativeLayout;
@@ -20,20 +19,14 @@ public class StepView_1 extends RelativeLayout implements View.OnClickListener {
         public void onTakePhotoClicked();
     }
 
-    public StepView_1(Context context) {
+    public StepView_1(Context context,OnButtonClickListener listener) {
         super(context);
+        if (null != listener){
+            this.listener = listener;
+        }
         initView(context);
     }
 
-    public StepView_1(Context context, AttributeSet attrs) {
-        super(context, attrs);
-        initView(context);
-    }
-
-    public StepView_1(Context context, AttributeSet attrs, int defStyleAttr) {
-        super(context, attrs, defStyleAttr);
-        initView(context);
-    }
 
     public void setOnButtonClickListener(OnButtonClickListener listener){
         this.listener = listener;

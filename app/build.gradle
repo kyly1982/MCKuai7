@@ -2,12 +2,12 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 23
-    buildToolsVersion "23.0.2"
+    buildToolsVersion '21.1.2'
 
     defaultConfig {
         applicationId "com.mckuai.imc"
         minSdkVersion 14
-        targetSdkVersion 23
+        targetSdkVersion 21
         versionCode 29
         versionName "7.0"
     }
@@ -28,8 +28,7 @@ android {
         mckuai_mckuai {
             manifestPlaceholders = [UMENG_CHANNEL_VALUE: "mckuai_mckuai", APP_NAME: "麦块我的世界盒子"]
         }
-
-        mckuai_xiaomi {
+        /*mckuai_xiaomi {
             manifestPlaceholders = [UMENG_CHANNEL_VALUE: "mckuai_xiaomi", APP_NAME: "麦块我的世界盒子"]
         }
 
@@ -47,25 +46,12 @@ android {
 
         mckuai_tencent {
             manifestPlaceholders = [UMENG_CHANNEL_VALUE: "mckuai_tencent", APP_NAME: "麦块"]
-        }
-
-        /*       wenda_wandoujia_duli {
-                   manifestPlaceholders = [UMENG_CHANNEL_VALUE: "wenda_wandoujia_duli",APP_NAME: "麦块百科知识问答"]
-               }
-
-               wenda_baidu_duli {
-                   manifestPlaceholders = [UMENG_CHANNEL_VALUE: "wenda_baidu_duli",APP_NAME: "麦块百科知识问答"]
-               }
-
-               wenda_xiaomi_duli {
-                   manifestPlaceholders = [UMENG_CHANNEL_VALUE: "wenda_xiaomi_duli",APP_NAME: "麦块百科知识问答"]
-               }*/
-
-
+        }*/
     }
 }
 
 dependencies {
+    compile project(':IMKit')
     compile fileTree(include: ['*.jar'], dir: 'libs')
     compile files('libs/umeng_social_sdk.jar')
     compile files('libs/com.umeng.message.lib_v2.6.0.jar')
@@ -75,14 +61,10 @@ dependencies {
     compile files('libs/open_sdk_r5509.jar')
     compile files('libs/SocialSDK_WeiXin_1.jar')
     compile files('libs/BaiduLBS_Android.jar')
-    compile project(':IMKit')
-    //compile project(':mcdao')
-    
-
     compile 'com.android.support:support-v4:23.1.1'
     compile 'com.android.support:appcompat-v7:23.1.1'
     compile 'com.android.support:design:23.1.1'
-    compile'com.malinskiy:superrecyclerview:+'
+    compile 'com.malinskiy:superrecyclerview:+'
     compile 'com.google.code.gson:gson:+'
     compile 'com.umeng.analytics:analytics:latest.integration'
     compile 'com.nostra13.universalimageloader:universal-image-loader:+'

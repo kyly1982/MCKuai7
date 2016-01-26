@@ -20,6 +20,7 @@
         android:id="@+id/createcartoon_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_below="@id/createcartoon_hint4_1"
         android:drawablePadding="@dimen/createcartoon_frame_builder"
         >
         <android.support.v7.widget.AppCompatEditText
@@ -37,6 +38,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/createcartoon_name"
         android:drawableRight="@drawable/umeng_socialize_qq_on"
+        android:clickable="true"
         android:background="@null"
         android:textColor="@color/icons"
         android:text="@string/createcartoon_share"/>

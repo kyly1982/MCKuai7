@@ -6,6 +6,7 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.Window;
 
 import com.mckuai.imc.Base.BaseActivity;
 import com.mckuai.imc.Fragment.CreateCartoonFragment;
@@ -14,6 +15,9 @@ import com.mckuai.imc.R;
 public class CreateActivity extends BaseActivity
         implements NavigationView.OnNavigationItemSelectedListener {
     CreateCartoonFragment createFragment;
+    private MenuItem menu_next;
+    private MenuItem menu_publish;
+    private int currentStep = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,7 +33,7 @@ public class CreateActivity extends BaseActivity
         super.onResume();
         if (null == createFragment){
             createFragment = new CreateCartoonFragment();
-            setContentFragment(R.id.context,createFragment);
+            setContentFragment(R.id.context, createFragment);
         }
     }
 
@@ -42,19 +46,26 @@ public class CreateActivity extends BaseActivity
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_createcartoon, menu);
+        menu_next = menu.findItem(R.id.menu_cartoonaction_next);
+        menu_publish = menu.findItem(R.id.menu_cartoonaction_publish);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
+        switch (item.getItemId()){
+            case  R.id.menu_cartoonaction_next:
+                currentStep++;
+                createFragment.showNextStep(currentStep);
+                if (3 == currentStep){
+                    menu_next.setVisible(false);
+                    menu_publish.setVisible(true);
+                    getWindow().invalidatePanelMenu(Window.FEATURE_OPTIONS_PANEL);
+                }
+                break;
+            case R.id.menu_cartoonaction_publish:
+                createFragment.upload();
+                break;
         }
 
         return super.onOptionsItemSelected(item);
@@ -64,24 +75,10 @@ public class CreateActivity extends BaseActivity
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
-        int id = item.getItemId();
-
-        if (id == R.id.nav_camera) {
-            // Handle the camera action
-        } else if (id == R.id.nav_gallery) {
-
-        } else if (id == R.id.nav_slideshow) {
-
-        } else if (id == R.id.nav_manage) {
-
-        } else if (id == R.id.nav_share) {
-
-        } else if (id == R.id.nav_send) {
-
-        }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
+
 }

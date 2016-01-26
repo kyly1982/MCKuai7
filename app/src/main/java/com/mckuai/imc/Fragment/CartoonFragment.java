@@ -2,8 +2,6 @@ package com.mckuai.imc.Fragment;
 
 import android.graphics.Point;
 import android.os.Bundle;
-import android.support.v7.widget.AppCompatImageButton;
-import android.support.v7.widget.AppCompatRadioButton;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -83,6 +81,7 @@ public class CartoonFragment extends BaseFragment implements RadioGroup.OnChecke
         if (null != getActivity() && null == mCartoonListView) {
             initView();
         }
+        showData();
     }
 
     private void initView() {
@@ -97,7 +96,10 @@ public class CartoonFragment extends BaseFragment implements RadioGroup.OnChecke
     }
 
     private void loadData() {
-        mApplication.netEngine.loadCartoonList(getActivity(), mCartoonType[typeIndex], this);
+        //mApplication.netEngine.loadCartoonList(getActivity(), mCartoonType[typeIndex], this);
+        dataMaker();
+        showData();
+        showData();
     }
 
     private void showData() {
@@ -142,9 +144,6 @@ public class CartoonFragment extends BaseFragment implements RadioGroup.OnChecke
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.cartoon_toolbar_nav://导航栏
-                ((BaseActivity) getActivity()).showMessage("导航栏", null, null);
-                break;
             case R.id.cartoon_usercover://头像
                 ((BaseActivity) getActivity()).showMessage("头像", null, null);
                 break;
@@ -163,8 +162,7 @@ public class CartoonFragment extends BaseFragment implements RadioGroup.OnChecke
     /*加载数据回调*/
     @Override
     public void onFaile(String msg) {
-        dataMaker();
-        showData();
+
     }
 
     @Override

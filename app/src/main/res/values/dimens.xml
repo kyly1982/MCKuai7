@@ -34,4 +34,5 @@
     <dimen name="createcartoon_frame_builder">5dp</dimen>
     <dimen name="createcartoon_margin_builder">15dp</dimen>
     <dimen name="createcartoon_margin_step1_button">38dp</dimen>
+    <dimen name="createcartoon_button_addtalk_height">30dp</dimen>
 </resources>

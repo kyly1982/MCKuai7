@@ -1,29 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
     <com.mckuai.imc.Widget.TouchableLayout.TouchableLayout
         android:id="@+id/createcartoon_imagebuilder"
         android:layout_width="match_parent"
-        android:layout_height="350dp"
-        android:minHeight="350dp"
+        android:layout_height="300dp"
+        android:minHeight="150dp"
         android:layout_alignParentTop="true"
         android:background="@drawable/frame_black_bolad"
-        android:layout_margin="@dimen/createcartoon_margin_builder"
+        android:layout_marginLeft="@dimen/createcartoon_margin_builder"
+        android:layout_marginRight="@dimen/createcartoon_margin_builder"
+        android:layout_marginBottom="@dimen/createcartoon_margin_builder"
         />
+
+    <android.support.v7.widget.AppCompatTextView
+        android:id="@+id/createcartoon_buildhint"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/createcartoon_imagebuilder"
+        android:layout_marginBottom="@dimen/createcartoon_margin_builder"
+        android:textColor="@color/textSecondary"
+        android:text="@string/createcartoon_hint_step1"
+        />
+
 
     <View
         android:id="@+id/createcartoon_divier"
         android:layout_width="match_parent"
         android:layout_height="1px"
         android:background="@color/colorDivider"
-        android:layout_below="@id/createcartoon_imagebuilder"
+        android:layout_below="@id/createcartoon_buildhint"
         />
 
-    <FrameLayout
+    <ViewFlipper
         android:id="@+id/createcartoon_operation"
         android:layout_width="match_parent"
         android:layout_height="0dp"

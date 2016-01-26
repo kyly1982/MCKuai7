@@ -17,13 +17,14 @@
     <android.support.v7.widget.AppCompatButton
         android:id="@+id/createcartoon_addtalk"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="@dimen/createcartoon_button_addtalk_height"
         android:layout_alignParentBottom="true"
         android:background="@color/textGreen"
         android:textColor="@color/icons"
         android:text="@string/createcartoon_addtalk"/>
 
     <android.support.design.widget.TextInputLayout
+        android:id="@+id/createcartoon_talkcontent"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_above="@id/createcartoon_addtalk"

@@ -23,8 +23,8 @@ public class TouchableLayout extends ViewGroup {
     /**
      * 最大放大倍数
      */
-    public static final float MAX_SCALE_SIZE = 5.0f;
-    public static final float MIN_SCALE_SIZE = 0.5f;
+    public static final float MAX_SCALE_SIZE = 10.0f;
+    public static final float MIN_SCALE_SIZE = 0.1f;
 
     private RectF mViewRect;//当前视图的范围
 
@@ -166,7 +166,7 @@ public class TouchableLayout extends ViewGroup {
                 canvas.drawLine(stickers.get(i).getMapPointsDst()[6], stickers.get(i).getMapPointsDst()[7], stickers.get(i).getMapPointsDst()[0], stickers.get(i).getMapPointsDst()[1], stickers.get(i).getmBorderPaint());
 
                 canvas.drawBitmap(mControllerBitmap, stickers.get(i).getMapPointsDst()[4] - mControllerWidth / 2, stickers.get(i).getMapPointsDst()[5] - mControllerHeight / 2, null);
-                //canvas.drawBitmap(mDeleteBitmap, stickers.get(i).getMapPointsDst()[0] - mDeleteWidth / 2, stickers.get(i).getMapPointsDst()[1] - mDeleteHeight / 2, null);
+                canvas.drawBitmap(mDeleteBitmap, stickers.get(i).getMapPointsDst()[0] - mDeleteWidth / 2, stickers.get(i).getMapPointsDst()[1] - mDeleteHeight / 2, null);
             }
         }
 

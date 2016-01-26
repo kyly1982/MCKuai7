@@ -68,7 +68,7 @@ public class CommunityFragment extends BaseFragment implements View.OnClickListe
 
     private void initView(){
         mForumList = (SuperRecyclerView) view.findViewById(R.id.community_forumlist);
-        mPostList = (SuperRecyclerView) view.findViewById(R.id.community_showpublish);
+        mPostList = (SuperRecyclerView) view.findViewById(R.id.community_postlist);
         mCreatePost = (FloatingActionButton) view.findViewById(R.id.community_createpost);
         mCreatePost.setOnClickListener(this);
     }
