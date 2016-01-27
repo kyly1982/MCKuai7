@@ -1,6 +1,7 @@
 package com.mckuai.imc.Util;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.support.annotation.NonNull;
 
 import com.google.gson.Gson;
@@ -17,6 +18,9 @@ import com.mckuai.imc.R;
 import org.apache.http.Header;
 import org.json.JSONObject;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.InputStream;
 import java.util.ArrayList;
 
 /**
@@ -171,6 +175,54 @@ public class MCNetEngine {
 
     }
 
+    public interface OnUploadImageResponseListener{
+        public void onSuccess(String url);
+        public void onFaile(String msg);
+    }
+
+    public void uploadImage(Context context,Bitmap image,OnUploadImageResponseListener listener){
+        String url = context.getString(R.string.interface_domainName) + context.getString(R.string.interface_uploadimage);
+        RequestParams params = new RequestParams();
+        params.put("upload",Bitmap2IS(image),"01.jpg","image/jpeg");
+        httpClient.post(url,params,new JsonHttpResponseHandler(){
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                super.onSuccess(statusCode, headers, response);
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                super.onFailure(statusCode, headers, responseString, throwable);
+            }
+        });
+    }
+
+
+    public interface OnUploadCartoonResponseListener{
+        public void onSuccess();
+        public void onFaile(String msg);
+    }
+
+    public void uploadCartoon(Context context,Cartoon cartoon, final OnUploadCartoonResponseListener listener){
+        String url = context.getString(R.string.interface_domainName) + context.getString(R.string.interface_uploadcartoon);
+        RequestParams params = new RequestParams();
+        params.put("userId",cartoon.getOwner().getId());
+        params.put("title","title");
+        params.put("imageUrl",cartoon.getImage());
+        httpClient.post(context, url, params, new JsonHttpResponseHandler(){
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                super.onSuccess(statusCode, headers, response);
+
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                super.onFailure(statusCode, headers, responseString, throwable);
+            }
+        });
+    }
+
 
 
 
@@ -215,5 +267,13 @@ public class MCNetEngine {
         }
 
         return result;
+    }
+
+    private static InputStream Bitmap2IS(Bitmap bm)
+    {
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        bm.compress(Bitmap.CompressFormat.JPEG, 80, baos);
+        InputStream sbs = new ByteArrayInputStream(baos.toByteArray());
+        return sbs;
     }
 }

@@ -79,7 +79,7 @@
     <!-- 回复楼层 -->
     <string name="interface_replyfloor">interface.do?act=replyTalk</string>
     <!-- 上传图片 回图片路径字符串  http://cdn.mckuai.com/xxx.jpg 需加在content 帖子内容后面 -->
-    <string name="interface_uploadpic">group.do?act=uploadImg</string>
+    <string name="interface_uploadimage">group.do?act=uploadImg</string>
     <string name="interface_sendpost">interface.do?act=addTalk</string>
     <!-- 是否打赏或收藏 -->
     <string name="interface_getpostmark">interface.do?act=isCollect</string>
@@ -105,6 +105,8 @@
     <string name="interface_getusermark">interface.do?act=isAttention</string>
     <!-- quick reply -->
     <string name="interface_quickreply">interface.do?act=addReplyByCenter</string>
+    <!--上传动漫-->
+    <string name="interface_uploadcartoon">interface.do?act=uploadCartoon</string>
 
     <!--侧边栏-->
     <string name="navigation_drawer_open">Open navigation drawer</string>

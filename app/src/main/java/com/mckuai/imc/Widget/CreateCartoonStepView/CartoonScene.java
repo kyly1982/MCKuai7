@@ -1,8 +1,6 @@
 package com.mckuai.imc.Widget.CreateCartoonStepView;
 
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.widget.RelativeLayout;
@@ -16,21 +14,23 @@ import java.util.ArrayList;
 /**
  * Created by kyly on 2016/1/26.
  */
-public class CartoonScene extends RelativeLayout implements CartoonSceneAdapter.OnItemSelectedListener {
+public class CartoonScene extends RelativeLayout implements CartoonSceneAdapter.OnSceneSelectedListener {
     private Context context;
-    private ArrayList<Bitmap> scenes;
+    private ArrayList<Object> scenes;
     private CartoonSceneAdapter adapter;
+    private OnSceneSelectedListener listener;
 
 
     private SuperRecyclerView sceneList;
 
     public interface OnSceneSelectedListener{
-        public void onSelected(Bitmap scene);
+        public void onSelected(Object scene);
     }
 
-    public CartoonScene(Context context,boolean isMCScene) {
+    public CartoonScene(Context context,OnSceneSelectedListener listener,boolean isMCScene) {
         super(context);
         this.context = context;
+        this.listener = listener;
         initView(context);
         if (isMCScene){
             loadSceneIds();
@@ -38,7 +38,7 @@ public class CartoonScene extends RelativeLayout implements CartoonSceneAdapter.
         }
     }
 
-    public void setData(ArrayList<Bitmap> scenes){
+    public void setData(ArrayList<Object> scenes){
         this.scenes = scenes;
         showData();
     }
@@ -55,7 +55,7 @@ public class CartoonScene extends RelativeLayout implements CartoonSceneAdapter.
 
 
     private void loadSceneIds(){
-        scenes = new ArrayList<>(20);
+        scenes = new ArrayList<Object>(20);
         Integer[] backgrounds = {R.mipmap.cartoon_bg_black,
                 R.mipmap.cartoon_bg_blue,
                 R.mipmap.cartoon_bg_farm,
@@ -77,14 +77,9 @@ public class CartoonScene extends RelativeLayout implements CartoonSceneAdapter.
                 R.mipmap.cartoon_bg_young};
 
         for (Integer id:backgrounds){
-            Bitmap bitmap = null;
-            try {
-                bitmap= BitmapFactory.decodeResource(getResources(),id);
-            } catch (Exception  e){
-                e.printStackTrace();
-            }
-            if (null != bitmap){
-                scenes.add(bitmap);
+
+            if (0 != id){
+                scenes.add(id);
             }
 
         }
@@ -100,7 +95,9 @@ public class CartoonScene extends RelativeLayout implements CartoonSceneAdapter.
     }
 
     @Override
-    public void onItemSelected(Bitmap scene) {
-
+    public void onSceneSelected(Object scene) {
+        if (null != listener){
+            listener.onSelected(scene);
+        }
     }
 }

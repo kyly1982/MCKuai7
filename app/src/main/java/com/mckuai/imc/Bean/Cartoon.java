@@ -26,6 +26,12 @@ public class Cartoon implements Serializable {
         this.time = time;
     }
 
+    public Cartoon(String image,MCUser owner,ArrayList<Lable> lables){
+        this.image = image;
+        this.owner = new User(owner);
+        this.lables = lables;
+    }
+
     public Cartoon(String image, ArrayList<Lable> lables, User owner, ArrayList<Comment> comments, int prise) {
         this.comments = comments;
         this.image = image;

@@ -7,11 +7,12 @@ import android.content.Context;
 
 public class BaseFragment extends Fragment {
     protected int mTitleResId;
-    private OnFragmentEventListener mOnFragmentEventListener;
+    protected OnFragmentEventListener mOnFragmentEventListener;
 
     public interface OnFragmentEventListener {
         void onShow(int titleResId);
         void onAttach(int titleResId);
+        void onActon(Object object);
     }
 
     public void setFragmentEventListener(OnFragmentEventListener l) {

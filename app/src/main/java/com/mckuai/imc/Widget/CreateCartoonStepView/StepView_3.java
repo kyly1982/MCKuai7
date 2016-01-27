@@ -11,27 +11,25 @@ import android.widget.RelativeLayout;
 
 import com.mckuai.imc.R;
 
-import java.util.ArrayList;
-
 /**
  * Created by kyly on 2016/1/26.
  */
 public class StepView_3 extends RelativeLayout {
-    private ArrayList<String> talks;
+    private OnTalkAddedListener listener;
+
+    public interface OnTalkAddedListener{
+        void onTalkAdded(String talk);
+    }
 
 
-    public StepView_3(Context context) {
+    public StepView_3(Context context,OnTalkAddedListener listener) {
         super(context);
-        talks = new ArrayList<>(5);
+        this.listener = listener;
         initView(context);
     }
 
-    public ArrayList<String> getTalks(){
-        return talks;
-    }
 
     private void initView(Context context){
-        //LayoutInflater inflater = LayoutInflater.from(context);
         View view = inflate(context, R.layout.createcartoon_step3, this);
         final TextInputLayout inputLayout = (TextInputLayout) view.findViewById(R.id.createcartoon_talkcontent);
         final AppCompatEditText editText = (AppCompatEditText) inputLayout.getEditText();
@@ -65,7 +63,9 @@ public class StepView_3 extends RelativeLayout {
         addTalk.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                talks.add(editText.getText().toString());
+                if (null != listener){
+                    listener.onTalkAdded(editText.getText().toString());
+                }
             }
         });
     }

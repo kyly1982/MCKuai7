@@ -7,18 +7,21 @@ import android.graphics.Canvas;
 import android.graphics.Matrix;
 import android.graphics.Point;
 import android.graphics.RectF;
+import android.net.Uri;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.mckuai.imc.R;
+import com.mckuai.imc.Util.BitmapUtil;
 
 import java.util.ArrayList;
 import java.util.List;
 
 
 public class TouchableLayout extends ViewGroup {
+    private Context context;
 
     /**
      * 最大放大倍数
@@ -79,10 +82,13 @@ public class TouchableLayout extends ViewGroup {
 
     public TouchableLayout(Context context, AttributeSet attrs) {
         this(context, attrs, 0);
+        this.context = context;
+        init();
     }
 
     public TouchableLayout(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
+        this.context = context;
         init();
     }
 
@@ -101,9 +107,12 @@ public class TouchableLayout extends ViewGroup {
 
     }
 
-    public void setBitmapBackground(Bitmap backgroundBitmap) {
-        this.bgBitmap = backgroundBitmap;
-        postInvalidate();
+
+    public void setBitmapBackground(Uri uri){
+        bgBitmap = BitmapUtil.decodeFile(context,uri,getWidth(),getHeight());
+        if (null != bgBitmap){
+            postInvalidate();
+        }
     }
 
     public void setBitmapBackground(int drawableResId) {
@@ -147,9 +156,11 @@ public class TouchableLayout extends ViewGroup {
         if (null != bgBitmap) {
             Matrix matrix = new Matrix();
             matrix.setTranslate(55f, 100f);
-            matrix.setScale(1.5f, 1.5f);
+            //matrix.setScale(1.5f, 1.5f);
+            matrix.setScale(getWidth() / bgBitmap.getWidth(),getHeight() / bgBitmap.getHeight());
             //canvas.drawBitmap(bgBitmap, 0, 0, null);
-            canvas.drawBitmap(bgBitmap, matrix, null);
+            //canvas.drawBitmap(bgBitmap, matrix, null);
+            canvas.drawBitmap(bgBitmap,0,0,null);
         }
 
         if (stickers.size() <= 0) {

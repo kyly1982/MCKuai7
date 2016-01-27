@@ -9,11 +9,12 @@ import android.view.MenuItem;
 import android.view.Window;
 
 import com.mckuai.imc.Base.BaseActivity;
+import com.mckuai.imc.Base.BaseFragment;
 import com.mckuai.imc.Fragment.CreateCartoonFragment;
 import com.mckuai.imc.R;
 
 public class CreateActivity extends BaseActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+        implements NavigationView.OnNavigationItemSelectedListener,BaseFragment.OnFragmentEventListener {
     CreateCartoonFragment createFragment;
     private MenuItem menu_next;
     private MenuItem menu_publish;
@@ -33,6 +34,7 @@ public class CreateActivity extends BaseActivity
         super.onResume();
         if (null == createFragment){
             createFragment = new CreateCartoonFragment();
+            createFragment.setFragmentEventListener(this);
             setContentFragment(R.id.context, createFragment);
         }
     }
@@ -81,4 +83,18 @@ public class CreateActivity extends BaseActivity
         return true;
     }
 
+    @Override
+    public void onActon(Object object) {
+        this.finish();
+    }
+
+    @Override
+    public void onShow(int titleResId) {
+
+    }
+
+    @Override
+    public void onAttach(int titleResId) {
+
+    }
 }
