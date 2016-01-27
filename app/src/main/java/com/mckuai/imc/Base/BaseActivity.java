@@ -2,6 +2,7 @@ package com.mckuai.imc.Base;
 
 import android.app.Fragment;
 import android.app.FragmentManager;
+import android.content.Intent;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
 import android.support.v4.view.GravityCompat;
@@ -12,7 +13,10 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
 
+import com.mckuai.imc.Activity.LoginActivity;
 import com.mckuai.imc.R;
+
+import java.util.ArrayList;
 
 public class BaseActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -20,7 +24,9 @@ public class BaseActivity extends AppCompatActivity implements NavigationView.On
     public FragmentManager mFragmentManager;
     public android.support.v4.app.FragmentManager mFragmentManager_V4;
     public Toolbar mToolbar;
-    private DrawerLayout mDrawer;
+    protected DrawerLayout mDrawer;
+    protected ArrayList<BaseFragment> fragments;
+    protected int currentFragmentIndex= -1;
 
 
     @Override
@@ -46,9 +52,10 @@ public class BaseActivity extends AppCompatActivity implements NavigationView.On
         setSupportActionBar(mToolbar);
         if (0 != navigationIconId) {
             mToolbar.setNavigationIcon(navigationIconId);
-            if (null != navigationOnClickListener) {
-                mToolbar.setNavigationOnClickListener(navigationOnClickListener);
-            }
+        }
+
+        if (null != navigationOnClickListener) {
+            mToolbar.setNavigationOnClickListener(navigationOnClickListener);
         }
     }
 
@@ -136,7 +143,8 @@ public class BaseActivity extends AppCompatActivity implements NavigationView.On
      * @param requestId 请求Id
      */
     public void callLogin(int requestId) {
-
+        Intent intent = new Intent(this, LoginActivity.class);
+        startActivityForResult(intent,requestId);
     }
 
 

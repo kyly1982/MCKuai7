@@ -1,5 +1,6 @@
 package com.mckuai.imc.Activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -12,6 +13,8 @@ import com.mckuai.imc.Base.BaseActivity;
 import com.mckuai.imc.Base.BaseFragment;
 import com.mckuai.imc.Fragment.CreateCartoonFragment;
 import com.mckuai.imc.R;
+
+import java.util.ArrayList;
 
 public class CreateActivity extends BaseActivity
         implements NavigationView.OnNavigationItemSelectedListener,BaseFragment.OnFragmentEventListener {
@@ -35,6 +38,11 @@ public class CreateActivity extends BaseActivity
         if (null == createFragment){
             createFragment = new CreateCartoonFragment();
             createFragment.setFragmentEventListener(this);
+            if (null == fragments){
+                fragments = new ArrayList<>(1);
+            }
+            fragments.add(createFragment);
+            currentFragmentIndex = 0;
             setContentFragment(R.id.context, createFragment);
         }
     }
@@ -66,7 +74,11 @@ public class CreateActivity extends BaseActivity
                 }
                 break;
             case R.id.menu_cartoonaction_publish:
-                createFragment.upload();
+                if (mApplication.isLogin()) {
+                    createFragment.upload();
+                } else {
+                    callLogin(1);
+                }
                 break;
         }
 
@@ -84,17 +96,33 @@ public class CreateActivity extends BaseActivity
     }
 
     @Override
-    public void onActon(Object object) {
+    public void onActivityReenter(int resultCode, Intent data) {
+        super.onActivityReenter(resultCode, data);
+        if (resultCode == RESULT_OK){
+            createFragment.upload();
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (!createFragment.onBackPressed()) {
+            super.onBackPressed();
+        }
+    }
+
+    @Override
+    public void onFragmentAction(Object object) {
         this.finish();
     }
 
     @Override
-    public void onShow(int titleResId) {
+    public void onFragmentShow(int titleResId) {
 
     }
 
     @Override
-    public void onAttach(int titleResId) {
+    public void onFragmentAttach(int titleResId) {
 
     }
+
 }

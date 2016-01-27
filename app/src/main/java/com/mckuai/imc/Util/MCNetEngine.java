@@ -39,9 +39,9 @@ public class MCNetEngine {
         httpClient.cancelAllRequests(true);
     }
 
-    public interface OnLoginServerListener {
-        void onSuccess(MCUser user);
-        void onFalse(String msg);
+    public interface OnLoginServerResponseListener {
+        void onLoginSuccess(MCUser user);
+        void onLoginFalse(String msg);
     }
 
 
@@ -49,10 +49,10 @@ public class MCNetEngine {
      * 登录
      ***************************************************************************/
 
-    public void loginServer(@NonNull final Context context, @NonNull final MCUser user, @NonNull String token, @NonNull final OnLoginServerListener listener) {
+    public void loginServer(@NonNull final Context context, @NonNull final MCUser user, @NonNull final OnLoginServerResponseListener listener) {
         String url = context.getString(R.string.interface_domainName) + context.getString(R.string.interface_login);
         RequestParams params = new RequestParams();
-        params.put("accessToken", token);
+        params.put("accessToken", user.getLoginToken().getToken());
         params.put("openId", user.getName());
         params.put("nickName", user.getNike());
         params.put("gender", user.getGender());
@@ -65,18 +65,18 @@ public class MCNetEngine {
                     Gson gson = new Gson();
                     MCUser userinfo = gson.fromJson(result.msg, MCUser.class);
                     if (null != userinfo && userinfo.getName().equals(user.getName())) {
-                        listener.onSuccess(userinfo);
+                        listener.onLoginSuccess(userinfo);
                     } else {
-                        listener.onFalse(context.getString(R.string.error_parsefalse));
+                        listener.onLoginFalse(context.getString(R.string.error_parsefalse));
                     }
                 } else {
-                    listener.onFalse(result.msg);
+                    listener.onLoginFalse(result.msg);
                 }
             }
 
             @Override
             public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
-                listener.onFalse(context.getString(R.string.error_requestfalse, throwable.getLocalizedMessage()));
+                listener.onLoginFalse(context.getString(R.string.error_requestfalse, throwable.getLocalizedMessage()));
             }
         });
     }
@@ -213,12 +213,24 @@ public class MCNetEngine {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                 super.onSuccess(statusCode, headers, response);
-
+                if (null != response && response.toString().length() > 10){
+                    if (response.has("state")){
+                        try {
+                           if ( "ok".equals(response.getString("state"))){
+                               listener.onSuccess();
+                           }
+                        } catch (Exception e){
+                            e.printStackTrace();
+                        }
+                    }
+                }
+                listener.onFaile("上传失败");
             }
 
             @Override
             public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
                 super.onFailure(statusCode, headers, responseString, throwable);
+                listener.onFaile(throwable.getLocalizedMessage());
             }
         });
     }

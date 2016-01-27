@@ -25,8 +25,6 @@ import java.util.ArrayList;
 
 public class MainActivity extends BaseActivity implements View.OnClickListener,  RadioGroup.OnCheckedChangeListener, BaseFragment.OnFragmentEventListener {
     private RadioGroup nav;
-    private ArrayList<BaseFragment> fragments;
-    private int fragmentIndex = 0;
     private RelativeLayout content;
     private AppCompatTextView title;
     private AppCompatImageButton createCartoon;
@@ -38,16 +36,16 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         initToolbar(R.id.toolbar, 0, null);
+        initFragment();
         initDrawer();
         initView();
-        initFragment();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        if (0 <= fragmentIndex && fragmentIndex < fragments.size()) {
-            mFragmentManager.beginTransaction().show(fragments.get(fragmentIndex));
+        if (0 <= currentFragmentIndex && currentFragmentIndex < fragments.size()) {
+            mFragmentManager.beginTransaction().show(fragments.get(currentFragmentIndex));
         }
     }
 
@@ -55,7 +53,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         nav = (RadioGroup) findViewById(R.id.nav);
         title = (AppCompatTextView) findViewById(R.id.actionbar_title);
         cartoonType = (RadioGroup) findViewById(R.id.actionbar_cartoon_rg);
-        content = (RelativeLayout) findViewById(R.id.context);
         mNewType = (AppCompatRadioButton) findViewById(R.id.cartoon_type_new);
         createCartoon = (AppCompatImageButton) findViewById(R.id.nav_create);
 
@@ -65,7 +62,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         ((AppCompatRadioButton) findViewById(R.id.nav_cartoon)).setChecked(true);
         cartoonType.setOnCheckedChangeListener(this);
         createCartoon.setOnClickListener(this);
-        mNewType.setChecked(true);
     }
 
     private void initFragment() {
@@ -86,6 +82,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
             if (null == mFragmentManager) {
                 mFragmentManager = getFragmentManager();
             }
+            content = (RelativeLayout) findViewById(R.id.context);
             FragmentTransaction transaction = mFragmentManager.beginTransaction();
             for (BaseFragment fragment : fragments) {
                 transaction.add(content.getId(), fragment);
@@ -128,42 +125,58 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
 
     @Override
     public void onCheckedChanged(RadioGroup group, int checkedId) {
-        if (checkedId == R.id.nav_create) {
-            callCreateActivity();
-        } else if (null != fragments && !fragments.isEmpty()) {
-            FragmentTransaction transaction = mFragmentManager.beginTransaction();
-            transaction.hide(fragments.get(fragmentIndex));
-            switch (checkedId) {
-                case R.id.nav_cartoon:
-                    cartoonType.setVisibility(View.VISIBLE);
-                    title.setVisibility(View.GONE);
-                    fragmentIndex = 0;
-                    break;
-                case R.id.nav_chat:
-                    cartoonType.setVisibility(View.GONE);
-                    title.setVisibility(View.VISIBLE);
-                    fragmentIndex = 1;
-                    break;
-                case R.id.nav_community:
-                    cartoonType.setVisibility(View.GONE);
-                    title.setVisibility(View.VISIBLE);
-                    fragmentIndex = 2;
-                    break;
-                case R.id.nav_mine:
-                    cartoonType.setVisibility(View.GONE);
-                    title.setVisibility(View.VISIBLE);
-                    fragmentIndex = 3;
-                    break;
-                case R.id.cartoon_type_hot:
-                    ((CartoonFragment)fragments.get(0)).setTypeChanged(1);
-                    break;
-                case R.id.cartoon_type_new:
-                    ((CartoonFragment)fragments.get(0)).setTypeChanged(0);
-                    break;
-            }
-            transaction.show(fragments.get(fragmentIndex)).commit();
+        switch (checkedId){
+            case R.id.nav_create:
+                callCreateActivity();
+                break;
+            case R.id.cartoon_type_hot:
+                if (null != fragments){
+                    ((CartoonFragment)fragments.get(0)).setType(1);
+                }
+                break;
+            case R.id.cartoon_type_new:
+                if (null != fragments){
+                    ((CartoonFragment)fragments.get(0)).setType(0);
+                }
+                break;
+            default:
+                if (null != fragments && !fragments.isEmpty()){
+                    FragmentTransaction transaction = mFragmentManager.beginTransaction();
+                    if (0 <= currentFragmentIndex) {
+                        transaction.hide(fragments.get(currentFragmentIndex));
+                    }
+                    switch (checkedId){
+                        case R.id.nav_cartoon:
+                            cartoonType.setVisibility(View.VISIBLE);
+                            title.setVisibility(View.GONE);
+                            currentFragmentIndex = 0;
+                            break;
+                        case R.id.nav_chat:
+                            cartoonType.setVisibility(View.GONE);
+                            title.setVisibility(View.VISIBLE);
+                            currentFragmentIndex = 1;
+                            break;
+                        case R.id.nav_community:
+                            cartoonType.setVisibility(View.GONE);
+                            title.setVisibility(View.VISIBLE);
+                            currentFragmentIndex = 2;
+                            break;
+                        case R.id.nav_mine:
+                            cartoonType.setVisibility(View.GONE);
+                            title.setVisibility(View.VISIBLE);
+                            currentFragmentIndex = 3;
+                            break;
+                    }
+                    transaction.show(fragments.get(currentFragmentIndex)).commit();
+                }
+                break;
         }
+    }
 
+    private FragmentTransaction hideFragment(){
+        FragmentTransaction transaction = mFragmentManager.beginTransaction();
+        transaction.hide(fragments.get(currentFragmentIndex));
+        return transaction;
     }
 
     public void callCreateActivity() {
@@ -171,10 +184,25 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
     }
 
     @Override
-    public void onAttach(int titleResId) {
+    public void onFragmentAttach(int titleResId) {
       /*  if (0 == fragmentIndex && titleResId == R.string.fragment_cartoon){
             mFragmentManager.beginTransaction().show(fragments.get(0)).commit();
         }*/
+        switch (titleResId) {
+            case R.string.fragment_cartoon:
+                mNewType.setChecked(true);
+                break;
+            case R.string.fragment_chat:
+                break;
+            case R.string.fragment_community:
+                break;
+            case R.string.fragment_mine:
+                break;
+        }
+    }
+
+    @Override
+    public void onFragmentShow(int titleResId) {
         switch (titleResId) {
             case R.string.fragment_cartoon:
                 break;
@@ -188,16 +216,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
     }
 
     @Override
-    public void onShow(int titleResId) {
-        switch (titleResId) {
-            case R.string.fragment_cartoon:
-                break;
-            case R.string.fragment_chat:
-                break;
-            case R.string.fragment_community:
-                break;
-            case R.string.fragment_mine:
-                break;
-        }
+    public void onFragmentAction(Object object) {
+
     }
 }

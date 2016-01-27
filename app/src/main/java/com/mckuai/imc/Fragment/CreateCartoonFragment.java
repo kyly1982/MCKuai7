@@ -41,15 +41,12 @@ public class CreateCartoonFragment extends BaseFragment implements StepView_4.On
 
     private ViewFlipper flipper;
     private ArrayList<String> talks;
-    private ArrayList<Object> scenes;
     private CartoonSceneAdapter adapter;
 
 
     private View view;
     private TouchableLayout cartoonBuilder;
-    //private StepView_3 step3;
     private AppCompatTextView builderHint;
-    private CartoonScene cartoonScene;
     private SuperRecyclerView sceneList;
 
 
@@ -75,9 +72,6 @@ public class CreateCartoonFragment extends BaseFragment implements StepView_4.On
         }
     }
 
-    public void upload() {
-
-    }
 
 
     @Override
@@ -150,12 +144,16 @@ public class CreateCartoonFragment extends BaseFragment implements StepView_4.On
         sceneList.setLayoutManager(manager);
     }
 
+
     private Bitmap getCartoonBitmap() {
         cartoonBuilder.setDrawingCacheEnabled(true);
         cartoonBuilder.buildDrawingCache();
         return cartoonBuilder.getDrawingCache();
     }
 
+    public void upload() {
+        uploadCartoon(null);
+    }
 
     private void uploadImage() {
         MCKuai.instence.netEngine.uploadImage(getActivity(),getCartoonBitmap(),this);
@@ -294,7 +292,7 @@ public class CreateCartoonFragment extends BaseFragment implements StepView_4.On
 
     @Override
     public void onFaile(String msg) {
-
+        Snackbar.make(cartoonBuilder,msg,Snackbar.LENGTH_LONG).show();
     }
 
     @Override
@@ -307,7 +305,17 @@ public class CreateCartoonFragment extends BaseFragment implements StepView_4.On
     public void onSuccess() {
         Snackbar.make(cartoonBuilder,"上传成功",Snackbar.LENGTH_SHORT).show();
         if (null != mOnFragmentEventListener){
-            mOnFragmentEventListener.onActon(null);
+            mOnFragmentEventListener.onFragmentAction(null);
+        }
+    }
+
+    @Override
+    public boolean onBackPressed() {
+        if (null != sceneList && View.VISIBLE == sceneList.getVisibility()){
+            hideScene();
+            return true;
+        } else {
+            return false;
         }
     }
 }

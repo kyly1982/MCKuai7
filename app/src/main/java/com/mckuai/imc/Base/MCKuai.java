@@ -60,6 +60,7 @@ public class MCKuai extends Application {
         initImageLoader();
         initUMPlatform();
         netEngine = new MCNetEngine();
+        readPreference();
     }
 
     private void initUMPlatform() {
@@ -96,7 +97,7 @@ public class MCKuai extends Application {
                 token.setToken(preferences.getString(getString(R.string.preferences_token), null));
                 token.setType(preferences.getInt(getString(R.string.preferences_tokentype), 0));
                 user = new MCUser();
-                user.setToken(token);
+                user.setLoginToken(token);
                 user.setId(preferences.getInt(getString(R.string.preferences_id), 0));                    //id
                 user.setName(preferences.getString(getString(R.string.preferences_username), null));      //姓名,实为wx的access_token或者qq的openId
                 user.setNike(preferences.getString(getString(R.string.preferences_nickname), null));      // 显示名
@@ -106,6 +107,7 @@ public class MCKuai extends Application {
                 user.setScore(preferences.getInt(getString(R.string.preferences_score), 0));              //积分
                 user.setLevel(preferences.getInt(getString(R.string.preferences_level), 0));              //level
                 user.setAddr(preferences.getString(getString(R.string.preferences_addr), null));           //地址
+                user.setToken(preferences.getString(getString(R.string.preferences_token_rongcloud),null));//融云token
             }
         }
         return user;
@@ -115,11 +117,11 @@ public class MCKuai extends Application {
         SharedPreferences preferences = getSharedPreferences(getString(R.string.preferences_filename), 0);
         SharedPreferences.Editor editor = preferences.edit();
         editor.putBoolean(getString(R.string.preferences_isFirstBoot), false);
-        if (null != user && null != user.getToken()) {
-            editor.putInt(getString(R.string.preferences_tokentype), user.getToken().getType());
-            editor.putLong(getString(R.string.preferences_tokentime), user.getToken().getBirthday());
-            editor.putLong(getString(R.string.preferences_tokenexpires), user.getToken().getExpires());
-            editor.putString(getString(R.string.preferences_token), user.getToken().getToken());
+        if (null != user && null != user.getLoginToken()) {
+            editor.putInt(getString(R.string.preferences_tokentype), user.getLoginToken().getType());
+            editor.putLong(getString(R.string.preferences_tokentime), user.getLoginToken().getBirthday());
+            editor.putLong(getString(R.string.preferences_tokenexpires), user.getLoginToken().getExpires());
+            editor.putString(getString(R.string.preferences_token), user.getLoginToken().getToken());
         }
         if (null != user && user.isUserValid()) {
             editor.putInt(getString(R.string.preferences_id), user.getId());          //id
@@ -131,6 +133,7 @@ public class MCKuai extends Application {
             editor.putFloat(getString(R.string.preferences_process), user.getProcess());    //进度
             editor.putInt(getString(R.string.preferences_level), user.getLevel());          //level
             editor.putString(getString(R.string.preferences_addr), user.getAddr());         //地址
+            editor.putString(getString(R.string.preferences_token_rongcloud),user.getToken());//融云token
             editor.commit();
         }
     }

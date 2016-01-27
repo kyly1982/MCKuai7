@@ -14,6 +14,7 @@
     <string name="preferences_tokentime">CERTIFIEDTIME</string>
     <string name="preferences_tokenexpires">INVALIDTIME</string>
     <string name="preferences_tokentype">TOKENTYPE</string>
+    <string name="preferences_token_rongcloud">RONGCLOUD_TOKEN</string>
     <string name="preferences_id">USER_ID</string>
     <string name="preferences_level">USER_LEVEL</string>
     <string name="preferences_process">MC_PROCESS</string>
@@ -155,6 +156,11 @@
     <string name="createcartoon_tool">工具</string>
     <string name="createcartoon_addtalk">发送对话</string>
     <string name="createcartoon_share">同步：</string>
+
+    <!--登录-->
+    <string name="login_hint">使用QQ账号登录</string>
+    <string name="login_anonymous">>>随便看看</string>
+    <string name="login_text">QQ账号登录</string>
 
 
     <!-- TODO: Remove or change this placeholder text -->

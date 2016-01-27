@@ -10,9 +10,9 @@ public class BaseFragment extends Fragment {
     protected OnFragmentEventListener mOnFragmentEventListener;
 
     public interface OnFragmentEventListener {
-        void onShow(int titleResId);
-        void onAttach(int titleResId);
-        void onActon(Object object);
+        void onFragmentShow(int titleResId);
+        void onFragmentAttach(int titleResId);
+        void onFragmentAction(Object object);
     }
 
     public void setFragmentEventListener(OnFragmentEventListener l) {
@@ -23,7 +23,7 @@ public class BaseFragment extends Fragment {
     public void onHiddenChanged(boolean hidden) {
         super.onHiddenChanged(hidden);
         if (!hidden && null != mOnFragmentEventListener) {
-            mOnFragmentEventListener.onShow(mTitleResId);
+            mOnFragmentEventListener.onFragmentShow(mTitleResId);
         }
     }
 
@@ -31,7 +31,7 @@ public class BaseFragment extends Fragment {
     public void onAttach(Context context) {
         super.onAttach(context);
         if (null != mOnFragmentEventListener) {
-            mOnFragmentEventListener.onAttach(mTitleResId);
+            mOnFragmentEventListener.onFragmentAttach(mTitleResId);
         }
     }
 
@@ -46,5 +46,10 @@ public class BaseFragment extends Fragment {
         } else {
             return "未知";
         }
+    }
+
+
+    public boolean onBackPressed(){
+        return false;
     }
 }

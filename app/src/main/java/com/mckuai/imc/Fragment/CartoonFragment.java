@@ -42,7 +42,7 @@ public class CartoonFragment extends BaseFragment implements RadioGroup.OnChecke
         mTitleResId = R.string.fragment_cartoon;
     }
 
-    public void setTypeChanged(int type){
+    public void setType(int type){
         if (typeIndex != type){
             typeIndex = type;
             switch (type){
@@ -70,7 +70,7 @@ public class CartoonFragment extends BaseFragment implements RadioGroup.OnChecke
         if (null != view){
             container.removeView(view);
         }
-        view = inflater.inflate(R.layout.fragment_cartoon, container, false);
+        view = inflater.inflate(R.layout.fragment_cartoon, container, true);
         mCartoonType = getResources().getStringArray(R.array.cartoon_ordertype);
         return mCartoonListView;
     }
@@ -99,7 +99,6 @@ public class CartoonFragment extends BaseFragment implements RadioGroup.OnChecke
         //mApplication.netEngine.loadCartoonList(getActivity(), mCartoonType[typeIndex], this);
         dataMaker();
         showData();
-        showData();
     }
 
     private void showData() {
@@ -109,10 +108,18 @@ public class CartoonFragment extends BaseFragment implements RadioGroup.OnChecke
         }
         switch (typeIndex) {
             case 0:
-                mAdapter.setData(mNewCartoon);
+                if (null != mNewCartoon) {
+                    mAdapter.setData(mNewCartoon);
+                } else {
+                    loadData();
+                }
                 break;
             case 1:
-                mAdapter.setData(mHotCartoon);
+                if (null != mHotCartoon) {
+                    mAdapter.setData(mHotCartoon);
+                } else {
+                    loadData();
+                }
                 break;
         }
     }

@@ -25,7 +25,8 @@ public class MCUser implements Serializable {
     //private String userType;
     private String addr;// 定位
     private String name;// 登录后的openid
-    private Token token;//融云的token
+    private Token loginToken;//QQtoken
+    private String token;//融云的token
 
 
     public MCUser() {
@@ -50,6 +51,7 @@ public class MCUser implements Serializable {
         //this.userType = user.getUserType();
         this.addr = user.getAddr();
         this.name = user.getName();
+        this.loginToken = user.getLoginToken();
         this.token = user.getToken();
 
         return this;
@@ -184,15 +186,23 @@ public class MCUser implements Serializable {
         this.name = name;
     }
 
-    public Token getToken() {
+    public Token getLoginToken() {
+        return loginToken;
+    }
+
+    public void setLoginToken(Token loginToken) {
+        this.loginToken = loginToken;
+    }
+
+    public String getToken() {
         return token;
     }
 
-    public void setToken(Token token) {
+    public void setToken(String token) {
         this.token = token;
     }
 
-   /* public String getNickName() {
+    /* public String getNickName() {
         return nickName;
     }
 
@@ -202,6 +212,10 @@ public class MCUser implements Serializable {
 
     public boolean isUserValid() {
         return 0 < id && null != name;
+    }
+
+    public boolean isUserTokenValid(){
+        return isUserValid() && null != loginToken && loginToken.isTokenSurvival();
     }
 
 
