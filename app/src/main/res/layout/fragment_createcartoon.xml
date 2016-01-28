@@ -4,16 +4,44 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <com.mckuai.imc.Widget.TouchableLayout.TouchableLayout
-        android:id="@+id/createcartoon_imagebuilder"
-        android:layout_width="match_parent"
-        android:layout_height="300dp"
-        android:minHeight="150dp"
+    <FrameLayout
+        android:id="@+id/createcartoon_imagebuilder_layout"
+        android:layout_width="@dimen/createcartoon_builder_width"
+        android:layout_height="@dimen/createcartoon_builder_width"
+        android:layout_centerHorizontal="true"
         android:layout_alignParentTop="true"
-        android:background="@drawable/frame_black_bolad"
-        android:layout_marginLeft="@dimen/createcartoon_margin_builder"
-        android:layout_marginRight="@dimen/createcartoon_margin_builder"
-        android:layout_marginBottom="@dimen/createcartoon_margin_builder"
+        android:background="@drawable/frame_black_bolad">
+
+        <com.mckuai.imc.Widget.TouchableLayout.TouchableLayout
+            android:id="@+id/createcartoon_imagebuilder"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="@dimen/createcartoon_frame_builder"
+            android:layout_marginTop="@dimen/createcartoon_margin_builder"
+            />
+    </FrameLayout>
+
+
+
+
+
+
+
+
+
+    <ViewFlipper
+        android:id="@+id/createcartoon_operation"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/createcartoon_widget_height"
+        android:layout_alignParentBottom="true"
+        />
+
+    <View
+        android:id="@+id/createcartoon_divier"
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:background="@color/colorDivider"
+        android:layout_above="@id/createcartoon_operation"
         />
 
     <android.support.v7.widget.AppCompatTextView
@@ -21,33 +49,18 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:layout_below="@id/createcartoon_imagebuilder"
-        android:layout_marginBottom="@dimen/createcartoon_margin_builder"
+        android:gravity="center"
+        android:layout_below="@id/createcartoon_imagebuilder_layout"
+        android:layout_above="@id/createcartoon_divier"
         android:textColor="@color/textSecondary"
         android:text="@string/createcartoon_hint_step1"
-        />
-
-
-    <View
-        android:id="@+id/createcartoon_divier"
-        android:layout_width="match_parent"
-        android:layout_height="1px"
-        android:background="@color/colorDivider"
-        android:layout_below="@id/createcartoon_buildhint"
-        />
-
-    <ViewFlipper
-        android:id="@+id/createcartoon_operation"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_alignParentBottom="true"
-        android:layout_below="@id/createcartoon_divier"
         />
 
     <com.malinskiy.superrecyclerview.SuperRecyclerView
         android:id="@+id/createcartoon_scenelist"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_margin="@dimen/createcartoon_margin_builder"
         app:layout_empty="@layout/emptyview"
         android:background="@color/colorPrimary"
         android:visibility="gone">

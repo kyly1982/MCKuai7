@@ -10,6 +10,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
@@ -31,9 +32,6 @@ public class CartoonAdapter extends RecyclerView.Adapter<CartoonAdapter.ViewHold
     private LayoutInflater inflater;
     private ImageLoader imageLoader;
     private View.OnClickListener listener;
-
-    public static int width;
-    private int height;
 
     public CartoonAdapter(Context context) {
         if (null != context) {
@@ -69,18 +67,18 @@ public class CartoonAdapter extends RecyclerView.Adapter<CartoonAdapter.ViewHold
     }
 
     @Override
-    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = inflater.inflate(R.layout.item_cartoon, parent, false);
-        width = parent.getWidth();
-        height = parent.getHeight();
+    public ViewHolder onCreateViewHolder(ViewGroup parent, final int viewType) {
+        View view = inflater.inflate(R.layout.element_cartoon, parent, false);
+        final ViewHolder holder = new ViewHolder(view);
+        int height = parent.getHeight();
+        int width = height * 9 / 16;
         ViewGroup.LayoutParams layoutParams = view.getLayoutParams();
-        layoutParams.width = width - width / 5;
+        layoutParams.width = width;
         layoutParams.height = height;
         view.setLayoutParams(layoutParams);
-        final ViewHolder holder = new ViewHolder(view);
+
         RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) holder.image.getLayoutParams();
-        params.width = width - width / 5;
-        params.height = width - width / 5;
+        params.height = width;
         holder.image.setLayoutParams(params);
         return holder;
     }
@@ -139,6 +137,8 @@ public class CartoonAdapter extends RecyclerView.Adapter<CartoonAdapter.ViewHold
         holder.comment.setOnClickListener(this);
         holder.prise.setOnClickListener(this);
         holder.share.setOnClickListener(this);
+
+
     }
 
 

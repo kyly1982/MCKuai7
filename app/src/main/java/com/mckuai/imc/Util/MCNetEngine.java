@@ -9,6 +9,7 @@ import com.google.gson.reflect.TypeToken;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
+import com.loopj.android.http.TextHttpResponseHandler;
 import com.mckuai.imc.Base.MCKuai;
 import com.mckuai.imc.Bean.Cartoon;
 import com.mckuai.imc.Bean.ForumInfo;
@@ -150,25 +151,30 @@ public class MCNetEngine {
         public void onImageUploadFailure(String msg);
     }
 
-    public void uploadImage(Context context,ArrayList<Bitmap> bitmaps,OnUploadImageResponseListener listener){
-        String url = context.getString(R.string.interface_domainName) + context.getString(R.string.interface_uploadimage);
+    public void uploadImage(final Context context,ArrayList<Bitmap> bitmaps, final OnUploadImageResponseListener listener){
+        String url = "http://www.mckuai.com/" + context.getString(R.string.interface_uploadimage);
         RequestParams params = new RequestParams();
         if (null != bitmaps && !bitmaps.isEmpty()){
             String fileName =null;
             for (int i = 0;i < bitmaps.size();i++){
                 fileName = i+".jpg";
-                params.put(i+"",Bitmap2IS(bitmaps.get(i)),fileName,"image/jpeg");
+                params.put("upload",Bitmap2IS(bitmaps.get(i)),fileName,"image/jpeg");
             }
         }
-        httpClient.post(url,params,new JsonHttpResponseHandler(){
+        httpClient.post(url, params, new JsonHttpResponseHandler(){
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-                super.onSuccess(statusCode, headers, response);
+                ParseResponseResult result = new ParseResponseResult(context,response);
+                if (result.isSuccess){
+                    listener.onImageUploadSuccess(result.msg);
+                } else {
+                    listener.onImageUploadFailure(result.msg);
+                }
             }
 
             @Override
             public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
-                super.onFailure(statusCode, headers, responseString, throwable);
+                listener.onImageUploadFailure(throwable.getLocalizedMessage());
             }
         });
     }

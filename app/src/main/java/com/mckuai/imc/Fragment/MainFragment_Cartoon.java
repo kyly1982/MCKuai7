@@ -1,6 +1,7 @@
 package com.mckuai.imc.Fragment;
 
 import android.content.Intent;
+import android.graphics.Rect;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v7.widget.LinearLayoutManager;
@@ -12,6 +13,7 @@ import android.widget.RadioGroup;
 
 import com.malinskiy.superrecyclerview.SuperRecyclerView;
 import com.mckuai.imc.Activity.CartoonActivity;
+import com.mckuai.imc.Activity.LoginActivity;
 import com.mckuai.imc.Activity.UserCenterActivity;
 import com.mckuai.imc.Adapter.CartoonAdapter;
 import com.mckuai.imc.Base.BaseActivity;
@@ -26,7 +28,7 @@ import java.util.ArrayList;
 /**
  * A placeholder fragment containing a simple view.
  */
-public class MainFragment_Cartoon extends BaseFragment implements RadioGroup.OnCheckedChangeListener, View.OnClickListener, MCNetEngine.OnLoadCartoonListResponseListener {
+public class MainFragment_Cartoon extends BaseFragment implements RadioGroup.OnCheckedChangeListener, View.OnClickListener, MCNetEngine.OnLoadCartoonListResponseListener,MCNetEngine.OnRewardCartoonResponseListener {
     private String[] mCartoonType;
     private ArrayList<Cartoon> mHotCartoon;
     private ArrayList<Cartoon> mNewCartoon;
@@ -89,7 +91,8 @@ public class MainFragment_Cartoon extends BaseFragment implements RadioGroup.OnC
         RecyclerView.LayoutManager manager = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
         manager.offsetChildrenVertical(100);
         mCartoonListView.setLayoutManager(manager);
-
+       /* int spacingInPixels = getResources().getDimensionPixelSize(R.dimen.margin_cartoon_content);
+        mCartoonListView.addItemDecoration(new SpaceItemDecoration(spacingInPixels));*/
     }
 
     private void loadData() {
@@ -163,6 +166,7 @@ public class MainFragment_Cartoon extends BaseFragment implements RadioGroup.OnC
     @Override
     public void onClick(final View v) {
         Intent intent;
+        Cartoon cartoon = (Cartoon) v.getTag();
         switch (v.getId()) {
             case R.id.cartoon_usercover://头像
                 //((BaseActivity) getActivity()).showMessage("跳转个人中心", null, null);
@@ -176,8 +180,7 @@ public class MainFragment_Cartoon extends BaseFragment implements RadioGroup.OnC
             case R.id.cartoon_shar://分享
                 ((BaseActivity) getActivity()).showMessage("分享", null, null);
                 break;
-            default:
-                Cartoon cartoon = (Cartoon) v.getTag();
+            case R.id.cartoon_comment:
                 if (null != cartoon){
                     intent = new Intent(getActivity(), CartoonActivity.class);
                     Bundle bundle = new Bundle();
@@ -185,9 +188,25 @@ public class MainFragment_Cartoon extends BaseFragment implements RadioGroup.OnC
                     intent.putExtras(bundle);
                     startActivity(intent);
                 }
+                break;
+            case R.id.cartoon_prise:
 
+                if (mApplication.isLogin()){
+                    if (null != cartoon){
+                        rewardCartoon(cartoon);
+                    }
+                } else {
+                    intent = new Intent(getActivity(), LoginActivity.class);
+                    startActivityForResult(intent,5);
+                }
                 break;
         }
+    }
+
+
+
+    private void rewardCartoon(Cartoon cartoon){
+        mApplication.netEngine.rewardCartoon(getActivity(),true,cartoon.getId(),this);
     }
 
     @Override
@@ -216,7 +235,31 @@ public class MainFragment_Cartoon extends BaseFragment implements RadioGroup.OnC
         showData();
     }
 
+    @Override
+    public void onRewardCartoonSuccess() {
+        Snackbar.make(mCartoonListView,"打赏成功!",Snackbar.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void onRewardaCartoonFailure(String msg) {
+        Snackbar.make(mCartoonListView,"打赏失败!",Snackbar.LENGTH_LONG).show();
+    }
 
 
+    public class SpaceItemDecoration extends RecyclerView.ItemDecoration{
+
+        private int space;
+
+        public SpaceItemDecoration(int space) {
+            this.space = space;
+        }
+
+        @Override
+        public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
+
+            if(parent.getChildPosition(view) != 0)
+                outRect.top = space;
+        }
+    }
 
 }

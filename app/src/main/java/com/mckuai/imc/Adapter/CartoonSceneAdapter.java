@@ -7,6 +7,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RelativeLayout;
 
 import com.mckuai.imc.R;
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -46,7 +47,16 @@ public class CartoonSceneAdapter extends RecyclerView.Adapter<CartoonSceneAdapte
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(context).inflate(R.layout.item_createcartoon_scene, parent,false);
+        int width = parent.getWidth();
+        width = width / 3 - 10;
+        ViewGroup.LayoutParams params =  view.getLayoutParams();
+        params.width = width;
+        params.height = width;
+        view.setLayoutParams(params);
+
         ViewHolder holder = new ViewHolder(view);
+
+
         return holder;
     }
 

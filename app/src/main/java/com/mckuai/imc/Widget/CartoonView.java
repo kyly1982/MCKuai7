@@ -8,8 +8,10 @@ import android.support.v7.widget.AppCompatImageView;
 import android.support.v7.widget.AppCompatTextView;
 import android.util.AttributeSet;
 import android.view.View;
+import android.view.ViewTreeObserver;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 
 import com.mckuai.imc.Bean.Cartoon;
 import com.mckuai.imc.Bean.Comment;
@@ -90,6 +92,17 @@ public class CartoonView extends FrameLayout implements View.OnClickListener{
         commentList = (LinearLayout) findViewById(R.id.cartoon_comment_root);
         userName = (AppCompatTextView) findViewById(R.id.cartoon_username);
 
+
+        ViewTreeObserver viewTreeObserver = getViewTreeObserver();
+        viewTreeObserver.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+                getViewTreeObserver().removeGlobalOnLayoutListener(this);
+                RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) image.getLayoutParams();
+                params.height = getWidth();
+                image.setLayoutParams(params);
+            }
+        });
 
         userCover.setOnClickListener(this);
         share.setOnClickListener(this);

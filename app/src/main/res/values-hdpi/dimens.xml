@@ -4,8 +4,8 @@
     <dimen name="activity_vertical_margin">16dp</dimen>
     <dimen name="fab_margin">16dp</dimen>
     <!--通用-->
-    <dimen name="usercover_width">33.5dp</dimen>
-    <dimen name="usercover_width_small">21.5dp</dimen>
+    <dimen name="usercover_width">30dp</dimen>
+    <dimen name="usercover_width_small">20dp</dimen>
     <dimen name="margin_content">9dp</dimen>
     <dimen name="padding_content">4.5dp</dimen>
 
@@ -31,9 +31,20 @@
     <dimen name="community_item_postheight_normal">74dp</dimen>
 
     <!--创作-->
-    <dimen name="createcartoon_frame_builder">5dp</dimen>
-    <dimen name="createcartoon_margin_builder">15dp</dimen>
+    <dimen name="createcartoon_frame_builder">4dp</dimen>
+    <dimen name="createcartoon_margin_builder">12dp</dimen>
     <dimen name="createcartoon_margin_step1_button">38dp</dimen>
     <dimen name="createcartoon_button_addtalk_height">30dp</dimen>
-    <dimen name="createcartoon_builder_width">325dp</dimen>
+    <dimen name="createcartoon_builder_width">284dp</dimen>
+    <dimen name="createcartoon_widget_height">160dp</dimen>
+    <dimen name="createcartoon_widget_itemheight">80dp</dimen>
+
+    <!--首页-->
+    <dimen name="cartoon_main_cardwidth">250dp</dimen>
+    <dimen name="cartoon_main_cardheight">377.5dp</dimen>
+
+    <!--漫画详细-->
+    <dimen name="cartoondetial_imagewidth">320dp</dimen>
+    <dimen name="cartoondetial_imageheight">320dp</dimen>
+    <dimen name="cartoondetial_operationbutton_height">26dp</dimen>
 </resources>

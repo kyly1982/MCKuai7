@@ -2,7 +2,8 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@drawable/bg_element_cartoon">
 
 
     <android.support.v7.widget.AppCompatImageView
@@ -58,7 +59,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:minHeight="150dp"
-                android:scaleType="centerInside"
+                android:scaleType="fitXY"
                 android:background="@color/colorYellow"/>
 
             <android.support.v7.widget.AppCompatTextView
@@ -80,7 +81,7 @@
             <android.support.v7.widget.AppCompatButton
                 android:id="@+id/cartoon_comment"
                 android:layout_width="0dp"
-                android:layout_height="30dp"
+                android:layout_height="@dimen/cartoondetial_operationbutton_height"
                 android:layout_alignParentLeft="true"
                 android:layout_below="@id/cartoon_name"
                 android:layout_margin="@dimen/margin_cartoon_content"
@@ -93,7 +94,7 @@
             <android.support.v7.widget.AppCompatCheckBox
                 android:id="@+id/cartoon_prise"
                 android:layout_width="0dp"
-                android:layout_height="30dp"
+                android:layout_height="@dimen/cartoondetial_operationbutton_height"
                 android:layout_alignTop="@id/cartoon_comment"
                 android:layout_alignParentRight="true"
                 android:layout_below="@id/cartoon_image"
@@ -118,7 +119,7 @@
             <LinearLayout
                 android:id="@+id/cartoon_comment_root"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="0dp"
                 android:layout_below="@id/cartoon_rewarduser"
                 android:layout_alignParentBottom="true"
                 android:orientation="vertical"></LinearLayout>

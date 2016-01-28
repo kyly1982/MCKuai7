@@ -93,6 +93,13 @@ public class ParseResponseResult {
                 e.printStackTrace();
             }
 
+        } else if (response.has("msg")){
+            try {
+                msg = response.getString("msg");
+                return true;
+            }catch (Exception e){
+                e.printStackTrace();
+            }
         }
         return false;
     }

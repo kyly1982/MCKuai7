@@ -36,4 +36,15 @@
     <dimen name="createcartoon_margin_step1_button">38dp</dimen>
     <dimen name="createcartoon_button_addtalk_height">30dp</dimen>
     <dimen name="createcartoon_builder_width">325dp</dimen>
+    <dimen name="createcartoon_widget_height">200dp</dimen>
+    <dimen name="createcartoon_widget_itemheight">100dp</dimen>
+    
+    <!--首页-->
+    <dimen name="cartoon_main_cardwidth">225dp</dimen>
+    <dimen name="cartoon_main_cardheight">340dp</dimen>
+    
+    <!--漫画详细-->
+    <dimen name="cartoondetial_imagewidth">360dp</dimen>
+    <dimen name="cartoondetial_imageheight">360dp</dimen>
+    <dimen name="cartoondetial_operationbutton_height">30dp</dimen>
 </resources>

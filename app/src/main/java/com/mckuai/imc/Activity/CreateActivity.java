@@ -8,6 +8,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.Window;
+import android.view.WindowManager;
 
 import com.mckuai.imc.Base.BaseActivity;
 import com.mckuai.imc.Base.BaseFragment;
@@ -26,6 +27,8 @@ public class CreateActivity extends BaseActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_main);
         initToolbar(R.id.toolbar, 0, null);
         initDrawer();
@@ -95,11 +98,25 @@ public class CreateActivity extends BaseActivity
         return true;
     }
 
-    @Override
+   /* @Override
     public void onActivityReenter(int resultCode, Intent data) {
         super.onActivityReenter(resultCode, data);
         if (resultCode == RESULT_OK){
             createFragment.upload();
+        }
+    }*/
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (RESULT_OK == resultCode){
+            switch (requestCode){
+                //上传
+                case 1:
+                    break;
+                case 2:
+                    break;
+            }
         }
     }
 

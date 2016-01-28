@@ -28,45 +28,30 @@
                 android:layout_height="match_parent"
                 android:background="@color/icons"></com.mckuai.imc.Widget.CartoonView>
 
-            <RelativeLayout
-                android:layout_width="match_parent"
+            <android.support.v7.widget.AppCompatButton
+                android:id="@+id/commentcartoon"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
                 android:layout_alignParentBottom="true"
-                android:background="@color/colorBlack_1">
-
-                <android.support.v7.widget.AppCompatButton
-                    android:id="@+id/commentcartoon"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="评论"
-                    android:layout_alignParentBottom="true"
-                    android:layout_alignParentRight="true"/>
+                android:text="评论"
+                android:textSize="@dimen/font_hint" />
 
 
-                <android.support.design.widget.TextInputLayout
+
+                <android.support.v7.widget.AppCompatEditText
+                    android:id="@+id/commentediter"
                     android:layout_width="0dp"
                     android:layout_height="0dp"
                     android:layout_alignTop="@id/commentcartoon"
                     android:layout_alignBottom="@id/commentcartoon"
-                    android:padding="@dimen/padding_content"
                     android:layout_alignParentBottom="true"
                     android:layout_alignParentLeft="true"
                     android:layout_toLeftOf="@id/commentcartoon"
-                    android:orientation="horizontal"
-                    >
-
-                    <android.support.v7.widget.AppCompatEditText
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:background="@color/colorBlack_1"
-                        android:hint="输入评论"/>
-                </android.support.design.widget.TextInputLayout>
-            </RelativeLayout>
-
-
-
+                    android:background="@color/colorBlack_1"
+                    android:hint="输入评论"
+                    android:singleLine="true" />
         </RelativeLayout>
-
 
 
         <include layout="@layout/slidingview_layout" />

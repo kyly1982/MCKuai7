@@ -33,6 +33,7 @@ import com.mckuai.imc.Widget.CreateCartoonStepView.StepView_4;
 import com.mckuai.imc.Widget.TouchableLayout.TouchableLayout;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.util.ArrayList;
 
 public class CreateCartoonFragment extends BaseFragment implements StepView_4.OnShareButtonClickedListener, StepView_1.OnButtonClickListener, StepView_2.OnWidgetCheckedListener,
@@ -113,18 +114,9 @@ public class CreateCartoonFragment extends BaseFragment implements StepView_4.On
         flipper = (ViewFlipper) view.findViewById(R.id.createcartoon_operation);
         builderHint = (AppCompatTextView) view.findViewById(R.id.createcartoon_buildhint);
         cartoonBuilder = (TouchableLayout) view.findViewById(R.id.createcartoon_imagebuilder);
-        final ViewTreeObserver viewTreeObserver = cartoonBuilder.getViewTreeObserver();
-        int width;
-        viewTreeObserver.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
-            @Override
-            public void onGlobalLayout() {
-                cartoonBuilder.getViewTreeObserver().removeGlobalOnLayoutListener(this);
-                int width = cartoonBuilder.getWidth();
-                RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) cartoonBuilder.getLayoutParams();
-                params.height = width;
-                cartoonBuilder.setLayoutParams(params);
-            }
-        });
+
+
+
         sceneList = (SuperRecyclerView) view.findViewById(R.id.createcartoon_scenelist);
 
         StepView_1 step1 = new StepView_1(getActivity(), this);
@@ -144,35 +136,13 @@ public class CreateCartoonFragment extends BaseFragment implements StepView_4.On
     }
 
 
-    private Bitmap getCartoonBitmap() {
-        cartoonBuilder.setDrawingCacheEnabled(true);
-        cartoonBuilder.buildDrawingCache();
-        return cartoonBuilder.getDrawingCache();
-    }
+
 
     public void upload() {
         uploadCartoon(null);
     }
 
-    private void uploadImage() {
-        Bitmap bitmap = getCartoonBitmap();
-        if (null != bitmap) {
-            ArrayList<Bitmap> bitmaps = new ArrayList<>(1);
-            bitmaps.add(bitmap);
-            MCKuai.instence.netEngine.uploadImage(getActivity(), bitmaps, this);
-        } else {
-            Snackbar.make(cartoonBuilder,"错误，不能获取图片内容!",Snackbar.LENGTH_SHORT).show();
-        }
-    }
 
-    private void uploadCartoon(Cartoon cartoon) {
-        if (null == cartoon){
-            uploadImage();
-            return;
-        } else {
-            MCKuai.instence.netEngine.uploadCartoon(getActivity(),cartoon,this);
-        }
-    }
 
     private void showScene(ArrayList<Object> scenes) {
         if (null != scenes && !scenes.isEmpty()) {
@@ -245,7 +215,7 @@ public class CreateCartoonFragment extends BaseFragment implements StepView_4.On
     public void onTakePhotoClicked() {
         //拍照
         Intent intent = new Intent("android.media.action.IMAGE_CAPTURE");
-        File file = new File(Environment.getExternalStorageDirectory() +"DCIM/MCKuai/", "camera.jpg");
+        File file = new File(Environment.getExternalStorageDirectory() + "DCIM/MCKuai/", "camera.jpg");
         if (file.exists()) {
             file.delete();
         } else {
@@ -295,6 +265,35 @@ public class CreateCartoonFragment extends BaseFragment implements StepView_4.On
         }
         talks.add(talk);
     }
+
+    private void uploadCartoon(Cartoon cartoon) {
+        if (null == cartoon) {
+            uploadImage();
+            return;
+        } else {
+            MCKuai.instence.netEngine.uploadCartoon(getActivity(),cartoon,this);
+        }
+    }
+
+    private void uploadImage() {
+        Bitmap bitmap = getCartoonBitmap();
+        if (null != bitmap) {
+            ArrayList<Bitmap> bitmaps = new ArrayList<>(1);
+            bitmaps.add(bitmap);
+            MCKuai.instence.netEngine.uploadImage(getActivity(), bitmaps, this);
+        } else {
+            Snackbar.make(cartoonBuilder,"错误，不能获取图片内容!",Snackbar.LENGTH_SHORT).show();
+        }
+    }
+
+    private Bitmap getCartoonBitmap() {
+        cartoonBuilder.setDrawingCacheEnabled(true);
+        cartoonBuilder.buildDrawingCache();
+        return cartoonBuilder.getDrawingCache();
+    }
+
+
+
 
     @Override
     public void onUploadCartoonFailure(String msg) {
