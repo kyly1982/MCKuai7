@@ -87,7 +87,7 @@ public class UserDao extends AbstractDao<User, Long> {
             stmt.bindString(5, nick);
         }
  
-        String cover = entity.getCover();
+        String cover = entity.getHeadImage();
         if (cover != null) {
             stmt.bindString(6, cover);
         }
@@ -127,7 +127,7 @@ public class UserDao extends AbstractDao<User, Long> {
         entity.setProcess(cursor.isNull(offset + 2) ? null : cursor.getFloat(offset + 2));
         entity.setName(cursor.getString(offset + 3));
         entity.setNick(cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4));
-        entity.setCover(cursor.isNull(offset + 5) ? null : cursor.getString(offset + 5));
+        entity.setHeadImage(cursor.isNull(offset + 5) ? null : cursor.getString(offset + 5));
         entity.setIsFriend(cursor.isNull(offset + 6) ? null : cursor.getShort(offset + 6) != 0);
      }
     

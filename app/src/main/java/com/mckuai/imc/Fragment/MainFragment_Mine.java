@@ -9,9 +9,9 @@ import android.view.ViewGroup;
 import com.mckuai.imc.Base.BaseFragment;
 import com.mckuai.imc.R;
 
-public class MineFragment extends BaseFragment {
+public class MainFragment_Mine extends BaseFragment {
 
-    public MineFragment() {
+    public MainFragment_Mine() {
         mTitleResId = R.string.fragment_mine;
     }
 
@@ -25,7 +25,7 @@ public class MineFragment extends BaseFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_mine, container, false);
+        return inflater.inflate(R.layout.fragment_main_mine, container, false);
     }
 
 }

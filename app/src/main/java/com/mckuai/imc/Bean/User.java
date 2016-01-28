@@ -17,7 +17,7 @@ public class User implements Serializable{
     /** Not-null value. */
     private String name;
     private String nick;
-    private String cover;
+    private String headImage;
     private Boolean isFriend;
 
     public User() {
@@ -33,7 +33,7 @@ public class User implements Serializable{
         this.process = process;
         this.name = name;
         this.nick = nick;
-        this.cover = cover;
+        this.headImage = cover;
         this.isFriend = isFriend;
     }
 
@@ -43,7 +43,7 @@ public class User implements Serializable{
         this.process = mcUser.getProcess();
         this.name = mcUser.getName();
         this.nick = mcUser.getNike();
-        this.cover = mcUser.getHeadImg();
+        this.headImage = mcUser.getHeadImg();
         this.isFriend = false;
     }
 
@@ -93,12 +93,12 @@ public class User implements Serializable{
         this.nick = nick;
     }
 
-    public String getCover() {
-        return cover;
+    public String getHeadImage() {
+        return headImage;
     }
 
-    public void setCover(String cover) {
-        this.cover = cover;
+    public void setHeadImage(String headImage) {
+        this.headImage = headImage;
     }
 
     public Boolean getIsFriend() {

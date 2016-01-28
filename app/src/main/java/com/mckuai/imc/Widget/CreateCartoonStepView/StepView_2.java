@@ -10,20 +10,16 @@ import android.widget.RelativeLayout;
 
 import com.malinskiy.superrecyclerview.SuperRecyclerView;
 import com.mckuai.imc.Adapter.WidgetAdapter;
-import com.mckuai.imc.Bean.Page;
 import com.mckuai.imc.R;
-import com.mckuai.imc.Util.MCNetEngine;
 
 import java.util.ArrayList;
 
 /**
  * Created by kyly on 2016/1/25.
  */
-public class StepView_2 extends RelativeLayout implements RadioGroup.OnCheckedChangeListener,MCNetEngine.OnCharacterListResponseListener,MCNetEngine.OnToolListResponseListener,WidgetAdapter.OnItemSelectedListener {
+public class StepView_2 extends RelativeLayout implements RadioGroup.OnCheckedChangeListener,WidgetAdapter.OnItemSelectedListener {
     private Context context;
     private int widgetPageIndex = 0;
-    private Page page_character;
-    private Page page_tool;
     private ArrayList<Integer> characters;
     private ArrayList<Integer> tools;
     private WidgetAdapter adapter;
@@ -61,14 +57,6 @@ public class StepView_2 extends RelativeLayout implements RadioGroup.OnCheckedCh
     }
 
     private void loadData(){
-       /* switch (widgetPageIndex){
-            case 0:
-                MCKuai.instence.netEngine.loadCharacterList(context, page_character, this);
-                break;
-            case 1:
-                MCKuai.instence.netEngine.loadToolList(context, page_character, this);
-                break;
-        }*/
         switch (widgetPageIndex){
             case 0:
                 loadCharacter();
@@ -267,23 +255,6 @@ public class StepView_2 extends RelativeLayout implements RadioGroup.OnCheckedCh
         }
 
 
-    }
-
-    @Override
-    public void onFaile(String msg) {
-
-
-    }
-
-    @Override
-    public void onSuccess(ArrayList<String> data) {
-        switch (widgetPageIndex){
-            case 0:
-                break;
-            case 1:
-                break;
-        }
-        showData();
     }
 
     @Override

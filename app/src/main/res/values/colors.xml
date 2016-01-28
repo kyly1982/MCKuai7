@@ -16,4 +16,5 @@
     <color name="colorWarning">#FFFF00</color>
     <color name="colorError">#FF0000</color>
     <color name="colorYellow">#FFFF00</color>
+    <color name="colorBlack_1">#88000000</color>
 </resources>

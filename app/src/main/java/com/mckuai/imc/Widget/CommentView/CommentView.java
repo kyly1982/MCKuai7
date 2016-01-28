@@ -40,7 +40,7 @@ public class CommentView extends FrameLayout {
     }
 
     public void setData(Comment comment) {
-        imageLoader.displayImage(comment.getOwner().getCover(), cover);
+        imageLoader.displayImage(comment.getOwner().getHeadImage(), cover);
         name.setText(comment.getOwner().getNickEx());
         content.setText(comment.getContent());
         time.setText(comment.getTimeEx());

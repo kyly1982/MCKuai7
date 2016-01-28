@@ -10,7 +10,7 @@
         android:layout_width="@dimen/usercover_width"
         android:layout_height="@dimen/usercover_width"
         android:layout_margin="@dimen/margin_cartoon_content"
-        android:background="@color/colorAccent"
+        android:scaleType="fitXY"
         android:clickable="true" />
 
     <android.support.v7.widget.AppCompatImageButton
@@ -57,8 +57,19 @@
                 android:id="@+id/cartoon_image"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:minHeight="150dp"
                 android:scaleType="centerInside"
                 android:background="@color/colorYellow"/>
+
+            <android.support.v7.widget.AppCompatTextView
+                android:id="@+id/cartoon_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/cartoon_image"
+                android:layout_margin="@dimen/margin_cartoon_content"
+                android:textColor="@color/textPrimary"
+                android:text="1111"
+                android:visibility="gone"/>
 
             <View
                 android:id="@+id/cartoon_center"
@@ -69,34 +80,46 @@
             <android.support.v7.widget.AppCompatButton
                 android:id="@+id/cartoon_comment"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="30dp"
                 android:layout_alignParentLeft="true"
-                android:layout_below="@id/cartoon_image"
+                android:layout_below="@id/cartoon_name"
                 android:layout_margin="@dimen/margin_cartoon_content"
                 android:layout_toLeftOf="@id/cartoon_center"
                 android:background="@drawable/btn_cartoon_comment"
-                android:paddingLeft="10dp"
+                android:gravity="center"
                 android:textColor="@color/checkable_text_color_selector"
-                android:text="  8888" />
+                android:paddingLeft="10dp"/>
 
-            <android.support.v7.widget.AppCompatButton
+            <android.support.v7.widget.AppCompatCheckBox
                 android:id="@+id/cartoon_prise"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="30dp"
+                android:layout_alignTop="@id/cartoon_comment"
                 android:layout_alignParentRight="true"
                 android:layout_below="@id/cartoon_image"
-                android:layout_margin="@dimen/margin_cartoon_content"
+                android:layout_marginRight="@dimen/margin_cartoon_content"
+                android:layout_marginLeft="@dimen/margin_cartoon_content"
                 android:layout_toRightOf="@id/cartoon_center"
                 android:background="@drawable/btn_cartoon_prise"
-                android:paddingLeft="15dp"
-                android:textColor="@color/checkable_text_color_selector"
-                android:text="      8888" />
+                android:gravity="center"
+                android:paddingLeft="30dp"
+                android:button="@null"
+                android:textColor="@color/checkable_text_color_selector" />
+
+            <LinearLayout
+                android:id="@+id/cartoon_rewarduser"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/cartoon_comment"
+                android:orientation="horizontal"
+                android:minHeight="10dp"
+                android:visibility="gone"></LinearLayout>
 
             <LinearLayout
                 android:id="@+id/cartoon_comment_root"
-                android:layout_below="@id/cartoon_comment"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:layout_below="@id/cartoon_rewarduser"
                 android:layout_alignParentBottom="true"
                 android:orientation="vertical"></LinearLayout>
         </RelativeLayout>

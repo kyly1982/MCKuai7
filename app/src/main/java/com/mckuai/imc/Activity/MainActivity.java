@@ -15,10 +15,10 @@ import android.widget.RelativeLayout;
 
 import com.mckuai.imc.Base.BaseActivity;
 import com.mckuai.imc.Base.BaseFragment;
-import com.mckuai.imc.Fragment.CartoonFragment;
-import com.mckuai.imc.Fragment.ChatFragment;
-import com.mckuai.imc.Fragment.CommunityFragment;
-import com.mckuai.imc.Fragment.MineFragment;
+import com.mckuai.imc.Fragment.MainFragment_Cartoon;
+import com.mckuai.imc.Fragment.MainFragment_Chat;
+import com.mckuai.imc.Fragment.MainFragment_Community;
+import com.mckuai.imc.Fragment.MainFragment_Mine;
 import com.mckuai.imc.R;
 
 import java.util.ArrayList;
@@ -66,10 +66,10 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
 
     private void initFragment() {
         if (null== fragments) {
-            CartoonFragment cartoonFragment = new CartoonFragment();
-            ChatFragment chatFragment = new ChatFragment();
-            CommunityFragment communityFragment = new CommunityFragment();
-            MineFragment mineFragment = new MineFragment();
+            MainFragment_Cartoon cartoonFragment = new MainFragment_Cartoon();
+            MainFragment_Chat chatFragment = new MainFragment_Chat();
+            MainFragment_Community communityFragment = new MainFragment_Community();
+            MainFragment_Mine mineFragment = new MainFragment_Mine();
 
             cartoonFragment.setFragmentEventListener(this);
 
@@ -131,12 +131,12 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
                 break;
             case R.id.cartoon_type_hot:
                 if (null != fragments){
-                    ((CartoonFragment)fragments.get(0)).setType(1);
+                    ((MainFragment_Cartoon)fragments.get(0)).setType(1);
                 }
                 break;
             case R.id.cartoon_type_new:
                 if (null != fragments){
-                    ((CartoonFragment)fragments.get(0)).setType(0);
+                    ((MainFragment_Cartoon)fragments.get(0)).setType(0);
                 }
                 break;
             default:
@@ -185,7 +185,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
 
     @Override
     public void onFragmentAttach(int titleResId) {
-      /*  if (0 == fragmentIndex && titleResId == R.string.fragment_cartoon){
+      /*  if (0 == fragmentIndex && titleResId == R.string.fragment_main_cartoon){
             mFragmentManager.beginTransaction().show(fragments.get(0)).commit();
         }*/
         switch (titleResId) {

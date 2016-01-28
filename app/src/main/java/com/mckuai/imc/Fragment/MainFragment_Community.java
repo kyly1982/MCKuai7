@@ -20,7 +20,7 @@ import com.mckuai.imc.Util.MCNetEngine;
 import java.util.ArrayList;
 
 
-public class CommunityFragment extends BaseFragment implements View.OnClickListener,MCNetEngine.OnForumListResponseListener,MCNetEngine.OnPostListResponseListener {
+public class MainFragment_Community extends BaseFragment implements View.OnClickListener,MCNetEngine.OnForumListResponseListener,MCNetEngine.OnPostListResponseListener {
     private View view;
     private Page page;
     private ArrayList<ForumInfo> mForums;
@@ -30,13 +30,14 @@ public class CommunityFragment extends BaseFragment implements View.OnClickListe
     private ForumAdapter forumAdapter;
     private NormalPostAdapter postAdapter;
     private MCNetEngine mNetEngine;
+    private int currentForumIndex = 0;
 
     private SuperRecyclerView mForumList;
     private SuperRecyclerView mPostList;
     private FloatingActionButton mCreatePost;
 
 
-    public CommunityFragment() {
+    public MainFragment_Community() {
         mTitleResId = R.string.fragment_community;
     }
 
@@ -52,7 +53,7 @@ public class CommunityFragment extends BaseFragment implements View.OnClickListe
         if (null != view){
             container.removeView(view);
         }
-        view =  inflater.inflate(R.layout.fragment_community, container, false);
+        view =  inflater.inflate(R.layout.fragment_main_community, container, false);
         if (null == mForumList){
             initView();
             mNetEngine = MCKuai.instence.netEngine;
@@ -74,11 +75,12 @@ public class CommunityFragment extends BaseFragment implements View.OnClickListe
     }
 
     private void loadForumList(){
-        mNetEngine.getForumList(getActivity(),this);
+        mNetEngine.loadFroumList(getActivity(),this);
     }
 
     private void loadPostList(){
 
+        mNetEngine.loadPostList(getActivity(),mForums.get(currentForumIndex).getId(),page,this);
     }
 
     @Override
@@ -86,23 +88,26 @@ public class CommunityFragment extends BaseFragment implements View.OnClickListe
 
     }
 
+
     @Override
-    public void onForumFaile(String msg) {
+    public void onLoadForumListFailure(String msg) {
 
     }
 
     @Override
-    public void onForumSuccess(ArrayList<ForumInfo> forums) {
+    public void onLoadForumListSuccess(ArrayList<ForumInfo> forums) {
+        if (null == page){
+            page = new Page(0,0,20);
+        }
+    }
+
+    @Override
+    public void onLoadPostListSuccess(ArrayList<Post> posts) {
 
     }
 
     @Override
-    public void onPostSuccess(ArrayList<Post> posts) {
-
-    }
-
-    @Override
-    public void onPostFaile(String msg) {
+    public void onLoadPostListFailure(String msg) {
 
     }
 }

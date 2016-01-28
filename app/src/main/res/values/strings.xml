@@ -64,8 +64,8 @@
     <string name="interface_domainName">http://api.mckuai.com/</string>
     <!-- 搜索-->
     <string name="interface_search">interface.do?act=search</string>
-    <string name="interface_forumList">interface.do?act=forumList</string>
-    <string name="interface_postList">interface.do?act=talkList</string>
+    <string name="interface_forumlist">interface.do?act=forumList</string>
+    <string name="interface_postlist">interface.do?act=talkList</string>
     <string name="interface_showPost">interface.do?act=talkOne</string>
     <!-- 打赏 -->
     <string name="interface_reward">interface.do?act=daShang</string>
@@ -81,11 +81,11 @@
     <string name="interface_replyfloor">interface.do?act=replyTalk</string>
     <!-- 上传图片 回图片路径字符串  http://cdn.mckuai.com/xxx.jpg 需加在content 帖子内容后面 -->
     <string name="interface_uploadimage">group.do?act=uploadImg</string>
-    <string name="interface_sendpost">interface.do?act=addTalk</string>
+    <string name="interface_uploadpost">interface.do?act=addTalk</string>
     <!-- 是否打赏或收藏 -->
     <string name="interface_getpostmark">interface.do?act=isCollect</string>
     <!-- 个人中心接口，参数：id=用户id&page=&type=&messageType=    type{message（消息）,dynamic（动态）,work（作品）}; messageType{ system（系统）,reply（@）} -->
-    <string name="interface_userCenter">interface.do?act=center</string>
+    <string name="interface_usercenter">interface.do?act=center</string>
     <!-- 检查更新 -->
     <string name="interface_checkupgread">interface.do?act=androidUpdate</string>
     <!--登录-->
@@ -108,6 +108,18 @@
     <string name="interface_quickreply">interface.do?act=addReplyByCenter</string>
     <!--上传动漫-->
     <string name="interface_uploadcartoon">interface.do?act=uploadCartoon</string>
+    <!--消息推荐-->
+    <string name="interface_pushcartoon">interface.do?act=cartoonRec</string>
+    <!--首页动漫列表-->
+    <string name="interface_loadcartoonlist">interface.do?act=cartoonList</string>
+    <!--我的动漫作品-->
+    <string name="interface_uploadcartoonlist">interface.do?act=cartoonWork</string>
+    <!--动漫消息-->
+    <string name="interface_cartoonmessage">interface.do?act=cartoonMessage</string>
+    <!--动漫动态-->
+    <string name="interface_cartooncynamic">interface.do?act=cartoonDynamic</string>
+    <!--评论动漫-->
+    <string name="interface_commentcartoon">interface.do?act=toComment</string>
 
     <!--侧边栏-->
     <string name="navigation_drawer_open">Open navigation drawer</string>
@@ -161,6 +173,13 @@
     <string name="login_hint">使用QQ账号登录</string>
     <string name="login_anonymous">>>随便看看</string>
     <string name="login_text">QQ账号登录</string>
+
+    <!--个人中心-->
+    <string name="usercenter_tag_userid">USER_ID</string>
+    <string name="usercenter_tag_user">USER_OBJECT</string>
+
+    <!--漫画详细页-->
+    <string name="cartoondetail_tag_cartoon">CARTOON_OBJECT</string>
 
 
     <!-- TODO: Remove or change this placeholder text -->

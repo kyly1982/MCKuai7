@@ -2,6 +2,7 @@ package com.mckuai.imc.Adapter;
 
 import android.content.Context;
 import android.support.v7.widget.AppCompatButton;
+import android.support.v7.widget.AppCompatCheckBox;
 import android.support.v7.widget.AppCompatImageButton;
 import android.support.v7.widget.AppCompatImageView;
 import android.support.v7.widget.AppCompatTextView;
@@ -89,7 +90,6 @@ public class CartoonAdapter extends RecyclerView.Adapter<CartoonAdapter.ViewHold
         if (null != mCartoons && !mCartoons.isEmpty() && -1 < position && position < mCartoons.size()){
             Cartoon cartoon = mCartoons.get(position);
             bindData(cartoon,holder);
-            setListener(cartoon,holder,position);
         }
     }
 
@@ -97,7 +97,7 @@ public class CartoonAdapter extends RecyclerView.Adapter<CartoonAdapter.ViewHold
         public AppCompatImageView userCover;
         public AppCompatImageButton share;
         public AppCompatButton comment;
-        public AppCompatButton prise;
+        public AppCompatCheckBox prise;
         public AppCompatTextView userName;
         public AppCompatTextView time;
         public AppCompatImageView image;
@@ -110,7 +110,7 @@ public class CartoonAdapter extends RecyclerView.Adapter<CartoonAdapter.ViewHold
             time = (AppCompatTextView) itemView.findViewById(R.id.cartoon_createtime);
             share = (AppCompatImageButton) itemView.findViewById(R.id.cartoon_shar);
             comment = (AppCompatButton) itemView.findViewById(R.id.cartoon_comment);
-            prise = (AppCompatButton) itemView.findViewById(R.id.cartoon_prise);
+            prise = (AppCompatCheckBox) itemView.findViewById(R.id.cartoon_prise);
             image = (AppCompatImageView) itemView.findViewById(R.id.cartoon_image);
             commentList = (LinearLayout) itemView.findViewById(R.id.cartoon_comment_root);
 
@@ -120,28 +120,27 @@ public class CartoonAdapter extends RecyclerView.Adapter<CartoonAdapter.ViewHold
 
     private void bindData(Cartoon cartoon,ViewHolder holder){
         showImage(cartoon.getImage(), holder.image, false);
-        showImage(cartoon.getOwner().getCover(), holder.userCover, true);
-        showComment(cartoon.getComments(), holder.commentList);
+        showImage(cartoon.getOwner().getHeadImage(), holder.userCover, true);
+        if (null != cartoon.getComments()) {
+            showComment(cartoon.getComments(), holder.commentList);
+        }
         holder.userName.setText(cartoon.getOwner().getNickEx());
         holder.time.setText(cartoon.getTimeEx());
-       /* ViewGroup.LayoutParams layoutParams = holder.image.getLayoutParams();
-        layoutParams.width = width;
-        layoutParams.height = width;
-        holder.image.setLayoutParams(layoutParams);*/
+        holder.comment.setText(cartoon.getReplyNum() + "");
+        holder.prise.setText(cartoon.getPrise() + "");
+
         holder.comment.setTag(cartoon);
         holder.prise.setTag(cartoon);
-        holder.userCover.setTag(cartoon.getOwner());
         holder.share.setTag(cartoon);
+        holder.userCover.setTag(cartoon.getOwner().getId());
+
+
+        holder.userCover.setOnClickListener(this);
+        holder.comment.setOnClickListener(this);
+        holder.prise.setOnClickListener(this);
+        holder.share.setOnClickListener(this);
     }
 
-    private void setListener(Cartoon cartoon,ViewHolder holder,int position){
-        if (null != listener){
-            holder.userCover.setOnClickListener(this);
-            holder.comment.setOnClickListener(this);
-            holder.prise.setOnClickListener(this);
-            holder.share.setOnClickListener(this);
-        }
-    }
 
     private void showImage(String url,AppCompatImageView imageView,boolean isCircle){
         if (null != url && null != imageView && 10 < url.length()){
@@ -160,20 +159,6 @@ public class CartoonAdapter extends RecyclerView.Adapter<CartoonAdapter.ViewHold
         }
 
     }
-
-/*    public static class CommentViewHolder{
-        public AppCompatImageView commentUserCover;
-        public AppCompatTextView commentUserName;
-        public AppCompatTextView commentContent;
-        public AppCompatTextView commentTime;
-
-        public CommentViewHolder(View itemView) {
-            commentUserCover = (AppCompatImageView) itemView.findViewById(R.id.comment_usercover);
-            commentUserName = (AppCompatTextView) itemView.findViewById(R.id.comment_username);
-            commentContent = (AppCompatTextView) itemView.findViewById(R.id.comment_content);
-            commentTime = (AppCompatTextView) itemView.findViewById(R.id.comment_time);
-        }
-    }*/
 
     @Override
     public void onClick(View v) {

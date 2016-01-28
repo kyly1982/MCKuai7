@@ -9,9 +9,9 @@ import android.view.ViewGroup;
 import com.mckuai.imc.Base.BaseFragment;
 import com.mckuai.imc.R;
 
-public class ChatFragment extends BaseFragment {
+public class MainFragment_Chat extends BaseFragment {
 
-    public ChatFragment() {
+    public MainFragment_Chat() {
         mTitleResId = R.string.fragment_chat;
     }
 
@@ -24,7 +24,7 @@ public class ChatFragment extends BaseFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_chat, container, false);
+        return inflater.inflate(R.layout.fragment_main_chat, container, false);
     }
 
 }

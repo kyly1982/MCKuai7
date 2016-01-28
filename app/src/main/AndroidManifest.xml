@@ -19,12 +19,11 @@
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS" />
-
     <uses-permission android:name="android.permission.CAMERA" />
 
     <uses-feature android:name="android.hardware.camera" />
     <uses-feature android:name="android.hardware.camera.autofocus" />
-    <!--suppress DeprecatedClassUsageInspection -->
+    <!-- suppress DeprecatedClassUsageInspection -->
     <uses-permission android:name="android.permission.GET_TASKS" />
 
     <application
@@ -47,18 +46,16 @@
         <activity
             android:name=".Activity.CreateActivity"
             android:label="${APP_NAME}"
-            android:theme="@style/AppTheme"></activity>
-
+            android:theme="@style/AppTheme" />
         <activity
             android:name=".Activity.LoginActivity"
             android:label="${APP_NAME}"
             android:theme="@style/AppTheme" />
 
-
         <!-- ********************************************各种开放平台的配置********************************** -->
         <!-- ********************************************配置腾讯的相关SDK******************************************** -->
         <activity
-            android:name="com.mckuai.imc.wxapi.WXEntryActivity"
+            android:name=".wxapi.WXEntryActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:exported="true"
             android:screenOrientation="portrait"
@@ -80,21 +77,19 @@
             android:name="com.tencent.connect.common.AssistActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:screenOrientation="portrait"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar"></activity>
-
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
 
         <!-- ********************************************百度定位******************************************** -->
         <meta-data
             android:name="com.baidu.lbsapi.API_KEY"
             android:value="8BeV0Eu1X94jbXQgFckSaL8L" />
+
         <service
             android:name="com.baidu.location.f"
             android:enabled="true"
-            android:process=":remote">
+            android:process=":remote" />
 
-        </service>
-
-        <!-- ********************************************友盟相关********************************************-->
+        <!-- ********************************************友盟相关******************************************** -->
         <activity
             android:name="com.umeng.socialize.editorpage.ShareActivity"
             android:configChanges="orientation|keyboard"
@@ -102,7 +97,6 @@
             android:noHistory="true"
             android:theme="@style/Theme.UMDialog"
             android:windowSoftInputMode="stateVisible|adjustResize" />
-
 
         <!-- 友盟统计 key -->
         <meta-data
@@ -113,11 +107,10 @@
             android:name="UMENG_CHANNEL"
             android:value="${UMENG_CHANNEL_VALUE}" />
 
-
         <!-- 友盟推送监听通知点击或者忽略处理的广播 -->
         <receiver
             android:name="com.umeng.message.NotificationProxyBroadcastReceiver"
-            android:exported="false"></receiver>
+            android:exported="false" />
         <!-- 友盟推送监听开机运行、网络连接变化、卸载的广播 -->
         <receiver
             android:name="com.umeng.message.SystemReceiver"
@@ -130,6 +123,7 @@
             </intent-filter>
             <intent-filter>
                 <action android:name="android.intent.action.PACKAGE_REMOVED" />
+
                 <data android:scheme="package" />
             </intent-filter>
         </receiver>
@@ -139,6 +133,7 @@
             android:process=":push">
             <intent-filter>
                 <action android:name="org.agoo.android.intent.action.ELECTION_RESULT_V4" />
+
                 <category android:name="umeng" />
             </intent-filter>
         </receiver>
@@ -171,6 +166,7 @@
             </intent-filter>
             <intent-filter>
                 <action android:name="org.agoo.android.intent.action.PING_V4" />
+
                 <category android:name="umeng" />
             </intent-filter>
         </service>
@@ -193,7 +189,7 @@
             </intent-filter>
         </service>
 
-        <!--UM v2.4.1添加的Service，Umeng的消息接收后的处理服务 -->
+        <!-- UM v2.4.1添加的Service，Umeng的消息接收后的处理服务 -->
         <service
             android:name="com.umeng.message.UmengMessageCallbackHandlerService"
             android:exported="false">
@@ -213,10 +209,13 @@
 
         <!-- UM V1.3.0添加的service，负责下载通知的资源 -->
         <service android:name="com.umeng.message.UmengDownloadResourceService" />
+
         <meta-data
             android:name="UMENG_MESSAGE_SECRET"
-            android:value="ee7b5f0cb297eddbd18300bd62f63d81"></meta-data>
+            android:value="ee7b5f0cb297eddbd18300bd62f63d81" />
 
+        <activity android:name=".Activity.CartoonActivity" />
+        <activity android:name=".Activity.UserCenterActivity"></activity>
     </application>
 
 </manifest>

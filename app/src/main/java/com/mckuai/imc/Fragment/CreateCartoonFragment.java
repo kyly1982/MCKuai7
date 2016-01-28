@@ -26,7 +26,6 @@ import com.mckuai.imc.Base.MCKuai;
 import com.mckuai.imc.Bean.Cartoon;
 import com.mckuai.imc.R;
 import com.mckuai.imc.Util.MCNetEngine;
-import com.mckuai.imc.Widget.CreateCartoonStepView.CartoonScene;
 import com.mckuai.imc.Widget.CreateCartoonStepView.StepView_1;
 import com.mckuai.imc.Widget.CreateCartoonStepView.StepView_2;
 import com.mckuai.imc.Widget.CreateCartoonStepView.StepView_3;
@@ -156,7 +155,14 @@ public class CreateCartoonFragment extends BaseFragment implements StepView_4.On
     }
 
     private void uploadImage() {
-        MCKuai.instence.netEngine.uploadImage(getActivity(),getCartoonBitmap(),this);
+        Bitmap bitmap = getCartoonBitmap();
+        if (null != bitmap) {
+            ArrayList<Bitmap> bitmaps = new ArrayList<>(1);
+            bitmaps.add(bitmap);
+            MCKuai.instence.netEngine.uploadImage(getActivity(), bitmaps, this);
+        } else {
+            Snackbar.make(cartoonBuilder,"错误，不能获取图片内容!",Snackbar.LENGTH_SHORT).show();
+        }
     }
 
     private void uploadCartoon(Cartoon cartoon) {
@@ -291,22 +297,27 @@ public class CreateCartoonFragment extends BaseFragment implements StepView_4.On
     }
 
     @Override
-    public void onFaile(String msg) {
+    public void onUploadCartoonFailure(String msg) {
         Snackbar.make(cartoonBuilder,msg,Snackbar.LENGTH_LONG).show();
     }
 
     @Override
-    public void onSuccess(String url) {
+    public void onUploadCartoonSuccess() {
+        Snackbar.make(cartoonBuilder,"上传成功",Snackbar.LENGTH_SHORT).show();
+        if (null != mOnFragmentEventListener){
+            mOnFragmentEventListener.onFragmentAction(null);
+        }
+    }
+
+    @Override
+    public void onImageUploadSuccess(String url) {
         Cartoon cartoon = new Cartoon(url,MCKuai.instence.user,null);
         uploadCartoon(cartoon);
     }
 
     @Override
-    public void onSuccess() {
-        Snackbar.make(cartoonBuilder,"上传成功",Snackbar.LENGTH_SHORT).show();
-        if (null != mOnFragmentEventListener){
-            mOnFragmentEventListener.onFragmentAction(null);
-        }
+    public void onImageUploadFailure(String msg) {
+        Snackbar.make(cartoonBuilder,msg,Snackbar.LENGTH_LONG).show();
     }
 
     @Override

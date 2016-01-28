@@ -56,7 +56,7 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
         if (null != mComments && -1 < position && position < mComments.size()){
             Comment comment = mComments.get(position);
             if (null != comment){
-                mImageLoader.displayImage(comment.getOwner().getCover(),holder.cover);
+                mImageLoader.displayImage(comment.getOwner().getHeadImage(),holder.cover);
                 holder.name.setText(comment.getOwner().getNickEx());
                 holder.time.setText(comment.getTimeEx());
                 holder.content.setText(comment.getContent());

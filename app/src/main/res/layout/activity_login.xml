@@ -7,7 +7,7 @@
 
     <include
         android:id="@+id/ll_titlebar"
-        layout="@layout/actionbar_main_layout"></include>
+        layout="@layout/actionbar_normal_layout"></include>
 
 
 

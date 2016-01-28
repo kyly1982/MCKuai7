@@ -29,7 +29,7 @@
     <dimen name="community_margin_layout">16dp</dimen>
     <dimen name="community_margin_content">5dp</dimen>
     <dimen name="community_item_postheight_normal">74dp</dimen>
-    
+
     <!--创作-->
     <dimen name="createcartoon_frame_builder">5dp</dimen>
     <dimen name="createcartoon_margin_builder">15dp</dimen>
