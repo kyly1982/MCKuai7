@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="78dp"
+    android:padding="5dp">
+
+    <android.support.v7.widget.AppCompatImageView
+        android:id="@+id/cartooncover"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_alignParentRight="true"
+        android:background="@color/colorYellow"/>
+
+    <android.support.v7.widget.AppCompatTextView
+        android:id="@+id/dynamictype"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/textSecondary"
+        android:textSize="@dimen/font_normal"
+        android:text="评论了"
+        />
+
+    <android.support.v7.widget.AppCompatTextView
+        android:id="@+id/cartoon_ownername"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="5dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginBottom="5dp"
+        android:layout_toLeftOf="@id/cartooncover"
+        android:layout_toRightOf="@id/dynamictype"
+        android:gravity="right"
+        android:textColor="@color/textGreen"
+        android:textSize="@dimen/font_normal"
+        android:text="炒鸡大狒狒"/>
+
+    <android.support.v7.widget.AppCompatTextView
+        android:id="@+id/time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:textColor="@color/textSecondary"
+        android:textSize="@dimen/font_normal"
+        android:text="01-20"/>
+
+    <android.support.v7.widget.AppCompatTextView
+        android:id="@+id/dynamiccontent"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_toLeftOf="@id/cartooncover"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@id/cartoon_ownername"
+        android:lines="2"
+        android:textSize="@dimen/font_accent"
+        android:textColor="@color/textPrimary"
+        android:text="炒鸡大狒狒炒鸡大狒狒炒鸡大狒狒炒鸡大狒狒炒鸡大狒狒炒鸡大狒狒炒鸡大狒狒炒鸡大狒狒炒鸡大狒狒"/>
+</RelativeLayout>

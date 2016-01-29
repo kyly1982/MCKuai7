@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="68dp"
+    android:padding="9dp">
+
+    <android.support.v7.widget.AppCompatImageView
+        android:id="@+id/usercover"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:background="@color/colorYellow"/>
+
+    <android.support.v7.widget.AppCompatImageButton
+        android:id="@+id/chat"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_alignParentRight="true"
+        android:background="@color/colorYellow"/>
+
+    <android.support.v7.widget.AppCompatTextView
+        android:id="@+id/username"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="9dp"
+        android:layout_marginRight="9dp"
+        android:singleLine="true"
+        android:layout_toRightOf="@id/usercover"
+        android:layout_toLeftOf="@id/chat"
+        android:text="小猪涉猎"/>
+
+    <android.support.v7.widget.AppCompatTextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@id/username"
+        android:layout_alignParentBottom="true"
+        android:padding="3dp"
+        android:background="@color/colorYellow"
+        android:textColor="@color/textAccent"
+        android:text="LV 12"/>
+
+
+</RelativeLayout>

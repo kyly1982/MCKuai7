@@ -9,7 +9,6 @@ import com.google.gson.reflect.TypeToken;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
-import com.loopj.android.http.TextHttpResponseHandler;
 import com.mckuai.imc.Base.MCKuai;
 import com.mckuai.imc.Bean.Cartoon;
 import com.mckuai.imc.Bean.ForumInfo;
@@ -152,7 +151,8 @@ public class MCNetEngine {
     }
 
     public void uploadImage(final Context context,ArrayList<Bitmap> bitmaps, final OnUploadImageResponseListener listener){
-        String url = "http://www.mckuai.com/" + context.getString(R.string.interface_uploadimage);
+        //String url = "http://www.mckuai.com/" + context.getString(R.string.interface_uploadimage);
+        String url= "http://192.168.10.104/" + context.getString(R.string.interface_uploadimage_cartoon);
         RequestParams params = new RequestParams();
         if (null != bitmaps && !bitmaps.isEmpty()){
             String fileName =null;

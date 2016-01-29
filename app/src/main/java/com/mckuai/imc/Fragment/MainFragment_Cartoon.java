@@ -89,7 +89,6 @@ public class MainFragment_Cartoon extends BaseFragment implements RadioGroup.OnC
 
         mCartoonListView = (SuperRecyclerView) view.findViewById(R.id.cartoonlist);
         RecyclerView.LayoutManager manager = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
-        manager.offsetChildrenVertical(100);
         mCartoonListView.setLayoutManager(manager);
        /* int spacingInPixels = getResources().getDimensionPixelSize(R.dimen.margin_cartoon_content);
         mCartoonListView.addItemDecoration(new SpaceItemDecoration(spacingInPixels));*/

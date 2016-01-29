@@ -81,6 +81,7 @@
     <string name="interface_replyfloor">interface.do?act=replyTalk</string>
     <!-- 上传图片 回图片路径字符串  http://cdn.mckuai.com/xxx.jpg 需加在content 帖子内容后面 -->
     <string name="interface_uploadimage">group.do?act=uploadImg</string>
+    <string name="interface_uploadimage_cartoon">interface.do?act=uploadCartoonImg</string>
     <string name="interface_uploadpost">interface.do?act=addTalk</string>
     <!-- 是否打赏或收藏 -->
     <string name="interface_getpostmark">interface.do?act=isCollect</string>
