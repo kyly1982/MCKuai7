@@ -201,6 +201,9 @@
     <!--漫画详细页-->
     <string name="cartoondetail_tag_cartoon">CARTOON_OBJECT</string>
 
+    <!--帖子详情-->
+    <string name="tag_post">TAG_POST</string>
+
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
