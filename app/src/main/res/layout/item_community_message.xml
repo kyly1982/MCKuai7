@@ -3,7 +3,9 @@
     android:layout_width="match_parent"
     android:layout_height="@dimen/usercenter_item_community_height"
     android:layout_marginBottom="1px"
-    android:padding="@dimen/usercenter_item_layoutpadding">
+    android:layout_marginTop="1px"
+    android:padding="@dimen/usercenter_item_layoutpadding"
+    android:background="@color/icons">
 
     <android.support.v7.widget.AppCompatImageView
         android:id="@+id/usercover"
@@ -23,6 +25,7 @@
         android:layout_marginRight="@dimen/usercenter_item_layoutpadding"
         android:gravity="center_vertical"
         android:textColor="@color/textHint"
+        android:text="2222"
         android:textSize="@dimen/font_normal"/>
 
     <android.support.v7.widget.AppCompatTextView
@@ -39,68 +42,43 @@
         android:maxWidth="100dp"
         android:singleLine="true"
         android:textColor="@color/textHint"
+        android:text="2222"
         android:textSize="@dimen/font_normal"/>
 
     <android.support.v7.widget.AppCompatTextView
-        android:id="@+id/tag_at"
+        android:id="@+id/messagetag"
         android:layout_width="wrap_content"
         android:layout_height="0dp"
-        android:visibility="gone"
+        android:visibility="visible"
         android:layout_alignBottom="@id/usercover"
         android:layout_alignTop="@id/usercover"
         android:layout_toRightOf="@id/username"
+        android:gravity="center"
         android:textColor="@color/textHint"
         android:textSize="@dimen/font_normal"
         android:text="@string/atYou"/>
 
-
-    <RelativeLayout
-        android:id="@+id/message_other"
+    <android.support.v7.widget.AppCompatTextView
+        android:id="@+id/posttitle"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/usercenter_item_layoutpadding"
+        android:layout_marginRight="@dimen/usercenter_item_layoutpadding"
         android:layout_below="@id/usercover"
-        android:visibility="gone">
+        android:singleLine="true"
+        android:textColor="@color/textHint"
+        android:textSize="@dimen/font_normal" />
 
 
-        <android.support.v7.widget.AppCompatTextView
-            android:id="@+id/posttitle"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/usercenter_item_layoutpadding"
-            android:layout_marginRight="@dimen/usercenter_item_layoutpadding"
-            android:singleLine="true"
-            android:textColor="@color/textHint"
-            android:textSize="@dimen/font_normal" />
 
-        <android.support.v7.widget.AppCompatTextView
-            android:id="@+id/content"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_margin="@dimen/usercenter_item_layoutpadding"
-            android:singleLine="true"
-            android:textColor="@color/textPrimary"
-            android:textSize="@dimen/font_accent" />
-    </RelativeLayout>
-
-    <RelativeLayout
-        android:id="@+id/message_system"
+    <android.support.v7.widget.AppCompatTextView
+        android:id="@+id/messagecontent"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@id/usercover"
-        android:visibility="gone">
-
-
-        <android.support.v7.widget.AppCompatTextView
-            android:id="@+id/content_system"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_margin="@dimen/usercenter_item_layoutpadding"
-            android:lines="2"
-            android:textColor="@color/textPrimary"
-            android:textSize="@dimen/font_accent" />
-    </RelativeLayout>
-
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_margin="@dimen/usercenter_item_layoutpadding"
+        android:lines="1"
+        android:textColor="@color/textPrimary"
+        android:textSize="@dimen/font_accent" />
 
 </RelativeLayout>

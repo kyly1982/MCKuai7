@@ -3,7 +3,7 @@ package com.mckuai.imc.Bean;
 import java.io.Serializable;
 import java.util.ArrayList;
 
-public class PostList implements Serializable {
+public class PostListBean implements Serializable {
     /**
      *
      */

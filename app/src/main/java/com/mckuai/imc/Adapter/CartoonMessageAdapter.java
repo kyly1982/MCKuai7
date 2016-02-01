@@ -51,7 +51,7 @@ public class CartoonMessageAdapter extends RecyclerView.Adapter<CartoonMessageAd
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context).inflate(R.layout.item_cartoon_message,parent);
+        View view = LayoutInflater.from(context).inflate(R.layout.item_cartoon_message,parent,false);
         ViewHolder holder = new ViewHolder(view);
         if (null != listener){
             view.setClickable(true);

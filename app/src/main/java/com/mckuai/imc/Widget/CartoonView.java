@@ -112,7 +112,9 @@ public class CartoonView extends FrameLayout implements View.OnClickListener{
 
     private void bindData(Cartoon cartoon) {
         showImage(cartoon.getImage(), image, false);
-        showImage(cartoon.getOwner().getHeadImage(), userCover, true);
+        if (null != cartoon.getOwner()) {
+            showImage(cartoon.getOwner().getHeadImage(), userCover, true);
+        }
         if (null != cartoon.getComments()) {
             showComment(cartoon.getComments(), commentList);
         }

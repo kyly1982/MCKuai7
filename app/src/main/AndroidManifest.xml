@@ -51,28 +51,22 @@
             android:name=".Activity.LoginActivity"
             android:label="${APP_NAME}"
             android:theme="@style/AppTheme" />
-
         <activity
             android:name=".Activity.CartoonActivity"
             android:label="${APP_NAME}"
             android:theme="@style/AppTheme" />
-
         <activity
             android:name=".Activity.PostActivity"
             android:label="${APP_NAME}"
             android:theme="@style/AppTheme" />
-
-
         <activity
             android:name=".Activity.SearchActivity"
             android:label="${APP_NAME}"
             android:theme="@style/AppTheme" />
-
         <activity
             android:name=".Activity.SettingActivity"
             android:label="${APP_NAME}"
             android:theme="@style/AppTheme" />
-
         <activity
             android:name=".Activity.UserCenterActivity"
             android:label="${APP_NAME}"
@@ -240,6 +234,7 @@
             android:name="UMENG_MESSAGE_SECRET"
             android:value="ee7b5f0cb297eddbd18300bd62f63d81" />
 
+        <activity android:name=".Activity.ProfileEditerActivity"></activity>
     </application>
 
 </manifest>

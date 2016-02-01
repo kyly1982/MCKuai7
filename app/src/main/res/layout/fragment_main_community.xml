@@ -9,10 +9,12 @@
         android:layout_height="@dimen/community_forumlist_height"
         android:paddingTop="@dimen/margin_content"
         android:paddingBottom="@dimen/margin_content"
+        android:background="@color/icons"
         app:layout_empty="@layout/emptyview"
         >
 
     </com.malinskiy.superrecyclerview.SuperRecyclerView>
+
 
     <RadioGroup
         android:id="@+id/posttype_indicator"
@@ -22,7 +24,7 @@
         android:orientation="horizontal" >
 
         <android.support.v7.widget.AppCompatRadioButton
-            android:id="@+id/rb_lastPost"
+            android:id="@+id/lastpost"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
@@ -34,7 +36,7 @@
             android:textColor="@color/community_postlable_type_textclolr" />
 
         <android.support.v7.widget.AppCompatRadioButton
-            android:id="@+id/rb_essencePost"
+            android:id="@+id/essencepost"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
@@ -45,7 +47,7 @@
             android:textColor="@color/community_postlable_type_textclolr" />
 
         <android.support.v7.widget.AppCompatRadioButton
-            android:id="@+id/rb_topPost"
+            android:id="@+id/toppost"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
@@ -63,7 +65,7 @@
         android:layout_below="@id/posttype_indicator"
         android:layout_alignParentBottom="true"
         app:layout_empty="@layout/emptyview"
-        android:background="@color/icons"
+        android:background="@color/colorPrimary"
         >
 
     </com.malinskiy.superrecyclerview.SuperRecyclerView>

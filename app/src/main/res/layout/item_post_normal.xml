@@ -2,7 +2,9 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="@dimen/community_item_postheight_normal"
-    android:background="@null">
+    android:layout_marginTop="1px"
+    android:layout_marginBottom="1px"
+    android:background="@color/icons">
 
     <View
         android:id="@+id/bottomfarm"

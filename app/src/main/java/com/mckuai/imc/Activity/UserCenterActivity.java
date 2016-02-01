@@ -25,11 +25,13 @@ import com.mckuai.imc.Bean.Cartoon;
 import com.mckuai.imc.Bean.CartoonMessage;
 import com.mckuai.imc.Bean.CommunityDynamic;
 import com.mckuai.imc.Bean.CommunityMessage;
+import com.mckuai.imc.Bean.MCUser;
 import com.mckuai.imc.Bean.Page;
 import com.mckuai.imc.Bean.Post;
 import com.mckuai.imc.Bean.User;
 import com.mckuai.imc.R;
 import com.mckuai.imc.Util.MCNetEngine;
+import com.nostra13.universalimageloader.core.ImageLoader;
 
 import java.util.ArrayList;
 
@@ -59,9 +61,12 @@ public class UserCenterActivity extends BaseActivity
     private Page communityWorkPage;
     private Page friendPage;
 
+    private ImageLoader loader;
+
 
     private AppCompatImageView userCover;
     private AppCompatTextView userLevel;
+    private AppCompatTextView userName;
     private AppCompatButton chat;
     private AppCompatButton addFriend;
     private RadioGroup group;
@@ -71,6 +76,7 @@ public class UserCenterActivity extends BaseActivity
     private AppCompatRadioButton cartoon;
     private AppCompatRadioButton message;
     private AppCompatRadioButton dynamic;
+    private AppCompatRadioButton friend;
 
 
     @Override
@@ -81,11 +87,13 @@ public class UserCenterActivity extends BaseActivity
         initDrawer();
         getParams();
         initView();
+        loader = ImageLoader.getInstance();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
+        showData();
     }
 
     @Override
@@ -96,9 +104,11 @@ public class UserCenterActivity extends BaseActivity
     private void initView() {
         userCover = (AppCompatImageView) findViewById(R.id.usercover);
         userLevel = (AppCompatTextView) findViewById(R.id.userlevel);
+        userName = (AppCompatTextView) findViewById(R.id.actionbar_title);
         chat = (AppCompatButton) findViewById(R.id.chat);
         addFriend = (AppCompatButton) findViewById(R.id.addfriend);
         group = (RadioGroup) findViewById(R.id.group);
+        friend = (AppCompatRadioButton) findViewById(R.id.friend);
         type = (RadioGroup) findViewById(R.id.type);
         cartoon = (AppCompatRadioButton) findViewById(R.id.cartoon);
         message = (AppCompatRadioButton) findViewById(R.id.message);
@@ -110,6 +120,8 @@ public class UserCenterActivity extends BaseActivity
         list.setLayoutManager(linearLayoutManager);
         RecyclerView.LayoutManager manager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
         work.setLayoutManager(manager);
+
+        userName.setTextColor(getResources().getColor(R.color.icons));
 
         cartoon.setChecked(true);
         changeUIByUser();
@@ -137,12 +149,14 @@ public class UserCenterActivity extends BaseActivity
             chat.setVisibility(View.GONE);
             addFriend.setVisibility(View.GONE);
             message.setVisibility(View.VISIBLE);
+            friend.setVisibility(View.VISIBLE);
             message.setChecked(true);
             contentType = 36;
         } else {
             chat.setVisibility(View.VISIBLE);
             addFriend.setVisibility(View.VISIBLE);
             message.setVisibility(View.GONE);
+            friend.setVisibility(View.GONE);
             dynamic.setChecked(true);
             contentType = 34;
         }
@@ -190,11 +204,13 @@ public class UserCenterActivity extends BaseActivity
                 }
                 mApplication.netEngine.loadCommunityWork(this, user.getId().intValue(), communityWorkPage.getNextPage(), this);
                 break;
-            case 8:
-                if (null == friendPage) {
-                    friendPage = new Page();
+            default:
+                if (8 == (contentType & 8)){
+                    if (null == friendPage) {
+                        friendPage = new Page();
+                    }
+                    mApplication.netEngine.loadFriendList(this, friendPage.getNextPage(), this);
                 }
-                mApplication.netEngine.loadFriendList(this, friendPage.getNextPage(), this);
                 break;
         }
     }
@@ -206,15 +222,17 @@ public class UserCenterActivity extends BaseActivity
                 work.setVisibility(View.GONE);
                 if (null != cartoonMessageAdapter) {
                     list.setAdapter(cartoonMessageAdapter);
+                    cartoonMessageAdapter.notifyDataSetChanged();
                 } else {
                     loadData();
                 }
                 break;
             case 34://动漫动态
-                list.setVisibility(View.VISIBLE);
-                work.setVisibility(View.GONE);
                 if (null != cartoonDynamicAdapter) {
+                    list.setVisibility(View.VISIBLE);
+                    work.setVisibility(View.GONE);
                     list.setAdapter(cartoonDynamicAdapter);
+                    cartoonDynamicAdapter.notifyDataSetChanged();
                 } else {
                     loadData();
                 }
@@ -224,6 +242,7 @@ public class UserCenterActivity extends BaseActivity
                 work.setVisibility(View.VISIBLE);
                 if (null != cartoonWorkAdapter) {
                     work.setAdapter(cartoonWorkAdapter);
+                    cartoonWorkAdapter.notifyDataSetChanged();
                 } else {
                     loadData();
                 }
@@ -233,6 +252,7 @@ public class UserCenterActivity extends BaseActivity
                 work.setVisibility(View.GONE);
                 if (null != communityMessageAdapter) {
                     list.setAdapter(communityMessageAdapter);
+                    communityDynamicAdapter.notifyDataSetChanged();
                 } else {
                     loadData();
                 }
@@ -242,6 +262,7 @@ public class UserCenterActivity extends BaseActivity
                 work.setVisibility(View.GONE);
                 if (null != communityDynamicAdapter) {
                     list.setAdapter(communityDynamicAdapter);
+                    communityDynamicAdapter.notifyDataSetChanged();
                 } else {
                     loadData();
                 }
@@ -251,24 +272,34 @@ public class UserCenterActivity extends BaseActivity
                 work.setVisibility(View.GONE);
                 if (null != communityWorkAdapter) {
                     list.setAdapter(communityWorkAdapter);
+                    communityWorkAdapter.notifyDataSetChanged();
                 } else {
                     loadData();
                 }
                 break;
-            case 8://朋友
-                list.setVisibility(View.VISIBLE);
-                work.setVisibility(View.GONE);
-                if (null != friendAdapter) {
-                    list.setAdapter(friendAdapter);
-                } else {
-                    loadData();
+            default:
+                if (8 == (contentType & 8)){
+                    list.setVisibility(View.VISIBLE);
+                    work.setVisibility(View.GONE);
+                    if (null != friendAdapter) {
+                        list.setAdapter(friendAdapter);
+                        friendAdapter.notifyDataSetChanged();
+                    } else {
+                        loadData();
+                    }
                 }
                 break;
         }
+        showUserInfo();
     }
 
     private void showUserInfo() {
-
+        if (null != user && 0 != user.getId() && null != user.getName() && null != user.getHeadImage()) {
+            if (null == userCover.getTag() || !userCover.getTag().equals(user.getHeadImage()))
+            loader.displayImage(user.getHeadImage(), userCover);
+            userName.setText(user.getNickEx());
+            userLevel.setText(getString(R.string.usercenter_userlevel,user.getLevel()));
+        }
     }
 
     private void resetUser(User user) {
@@ -298,24 +329,24 @@ public class UserCenterActivity extends BaseActivity
         switch (checkedId) {
             case R.id.cartoon:
                 type.setVisibility(View.VISIBLE);
-                contentType = contentType & 39;//100,111
+                contentType = (contentType & 7) | 32;//100,111
                 break;
             case R.id.community:
                 type.setVisibility(View.VISIBLE);
-                contentType = contentType & 23;//010,111
+                contentType = (contentType & 7) | 16;//010,111
                 break;
             case R.id.friend:
                 type.setVisibility(View.GONE);//001,111
-                contentType = 8;
+                contentType = (contentType & 7) | 8;
                 break;
             case R.id.message:
-                contentType = contentType & 60;//111,100
+                contentType = (contentType & 56)|4;//111,100
                 break;
             case R.id.dynamic:
-                contentType = contentType & 58;//111,010
+                contentType = (contentType & 56) | 2;//111,010
                 break;
             case R.id.work:
-                contentType = contentType & 57;//111,001
+                contentType = (contentType & 56) | 1;//111,001
                 break;
         }
         showData();
@@ -350,12 +381,14 @@ public class UserCenterActivity extends BaseActivity
                     startActivity(intent);
                 }
             });
+            list.setAdapter(cartoonDynamicAdapter);
         }
         if (1 == page.getPage()) {
             cartoonDynamicAdapter.setData(dynamics);
         } else {
             cartoonDynamicAdapter.addData(dynamics);
         }
+        list.postInvalidate();
     }
 
     @Override
@@ -372,6 +405,7 @@ public class UserCenterActivity extends BaseActivity
                     startActivity(intent);
                 }
             });
+            list.setAdapter(cartoonMessageAdapter);
         }
         if (1 == page.getPage()) {
             cartoonMessageAdapter.setData(messages);
@@ -386,7 +420,7 @@ public class UserCenterActivity extends BaseActivity
     }
 
     @Override
-    public void onLoadCartoonWorkSuccess(ArrayList<Cartoon> work, Page page) {
+    public void onLoadCartoonWorkSuccess(ArrayList<Cartoon> works, Page page) {
         cartoonWorkPage = page;
         if (null == cartoonWorkAdapter) {
             cartoonWorkAdapter = new CartoonWorkAdapter(this, new CartoonWorkAdapter.OnItemClickListener() {
@@ -399,11 +433,12 @@ public class UserCenterActivity extends BaseActivity
                     startActivity(intent);
                 }
             });
+            work.setAdapter(cartoonWorkAdapter);
         }
         if (1 == page.getPage()) {
-            cartoonWorkAdapter.setData(work);
+            cartoonWorkAdapter.setData(works);
         } else {
-            cartoonWorkAdapter.addData(work);
+            cartoonWorkAdapter.addData(works);
         }
     }
 
@@ -413,7 +448,7 @@ public class UserCenterActivity extends BaseActivity
     }
 
     @Override
-    public void onLoadCommunityDynamicSuccess(ArrayList<CommunityDynamic> dynamics, Page page) {
+    public void onLoadCommunityDynamicSuccess(ArrayList<CommunityDynamic> dynamics,User user, Page page) {
         communityDynamicPage = page;
         if (null == communityDynamicAdapter) {
             communityDynamicAdapter = new CommunityDynamicAdapter(this, new CommunityDynamicAdapter.OnItemClickListener() {
@@ -428,11 +463,16 @@ public class UserCenterActivity extends BaseActivity
                     startActivity(intent);
                 }
             });
+            list.setAdapter(communityDynamicAdapter);
         }
         if (1 == page.getPage()) {
             communityDynamicAdapter.setData(dynamics);
         } else {
             communityDynamicAdapter.addData(dynamics);
+        }
+        if (null != user){
+            this.user = user;
+            showUserInfo();
         }
     }
 
@@ -442,7 +482,7 @@ public class UserCenterActivity extends BaseActivity
     }
 
     @Override
-    public void onLoadCommunityMessageSuccess(ArrayList<CommunityMessage> messages, Page page) {
+    public void onLoadCommunityMessageSuccess(ArrayList<CommunityMessage> messages,User user, Page page) {
         communityMessagePage = page;
         if (null == communityMessageAdapter) {
             communityMessageAdapter = new CommunityMessageAdapter(this, new CommunityMessageAdapter.OnItemClickListener() {
@@ -457,11 +497,16 @@ public class UserCenterActivity extends BaseActivity
                     startActivity(intent);
                 }
             });
+            list.setAdapter(communityMessageAdapter);
         }
         if (1 == page.getPage()) {
             communityMessageAdapter.setData(messages);
         } else {
             communityMessageAdapter.addData(messages);
+        }
+        if (null != user){
+            this.user = user;
+            showUserInfo();
         }
     }
 
@@ -471,7 +516,7 @@ public class UserCenterActivity extends BaseActivity
     }
 
     @Override
-    public void onLoadCommunityWorkSuccess(ArrayList<Post> works, Page page) {
+    public void onLoadCommunityWorkSuccess(ArrayList<Post> works,User user, Page page) {
         communityWorkPage = page;
         if (null == communityWorkAdapter) {
             communityWorkAdapter = new PostAdapter(this, new PostAdapter.OnItemClickListener() {
@@ -489,6 +534,12 @@ public class UserCenterActivity extends BaseActivity
                     resetUser(user);
                 }
             });
+            list.setAdapter(communityWorkAdapter);
+        }
+        if (1 == page.getPage()){
+            communityWorkAdapter.setData(works);
+        } else {
+            communityWorkAdapter.addData(works);
         }
     }
 
@@ -498,20 +549,26 @@ public class UserCenterActivity extends BaseActivity
     }
 
     @Override
-    public void onLoadFriendSuccess(ArrayList<User> friends, Page page) {
+    public void onLoadFriendSuccess(ArrayList<MCUser> friends, Page page) {
         friendPage = page;
         if (null == friendAdapter) {
             friendAdapter = new FriendAdapter(this, new FriendAdapter.OnItemClickListener() {
                 @Override
-                public void onItemClicked(User user) {
-                    resetUser(user);
+                public void onItemClicked(MCUser user) {
+                    resetUser(new User(user));
                 }
 
                 @Override
-                public void onChatClicked(User user) {
+                public void onChatClicked(MCUser user) {
                     showMessage("和它聊天", null, null);
                 }
             });
+            list.setAdapter(friendAdapter);
+        }
+        if (1 == page.getPage()){
+            friendAdapter.setData(friends);
+        } else {
+            friendAdapter.addData(friends);
         }
     }
 

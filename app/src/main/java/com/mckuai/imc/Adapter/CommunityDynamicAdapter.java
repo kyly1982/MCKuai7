@@ -51,14 +51,14 @@ public class CommunityDynamicAdapter extends RecyclerView.Adapter<CommunityDynam
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context).inflate(R.layout.item_community_dynamic,parent);
+        View view = LayoutInflater.from(context).inflate(R.layout.item_community_dynamic,parent,false);
         ViewHolder holder = new ViewHolder(view);
         if (null != listener){
             view.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     CommunityDynamic dynamic = (CommunityDynamic) v.getTag();
-                    if (null != dynamic){
+                    if (null != dynamic) {
                         listener.onItemClicked(dynamic);
                     }
                 }
@@ -69,7 +69,19 @@ public class CommunityDynamicAdapter extends RecyclerView.Adapter<CommunityDynam
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-
+        if (null != dynamics && -1 < position && position < dynamics.size()){
+            CommunityDynamic dynamic = dynamics.get(position);
+            if (null != dynamic){
+                switch (dynamic.getTypeEx()){
+                    case CommunityDynamic.TYPE_CREATE:
+                        showCreate(holder,dynamic);
+                        break;
+                    case CommunityDynamic.TYPE_REPLY:
+                        showReply(holder,dynamic);
+                        break;
+                }
+            }
+        }
     }
 
     @Override

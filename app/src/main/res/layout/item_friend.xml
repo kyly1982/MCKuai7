@@ -3,6 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="@dimen/usercenter_item_friend_height"
     android:layout_marginBottom="1px"
+    android:background="@color/icons"
     android:padding="@dimen/usercenter_item_friend_padding">
 
     <android.support.v7.widget.AppCompatImageView

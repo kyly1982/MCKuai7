@@ -1,24 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/community_forum"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="@dimen/community_forum_height"
     android:layout_height="@dimen/community_forum_height"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    app:cardCornerRadius="@dimen/community_forum_radius"
-    android:clickable="true"
-    android:background="@color/forum">
+    android:layout_marginLeft="3dp"
+    android:layout_marginRight="3dp">
 
-    <android.support.v7.widget.AppCompatTextView
-        android:id="@+id/community_forumname"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:gravity="center"
-        android:maxLines="2"
-        android:text="2222"
-        android:ellipsize="end"
-        android:textColor="@color/checkable_text_color_selector"
-        android:background="@null"
-        />
 
-</android.support.v7.widget.CardView>
+
+        <android.support.v7.widget.AppCompatRadioButton
+            android:id="@+id/community_forumname"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:ellipsize="end"
+            android:gravity="center"
+            android:button="@null"
+            android:background="@drawable/background_item_forum_selector"
+            android:maxLines="2"
+            android:textSize="@dimen/font_normal"
+            android:text="2222"
+            android:textColor="@color/checkable_text_color_selector" />
+
+</RelativeLayout>

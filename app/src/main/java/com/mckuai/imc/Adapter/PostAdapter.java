@@ -18,15 +18,16 @@ import java.util.ArrayList;
 /**
  * Created by kyly on 2016/1/25.
  */
-public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder>{
+public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
     private ArrayList<Post> posts;
     private Context context;
     private LayoutInflater inflater;
     private OnItemClickListener listener;
     private ImageLoader imageLoader;
 
-    public interface OnItemClickListener{
+    public interface OnItemClickListener {
         void onItemClicked(Post post);
+
         void onUserClicked(User user);
     }
 
@@ -36,71 +37,103 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder>{
         this.imageLoader = ImageLoader.getInstance();
     }
 
-    public PostAdapter(Context context,OnItemClickListener listener) {
+    public PostAdapter(Context context, OnItemClickListener listener) {
         this.listener = listener;
         this.context = context;
         this.inflater = LayoutInflater.from(context);
         this.imageLoader = ImageLoader.getInstance();
     }
 
-    public void setData(ArrayList<Post> posts){
+    public void setData(ArrayList<Post> posts) {
         this.posts = posts;
         notifyDataSetChanged();
+    }
+
+    public void addData(ArrayList<Post> posts) {
+        if (null == this.posts) {
+            this.posts = posts;
+            notifyDataSetChanged();
+        } else {
+            int position = this.posts.size();
+            this.posts.addAll(posts);
+            notifyItemRangeInserted(position, posts.size());
+        }
     }
 
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = inflater.inflate(R.layout.item_post_normal,parent);
+        View view = inflater.inflate(R.layout.item_post_normal, parent, false);
         ViewHolder holder = new ViewHolder(view);
         return holder;
     }
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        if (null != posts &&-1 < position && position < posts.size()){
+        if (null != posts && -1 < position && position < posts.size()) {
             final Post post = posts.get(position);
-            if (null != post){
-                if (null != post.getHeadImg() && 10 < post.getHeadImg().length()){
-                    imageLoader.displayImage(post.getHeadImg(),holder.usercover);
-                }
-                holder.title.setText(post.getTalkTitle()+"");
-                holder.username.setText(post.getUserName()+"");
+            if (null != post) {
+                holder.title.setText(post.getTalkTitle() + "");
                 holder.replycount.setText(post.getReplyNumEx());
                 holder.updatetime.setText(post.getLastReplyTime());
-                if (post.isEssence()){
+                if (post.isEssence()) {
                     holder.postlable_essence.setVisibility(View.VISIBLE);
                 } else {
                     holder.postlable_essence.setVisibility(View.GONE);
                 }
-                if (post.isTop()){
+                if (post.isTop()) {
                     holder.postlable_top.setVisibility(View.VISIBLE);
                 } else {
                     holder.postlable_top.setVisibility(View.GONE);
                 }
-                if (null != listener){
-                    holder.username.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            User user = new User();
-                            user.setId((long)post.getUserId());
-                            listener.onUserClicked(user);
-                        }
-                    });
-                    holder.usercover.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            User user = new User();
-                            user.setId((long)post.getUserId());
-                            listener.onUserClicked(user);
-                        }
-                    });
-                    holder.itemView.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            listener.onItemClicked(post);
-                        }
-                    });
+
+                if (0 == post.getUserId()) {
+                    if (null != post.getIcon() && 10 < post.getIcon().length()){
+                        imageLoader.displayImage(post.getIcon(),holder.usercover);
+                    }
+                    holder.username.setText(post.getForumName());
+
+                    if (null != listener){
+
+
+                        holder.itemView.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                listener.onItemClicked(post);
+                            }
+                        });
+                    }
+                } else {
+                    if (null != post.getHeadImg() && 10 < post.getHeadImg().length()) {
+                        imageLoader.displayImage(post.getHeadImg(), holder.usercover);
+                    }
+                    holder.username.setText(post.getUserName() + "");
+
+                    if (null != listener) {
+                        holder.username.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                User user = new User();
+                                user.setId((long) post.getUserId());
+                                listener.onUserClicked(user);
+                            }
+                        });
+                        holder.usercover.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                User user = new User();
+                                user.setId((long) post.getUserId());
+                                listener.onUserClicked(user);
+                            }
+                        });
+                        holder.itemView.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                listener.onItemClicked(post);
+                            }
+                        });
+                    }
+
                 }
             }
         }
@@ -108,10 +141,10 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder>{
 
     @Override
     public int getItemCount() {
-        return null == posts ? 0:posts.size();
+        return null == posts ? 0 : posts.size();
     }
 
-    public static class ViewHolder extends RecyclerView.ViewHolder{
+    public static class ViewHolder extends RecyclerView.ViewHolder {
         public AppCompatTextView title;
         public AppCompatTextView username;
         public AppCompatTextView replycount;

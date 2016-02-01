@@ -11,7 +11,7 @@
     android:theme="@style/ThemeOverlay.AppCompat.Dark">
 
     <android.support.v7.widget.AppCompatImageView
-        android:id="@+id/imageView"
+        android:id="@+id/usercover"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@android:drawable/sym_def_app_icon" />
@@ -20,8 +20,8 @@
         android:id="@+id/username"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignTop="@id/imageView"
-        android:layout_toRightOf="@id/imageView"
+        android:layout_alignTop="@id/usercover"
+        android:layout_toRightOf="@id/usercover"
         android:text="用户名"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
 
@@ -29,8 +29,8 @@
         android:id="@+id/userlevel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBottom="@id/imageView"
-        android:layout_toRightOf="@id/imageView"
+        android:layout_alignBottom="@id/usercover"
+        android:layout_toRightOf="@id/usercover"
         android:text="LV.5" />
 
     <android.support.v7.widget.SwitchCompat

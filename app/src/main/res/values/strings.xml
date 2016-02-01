@@ -180,6 +180,7 @@
     <!--个人中心-->
     <string name="usercenter_tag_userid">USER_ID</string>
     <string name="usercenter_tag_user">USER_OBJECT</string>
+    <string name="usercenter_userlevel">LV %1$d</string>
     <string name="cartoon">漫画</string>
     <string name="community">社区</string>
     <string name="friend">朋友</string>
@@ -188,7 +189,7 @@
     <string name="work">作品</string>
     <string name="allMessage">全部</string>
     <string name="atMessage">\@你</string>
-    <string name="systemMessage">系统</string>
+    <string name="systemMessage">系统消息</string>
     <string name="replyYou">回复你的帖子</string>
     <string name="atYou">\@了你</string>
     <string name="replyPost">回复了</string>

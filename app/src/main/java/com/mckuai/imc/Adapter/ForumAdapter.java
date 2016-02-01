@@ -1,6 +1,7 @@
 package com.mckuai.imc.Adapter;
 
 import android.content.Context;
+import android.support.v7.widget.AppCompatRadioButton;
 import android.support.v7.widget.AppCompatTextView;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
@@ -19,39 +20,53 @@ import java.util.ArrayList;
 public class ForumAdapter extends RecyclerView.Adapter<ForumAdapter.ViewHolder> {
     private ArrayList<ForumInfo> forums;
     private Context context;
-    private View.OnClickListener listener;
+    private OnItemClickListener listener;
+    private int checkedFroumId = 0;
 
+    public interface OnItemClickListener{
+        void onItemClicked(int position);
+    }
 
-    public ForumAdapter(Context context, View.OnClickListener listener) {
+    public ForumAdapter(Context context, OnItemClickListener listener) {
         this.context = context;
         this.listener = listener;
     }
 
     public void setData(ArrayList<ForumInfo> forums){
         this.forums = forums;
+        checkedFroumId = forums.get(0).getId();
         notifyDataSetChanged();
     }
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context).inflate(R.layout.item_forum,parent);
-        if (null != listener) {
-            view.setOnClickListener(listener);
-        }
+        View view =  LayoutInflater.from(context).inflate(R.layout.item_forum,parent,false);
         ViewHolder holder = new ViewHolder(view);
         return holder;
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
+    public void onBindViewHolder(final ViewHolder holder, final int position) {
         if (null != forums && -1 < position && position < forums.size()){
-            ForumInfo forum = forums.get(position);
+            final ForumInfo forum = forums.get(position);
             if (null != forum){
                 String name = forum.getName();
                 int length = name.length();
                 StringBuilder builder = new StringBuilder(name);
-                builder.insert(length / 2,"\r\n");
-                holder.name.setText(name);
+                builder.insert(length / 2,"\n");
+                holder.name.setText(builder.toString());
+            }
+            holder.name.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    checkedFroumId = forum.getId();
+                    listener.onItemClicked(position);
+                }
+            });
+            if (forum.getId() == checkedFroumId){
+                holder.name.setChecked(true);
+            } else {
+                holder.name.setChecked(false);
             }
         }
     }
@@ -62,12 +77,11 @@ public class ForumAdapter extends RecyclerView.Adapter<ForumAdapter.ViewHolder> 
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder{
-        public AppCompatTextView name;
-        private CardView forum;
+        public AppCompatRadioButton name;
 
         public ViewHolder(View itemView) {
             super(itemView);
-            name = (AppCompatTextView) itemView.findViewById(R.id.community_forumname);
+            name = (AppCompatRadioButton) itemView.findViewById(R.id.community_forumname);
         }
     }
 }

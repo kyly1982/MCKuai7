@@ -51,7 +51,7 @@ public class CartoonDynamicAdapter extends RecyclerView.Adapter<CartoonDynamicAd
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context).inflate(R.layout.item_cartoon_dynamic,parent);
+        View view = LayoutInflater.from(context).inflate(R.layout.item_cartoon_dynamic,parent,false);
         ViewHolder holder = new ViewHolder(view);
         if (null != listener){
             view.setOnClickListener(new View.OnClickListener() {

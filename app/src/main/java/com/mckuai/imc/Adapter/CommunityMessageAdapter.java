@@ -53,7 +53,7 @@ public class CommunityMessageAdapter extends RecyclerView.Adapter<CommunityMessa
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context).inflate(R.layout.item_community_message,parent);
+        View view = LayoutInflater.from(context).inflate(R.layout.item_community_message,parent,false);
         ViewHolder holder = new ViewHolder(view);
         if (null != listener){
             view.setOnClickListener(new View.OnClickListener() {
@@ -96,34 +96,33 @@ public class CommunityMessageAdapter extends RecyclerView.Adapter<CommunityMessa
     }
 
     private void showReplyMessage(ViewHolder holder,CommunityMessage message){
-        holder.layout_sysmsg.setVisibility(View.GONE);
-        holder.tag_at.setVisibility(View.GONE);
-        holder.layout_other.setVisibility(View.VISIBLE);
         loader.displayImage(message.getHeadImg(), holder.cover);
         holder.username.setText(message.getUserName());
+        holder.username.setVisibility(View.VISIBLE);
         holder.time.setText(message.getInsertTimeEx());
+        holder.title.setText(message.getTalkTitle());
+        holder.content.setText(message.getCont());
+        holder.messagetag.setText(context.getString(R.string.replyYou));
+    }
+
+    private void showAtMessage(ViewHolder holder,CommunityMessage message){
+
+        loader.displayImage(message.getHeadImg(), holder.cover);
+        holder.username.setText(message.getUserName());
+        holder.username.setVisibility(View.VISIBLE);
+        holder.time.setText(message.getInsertTimeEx());
+        holder.messagetag.setText(context.getString(R.string.atYou));
         holder.title.setText(message.getTalkTitle());
         holder.content.setText(message.getCont());
     }
 
-    private void showAtMessage(ViewHolder holder,CommunityMessage message){
-        holder.layout_sysmsg.setVisibility(View.GONE);
-        holder.tag_at.setVisibility(View.VISIBLE);
-        holder.layout_other.setVisibility(View.VISIBLE);
-        loader.displayImage(message.getHeadImg(), holder.cover);
-        holder.username.setText(message.getUserName());
-        holder.time.setText(message.getInsertTimeEx());
-        holder.content_at.setText(message.getTalkTitle());
-    }
-
     private void showSystemMessage(ViewHolder holder,CommunityMessage message){
-        holder.layout_other.setVisibility(View.GONE);
-        holder.tag_at.setVisibility(View.GONE);
-        holder.layout_sysmsg.setVisibility(View.VISIBLE);
+
         holder.cover.setBackgroundResource(R.mipmap.ic_usercenter_community_sysmsg);
-        holder.username.setText(message.getUserName());
+        holder.username.setVisibility(View.GONE);
         holder.time.setText(message.getInsertTimeEx());
-        holder.content_at.setText(message.getShowText());
+        holder.messagetag.setText(context.getString(R.string.systemMessage));
+        holder.content.setText(message.getShowText());
     }
 
 
@@ -133,22 +132,16 @@ public class CommunityMessageAdapter extends RecyclerView.Adapter<CommunityMessa
         public AppCompatTextView time;
         public AppCompatTextView title;
         public AppCompatTextView content;
-        public AppCompatTextView content_at;
-        public AppCompatTextView tag_at;
-        public RelativeLayout layout_sysmsg;
-        public RelativeLayout layout_other;
+        public AppCompatTextView messagetag;
 
        public ViewHolder(View itemView) {
            super(itemView);
            cover = (AppCompatImageView) itemView.findViewById(R.id.usercover);
            username = (AppCompatTextView) itemView.findViewById(R.id.username);
-           time = (AppCompatTextView) itemView.findViewById(R.id.username);
-           title = (AppCompatTextView) itemView.findViewById(R.id.username);
-           content = (AppCompatTextView) itemView.findViewById(R.id.username);
-           content_at = (AppCompatTextView) itemView.findViewById(R.id.username);
-           tag_at = (AppCompatTextView) itemView.findViewById(R.id.tag_at);
-           layout_other = (RelativeLayout) itemView.findViewById(R.id.message_other);
-           layout_sysmsg = (RelativeLayout) itemView.findViewById(R.id.message_system);
+           time = (AppCompatTextView) itemView.findViewById(R.id.time);
+           title = (AppCompatTextView) itemView.findViewById(R.id.posttitle);
+           content = (AppCompatTextView) itemView.findViewById(R.id.messagecontent);
+           messagetag = (AppCompatTextView) itemView.findViewById(R.id.messagetag);
        }
    }
 

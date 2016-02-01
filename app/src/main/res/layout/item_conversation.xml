@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="65dp"
+    android:padding="8dp"
+    android:layout_marginBottom="1px"
+    android:background="@color/icons">
+
+    <android.support.v7.widget.AppCompatImageView
+        android:id="@+id/usercover"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:scaleType="fitXY"
+        android:background="@color/colorYellow"/>
+
+    <android.support.v7.widget.AppCompatTextView
+        android:id="@+id/username"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="3dp"
+        android:layout_marginLeft="5dp"
+        android:singleLine="true"
+        android:layout_toRightOf="@id/usercover"
+        android:text="22341"/>
+
+    <android.support.v7.widget.AppCompatTextView
+        android:id="@+id/time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@id/username"
+        android:layout_alignParentBottom="true"
+        android:textSize="@dimen/font_hint"
+        android:text="01-20"/>
+
+    <android.support.v7.widget.AppCompatTextView
+        android:id="@+id/lastmessage"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_alignLeft="@id/username"
+        android:layout_below="@id/username"
+        android:layout_above="@id/time"
+        android:singleLine="true"
+        android:text="dasafweqrweprq;ewrlweqr"/>
+
+
+
+</RelativeLayout>

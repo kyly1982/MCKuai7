@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.mckuai.imc.Bean.MCUser;
 import com.mckuai.imc.Bean.User;
 import com.mckuai.imc.R;
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -19,7 +20,7 @@ import java.util.ArrayList;
  * Created by kyly on 2016/2/1.
  */
 public class FriendAdapter extends RecyclerView.Adapter<FriendAdapter.ViewHolder> {
-    private ArrayList<User> friends;
+    private ArrayList<MCUser> friends;
     private Context context;
     private ImageLoader loader;
     private OnItemClickListener listener;
@@ -30,26 +31,37 @@ public class FriendAdapter extends RecyclerView.Adapter<FriendAdapter.ViewHolder
         loader = ImageLoader.getInstance();
     }
 
-    public void setData(ArrayList<User> friends){
+    public void setData(ArrayList<MCUser> friends){
         this.friends = friends;
         notifyDataSetChanged();
     }
 
+    public void addData(ArrayList<MCUser> friends){
+        if (null != this.friends){
+            int position = this.friends.size();
+            this.friends.addAll(friends);
+            notifyItemRangeInserted(position,friends.size());
+        } else {
+            this.friends = friends;
+            notifyDataSetChanged();
+        }
+    }
+
 
     public interface OnItemClickListener{
-        void onItemClicked(User user);
-        void onChatClicked(User user);
+        void onItemClicked(MCUser user);
+        void onChatClicked(MCUser user);
     }
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context).inflate(R.layout.item_friend,parent);
+        View view = LayoutInflater.from(context).inflate(R.layout.item_friend,parent,false);
         ViewHolder holder = new ViewHolder(view);
         if (null != listener){
             view.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    User user = (User) v.getTag();
+                    MCUser user = (MCUser) v.getTag();
                     if (null != user){
                         listener.onItemClicked(user);
                     }
@@ -62,18 +74,18 @@ public class FriendAdapter extends RecyclerView.Adapter<FriendAdapter.ViewHolder
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         if (null != friends && -1 < position && position < friends.size()){
-            User user = friends.get(position);
+            MCUser user = friends.get(position);
             holder.itemView.setTag(user);
             holder.chat.setTag(user);
             if (null != user) {
-                loader.displayImage(user.getHeadImage(), holder.cover);
-                holder.name.setText(user.getNickEx());
+                loader.displayImage(user.getHeadImg(), holder.cover);
+                holder.name.setText(user.getNike());
                 holder.level.setText(user.getLevel() + "");
                 if (null != listener){
                     holder.chat.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            User user = (User) v.getTag();
+                            MCUser user = (MCUser) v.getTag();
                             if (null != user){
                                 listener.onChatClicked(user);
                             }

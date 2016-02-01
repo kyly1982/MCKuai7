@@ -1,8 +1,11 @@
 package com.mckuai.imc.Base;
 
+import android.app.ActivityManager;
 import android.app.Application;
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Bitmap;
 import android.os.Environment;
 
 import com.mckuai.imc.Bean.MCUser;
@@ -17,7 +20,9 @@ import com.nostra13.universalimageloader.cache.disc.naming.Md5FileNameGenerator;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
+import com.nostra13.universalimageloader.core.assist.ImageScaleType;
 import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
+import com.nostra13.universalimageloader.core.display.RoundedBitmapDisplayer;
 import com.nostra13.universalimageloader.core.download.BaseImageDownloader;
 import com.umeng.socialize.PlatformConfig;
 
@@ -34,7 +39,7 @@ public class MCKuai extends Application {
     public MCUser user;
     public DaoSession daoSession;
     public MCNetEngine netEngine;
-
+    private DisplayImageOptions circleOptions;
 
     private final int IMAGE_POOL_SIZE = 3;// 线程池数量
     private final int CONNECT_TIME = 15 * 1000;// 连接时间
@@ -56,11 +61,22 @@ public class MCKuai extends Application {
     }
 
     private void init() {
-        RongIM.init(this);
         initImageLoader();
         initUMPlatform();
+        initRongIM();
         netEngine = new MCNetEngine();
         readPreference();
+    }
+
+    private void initRongIM(){
+        if (getApplicationInfo().packageName.equals(getCurProcessName(getApplicationContext())) ||
+                "io.rong.push".equals(getCurProcessName(getApplicationContext()))) {
+
+            /**
+             * IMKit SDK调用第一步 初始化
+             */
+            RongIM.init(this);
+        }
     }
 
     private void initUMPlatform() {
@@ -133,7 +149,7 @@ public class MCKuai extends Application {
             editor.putFloat(getString(R.string.preferences_process), user.getProcess());    //进度
             editor.putInt(getString(R.string.preferences_level), user.getLevel());          //level
             editor.putString(getString(R.string.preferences_addr), user.getAddr());         //地址
-            editor.putString(getString(R.string.preferences_token_rongcloud),user.getToken());//融云token
+            editor.putString(getString(R.string.preferences_token_rongcloud), user.getToken());//融云token
             editor.commit();
         }
     }
@@ -174,6 +190,21 @@ public class MCKuai extends Application {
         return null != user && user.getId() > 0;
     }
 
+    public DisplayImageOptions getCircleOptions() {
+        if (null == circleOptions){
+            circleOptions = new DisplayImageOptions.Builder()
+                    // 加载过程中显示的图片
+                    .showStubImage(R.mipmap.ic_usercover_default)
+                    .showImageForEmptyUri(R.mipmap.ic_usercover_default)
+                    .showImageOnFail(R.mipmap.ic_usercover_default).cacheInMemory(true).cacheOnDisk(true)
+                    .imageScaleType(ImageScaleType.EXACTLY).bitmapConfig(Bitmap.Config.RGB_565).delayBeforeLoading(150)
+                    .displayer(new RoundedBitmapDisplayer(10))// 此处需要修改大小
+                    .build();
+        }
+        return circleOptions;
+    }
+
+
     public DaoSession getDaoSession() {
         if (null == daoSession) {
             MCDBOpenHelper helper = new MCDBOpenHelper(this);
@@ -196,5 +227,22 @@ public class MCKuai extends Application {
             daoSession.clear();
             db.close();
         }
+    }
+
+    public static String getCurProcessName(Context context) {
+
+        int pid = android.os.Process.myPid();
+
+        ActivityManager activityManager = (ActivityManager) context
+                .getSystemService(Context.ACTIVITY_SERVICE);
+
+        for (ActivityManager.RunningAppProcessInfo appProcess : activityManager
+                .getRunningAppProcesses()) {
+
+            if (appProcess.pid == pid) {
+                return appProcess.processName;
+            }
+        }
+        return null;
     }
 }

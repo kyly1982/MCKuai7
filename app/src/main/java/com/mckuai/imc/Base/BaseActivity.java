@@ -19,6 +19,7 @@ import com.mckuai.imc.Activity.LoginActivity;
 import com.mckuai.imc.Activity.SearchActivity;
 import com.mckuai.imc.Activity.SettingActivity;
 import com.mckuai.imc.R;
+import com.nostra13.universalimageloader.core.ImageLoader;
 
 import java.util.ArrayList;
 
@@ -35,6 +36,7 @@ public class BaseActivity extends AppCompatActivity implements NavigationView.On
 
     protected ArrayList<BaseFragment> fragments;
     protected int currentFragmentIndex= -1;
+    private ImageLoader loader = ImageLoader.getInstance();
 
 
     @Override
@@ -107,34 +109,39 @@ public class BaseActivity extends AppCompatActivity implements NavigationView.On
     public void initDrawer() {
         mDrawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        userCover = (AppCompatImageView) navigationView.findViewById(R.id.usercover);
+        userName = (AppCompatTextView) navigationView.findViewById(R.id.username);
+        userLevel = (AppCompatTextView) navigationView.findViewById(R.id.userlevel);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, mDrawer, mToolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close){
+            @Override
+            public void onDrawerClosed(View drawerView) {
+                super.onDrawerClosed(drawerView);
+                showMessage("关",null,null);
+            }
 
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, mDrawer, mToolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+            @Override
+            public void onDrawerOpened(View drawerView) {
+                super.onDrawerOpened(drawerView);
+                showMessage("开",null,null);
+                if (mApplication.isLogin()){
+                    String url = (String) userCover.getTag();
+                    if (null == url || !url.equals(mApplication.user.getHeadImg())) {
+                        loader.displayImage(mApplication.user.getHeadImg(), userCover);
+                        userName.setText(mApplication.user.getNike());
+                        userLevel.setText(mApplication.user.getLevel() + "");
+                        userCover.setTag(mApplication.user.getHeadImg());
+                    }
+                } else {
+                    userName.setText("未登录");
+                    userLevel.setText("");
+                    userCover.setBackgroundResource(R.mipmap.ic_usercover_default);
+                }
+            }
+        };
         mDrawer.setDrawerListener(toggle);
         toggle.syncState();
         navigationView.setNavigationItemSelectedListener(this);
-        navigationView.setOnSystemUiVisibilityChangeListener(new View.OnSystemUiVisibilityChangeListener() {
-            @Override
-            public void onSystemUiVisibilityChange(int visibility) {
-                showMessage(visibility + "", null, null);
-            }
-        });
-  /*      navigationView.setOnContextClickListener(new View.OnContextClickListener() {
-            @Override
-            public boolean onContextClick(View v) {
-                switch (v.getId()){
-                    case R.id.imageView:
-                        showMessage("头像",null,null);
-                        break;
-                    case R.id.username:
-                        showMessage("用户名",null,null);
-                        break;
-                    case R.id.userlevel:
-                        showMessage("等级",null,null);
-                        break;
-                }
-                return false;
-            }
-        });*/
+
     }
 
     /**

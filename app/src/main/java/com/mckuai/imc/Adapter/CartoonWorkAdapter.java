@@ -50,7 +50,7 @@ public class CartoonWorkAdapter extends RecyclerView.Adapter<CartoonWorkAdapter.
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context).inflate(R.layout.item_cartoon_work,parent);
+        View view = LayoutInflater.from(context).inflate(R.layout.item_cartoon_work,parent,false);
         ViewHolder holder = new ViewHolder(view);
         if (null != listener){
             view.setOnClickListener(new View.OnClickListener() {
@@ -75,7 +75,11 @@ public class CartoonWorkAdapter extends RecyclerView.Adapter<CartoonWorkAdapter.
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         if (null != cartoons && -1 < position && position < cartoons.size()){
-            loader.displayImage(cartoons.get(position).getImage(),holder.cover);
+            String url = cartoons.get(position).getImage();
+            if (null != url){
+                loader.displayImage(url,holder.cover);
+            }
+
         }
     }
 

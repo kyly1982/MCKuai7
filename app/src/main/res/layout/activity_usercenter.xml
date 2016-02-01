@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     style="@style/AppTheme"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -31,7 +30,7 @@
                     android:layout_width="@dimen/usercneter_usercover_width"
                     android:layout_height="@dimen/usercneter_usercover_width"
                     android:layout_centerInParent="true"
-                    android:background="@color/colorYellow"
+                    android:scaleType="fitXY"
                     />
 
                 <android.support.v7.widget.AppCompatTextView
@@ -160,18 +159,21 @@
             <com.malinskiy.superrecyclerview.SuperRecyclerView
                 android:id="@+id/list"
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
+                android:layout_height="wrap_content"
                 android:layout_below="@id/type"
                 android:layout_above="@id/chat"
+                app:layout_empty="@layout/emptyview"
                 ></com.malinskiy.superrecyclerview.SuperRecyclerView>
 
             <com.malinskiy.superrecyclerview.SuperRecyclerView
                 android:id="@+id/worklist"
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
+                android:layout_height="wrap_content"
                 android:layout_below="@id/type"
                 android:layout_above="@id/chat"
                 android:visibility="gone"
+                android:background="@color/icons"
+                app:layout_empty="@layout/emptyview"
                 ></com.malinskiy.superrecyclerview.SuperRecyclerView>
         </RelativeLayout>
 

@@ -3,22 +3,24 @@
     android:layout_width="match_parent"
     android:layout_height="@dimen/usercenter_item_cartoon_height"
     android:layout_marginBottom="1px"
+    android:layout_marginTop="1px"
+    android:background="@color/icons"
     android:padding="@dimen/usercenter_item_layoutpadding">
 
     <android.support.v7.widget.AppCompatImageView
         android:id="@+id/usercover"
         android:layout_width="@dimen/usercenter_item_cartoon_usercover_width"
         android:layout_height="@dimen/usercenter_item_cartoon_usercover_width"
-        android:background="@color/colorYellow"/>
+        android:background="@color/colorYellow" />
 
 
     <android.support.v7.widget.AppCompatImageView
         android:id="@+id/cartooncover"
         android:layout_width="@dimen/usercenter_item_catoon_imagewidth"
         android:layout_height="@dimen/usercenter_item_catoon_imagewidth"
-        android:layout_margin="@dimen/usercneter_item_cartoon_workmargin"
         android:layout_alignParentRight="true"
-        android:background="@color/colorYellow"/>
+        android:layout_margin="@dimen/usercneter_item_cartoon_workmargin"
+        android:background="@color/colorYellow" />
 
     <android.support.v7.widget.AppCompatTextView
         android:id="@+id/cartoon_messagetype"
@@ -26,35 +28,34 @@
         android:layout_height="wrap_content"
         android:layout_alignTop="@id/cartooncover"
         android:layout_toLeftOf="@id/cartooncover"
-        android:textSize="@dimen/font_normal"
-        android:textColor="@color/textHint"
         android:text="评论了"
-        />
+        android:textColor="@color/textHint"
+        android:textSize="@dimen/font_normal" />
 
     <android.support.v7.widget.AppCompatTextView
         android:id="@+id/username"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_toRightOf="@id/usercover"
-        android:layout_toLeftOf="@id/cartoon_messagetype"
-        android:singleLine="true"
         android:layout_margin="3dp"
-        android:textSize="@dimen/font_normal"
+        android:layout_toLeftOf="@id/cartoon_messagetype"
+        android:layout_toRightOf="@id/usercover"
+        android:singleLine="true"
+        android:text="dddsafaf"
         android:textColor="@color/textGreen"
-        android:text="dddsafaf"/>
+        android:textSize="@dimen/font_normal" />
 
     <android.support.v7.widget.AppCompatTextView
         android:id="@+id/messagecontent"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_alignLeft="@id/username"
-        android:layout_toRightOf="@id/usercover"
-        android:layout_toLeftOf="@id/cartooncover"
         android:layout_below="@id/username"
+        android:layout_toLeftOf="@id/cartooncover"
+        android:layout_toRightOf="@id/usercover"
         android:lines="2"
+        android:text="2222233332222333322223333222233332222333322223333222233333"
         android:textColor="@color/textPrimary"
-        android:textSize="@dimen/font_accent"
-        android:text="2222233332222333322223333222233332222333322223333222233333"/>
+        android:textSize="@dimen/font_accent" />
 
     <android.support.v7.widget.AppCompatTextView
         android:id="@+id/time"
@@ -62,8 +63,8 @@
         android:layout_height="wrap_content"
         android:layout_alignLeft="@id/username"
         android:layout_alignParentBottom="true"
+        android:text="01-20"
         android:textColor="@color/textSecondary"
-        android:textSize="@dimen/font_normal"
-        android:text="01-20"/>
+        android:textSize="@dimen/font_normal" />
 
 </RelativeLayout>

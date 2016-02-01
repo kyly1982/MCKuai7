@@ -59,8 +59,8 @@ public class PostActivity extends BaseActivity implements OnClickListener, TextW
 
 	private String TAG = "PostActivity";
 
-	private Button btn_showOwner;
-	private ImageView btn_return;
+	//private Button btn_showOwner;
+	//private ImageView btn_return;
 	private ImageButton btn_reply;
 	private ImageButton btn_share;
 	private ImageButton btn_collect;
@@ -194,20 +194,22 @@ public class PostActivity extends BaseActivity implements OnClickListener, TextW
 		edt_content = (EditText) findViewById(R.id.edt_reply_Content);
 		btn_pic = (ImageButton) findViewById(R.id.btn_addPic);
 		mpics = (LinearLayout) findViewById(R.id.ll_piclayer);
-		btn_showOwner.setVisibility(View.VISIBLE);
+		//btn_showOwner.setVisibility(View.VISIBLE);
 
 		btn_reward.setOnClickListener(this);
-		btn_showOwner.setOnClickListener(this);
+		//btn_showOwner.setOnClickListener(this);
 		btn_collect.setOnClickListener(this);
 		btn_reply.setOnClickListener(this);
-		btn_return.setOnClickListener(this);
+		//btn_return.setOnClickListener(this);
 		btn_share.setOnClickListener(this);
 		btn_pic.setOnClickListener(this);
 		edt_content.addTextChangedListener(this);
 
-		//tv_title = (TextView) findViewById(R.id.tv_title);
+		tv_title = (TextView) findViewById(R.id.actionbar_title);
 		tv_hint = (TextView) findViewById(R.id.tv_lengthHint);
 		reply_layout = (RelativeLayout) findViewById(R.id.rl_reply);
+
+		tv_title.setTextColor(getResources().getColor(R.color.icons));
 
 		WebSettings webSettings = webView.getSettings();
 		webSettings.setJavaScriptEnabled(true);
@@ -296,8 +298,8 @@ public class PostActivity extends BaseActivity implements OnClickListener, TextW
 	private void showReply()
 	{
 		isShowPost = false;
-		btn_showOwner.setText("发 布");
-		btn_showOwner.setVisibility(View.VISIBLE);
+		//btn_showOwner.setText("发 布");
+		//btn_showOwner.setVisibility(View.VISIBLE);
 		//showKeyboard(null);
 		if (isReplyPost)
 		{
@@ -317,7 +319,7 @@ public class PostActivity extends BaseActivity implements OnClickListener, TextW
 	{
 		//hideKeyboard(edt_content);
 		isShowPost = true;
-		btn_showOwner.setText("只看楼主");
+		//btn_showOwner.setText("只看楼主");
 		tv_title.setText("帖子详情");
 		post_layout.setVisibility(View.VISIBLE);
 		reply_layout.setVisibility(View.GONE);
@@ -1179,12 +1181,8 @@ public class PostActivity extends BaseActivity implements OnClickListener, TextW
 				addInterface();
 				break;
 				case 7:
-					MCUser user = new MCUser();
-					user.setId(msg.arg1);
 					Intent intent = new Intent(PostActivity.this, UserCenterActivity.class);
-					Bundle bundle = new Bundle();
-					//bundle.putSerializable(getString(R.string.user), user);
-					intent.putExtras(bundle);
+					intent.putExtra(getString(R.string.usercenter_tag_userid),msg.arg1);
 					startActivity(intent);
 					break;
 

@@ -86,7 +86,10 @@ public class User implements Serializable{
     }
 
     public String getNickEx(){
-        return TextUtils.isEmpty(nick) ? name+"":nick;
+        if (null != nick && nick.length() > 1){
+            return nick;
+        }
+        return name;
     }
 
     public void setNick(String nick) {
