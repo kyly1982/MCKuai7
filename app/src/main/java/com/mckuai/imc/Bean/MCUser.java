@@ -51,7 +51,7 @@ public class MCUser implements Serializable {
         //this.userType = user.getUserType();
         this.addr = user.getAddr();
         this.name = user.getName();
-        this.loginToken = user.getLoginToken();
+        //this.loginToken = user.getLoginToken();
         this.token = user.getToken();
 
         return this;

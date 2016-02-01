@@ -52,6 +52,32 @@
             android:label="${APP_NAME}"
             android:theme="@style/AppTheme" />
 
+        <activity
+            android:name=".Activity.CartoonActivity"
+            android:label="${APP_NAME}"
+            android:theme="@style/AppTheme" />
+
+        <activity
+            android:name=".Activity.PostActivity"
+            android:label="${APP_NAME}"
+            android:theme="@style/AppTheme" />
+
+
+        <activity
+            android:name=".Activity.SearchActivity"
+            android:label="${APP_NAME}"
+            android:theme="@style/AppTheme" />
+
+        <activity
+            android:name=".Activity.SettingActivity"
+            android:label="${APP_NAME}"
+            android:theme="@style/AppTheme" />
+
+        <activity
+            android:name=".Activity.UserCenterActivity"
+            android:label="${APP_NAME}"
+            android:theme="@style/AppTheme" />
+
         <!-- ********************************************各种开放平台的配置********************************** -->
         <!-- ********************************************配置腾讯的相关SDK******************************************** -->
         <activity
@@ -214,8 +240,6 @@
             android:name="UMENG_MESSAGE_SECRET"
             android:value="ee7b5f0cb297eddbd18300bd62f63d81" />
 
-        <activity android:name=".Activity.CartoonActivity" />
-        <activity android:name=".Activity.UserCenterActivity"></activity>
     </application>
 
 </manifest>

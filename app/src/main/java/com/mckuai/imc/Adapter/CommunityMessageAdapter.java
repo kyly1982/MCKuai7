@@ -40,6 +40,17 @@ public class CommunityMessageAdapter extends RecyclerView.Adapter<CommunityMessa
         notifyDataSetChanged();
     }
 
+    public void addData(ArrayList<CommunityMessage> messages){
+        if (null == this.messages){
+            this.messages = messages;
+            notifyDataSetChanged();
+        } else {
+            int position = this.messages.size();
+            this.messages.addAll(messages);
+            notifyItemRangeInserted(position,messages.size());
+        }
+    }
+
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(context).inflate(R.layout.item_community_message,parent);

@@ -109,7 +109,7 @@
                 android:background="@color/icons"
                 android:gravity="top"
                 android:hint="评论..."
-                android:padding="@dimen/10dp" />
+                android:padding="10dp" />
         </RelativeLayout>
     </RelativeLayout>
 

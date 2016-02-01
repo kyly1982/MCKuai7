@@ -1,7 +1,6 @@
 package com.mckuai.imc.Adapter;
 
 import android.content.Context;
-import android.media.Image;
 import android.support.v7.widget.AppCompatImageView;
 import android.support.v7.widget.AppCompatTextView;
 import android.support.v7.widget.RecyclerView;
@@ -37,6 +36,17 @@ public class CartoonDynamicAdapter extends RecyclerView.Adapter<CartoonDynamicAd
     public void setData(ArrayList<CartoonMessage> dynamics){
         this.dynamics = dynamics;
         notifyDataSetChanged();
+    }
+
+    public void addData(ArrayList<CartoonMessage> dynamics){
+        if (null == dynamics) {
+            this.dynamics = dynamics;
+            notifyDataSetChanged();
+        } else if (null != dynamics && !dynamics.isEmpty()){
+            int position = dynamics.size();
+            this.dynamics.addAll(dynamics);
+            notifyItemRangeInserted(position,dynamics.size());
+        }
     }
 
     @Override

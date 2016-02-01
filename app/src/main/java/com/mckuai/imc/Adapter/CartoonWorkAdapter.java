@@ -37,6 +37,17 @@ public class CartoonWorkAdapter extends RecyclerView.Adapter<CartoonWorkAdapter.
         notifyDataSetChanged();
     }
 
+    public void addData(ArrayList<Cartoon> cartoons){
+        if (null == this.cartoons){
+            this.cartoons = cartoons;
+            notifyDataSetChanged();
+        } else {
+            int position = this.cartoons.size();
+            this.cartoons.addAll(cartoons);
+            notifyItemRangeInserted(position,cartoons.size());
+        }
+    }
+
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(context).inflate(R.layout.item_cartoon_work,parent);

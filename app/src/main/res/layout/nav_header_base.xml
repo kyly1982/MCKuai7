@@ -41,7 +41,8 @@
         android:background="@android:color/transparent"
         android:layout_alignBottom="@+id/userlevel"
         android:layout_alignRight="@+id/username"
-        android:layout_alignEnd="@+id/username" />
+        android:layout_alignEnd="@+id/username"
+        android:visibility="gone"/>
 
 
 </RelativeLayout>

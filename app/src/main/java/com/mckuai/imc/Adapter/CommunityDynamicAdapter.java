@@ -38,6 +38,17 @@ public class CommunityDynamicAdapter extends RecyclerView.Adapter<CommunityDynam
         notifyDataSetChanged();
     }
 
+    public void addData(ArrayList<CommunityDynamic> dynamics){
+        if (null == this.dynamics){
+            this.dynamics = dynamics;
+            notifyDataSetChanged();
+        } else {
+            int position = this.dynamics.size();
+            dynamics.addAll(dynamics);
+            notifyItemRangeInserted(position,dynamics.size());
+        }
+    }
+
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(context).inflate(R.layout.item_community_dynamic,parent);

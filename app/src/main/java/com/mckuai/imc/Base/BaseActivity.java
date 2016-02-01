@@ -9,11 +9,15 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.AppCompatImageView;
+import android.support.v7.widget.AppCompatTextView;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
 
 import com.mckuai.imc.Activity.LoginActivity;
+import com.mckuai.imc.Activity.SearchActivity;
+import com.mckuai.imc.Activity.SettingActivity;
 import com.mckuai.imc.R;
 
 import java.util.ArrayList;
@@ -25,6 +29,10 @@ public class BaseActivity extends AppCompatActivity implements NavigationView.On
     public android.support.v4.app.FragmentManager mFragmentManager_V4;
     public Toolbar mToolbar;
     protected DrawerLayout mDrawer;
+    private AppCompatImageView userCover;
+    private AppCompatTextView userName;
+    private AppCompatTextView userLevel;
+
     protected ArrayList<BaseFragment> fragments;
     protected int currentFragmentIndex= -1;
 
@@ -32,6 +40,9 @@ public class BaseActivity extends AppCompatActivity implements NavigationView.On
     @Override
     protected void onResume() {
         super.onResume();
+        if (mApplication.isLogin()){
+
+        }
     }
 
     @Override
@@ -71,7 +82,17 @@ public class BaseActivity extends AppCompatActivity implements NavigationView.On
         mDrawer = (DrawerLayout) findViewById(drawerLayoutId);
         NavigationView navigationView = (NavigationView) findViewById(navViewId);
 
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, mDrawer, mToolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, mDrawer, mToolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close){
+            @Override
+            public void onDrawerOpened(View drawerView) {
+                super.onDrawerOpened(drawerView);
+            }
+
+            @Override
+            public void onDrawerClosed(View drawerView) {
+                super.onDrawerClosed(drawerView);
+            }
+        };
         mDrawer.setDrawerListener(toggle);
         toggle.syncState();
 
@@ -91,6 +112,29 @@ public class BaseActivity extends AppCompatActivity implements NavigationView.On
         mDrawer.setDrawerListener(toggle);
         toggle.syncState();
         navigationView.setNavigationItemSelectedListener(this);
+        navigationView.setOnSystemUiVisibilityChangeListener(new View.OnSystemUiVisibilityChangeListener() {
+            @Override
+            public void onSystemUiVisibilityChange(int visibility) {
+                showMessage(visibility + "", null, null);
+            }
+        });
+  /*      navigationView.setOnContextClickListener(new View.OnContextClickListener() {
+            @Override
+            public boolean onContextClick(View v) {
+                switch (v.getId()){
+                    case R.id.imageView:
+                        showMessage("头像",null,null);
+                        break;
+                    case R.id.username:
+                        showMessage("用户名",null,null);
+                        break;
+                    case R.id.userlevel:
+                        showMessage("等级",null,null);
+                        break;
+                }
+                return false;
+            }
+        });*/
     }
 
     /**
@@ -133,8 +177,31 @@ public class BaseActivity extends AppCompatActivity implements NavigationView.On
 
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
+        Intent intent;
         switch (item.getItemId()) {
-
+            case R.id.nav_search:
+                intent = new Intent(this, SearchActivity.class);
+                startActivity(intent);
+                break;
+            case R.id.nav_package:
+                intent = new Intent(this,SearchActivity.class);
+                startActivity(intent);
+                break;
+            case R.id.nav_setting:
+                intent = new Intent(this, SettingActivity.class);
+                startActivity(intent);
+                break;
+            case R.id.nav_share:
+                showMessage("分享",null,null);
+                break;
+            case R.id.checkUpgread:
+                showMessage("检查更新",null,null);
+                break;
+            case R.id.nav_logout:
+                mApplication.user.getLoginToken().setExpires(0);
+                mApplication.saveProfile();
+                mApplication.user = null;
+                break;
         }
         return false;
     }

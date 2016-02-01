@@ -11,10 +11,14 @@ import com.loopj.android.http.JsonHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 import com.mckuai.imc.Base.MCKuai;
 import com.mckuai.imc.Bean.Cartoon;
+import com.mckuai.imc.Bean.CartoonMessage;
+import com.mckuai.imc.Bean.CommunityDynamic;
+import com.mckuai.imc.Bean.CommunityMessage;
 import com.mckuai.imc.Bean.ForumInfo;
 import com.mckuai.imc.Bean.MCUser;
 import com.mckuai.imc.Bean.Page;
 import com.mckuai.imc.Bean.Post;
+import com.mckuai.imc.Bean.User;
 import com.mckuai.imc.R;
 
 import org.apache.http.Header;
@@ -30,11 +34,12 @@ import java.util.ArrayList;
  */
 public class MCNetEngine {
     private AsyncHttpClient httpClient;
-
+    private Gson gson;
 
     public MCNetEngine() {
         httpClient = new AsyncHttpClient();
         httpClient.setTimeout(10);
+        gson = new Gson();
     }
 
     public void cancle(){
@@ -64,7 +69,6 @@ public class MCNetEngine {
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                 ParseResponseResult result = new ParseResponseResult(context, response);
                 if (result.isSuccess) {
-                    Gson gson = new Gson();
                     MCUser userinfo = gson.fromJson(result.msg, MCUser.class);
                     if (null != userinfo && userinfo.getName().equals(user.getName())) {
                         listener.onLoginSuccess(userinfo);
@@ -316,7 +320,6 @@ public class MCNetEngine {
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                 ParseResponseResult result = new ParseResponseResult(context,response);
                 if (result.isSuccess){
-                    Gson gson = new Gson();
                     ArrayList<Cartoon> cartoons = gson.fromJson(result.msg, new TypeToken<ArrayList<Cartoon>>() {
                     }.getType());
                     listListener.onLoadPushCartoonSuccess(cartoons);
@@ -353,7 +356,6 @@ public class MCNetEngine {
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                 ParseResponseResult result = new ParseResponseResult(context, response);
                 if (result.isSuccess) {
-                    Gson gson = new Gson();
                     ArrayList<Cartoon> cartoons = gson.fromJson(result.msg, new TypeToken<ArrayList<Cartoon>>() {
                     }.getType());
                     listener.onLoadCartoonListSuccess(cartoons);
@@ -368,6 +370,158 @@ public class MCNetEngine {
                 listener.onLoadCartoonListFailure("onFailure");
             }
         });
+    }
+
+    /***************************************************************************
+     * 个人中心动漫消息
+     ***************************************************************************/
+
+    public interface OnLoadCartoonMessageResponseListener{
+        void onLoadCartoonMessageSuccess(ArrayList<CartoonMessage> cartoons,Page page);
+        void onLoadCartoonMessageFailure(String msg);
+    }
+
+    public void loadCartoonMessage(final Context context,int userId,int nextpage, final OnLoadCartoonMessageResponseListener listener){
+        String url = context.getString(R.string.interface_domainName) + context.getString(R.string.interface_cartoonmessage);
+        RequestParams params = new RequestParams();
+        params.put("userId",userId);
+        params.put("page",nextpage);
+        httpClient.post(url,params,new JsonHttpResponseHandler(){
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                ParseResponseResult result = new ParseResponseResult(context,response);
+                if (result.isSuccess){
+                    ArrayList<CartoonMessage> messages = gson.fromJson(result.msg, new TypeToken<ArrayList<CartoonMessage>>() {}.getType());
+                    Page page = gson.fromJson(result.pageBean,Page.class);
+                    listener.onLoadCartoonMessageSuccess(messages,page);
+                } else {
+                    if (null != listener){
+                        listener.onLoadCartoonMessageFailure(result.msg);
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                listener.onLoadCartoonMessageFailure(throwable.getLocalizedMessage());
+            }
+        });
+    }
+
+    /***************************************************************************
+     * 个人中心动漫动态
+     ***************************************************************************/
+
+    public interface OnLoadCartoonDynamicResponseListener{
+        void onLoadCartoonDynamicSuccess(ArrayList<CartoonMessage> dynamics,Page page);
+        void onLoadCartoonDynamicFailure(String msg);
+    }
+
+    public void loadCartoonDyanmic(final Context context,int userId,int nextpage, final OnLoadCartoonDynamicResponseListener listener){
+        String url = context.getString(R.string.interface_domainName) + context.getString(R.string.interface_cartooncynamic);
+        RequestParams params = new RequestParams();
+        params.put("userId",userId);
+        params.put("page",nextpage);
+        httpClient.post(url,params,new JsonHttpResponseHandler(){
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                ParseResponseResult result = new ParseResponseResult(context,response);
+                if (result.isSuccess){
+                    ArrayList<CartoonMessage> dynamics = gson.fromJson(result.msg, new TypeToken<ArrayList<CartoonMessage>>() {}.getType());
+                    Page page = gson.fromJson(result.pageBean,Page.class);
+                    listener.onLoadCartoonDynamicSuccess(dynamics,page);
+                } else {
+                    listener.onLoadCartoonDynamicFailure(result.msg);
+                }
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                listener.onLoadCartoonDynamicFailure(throwable.getLocalizedMessage());
+            }
+        });
+    }
+
+    /***************************************************************************
+     * 个人中心动漫作品
+     ***************************************************************************/
+    public interface OnLoadCartoonWorkResponseListener{
+        void onLoadCartoonWorkSuccess(ArrayList<Cartoon> work,Page page);
+        void onLoadCartoonWorkFailure(String msg);
+    }
+
+    public void loadCartoonWork(final Context context,int userId,int nextPage, final OnLoadCartoonWorkResponseListener listener){
+        String url = context.getString(R.string.interface_domainName) + context.getString(R.string.interface_cartoonwork);
+        RequestParams params = new RequestParams();
+        params.put("userId",userId);
+        params.put("page",nextPage);
+        httpClient.post(url,params,new JsonHttpResponseHandler(){
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                ParseResponseResult result = new ParseResponseResult(context,response);
+                if (result.isSuccess){
+                    ArrayList<Cartoon> cartoons = gson.fromJson(result.msg, new TypeToken<ArrayList<Cartoon>>() {}.getType());
+                    Page page = gson.fromJson(result.pageBean,Page.class);
+                    listener.onLoadCartoonWorkSuccess(cartoons,page);
+                } else {
+                    listener.onLoadCartoonWorkFailure(result.msg);
+                }
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                listener.onLoadCartoonWorkFailure(throwable.getLocalizedMessage());
+            }
+        });
+    }
+
+    /***************************************************************************
+     * 个人中心社区消息
+     ***************************************************************************/
+    public interface OnLoadCommunityMessageResponseListener{
+        void onLoadCommunityMessageSuccess(ArrayList<CommunityMessage> messages,Page page);
+        void onLoadCommunityMessageFailure(String msg);
+    }
+
+    public void loadCommunityMessage(Context context,int userId,int nextPage,OnLoadCommunityMessageResponseListener listener){
+
+    }
+
+    /***************************************************************************
+     * 个人中心社区动态
+     ***************************************************************************/
+    public interface OnLoadCommunityDynamicResponseListener{
+        void onLoadCommunityDynamicSuccess(ArrayList<CommunityDynamic> dynamics,Page page);
+        void onLoadCommunityDynamicFailure(String msg);
+    }
+
+    public void loadCommunityDynamic(Context context,int userId,int nextPage,OnLoadCommunityDynamicResponseListener listener){
+
+    }
+
+
+    /***************************************************************************
+     * 个人中心社区作品
+     ***************************************************************************/
+    public interface OnloadCommunityWorkResponseListener{
+        void onLoadCommunityWorkSuccess(ArrayList<Post> works,Page page);
+        void onLoadCommunityWorkFailure(String msg);
+    }
+
+    public void loadCommunityWork(Context context,int userId,int nextPage,OnloadCommunityWorkResponseListener listener){
+
+    }
+
+    /***************************************************************************
+     * 个人中心好友
+     ***************************************************************************/
+    public interface OnloadFriendResponseListener{
+        void onLoadFriendSuccess(ArrayList<User> friends,Page page);
+        void OnloadFriendFailure(String msg);
+    }
+
+    public void loadFriendList(Context context,int nextPage,OnloadFriendResponseListener listener){
+
     }
 
 

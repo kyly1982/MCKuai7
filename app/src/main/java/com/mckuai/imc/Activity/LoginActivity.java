@@ -121,6 +121,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
             mApplication.user = user;
         } else {
             mApplication.user.clone(user);
+            mApplication.user.setLoginToken(user.getLoginToken());
         }
         loginToMC(user);
     }

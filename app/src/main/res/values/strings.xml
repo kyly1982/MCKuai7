@@ -119,6 +119,8 @@
     <string name="interface_cartoonmessage">interface.do?act=cartoonMessage</string>
     <!--动漫动态-->
     <string name="interface_cartooncynamic">interface.do?act=cartoonDynamic</string>
+    <!--动漫作品-->
+    <string name="interface_cartoonwork">interface.do?act=cartoonWork</string>
     <!--评论动漫-->
     <string name="interface_commentcartoon">interface.do?act=toComment</string>
 

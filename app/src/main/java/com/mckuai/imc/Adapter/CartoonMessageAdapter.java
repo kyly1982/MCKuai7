@@ -8,7 +8,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.mckuai.imc.Bean.Cartoon;
 import com.mckuai.imc.Bean.CartoonMessage;
 import com.mckuai.imc.R;
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -31,7 +30,7 @@ public class CartoonMessageAdapter extends RecyclerView.Adapter<CartoonMessageAd
     }
 
     public interface OnItemClickListener{
-        void onItemClicked(Cartoon cartoon);
+        void onItemClicked(CartoonMessage message);
     }
 
     public void setData(ArrayList<CartoonMessage> messages){
@@ -59,9 +58,9 @@ public class CartoonMessageAdapter extends RecyclerView.Adapter<CartoonMessageAd
             view.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Cartoon cartoon = (Cartoon) v.getTag();
-                    if (null != cartoon) {
-                        listener.onItemClicked(cartoon);
+                    CartoonMessage message = (CartoonMessage) v.getTag();
+                    if (null != message) {
+                        listener.onItemClicked(message);
                     }
                 }
             });
