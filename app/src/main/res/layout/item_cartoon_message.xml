@@ -1,21 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="78dp"
-    android:padding="5dp">
+    android:layout_height="@dimen/usercenter_item_cartoon_height"
+    android:layout_marginBottom="1px"
+    android:padding="@dimen/usercenter_item_layoutpadding">
 
     <android.support.v7.widget.AppCompatImageView
         android:id="@+id/usercover"
-        android:layout_width="32dp"
-        android:layout_height="32dp"
+        android:layout_width="@dimen/usercenter_item_cartoon_usercover_width"
+        android:layout_height="@dimen/usercenter_item_cartoon_usercover_width"
         android:background="@color/colorYellow"/>
 
 
     <android.support.v7.widget.AppCompatImageView
         android:id="@+id/cartooncover"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:layout_margin="3dp"
+        android:layout_width="@dimen/usercenter_item_catoon_imagewidth"
+        android:layout_height="@dimen/usercenter_item_catoon_imagewidth"
+        android:layout_margin="@dimen/usercneter_item_cartoon_workmargin"
         android:layout_alignParentRight="true"
         android:background="@color/colorYellow"/>
 

@@ -1,15 +1,16 @@
 package com.mckuai.imc.Adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.AppCompatImageView;
 import android.support.v7.widget.AppCompatTextView;
 import android.support.v7.widget.RecyclerView;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.mckuai.imc.Bean.Post;
+import com.mckuai.imc.Bean.User;
 import com.mckuai.imc.R;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
@@ -18,20 +19,25 @@ import java.util.ArrayList;
 /**
  * Created by kyly on 2016/1/25.
  */
-public class NormalPostAdapter extends RecyclerView.Adapter<NormalPostAdapter.ViewHolder> implements View.OnClickListener{
+public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder>{
     private ArrayList<Post> posts;
     private Context context;
     private LayoutInflater inflater;
-    private View.OnClickListener listener;
+    private OnItemClickListener listener;
     private ImageLoader imageLoader;
 
-    public NormalPostAdapter(Context context) {
+    public interface OnItemClickListener{
+        void onItemClicked(Post post);
+        void onUserClicked(User user);
+    }
+
+    public PostAdapter(Context context) {
         this.context = context;
         this.inflater = LayoutInflater.from(context);
         this.imageLoader = ImageLoader.getInstance();
     }
 
-    public NormalPostAdapter(Context context,View.OnClickListener listener) {
+    public PostAdapter(Context context,OnItemClickListener listener) {
         this.listener = listener;
         this.context = context;
         this.inflater = LayoutInflater.from(context);
@@ -43,9 +49,6 @@ public class NormalPostAdapter extends RecyclerView.Adapter<NormalPostAdapter.Vi
         notifyDataSetChanged();
     }
 
-    public void setOnItemClickListener(View.OnClickListener listener){
-        this.listener = listener;
-    }
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -57,7 +60,7 @@ public class NormalPostAdapter extends RecyclerView.Adapter<NormalPostAdapter.Vi
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         if (null != posts &&-1 < position && position < posts.size()){
-            Post post = posts.get(position);
+            final Post post = posts.get(position);
             if (null != post){
                 if (null != post.getHeadImg() && 10 < post.getHeadImg().length()){
                     imageLoader.displayImage(post.getHeadImg(),holder.usercover);
@@ -77,12 +80,36 @@ public class NormalPostAdapter extends RecyclerView.Adapter<NormalPostAdapter.Vi
                     holder.postlable_top.setVisibility(View.GONE);
                 }
                 if (null != listener){
-                    holder.usercover.setTag(post);
-                    holder.username.setTag(post);
-                    holder.username.setOnClickListener(listener);
-                    holder.usercover.setOnClickListener(listener);
+                    holder.username.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            User user = new User();
+                            user.setId((long)post.getUserId());
+                            listener.onUserClicked(user);
+                        }
+                    });
+                    holder.usercover.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            User user = new User();
+                            user.setId((long)post.getUserId());
+                            listener.onUserClicked(user);
+                        }
+                    });
+                    holder.itemView.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            listener.onItemClicked(post);
+                        }
+                    });
                 }
             }
+            holder.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                }
+            });
         }
     }
 
@@ -112,8 +139,4 @@ public class NormalPostAdapter extends RecyclerView.Adapter<NormalPostAdapter.Vi
         }
     }
 
-    @Override
-    public void onClick(View v) {
-
-    }
 }

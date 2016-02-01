@@ -4,8 +4,8 @@
     <dimen name="activity_vertical_margin">16dp</dimen>
     <dimen name="fab_margin">16dp</dimen>
     <!--通用-->
-    <dimen name="usercover_width">33.5dp</dimen>
-    <dimen name="usercover_width_small">21.5dp</dimen>
+    <dimen name="usercover_width">32dp</dimen>
+    <dimen name="usercover_width_small">20dp</dimen>
     <dimen name="margin_content">9dp</dimen>
     <dimen name="padding_content">4.5dp</dimen>
 
@@ -36,4 +36,17 @@
     <dimen name="createcartoon_margin_step1_button">38dp</dimen>
     <dimen name="createcartoon_button_addtalk_height">30dp</dimen>
     <dimen name="createcartoon_builder_width">325dp</dimen>
+
+    <!--个人中心-->
+    <dimen name="usercenter_header_height">100dp</dimen>
+    <dimen name="usercneter_usercover_width">64dp</dimen>
+    <dimen name="usercenter_chatbutton_height">40dp</dimen>
+    <dimen name="usercenter_item_cartoon_height">78dp</dimen>
+    <dimen name="usercenter_item_layoutpadding">5dp</dimen>
+    <dimen name="usercenter_item_catoon_imagewidth">50dp</dimen>
+    <dimen name="usercenter_item_cartoon_usercover_width">32dp</dimen>
+    <dimen name="usercneter_item_cartoon_workmargin">3dp</dimen>
+    <dimen name="usercenter_item_community_height">87dp</dimen>
+    <dimen name="usercenter_item_friend_height">68dp</dimen>
+    <dimen name="usercenter_item_friend_padding">9dp</dimen>
 </resources>

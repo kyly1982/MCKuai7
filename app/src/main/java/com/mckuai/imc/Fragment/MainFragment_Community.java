@@ -8,7 +8,7 @@ import android.view.ViewGroup;
 
 import com.malinskiy.superrecyclerview.SuperRecyclerView;
 import com.mckuai.imc.Adapter.ForumAdapter;
-import com.mckuai.imc.Adapter.NormalPostAdapter;
+import com.mckuai.imc.Adapter.PostAdapter;
 import com.mckuai.imc.Base.BaseFragment;
 import com.mckuai.imc.Base.MCKuai;
 import com.mckuai.imc.Bean.ForumInfo;
@@ -28,7 +28,7 @@ public class MainFragment_Community extends BaseFragment implements View.OnClick
     private String[] listType = {"lastChangeTime", "isJing", "isDing"};
     private int listTypeIndex = 0;
     private ForumAdapter forumAdapter;
-    private NormalPostAdapter postAdapter;
+    private PostAdapter postAdapter;
     private MCNetEngine mNetEngine;
     private int currentForumIndex = 0;
 

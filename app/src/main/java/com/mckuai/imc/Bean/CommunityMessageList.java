@@ -2,18 +2,18 @@ package com.mckuai.imc.Bean;
 
 import java.util.ArrayList;
 
-public class MCDynamicList {
-    private ArrayList<MCDynamic> data;
+public class CommunityMessageList {
+    private ArrayList<CommunityMessage> data;
     private int allCount;
     private int page;
     private int pageCount;
     private int pageSize;
 
-    public ArrayList<MCDynamic> getData() {
+    public ArrayList<CommunityMessage> getData() {
         return data;
     }
 
-    public void setData(ArrayList<MCDynamic> data) {
+    public void setData(ArrayList<CommunityMessage> data) {
         this.data = data;
     }
 

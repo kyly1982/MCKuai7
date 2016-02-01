@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/usercenter_item_community_height"
+    android:padding="@dimen/usercenter_item_layoutpadding"
+    android:layout_marginBottom="1px"
+    >
+
+    <android.support.v7.widget.AppCompatImageView
+        android:id="@+id/typeicon"
+        android:layout_width="21dp"
+        android:layout_height="21dp"
+        android:layout_margin="@dimen/usercenter_item_layoutpadding"
+        android:background="@mipmap/ic_usercenter_community_creat"
+        android:scaleType="fitXY" />
+
+    <android.support.v7.widget.AppCompatTextView
+        android:id="@+id/dynamictime"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_alignBottom="@id/typeicon"
+        android:layout_marginRight="@dimen/usercenter_item_layoutpadding"
+        android:layout_alignParentRight="true"
+        android:layout_alignTop="@id/typeicon"
+        android:gravity="center_vertical"
+        android:textColor="@color/textSecondary"
+        android:textSize="@dimen/font_accent"
+        android:text="5分钟前"/>
+
+    <android.support.v7.widget.AppCompatTextView
+        android:id="@+id/dynamictype"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_alignBottom="@id/typeicon"
+        android:layout_alignTop="@id/typeicon"
+        android:layout_marginRight="@dimen/usercenter_item_layoutpadding"
+        android:layout_toRightOf="@id/typeicon"
+        android:gravity="center_vertical"
+        android:singleLine="true"
+        android:text="@string/createPost"
+        android:textColor="@color/textHint"
+        android:textSize="@dimen/font_normal" />
+
+
+
+        <android.support.v7.widget.AppCompatTextView
+            android:id="@+id/posttitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/typeicon"
+            android:layout_marginLeft="@dimen/usercenter_item_layoutpadding"
+            android:layout_marginRight="@dimen/usercenter_item_layoutpadding"
+            android:lines="1"
+            android:textColor="@color/textHint"
+            android:textSize="@dimen/font_normal"
+            android:text="帖子标题"/>
+
+        <android.support.v7.widget.AppCompatTextView
+            android:id="@+id/content"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_margin="@dimen/usercenter_item_layoutpadding"
+            android:lines="1"
+            android:textColor="@color/textPrimary"
+            android:textSize="@dimen/font_accent"
+            android:text="回复内容"/>
+
+
+</RelativeLayout>

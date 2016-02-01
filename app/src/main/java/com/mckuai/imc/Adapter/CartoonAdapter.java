@@ -130,7 +130,7 @@ public class CartoonAdapter extends RecyclerView.Adapter<CartoonAdapter.ViewHold
         holder.comment.setTag(cartoon);
         holder.prise.setTag(cartoon);
         holder.share.setTag(cartoon);
-        holder.userCover.setTag(cartoon.getOwner().getId());
+        holder.userCover.setTag(cartoon);
 
 
         holder.userCover.setOnClickListener(this);

@@ -169,7 +169,7 @@ public class MainFragment_Cartoon extends BaseFragment implements RadioGroup.OnC
         switch (v.getId()) {
             case R.id.cartoon_usercover://头像
                 //((BaseActivity) getActivity()).showMessage("跳转个人中心", null, null);
-                Long userId = (Long) v.getTag();
+                Long userId = cartoon.getOwner().getId();
                 if (userId > 0) {
                     intent = new Intent(getActivity(), UserCenterActivity.class);
                     intent.putExtra(getString(R.string.usercenter_tag_userid),userId.intValue());

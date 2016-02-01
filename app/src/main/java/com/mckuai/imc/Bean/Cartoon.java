@@ -12,15 +12,14 @@ public class Cartoon implements Serializable {
     private int id;                         //id
     private int prise;                      //赞
     private int replyNum;                   //评论数
-    private String content;                 //名字
+    private String content;                 //内容
     private String insertTime;              //创建时间
     private String image;                   //图片url
     private User owner;                     //所有者
     private ArrayList<Lable> lables;        //标签
     private ArrayList<Comment> comments;    //评论
-    private ArrayList<User> rewardUsers;    //打赏用户
-    private Page rewardPage;                //打赏分页
-    private Page commentPage;               //评论分页信息
+    private ArrayList<User> rewardList;    //打赏用户
+    private Page pageBean;
 
     public Cartoon() {
     }
@@ -51,7 +50,7 @@ public class Cartoon implements Serializable {
         this.lables = lables;
         this.owner = owner;
         this.prise = prise;
-        this.commentPage = page;
+        this.pageBean = page;
     }
 
     public ArrayList<Comment> getComments() {
@@ -94,13 +93,6 @@ public class Cartoon implements Serializable {
         this.image = image;
     }
 
-    public Page getCommentPage() {
-        return commentPage;
-    }
-
-    public void setCommentPage(Page commentPage) {
-        this.commentPage = commentPage;
-    }
 
     public String getTime() {
         return insertTime;
@@ -142,20 +134,20 @@ public class Cartoon implements Serializable {
         this.replyNum = replyNum;
     }
 
-    public ArrayList<User> getRewardUsers() {
-        return rewardUsers;
+    public ArrayList<User> getRewardList() {
+        return rewardList;
     }
 
-    public void setRewardUsers(ArrayList<User> rewardUsers) {
-        this.rewardUsers = rewardUsers;
+    public void setRewardList(ArrayList<User> rewardList) {
+        this.rewardList = rewardList;
     }
 
-    public Page getRewardPage() {
-        return rewardPage;
+    public Page getPageBean() {
+        return pageBean;
     }
 
-    public void setRewardPage(Page rewardPage) {
-        this.rewardPage = rewardPage;
+    public void setPageBean(Page pageBean) {
+        this.pageBean = pageBean;
     }
 
     public String getTimeEx()  {

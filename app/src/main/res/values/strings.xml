@@ -178,6 +178,25 @@
     <!--个人中心-->
     <string name="usercenter_tag_userid">USER_ID</string>
     <string name="usercenter_tag_user">USER_OBJECT</string>
+    <string name="cartoon">漫画</string>
+    <string name="community">社区</string>
+    <string name="friend">朋友</string>
+    <string name="message">消息</string>
+    <string name="dynamic">动态</string>
+    <string name="work">作品</string>
+    <string name="allMessage">全部</string>
+    <string name="atMessage">\@你</string>
+    <string name="systemMessage">系统</string>
+    <string name="replyYou">回复你的帖子</string>
+    <string name="atYou">\@了你</string>
+    <string name="replyPost">回复了</string>
+    <string name="createPost">创造了</string>
+    <string name="userId">USER_ID</string>
+    <string name="addtoPackage">加入背包</string>
+    <string name="makeChat">私聊</string>
+    <string name="preservation">保存</string>
+    <string name="cartoon_comment">评论了</string>
+    <string name="cartoon_prise">点赞了</string>
 
     <!--漫画详细页-->
     <string name="cartoondetail_tag_cartoon">CARTOON_OBJECT</string>
