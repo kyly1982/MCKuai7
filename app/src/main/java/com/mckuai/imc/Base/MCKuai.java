@@ -22,6 +22,7 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.core.assist.ImageScaleType;
 import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
+import com.nostra13.universalimageloader.core.display.CircleBitmapDisplayer;
 import com.nostra13.universalimageloader.core.display.RoundedBitmapDisplayer;
 import com.nostra13.universalimageloader.core.download.BaseImageDownloader;
 import com.umeng.socialize.PlatformConfig;
@@ -198,7 +199,7 @@ public class MCKuai extends Application {
                     .showImageForEmptyUri(R.mipmap.ic_usercover_default)
                     .showImageOnFail(R.mipmap.ic_usercover_default).cacheInMemory(true).cacheOnDisk(true)
                     .imageScaleType(ImageScaleType.EXACTLY).bitmapConfig(Bitmap.Config.RGB_565).delayBeforeLoading(150)
-                    .displayer(new RoundedBitmapDisplayer(10))// 此处需要修改大小
+                    .displayer(new CircleBitmapDisplayer())// 此处需要修改大小
                     .build();
         }
         return circleOptions;

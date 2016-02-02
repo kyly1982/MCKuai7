@@ -64,10 +64,6 @@
             android:label="${APP_NAME}"
             android:theme="@style/AppTheme" />
         <activity
-            android:name=".Activity.SettingActivity"
-            android:label="${APP_NAME}"
-            android:theme="@style/AppTheme" />
-        <activity
             android:name=".Activity.UserCenterActivity"
             android:label="${APP_NAME}"
             android:theme="@style/AppTheme" />

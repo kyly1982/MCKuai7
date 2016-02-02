@@ -16,8 +16,8 @@ import android.view.MenuItem;
 import android.view.View;
 
 import com.mckuai.imc.Activity.LoginActivity;
+import com.mckuai.imc.Activity.ProfileEditerActivity;
 import com.mckuai.imc.Activity.SearchActivity;
-import com.mckuai.imc.Activity.SettingActivity;
 import com.mckuai.imc.R;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
@@ -116,14 +116,12 @@ public class BaseActivity extends AppCompatActivity implements NavigationView.On
             @Override
             public void onDrawerClosed(View drawerView) {
                 super.onDrawerClosed(drawerView);
-                showMessage("关",null,null);
             }
 
             @Override
             public void onDrawerOpened(View drawerView) {
                 super.onDrawerOpened(drawerView);
-                showMessage("开",null,null);
-                if (mApplication.isLogin()){
+                /*if (mApplication.isLogin()){
                     String url = (String) userCover.getTag();
                     if (null == url || !url.equals(mApplication.user.getHeadImg())) {
                         loader.displayImage(mApplication.user.getHeadImg(), userCover);
@@ -135,7 +133,7 @@ public class BaseActivity extends AppCompatActivity implements NavigationView.On
                     userName.setText("未登录");
                     userLevel.setText("");
                     userCover.setBackgroundResource(R.mipmap.ic_usercover_default);
-                }
+                }*/
             }
         };
         mDrawer.setDrawerListener(toggle);
@@ -195,7 +193,7 @@ public class BaseActivity extends AppCompatActivity implements NavigationView.On
                 startActivity(intent);
                 break;
             case R.id.nav_setting:
-                intent = new Intent(this, SettingActivity.class);
+                intent = new Intent(this, ProfileEditerActivity.class);
                 startActivity(intent);
                 break;
             case R.id.nav_share:
