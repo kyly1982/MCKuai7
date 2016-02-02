@@ -100,14 +100,14 @@ public class MainFragment_Cartoon extends BaseFragment implements RadioGroup.OnC
                 if (null != mNewCartoon && !mNewCartoon.isEmpty()){
                     mApplication.netEngine.loadCartoonList(getActivity(), mCartoonType[typeIndex], mNewCartoon.get(mNewCartoon.size() - 1).getId(), this);
                 } else {
-                    mApplication.netEngine.loadCartoonList(getActivity(), mCartoonType[typeIndex], 1, this);
+                    mApplication.netEngine.loadCartoonList(getActivity(), mCartoonType[typeIndex], 0, this);
                 }
                 break;
             case 1:
                 if (null != mHotCartoon && !mHotCartoon.isEmpty()){
                     mApplication.netEngine.loadCartoonList(getActivity(), mCartoonType[typeIndex], mHotCartoon.get(mHotCartoon.size() - 1).getId(), this);
                 } else {
-                    mApplication.netEngine.loadCartoonList(getActivity(), mCartoonType[typeIndex], 1, this);
+                    mApplication.netEngine.loadCartoonList(getActivity(), mCartoonType[typeIndex], 0, this);
                 }
                 break;
         }

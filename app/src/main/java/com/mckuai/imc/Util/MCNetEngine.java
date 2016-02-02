@@ -14,7 +14,6 @@ import com.mckuai.imc.Bean.Cartoon;
 import com.mckuai.imc.Bean.CartoonMessage;
 import com.mckuai.imc.Bean.CommunityDynamic;
 import com.mckuai.imc.Bean.CommunityDynamicBean;
-import com.mckuai.imc.Bean.CommunityDynamicList;
 import com.mckuai.imc.Bean.CommunityMessage;
 import com.mckuai.imc.Bean.CommunityMessageBean;
 import com.mckuai.imc.Bean.CommunityMessageList;
@@ -101,9 +100,9 @@ public class MCNetEngine {
      ***************************************************************************/
 
     public interface OnForumListResponseListener {
-        public void onLoadForumListSuccess(ArrayList<ForumInfo> forums);
+        void onLoadForumListSuccess(ArrayList<ForumInfo> forums);
 
-        public void onLoadForumListFailure(String msg);
+        void onLoadForumListFailure(String msg);
     }
 
     public void loadFroumList(final Context context, final OnForumListResponseListener listener) {
@@ -134,9 +133,9 @@ public class MCNetEngine {
      ***************************************************************************/
 
     public interface OnPostListResponseListener {
-        public void onLoadPostListSuccess(ArrayList<Post> posts,Page page);
+        void onLoadPostListSuccess(ArrayList<Post> posts, Page page);
 
-        public void onLoadPostListFailure(String msg);
+        void onLoadPostListFailure(String msg);
     }
 
     public void loadPostList(final Context context, int forumId,String postType, int nextPage, final OnPostListResponseListener listener) {
@@ -173,9 +172,9 @@ public class MCNetEngine {
      ***************************************************************************/
 
     public interface OnCharacterListResponseListener {
-        public void onLoadCharacterListSuccess(ArrayList<String> characters);
+        void onLoadCharacterListSuccess(ArrayList<String> characters);
 
-        public void onLoadCharacterListFailure(String msg);
+        void onLoadCharacterListFailure(String msg);
     }
 
     public void loadCharacterList(final Context context, Page page, final OnCharacterListResponseListener listener) {
@@ -188,9 +187,9 @@ public class MCNetEngine {
      ***************************************************************************/
 
     public interface OnToolListResponseListener {
-        public void onLoadToolListSuccess(ArrayList<String> tools);
+        void onLoadToolListSuccess(ArrayList<String> tools);
 
-        public void onLoadToolListFailure(String msg);
+        void onLoadToolListFailure(String msg);
     }
 
     public void loadToolList(final Context context, Page page, final OnToolListResponseListener listener) {
@@ -202,9 +201,9 @@ public class MCNetEngine {
      ***************************************************************************/
 
     public interface OnUploadImageResponseListener {
-        public void onImageUploadSuccess(String url);
+        void onImageUploadSuccess(String url);
 
-        public void onImageUploadFailure(String msg);
+        void onImageUploadFailure(String msg);
     }
 
     public void uploadImage(final Context context, ArrayList<Bitmap> bitmaps, final OnUploadImageResponseListener listener) {
@@ -241,9 +240,9 @@ public class MCNetEngine {
      ***************************************************************************/
 
     public interface OnUploadCartoonResponseListener {
-        public void onUploadCartoonSuccess();
+        void onUploadCartoonSuccess();
 
-        public void onUploadCartoonFailure(String msg);
+        void onUploadCartoonFailure(String msg);
     }
 
     public void uploadCartoon(Context context, Cartoon cartoon, final OnUploadCartoonResponseListener listener) {
@@ -283,9 +282,9 @@ public class MCNetEngine {
      ***************************************************************************/
 
     public interface OnRewardCartoonResponseListener {
-        public void onRewardCartoonSuccess();
+        void onRewardCartoonSuccess();
 
-        public void onRewardaCartoonFailure(String msg);
+        void onRewardaCartoonFailure(String msg);
     }
 
     /**
@@ -327,9 +326,9 @@ public class MCNetEngine {
      ***************************************************************************/
 
     public interface OnCommentCartoonResponseListener {
-        public void onCommentCartoonSuccess();
+        void onCommentCartoonSuccess();
 
-        public void onCommentCartoonFailure(String msg);
+        void onCommentCartoonFailure(String msg);
     }
 
     public void commentCartoon(final Context context, int cartoonId, String content, final OnCommentCartoonResponseListener listener) {
@@ -361,9 +360,9 @@ public class MCNetEngine {
      ***************************************************************************/
 
     public interface OnLoadPushlCartoonListListener {
-        public void onLoadPushCartoonSuccess(ArrayList<Cartoon> cartoons);
+        void onLoadPushCartoonSuccess(ArrayList<Cartoon> cartoons);
 
-        public void onLoadPushCartoonFailure(String msg);
+        void onLoadPushCartoonFailure(String msg);
     }
 
     public void loadPushCartoonList(final Context context, Integer lastCartoonId, final OnLoadPushlCartoonListListener listListener) {
@@ -397,9 +396,9 @@ public class MCNetEngine {
      ***************************************************************************/
 
     public interface OnLoadCartoonListResponseListener {
-        public void onLoadCartoonListSuccess(ArrayList<Cartoon> cartoons);
+        void onLoadCartoonListSuccess(ArrayList<Cartoon> cartoons);
 
-        public void onLoadCartoonListFailure(String msg);
+        void onLoadCartoonListFailure(String msg);
     }
 
     public void loadCartoonList(final Context context, String cartoonType, Integer lastCartoonId, final OnLoadCartoonListResponseListener listener) {
@@ -408,7 +407,7 @@ public class MCNetEngine {
         if (lastCartoonId != null) {
             params.put("id", lastCartoonId);
         }
-        //params.put("type", cartoonType);
+        params.put("type", cartoonType);
         httpClient.get(context, url, params, new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
@@ -692,6 +691,139 @@ public class MCNetEngine {
             @Override
             public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
                 listener.OnloadFriendFailure(throwable.getLocalizedMessage());
+            }
+        });
+    }
+
+    /***************************************************************************
+     * 上传头像图片
+     ***************************************************************************/
+
+    public interface OnUploadUserCoverResponseListener {
+        void onUploadCoverSuccess(String url);
+
+        void onUploadCoverFailure(String msg);
+    }
+
+    public void uploadUserCover(final Context context, Bitmap cover, final OnUploadUserCoverResponseListener listener) {
+        String url = "http://www.mckuai.com/" + context.getString(R.string.interface_uploadimage);
+        RequestParams params = new RequestParams();
+        params.put("fileHeadImg", Bitmap2IS(cover), "cover.jpg", "image/jpeg");
+        httpClient.post(url, params, new JsonHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                ParseResponseResult result = new ParseResponseResult(context, response);
+                if (result.isSuccess) {
+                    listener.onUploadCoverSuccess(result.msg);
+                } else {
+                    listener.onUploadCoverFailure(result.msg);
+                }
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                listener.onUploadCoverFailure(throwable.getLocalizedMessage());
+            }
+        });
+    }
+
+    /***************************************************************************
+     * 更新头像url
+     ***************************************************************************/
+
+    public interface OnUpdateUserCoverResponseListener {
+        void onUpdateUserCoverSuccess();
+
+        void onUpdateUserCoverFailure(String msg);
+    }
+
+    public void updateUserCover(final Context context, String coverUrl, final OnUpdateUserCoverResponseListener listener) {
+        String url = context.getString(R.string.interface_domainName) + context.getString(R.string.interface_update_userinfo);
+        RequestParams params = new RequestParams();
+        params.put("userId", MCKuai.instence.user.getId());
+        params.put("flag", "headImg");
+        params.put("headImg", coverUrl);
+        httpClient.post(url, params, new JsonHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                ParseResponseResult result = new ParseResponseResult(context, response);
+                if (result.isSuccess) {
+                    listener.onUpdateUserCoverSuccess();
+                } else {
+                    listener.onUpdateUserCoverFailure(result.msg);
+                }
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                listener.onUpdateUserCoverFailure(throwable.getLocalizedMessage());
+            }
+        });
+    }
+
+    /***************************************************************************
+     * 更新昵称
+     ***************************************************************************/
+
+    public interface OnUpdateUserNickResponseListener {
+        void onUpdateUserNickSuccess();
+
+        void onUpdateUserNickFailure(String msg);
+    }
+
+    public void updateNickName(final Context context, String nick, final OnUpdateUserNickResponseListener listener) {
+        String url = context.getString(R.string.interface_domainName) + context.getString(R.string.interface_update_userinfo);
+        RequestParams params = new RequestParams();
+        params.put("userId", MCKuai.instence.user.getId());
+        params.put("flag", "name");
+        params.put("nickName", nick);
+        httpClient.post(url, params, new JsonHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                ParseResponseResult result = new ParseResponseResult(context, response);
+                if (result.isSuccess) {
+                    listener.onUpdateUserNickSuccess();
+                } else {
+                    listener.onUpdateUserNickFailure(result.msg);
+                }
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                listener.onUpdateUserNickFailure(throwable.getLocalizedMessage());
+            }
+        });
+    }
+
+    /***************************************************************************
+     * 更新地址
+     ***************************************************************************/
+
+    public interface OnUpdateUserAddressResponseListener {
+        void onUpdateAddressSuccess();
+
+        void onUpdateAddressFailure(String msg);
+    }
+
+    public void updateUserAddress(final Context context, String address, final OnUpdateUserAddressResponseListener listener) {
+        String url = context.getString(R.string.interface_domainName) + context.getString(R.string.interface_updateLocation);
+        RequestParams params = new RequestParams();
+        params.put("id", MCKuai.instence.user.getId());
+        params.put("addr", address);
+        httpClient.post(url, params, new JsonHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                ParseResponseResult result = new ParseResponseResult(context, response);
+                if (result.isSuccess) {
+                    listener.onUpdateAddressSuccess();
+                } else {
+                    listener.onUpdateAddressFailure(result.msg);
+                }
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                listener.onUpdateAddressFailure(throwable.getLocalizedMessage());
             }
         });
     }

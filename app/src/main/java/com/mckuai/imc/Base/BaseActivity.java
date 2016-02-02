@@ -12,12 +12,14 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatImageView;
 import android.support.v7.widget.AppCompatTextView;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
 import com.mckuai.imc.Activity.LoginActivity;
 import com.mckuai.imc.Activity.ProfileEditerActivity;
 import com.mckuai.imc.Activity.SearchActivity;
+import com.mckuai.imc.Activity.UserCenterActivity;
 import com.mckuai.imc.R;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
@@ -109,9 +111,29 @@ public class BaseActivity extends AppCompatActivity implements NavigationView.On
     public void initDrawer() {
         mDrawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-        userCover = (AppCompatImageView) navigationView.findViewById(R.id.usercover);
-        userName = (AppCompatTextView) navigationView.findViewById(R.id.username);
-        userLevel = (AppCompatTextView) navigationView.findViewById(R.id.userlevel);
+        View headerView = navigationView.getHeaderView(0);
+        userCover = (AppCompatImageView) headerView.findViewById(R.id.usercover);
+        userName = (AppCompatTextView) headerView.findViewById(R.id.username);
+        userLevel = (AppCompatTextView) headerView.findViewById(R.id.userlevel);
+
+        userCover.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (mApplication.isLogin()) {
+                    Intent intent;
+                    intent = new Intent(BaseActivity.this, UserCenterActivity.class);
+                    intent.putExtra(getString(R.string.usercenter_tag_userid), mApplication.user.getId());
+                    startActivity(intent);
+                } else {
+                    callLogin(0);
+                }
+            }
+        });
+
+
+        Menu menu = navigationView.getMenu();
+        final MenuItem logout = menu.findItem(R.id.nav_logout);
+
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, mDrawer, mToolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close){
             @Override
             public void onDrawerClosed(View drawerView) {
@@ -121,19 +143,21 @@ public class BaseActivity extends AppCompatActivity implements NavigationView.On
             @Override
             public void onDrawerOpened(View drawerView) {
                 super.onDrawerOpened(drawerView);
-                /*if (mApplication.isLogin()){
+                if (mApplication.isLogin()) {
                     String url = (String) userCover.getTag();
                     if (null == url || !url.equals(mApplication.user.getHeadImg())) {
-                        loader.displayImage(mApplication.user.getHeadImg(), userCover);
+                        loader.displayImage(mApplication.user.getHeadImg(), userCover, mApplication.getCircleOptions());
                         userName.setText(mApplication.user.getNike());
                         userLevel.setText(mApplication.user.getLevel() + "");
                         userCover.setTag(mApplication.user.getHeadImg());
+                        logout.setVisible(true);
                     }
                 } else {
                     userName.setText("未登录");
                     userLevel.setText("");
                     userCover.setBackgroundResource(R.mipmap.ic_usercover_default);
-                }*/
+                    logout.setVisible(false);
+                }
             }
         };
         mDrawer.setDrawerListener(toggle);
@@ -208,7 +232,7 @@ public class BaseActivity extends AppCompatActivity implements NavigationView.On
                 mApplication.user = null;
                 break;
         }
-        return false;
+        return true;
     }
 
     /**

@@ -3,6 +3,7 @@ package com.mckuai.imc.Base;
 
 import android.app.Fragment;
 import android.content.Context;
+import android.view.View;
 
 
 public class BaseFragment extends Fragment {
@@ -45,6 +46,12 @@ public class BaseFragment extends Fragment {
             return getString(mTitleResId);
         } else {
             return "未知";
+        }
+    }
+
+    private void showMessage(String msg, String action, View.OnClickListener listener) {
+        if (null != getActivity()) {
+            ((BaseActivity) getActivity()).showMessage(msg, action, listener);
         }
     }
 
