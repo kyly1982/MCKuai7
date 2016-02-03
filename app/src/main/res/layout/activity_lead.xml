@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@mipmap/bg_leader">
+
+    <RadioGroup
+        android:id="@+id/indicatorlayout"
+        android:layout_width="wrap_content"
+        android:layout_height="15dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="20dp"
+        android:gravity="center_vertical"
+        android:minWidth="40dp"
+        android:orientation="horizontal">
+
+        <android.support.v7.widget.AppCompatRadioButton
+            android:id="@+id/step1"
+            android:layout_width="10dp"
+            android:layout_height="10dp"
+            android:layout_margin="2dp"
+            android:background="@drawable/indicator_leader_selector"
+            android:button="@null"
+            android:checked="true"
+            android:enabled="false" />
+
+        <android.support.v7.widget.AppCompatRadioButton
+            android:id="@+id/step2"
+            android:layout_width="10dp"
+            android:layout_height="10dp"
+            android:layout_margin="2dp"
+            android:background="@drawable/indicator_leader_selector"
+            android:button="@null"
+            android:enabled="false" />
+
+        <android.support.v7.widget.AppCompatRadioButton
+            android:id="@+id/step3"
+            android:layout_width="10dp"
+            android:layout_height="10dp"
+            android:layout_margin="2dp"
+            android:background="@drawable/indicator_leader_selector"
+            android:button="@null"
+            android:enabled="false" />
+    </RadioGroup>
+
+    <android.support.v7.widget.AppCompatImageView
+        android:id="@+id/camer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="170dp"
+        android:src="@mipmap/ic_leader_camer"
+        android:visibility="visible" />
+
+    <android.support.v7.widget.AppCompatImageView
+        android:id="@+id/widget1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@id/camer"
+        android:layout_toRightOf="@id/camer"
+        android:src="@mipmap/ic_leader_widget1" />
+
+    <android.support.v7.widget.AppCompatImageView
+        android:id="@+id/widget2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/camer"
+        android:layout_toLeftOf="@id/camer"
+        android:src="@mipmap/ic_leader_widget2" />
+
+    <android.support.v7.widget.AppCompatImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/widget1"
+        android:layout_toRightOf="@id/camer"
+        android:src="@mipmap/bg_dialog_1" />
+
+    <android.support.v7.widget.AppCompatImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/widget2"
+        android:layout_toLeftOf="@id/camer"
+        android:src="@mipmap/bg_dialog_2" />
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/vp"
+        android:layout_width="match_parent"
+        android:layout_height="231dp"
+        android:layout_alignParentBottom="true"></android.support.v4.view.ViewPager>
+
+</RelativeLayout>

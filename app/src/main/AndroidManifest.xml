@@ -37,12 +37,18 @@
             android:name=".Activity.MainActivity"
             android:label="${APP_NAME}"
             android:theme="@style/AppTheme">
+
+        </activity>
+
+        <activity android:name=".Activity.ProfileEditerActivity" />
+        <activity android:name=".Activity.LeadActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <activity
             android:name=".Activity.CreateActivity"
             android:label="${APP_NAME}"
@@ -230,7 +236,7 @@
             android:name="UMENG_MESSAGE_SECRET"
             android:value="ee7b5f0cb297eddbd18300bd62f63d81" />
 
-        <activity android:name=".Activity.ProfileEditerActivity"></activity>
+
     </application>
 
 </manifest>
