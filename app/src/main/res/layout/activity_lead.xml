@@ -70,6 +70,7 @@
         android:src="@mipmap/ic_leader_widget2" />
 
     <android.support.v7.widget.AppCompatImageView
+        android:id="@+id/dialog1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_above="@id/widget1"
@@ -77,6 +78,7 @@
         android:src="@mipmap/bg_dialog_1" />
 
     <android.support.v7.widget.AppCompatImageView
+        android:id="@+id/dialog2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_above="@id/widget2"
@@ -88,5 +90,15 @@
         android:layout_width="match_parent"
         android:layout_height="231dp"
         android:layout_alignParentBottom="true"></android.support.v4.view.ViewPager>
+
+    <android.support.v7.widget.AppCompatButton
+        android:id="@+id/start"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:background="@color/textGreen"
+        android:text="进入麦块"
+        android:visibility="gone" />
 
 </RelativeLayout>

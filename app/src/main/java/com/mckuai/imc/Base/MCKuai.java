@@ -23,10 +23,8 @@ import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.core.assist.ImageScaleType;
 import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
 import com.nostra13.universalimageloader.core.display.CircleBitmapDisplayer;
-import com.nostra13.universalimageloader.core.display.RoundedBitmapDisplayer;
 import com.nostra13.universalimageloader.core.download.BaseImageDownloader;
 import com.umeng.socialize.PlatformConfig;
-
 
 import java.io.File;
 
@@ -52,7 +50,7 @@ public class MCKuai extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        init();
+        readPreference();
         instence = this;
     }
 
@@ -61,12 +59,11 @@ public class MCKuai extends Application {
         super.onTerminate();
     }
 
-    private void init() {
+    public void init() {
         initImageLoader();
         initUMPlatform();
         initRongIM();
         netEngine = new MCNetEngine();
-        readPreference();
     }
 
     private void initRongIM(){

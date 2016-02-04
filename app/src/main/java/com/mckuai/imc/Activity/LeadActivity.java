@@ -1,9 +1,11 @@
 package com.mckuai.imc.Activity;
 
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.AppCompatImageView;
 import android.support.v7.widget.AppCompatRadioButton;
 import android.view.View;
@@ -11,28 +13,37 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 
 import com.mckuai.imc.Adapter.LeaderFragmentAdapter;
+import com.mckuai.imc.Base.BaseActivity;
 import com.mckuai.imc.Fragment.LeadFragment;
 import com.mckuai.imc.R;
 
 import java.util.ArrayList;
 
-public class LeadActivity extends AppCompatActivity implements ViewPager.OnPageChangeListener {
+public class LeadActivity extends BaseActivity implements ViewPager.OnPageChangeListener, View.OnClickListener {
     private ViewPager vp;
     private AppCompatImageView camer;
     private AppCompatRadioButton step1;
     private AppCompatRadioButton step2;
     private AppCompatRadioButton step3;
+    private AppCompatButton start;
+    private AppCompatImageView widget1;
+    private AppCompatImageView widget2;
+    private AppCompatImageView dlg1;
+    private AppCompatImageView dlg2;
+
 
 
     private Animation fadein;
     private Animation fadeout;
     private ArrayList<Fragment> fragments;
     private LeaderFragmentAdapter adapter;
+    private boolean isFirstBoot = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_lead);
+        readdata();
     }
 
     @Override
@@ -44,6 +55,7 @@ public class LeadActivity extends AppCompatActivity implements ViewPager.OnPageC
             initAnimation();
             showData();
         }
+        mApplication.init();
     }
 
     private void initView() {
@@ -52,7 +64,21 @@ public class LeadActivity extends AppCompatActivity implements ViewPager.OnPageC
         step1 = (AppCompatRadioButton) findViewById(R.id.step1);
         step2 = (AppCompatRadioButton) findViewById(R.id.step2);
         step3 = (AppCompatRadioButton) findViewById(R.id.step3);
+        start = (AppCompatButton) findViewById(R.id.start);
+
+        widget1 = (AppCompatImageView) findViewById(R.id.widget1);
+        widget2 = (AppCompatImageView) findViewById(R.id.widget2);
+        dlg1 = (AppCompatImageView) findViewById(R.id.dialog1);
+        dlg2 = (AppCompatImageView) findViewById(R.id.dialog2);
+
+        //camer.setVisibility(View.GONE);
+        widget1.setVisibility(View.GONE);
+        widget2.setVisibility(View.GONE);
+        dlg1.setVisibility(View.GONE);
+        dlg2.setVisibility(View.GONE);
+
         vp.addOnPageChangeListener(this);
+        start.setOnClickListener(this);
     }
 
     private void initFragment() {
@@ -68,12 +94,21 @@ public class LeadActivity extends AppCompatActivity implements ViewPager.OnPageC
         fadein.setAnimationListener(new Animation.AnimationListener() {
             @Override
             public void onAnimationStart(Animation animation) {
-
             }
 
             @Override
             public void onAnimationEnd(Animation animation) {
-                camer.setVisibility(View.VISIBLE);
+                //camer.setVisibility(View.VISIBLE);
+
+                switch (vp.getCurrentItem()) {
+                    case 0:
+                        camer.startAnimation(fadeout);
+                        break;
+                    case 1:
+                        break;
+                    case 2:
+                        break;
+                }
             }
 
             @Override
@@ -89,7 +124,7 @@ public class LeadActivity extends AppCompatActivity implements ViewPager.OnPageC
 
             @Override
             public void onAnimationEnd(Animation animation) {
-                camer.setVisibility(View.GONE);
+                camer.setAlpha(0f);
             }
 
             @Override
@@ -100,12 +135,18 @@ public class LeadActivity extends AppCompatActivity implements ViewPager.OnPageC
     }
 
     private void showData() {
-        if (null == adapter) {
-            adapter = new LeaderFragmentAdapter(getSupportFragmentManager(), fragments);
-            vp.setAdapter(adapter);
-            //vp.setCurrentItem(0);
-            camer.setVisibility(View.VISIBLE);
-            camer.startAnimation(fadein);
+        if (isFirstBoot) {
+            if (null == adapter) {
+                adapter = new LeaderFragmentAdapter(getSupportFragmentManager(), fragments);
+                vp.setAdapter(adapter);
+                //vp.setCurrentItem(0);
+                //camer.startAnimation(fadein);
+            }
+        } else {
+            Intent intent = new Intent(this, MainActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
+            finish();
         }
     }
 
@@ -118,21 +159,26 @@ public class LeadActivity extends AppCompatActivity implements ViewPager.OnPageC
     public void onPageSelected(int position) {
         switch (position) {
             case 0:
-                if (camer.getVisibility() == View.GONE) {
-                    //camer.setAnimation(fadein);
-                    camer.startAnimation(fadein);
-                }
                 step1.setChecked(true);
+                camer.setVisibility(View.VISIBLE);
+                camer.setAlpha(1f);
+                widget1.setVisibility(View.GONE);
+                widget2.setVisibility(View.GONE);
                 break;
             case 1:
-                if (camer.getVisibility() == View.VISIBLE) {
-                    //camer.setAnimation(fadeout);
-                    camer.startAnimation(fadeout);
-                }
                 step2.setChecked(true);
+                camer.setAlpha(0f);
+                dlg2.setVisibility(View.GONE);
+                dlg1.setVisibility(View.GONE);
+                widget1.setVisibility(View.VISIBLE);
+                widget2.setVisibility(View.VISIBLE);
+                start.setVisibility(View.GONE);
                 break;
             case 2:
                 step3.setChecked(true);
+                dlg1.setVisibility(View.VISIBLE);
+                dlg2.setVisibility(View.VISIBLE);
+                start.setVisibility(View.VISIBLE);
                 break;
         }
     }
@@ -142,5 +188,19 @@ public class LeadActivity extends AppCompatActivity implements ViewPager.OnPageC
 
     }
 
+    @Override
+    public void onClick(View v) {
+        Intent intent = new Intent(this, MainActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
+        finish();
+    }
 
+    private void readdata() {
+        SharedPreferences preferences = getSharedPreferences(getString(R.string.preferences_filename), 0);
+        isFirstBoot = preferences.getBoolean(getString(R.string.preferences_isFirstBoot), true);
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putBoolean(getString(R.string.preferences_isFirstBoot), false);
+        editor.commit();
+    }
 }

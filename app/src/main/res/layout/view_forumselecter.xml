@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:id="@+id/simplelayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:clickable="true"
+        android:padding="5dp"
+        android:visibility="visible">
+
+        <View
+            android:id="@+id/center"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_centerInParent="true" />
+
+        <android.support.v7.widget.AppCompatTextView
+            android:id="@+id/forumname_hint"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="版块：" />
+
+        <android.support.v7.widget.AppCompatTextView
+            android:id="@+id/forumname"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/forumname_hint"
+            android:textColor="@color/icons"
+            android:background="@color/textGreen"
+            android:text="矿工茶馆" />
+
+        <android.support.v7.widget.AppCompatTextView
+            android:id="@+id/typehint"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/center"
+            android:text="类型：" />
+
+        <android.support.v7.widget.AppCompatTextView
+            android:id="@+id/typename"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/typehint"
+            android:textColor="@color/icons"
+            android:background="@color/textGreen"
+            android:text="求教" />
+    </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/detilelayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <android.support.v7.widget.AppCompatTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="5dp"
+            android:text="版块" />
+
+        <GridView
+            android:id="@+id/forumview"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:columnWidth="90dp"
+            android:gravity="center"
+            android:horizontalSpacing="10dp"
+            android:numColumns="auto_fit"
+            android:paddingBottom="10dp"
+            android:paddingTop="10dp"
+            android:stretchMode="columnWidth"
+            android:verticalSpacing="8dp" />
+
+        <android.support.v7.widget.AppCompatTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="5dp"
+            android:text="类型" />
+
+        <GridView
+            android:id="@+id/typeview"
+            android:layout_width="match_parent"
+            android:layout_height="90dp"
+            android:columnWidth="90dp"
+            android:gravity="center"
+            android:horizontalSpacing="10dp"
+            android:numColumns="auto_fit"
+            android:paddingBottom="10dp"
+            android:paddingTop="10dp"
+            android:stretchMode="columnWidth"
+            android:verticalSpacing="8dp" />
+
+    </LinearLayout>
+
+
+</RelativeLayout>
