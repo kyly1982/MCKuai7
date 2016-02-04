@@ -3,6 +3,7 @@ package com.mckuai.imc.Fragment;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.Point;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
@@ -15,8 +16,6 @@ import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewTreeObserver;
-import android.widget.RelativeLayout;
 import android.widget.ViewFlipper;
 
 import com.malinskiy.superrecyclerview.SuperRecyclerView;
@@ -24,6 +23,7 @@ import com.mckuai.imc.Adapter.CartoonSceneAdapter;
 import com.mckuai.imc.Base.BaseFragment;
 import com.mckuai.imc.Base.MCKuai;
 import com.mckuai.imc.Bean.Cartoon;
+import com.mckuai.imc.Bean.Lable;
 import com.mckuai.imc.R;
 import com.mckuai.imc.Util.MCNetEngine;
 import com.mckuai.imc.Widget.CreateCartoonStepView.StepView_1;
@@ -33,7 +33,6 @@ import com.mckuai.imc.Widget.CreateCartoonStepView.StepView_4;
 import com.mckuai.imc.Widget.TouchableLayout.TouchableLayout;
 
 import java.io.File;
-import java.io.FileOutputStream;
 import java.util.ArrayList;
 
 public class CreateCartoonFragment extends BaseFragment implements StepView_4.OnShareButtonClickedListener, StepView_1.OnButtonClickListener, StepView_2.OnWidgetCheckedListener,
@@ -48,6 +47,7 @@ public class CreateCartoonFragment extends BaseFragment implements StepView_4.On
     private TouchableLayout cartoonBuilder;
     private AppCompatTextView builderHint;
     private SuperRecyclerView sceneList;
+    private Point lastPoint;
 
 
     public CreateCartoonFragment() {
@@ -118,6 +118,12 @@ public class CreateCartoonFragment extends BaseFragment implements StepView_4.On
 
 
         sceneList = (SuperRecyclerView) view.findViewById(R.id.createcartoon_scenelist);
+        cartoonBuilder.setOnFocusChangeListener(new TouchableLayout.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(Point point) {
+                lastPoint = point;
+            }
+        });
 
         StepView_1 step1 = new StepView_1(getActivity(), this);
         StepView_2 step2 = new StepView_2(getActivity(), this);
@@ -260,10 +266,13 @@ public class CreateCartoonFragment extends BaseFragment implements StepView_4.On
 
     @Override
     public void onTalkAdded(String talk) {
-        if (null == talks) {
+        /*if (null == talks) {
             talks = new ArrayList<>(3);
         }
-        talks.add(talk);
+        talks.add(talk);*/
+        //直接合成到图片上
+        Lable lable = new Lable(lastPoint, talk);
+        cartoonBuilder.addLable(lable);
     }
 
     private void uploadCartoon(Cartoon cartoon) {

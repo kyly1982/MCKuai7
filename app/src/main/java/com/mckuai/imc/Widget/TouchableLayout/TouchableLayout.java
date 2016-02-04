@@ -12,7 +12,10 @@ import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
+import com.mckuai.imc.Bean.Lable;
 import com.mckuai.imc.R;
 import com.mckuai.imc.Util.BitmapUtil;
 
@@ -20,7 +23,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class TouchableLayout extends ViewGroup {
+public class TouchableLayout extends RelativeLayout {
     private Context context;
 
     /**
@@ -69,15 +72,17 @@ public class TouchableLayout extends ViewGroup {
     /**
      * 标签
      */
-    private List<View> labels = new ArrayList<>();
+    private List<Lable> labels = new ArrayList<>();
 
     /**
      * 焦点贴纸索引
      */
     private int focusStickerPosition = -1;
+    private int focusLablePosition = 0;
 
     public TouchableLayout(Context context) {
         this(context, null);
+        this.context = context;
     }
 
     public TouchableLayout(Context context, AttributeSet attrs) {
@@ -90,6 +95,16 @@ public class TouchableLayout extends ViewGroup {
         super(context, attrs, defStyle);
         this.context = context;
         init();
+    }
+
+    private OnFocusChangeListener listener;
+
+    public void setOnFocusChangeListener(OnFocusChangeListener listener) {
+        this.listener = listener;
+    }
+
+    public interface OnFocusChangeListener {
+        void onFocusChange(Point point);
     }
 
     /**
@@ -109,7 +124,7 @@ public class TouchableLayout extends ViewGroup {
 
 
     public void setBitmapBackground(Uri uri){
-        bgBitmap = BitmapUtil.decodeFile(context,uri,getWidth(),getHeight());
+        bgBitmap = BitmapUtil.decodeFile(context, uri, getWidth(), getHeight());
         if (null != bgBitmap){
             postInvalidate();
         }
@@ -129,13 +144,16 @@ public class TouchableLayout extends ViewGroup {
         postInvalidate();
     }
 
-    public void addView(View view) {
-        if (null == view) {
-            return;
-        }
 
-        labels.add(view);
-        addView(view, getChildCount());
+    public void addLable(Lable lable) {
+        if (null == labels) {
+            labels = new ArrayList<>(3);
+        }
+        labels.add(lable);
+        TextView textView = new TextView(context);
+        textView.setText(lable.getContent());
+        addView(textView);
+        postInvalidate();
     }
 
 
@@ -151,6 +169,11 @@ public class TouchableLayout extends ViewGroup {
     }
 
     @Override
+    protected void onDraw(Canvas canvas) {
+        super.onDraw(canvas);
+    }
+
+    @Override
     protected void dispatchDraw(Canvas canvas) {
         super.dispatchDraw(canvas);
         if (null != bgBitmap) {
@@ -163,7 +186,7 @@ public class TouchableLayout extends ViewGroup {
             canvas.drawBitmap(bgBitmap,0,0,null);
         }
 
-        if (stickers.size() <= 0) {
+        if (stickers.size() <= 0 && getChildCount() <= 0) {
             return;
         }
 
@@ -181,6 +204,33 @@ public class TouchableLayout extends ViewGroup {
             }
         }
 
+        if (null != labels && !labels.isEmpty()) {
+            /*Paint p = new Paint();
+            p.setColor(Color.YELLOW);
+            p.setTextSize(50);
+            p.setAntiAlias(true);
+            Paint.FontMetrics fm = p.getFontMetrics();
+            int textHeight = (int) (Math.ceil(fm.descent - fm.ascent) + 2);
+            float width = 500;
+            float baseline = 100f;
+            p.setColor(Color.WHITE);
+            float offsetAscent = baseline + fm.ascent;
+            float offsetDescent = baseline + fm.descent;
+            float offsetTop = baseline + fm.top;
+            float offsetBottom = baseline + fm.bottom;
+
+
+            RectF rectf = new RectF(100,200,500,400);
+            canvas.drawRect(rectf,p);
+            canvas.drawText(labels.get(0),100,baseline,p);*/
+            int count = getChildCount();
+            for (int i = 0; i < count; i++) {
+                View view = getChildAt(i);
+                if (null != view) {
+                    drawChild(canvas, view, getDrawingTime());
+                }
+            }
+        }
     }
 
     /**
@@ -221,6 +271,21 @@ public class TouchableLayout extends ViewGroup {
 
     }
 
+    private boolean isInLable(float x, float y) {
+        if (getChildCount() <= 0) {
+            return false;
+        }
+        for (int i = 0; i < getChildCount(); i++) {
+            View view = getChildAt(i);
+            if (view.getLeft() <= x && view.getRight() >= x && view.getTop() <= y && view.getBottom() >= y) {
+                focusLablePosition = i;
+                return true;
+            }
+        }
+
+        return true;
+    }
+
     @Override
     public boolean dispatchTouchEvent(MotionEvent event) {
         if (mViewRect == null) {
@@ -234,6 +299,7 @@ public class TouchableLayout extends ViewGroup {
         float y = event.getY();
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
+                //检查是否是在控制区域
                 if (isInController(x, y)) {
                     mInController = true;
                     mLastPointY = y;
@@ -244,12 +310,13 @@ public class TouchableLayout extends ViewGroup {
                     deviation = touchLenght - nowLenght;
                     break;
                 }
-
+                //检查是否在删除按钮上
                 if (isInDelete(x, y)) {
                     mInDelete = true;
                     break;
                 }
 
+                //检查是否在焦点卡片上
                 if (isFocusSticker(x, y)) {
                     mLastPointY = y;
                     mLastPointX = x;
@@ -313,7 +380,7 @@ public class TouchableLayout extends ViewGroup {
     }
 
     /**
-     * 删除所有贴纸
+     * 删除贴纸
      */
     private void doDeleteSticker() {
         stickers.remove(focusStickerPosition);
@@ -434,6 +501,7 @@ public class TouchableLayout extends ViewGroup {
             if (i == position) {
                 focusPosition = i;
                 stickers.get(i).setFocusable(true);
+
             } else {
                 stickers.get(i).setFocusable(false);
             }
@@ -441,6 +509,12 @@ public class TouchableLayout extends ViewGroup {
         Sticker sticker = stickers.remove(focusPosition);
         stickers.add(sticker);
         focusStickerPosition = stickers.size() - 1;
+        if (null != listener) {
+            Point point = new Point();
+            point.x = (int) sticker.getMapPointsSrc()[2];
+            point.y = (int) sticker.getMapPointsSrc()[4];
+            listener.onFocusChange(point);
+        }
     }
 
     @Override
@@ -494,10 +568,11 @@ public class TouchableLayout extends ViewGroup {
          * 只将子控件放在其所设置的位置上，不用管其位置关系
          */
         for (int i = 0; i < childCount; i++) {
-            View childview = labels.get(i);
+            View childview = getChildAt(i);
+            Lable lable = labels.get(i);
             int childWidth = childview.getMeasuredWidth();
             int childHeight = childview.getMeasuredHeight();
-            childview.layout(left, top, left + childWidth, top + childHeight);
+            childview.layout(lable.getCoordinate().x, top, lable.getCoordinate().x + childWidth, lable.getCoordinate().y + childHeight);
         }
     }
 

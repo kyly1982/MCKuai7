@@ -123,6 +123,7 @@
     <string name="interface_cartoonwork">interface.do?act=cartoonWork</string>
     <!--评论动漫-->
     <string name="interface_commentcartoon">interface.do?act=toComment</string>
+    <string name="itnerface_loadmessage">interface.do?act=cartoonRec</string>
 
     <!--侧边栏-->
     <string name="navigation_drawer_open">Open navigation drawer</string>

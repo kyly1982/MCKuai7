@@ -39,6 +39,7 @@ public class BaseActivity extends AppCompatActivity implements NavigationView.On
     protected ArrayList<BaseFragment> fragments;
     protected int currentFragmentIndex = -1;
     private ImageLoader loader = ImageLoader.getInstance();
+    private boolean isSlidingMenuShow = false;
 
 
     @Override

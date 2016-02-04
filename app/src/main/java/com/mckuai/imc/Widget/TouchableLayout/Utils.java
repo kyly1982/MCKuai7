@@ -5,6 +5,8 @@ import android.content.Context;
 import android.graphics.Point;
 import android.view.WindowManager;
 
+import java.util.ArrayList;
+
 /**
  * Created by yangchen on 15-9-10.
  */
@@ -59,5 +61,16 @@ public class Utils {
         PointD midpoint = new PointD();
         midpoint.set((x1 + x2) / 2, (y1 + y2) / 2);
         return midpoint;
+    }
+
+    public static ArrayList<Point> getTextPoint(int length) {
+        ArrayList<Point> points = new ArrayList<>(2);
+        Point point = new Point();
+        Point size = new Point();
+
+
+        points.add(point);
+        points.add(size);
+        return points;
     }
 }

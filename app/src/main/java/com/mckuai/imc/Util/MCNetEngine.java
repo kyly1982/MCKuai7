@@ -41,6 +41,7 @@ import java.util.ArrayList;
 public class MCNetEngine {
     private AsyncHttpClient httpClient;
     private Gson gson;
+    private String domainName = "http://api.mckuai.com/";
 
     public MCNetEngine() {
         httpClient = new AsyncHttpClient();
@@ -642,7 +643,7 @@ public class MCNetEngine {
                     CommunityWorkBean bean = gson.fromJson(result.msg,CommunityWorkBean.class);
                     if (null != bean && null != bean.getList() && null != bean.getUser()){
                         Page page = new Page(bean.getList().getAllCount(),bean.getList().getPage(),bean.getList().getPageSize());
-                        listener.onLoadCommunityWorkSuccess(bean.getList().getdata(),bean.getUser(),page);
+                        listener.onLoadCommunityWorkSuccess(bean.getList().getdata(), bean.getUser(), page);
                     } else {
                         listener.onLoadCommunityWorkFailure("转换数据失败！");
                     }
@@ -657,6 +658,40 @@ public class MCNetEngine {
             }
         });
     }
+
+    /***************************************************************************
+     * 添加好友
+     ***************************************************************************/
+
+    public interface OnAddFriendResponseListener {
+        void onAddFriendSuccess();
+
+        void onAddFriendFailure(String msg);
+    }
+
+    public void addFriend(final Context context, int userId, final OnAddFriendResponseListener listener) {
+        String url = domainName + "interface.do?act=attentionUser";
+        RequestParams params = new RequestParams();
+        params.put("ownerId", MCKuai.instence.user.getId());
+        params.put("id", userId);
+        httpClient.get(url, params, new JsonHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                ParseResponseResult result = new ParseResponseResult(context, response);
+                if (result.isSuccess) {
+                    listener.onAddFriendSuccess();
+                } else {
+                    listener.onAddFriendFailure(result.msg);
+                }
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                listener.onAddFriendFailure(throwable.getLocalizedMessage());
+            }
+        });
+    }
+
 
     /***************************************************************************
      * 个人中心好友
@@ -824,6 +859,38 @@ public class MCNetEngine {
             @Override
             public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
                 listener.onUpdateAddressFailure(throwable.getLocalizedMessage());
+            }
+        });
+    }
+
+    public interface OnLoadMessageResponseListener {
+        void onLoadMessageSuccess(ArrayList<Cartoon> messages);
+
+        void onLoadMessageFailure(String msg);
+    }
+
+    public void loadMessage(final Context context, Integer lastId, final OnLoadMessageResponseListener listener) {
+        String url = context.getString(R.string.interface_domainName) + context.getString(R.string.itnerface_loadmessage);
+        RequestParams params = new RequestParams();
+        if (null != lastId) {
+            params.put("ids", lastId);
+        }
+        httpClient.get(url, params, new JsonHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                ParseResponseResult result = new ParseResponseResult(context, response);
+                if (result.isSuccess) {
+                    ArrayList<Cartoon> cartoons = gson.fromJson(result.msg, new TypeToken<ArrayList<Cartoon>>() {
+                    }.getType());
+                    listener.onLoadMessageSuccess(cartoons);
+                } else {
+                    listener.onLoadMessageFailure(result.msg);
+                }
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                listener.onLoadMessageFailure(throwable.getLocalizedMessage());
             }
         });
     }

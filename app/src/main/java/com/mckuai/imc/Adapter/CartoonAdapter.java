@@ -10,7 +10,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewTreeObserver;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
@@ -68,7 +67,7 @@ public class CartoonAdapter extends RecyclerView.Adapter<CartoonAdapter.ViewHold
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, final int viewType) {
-        View view = inflater.inflate(R.layout.element_cartoon, parent, false);
+        View view = inflater.inflate(R.layout.item_cartoon, parent, false);
         final ViewHolder holder = new ViewHolder(view);
         int height = parent.getHeight();
         int width = height * 9 / 16;

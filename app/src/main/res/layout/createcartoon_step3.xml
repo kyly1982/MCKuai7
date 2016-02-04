@@ -34,6 +34,7 @@
             android:id="@+id/createcartoon_talk"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:textColor="@color/icons"
             android:textColorHint="@color/textSecondary"
             android:hint="@string/createcartoon_hint_step3_2"/>
     </android.support.design.widget.TextInputLayout>

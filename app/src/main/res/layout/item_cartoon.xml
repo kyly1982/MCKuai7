@@ -5,7 +5,9 @@
     android:layout_height="match_parent"
     app:cardElevation="8dp"
     app:cardCornerRadius="8dp"
-    android:background="@null">
+    android:background="@null"
+    android:layout_marginLeft="5dp"
+    android:layout_marginRight="5dp">
 
     <include layout="@layout/element_cartoon" />
 
