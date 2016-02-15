@@ -2,7 +2,9 @@ package com.mckuai.imc.Base;
 
 import android.app.Fragment;
 import android.app.FragmentManager;
+import android.content.ActivityNotFoundException;
 import android.content.Intent;
+import android.net.Uri;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
 import android.support.v4.view.GravityCompat;
@@ -20,12 +22,22 @@ import com.mckuai.imc.Activity.LoginActivity;
 import com.mckuai.imc.Activity.ProfileEditerActivity;
 import com.mckuai.imc.Activity.SearchActivity;
 import com.mckuai.imc.Activity.UserCenterActivity;
+import com.mckuai.imc.BuildConfig;
 import com.mckuai.imc.R;
+import com.mckuai.imc.Widget.autoupdate.AppUpdate;
+import com.mckuai.imc.Widget.autoupdate.AppUpdateService;
+import com.mckuai.imc.Widget.autoupdate.ResponseParser;
+import com.mckuai.imc.Widget.autoupdate.Version;
+import com.mckuai.imc.Widget.autoupdate.internal.SimpleJSONParser;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.umeng.socialize.ShareAction;
 import com.umeng.socialize.UMShareAPI;
 import com.umeng.socialize.bean.SHARE_MEDIA;
 import com.umeng.socialize.media.UMImage;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+import org.json.JSONTokener;
 
 import java.util.ArrayList;
 
@@ -46,6 +58,7 @@ public class BaseActivity extends AppCompatActivity implements NavigationView.On
     private ImageLoader loader = ImageLoader.getInstance();
     private boolean isSlidingMenuShow = false;
     private UMShareAPI mShareAPI = UMShareAPI.get(this);
+    private AppUpdate appUpdate;
 
 
     @Override
@@ -54,11 +67,13 @@ public class BaseActivity extends AppCompatActivity implements NavigationView.On
         if (mApplication.isLogin()) {
 
         }
+
     }
 
     @Override
     protected void onPause() {
         super.onPause();
+
     }
 
     /**
@@ -97,11 +112,18 @@ public class BaseActivity extends AppCompatActivity implements NavigationView.On
             @Override
             public void onDrawerOpened(View drawerView) {
                 super.onDrawerOpened(drawerView);
+                if (null == appUpdate) {
+                    appUpdate = AppUpdateService.getAppUpdate(BaseActivity.this);
+                }
+                appUpdate.callOnResume();
             }
 
             @Override
             public void onDrawerClosed(View drawerView) {
                 super.onDrawerClosed(drawerView);
+                if (null != appUpdate) {
+                    appUpdate.callOnPause();
+                }
             }
         };
         mDrawer.setDrawerListener(toggle);
@@ -263,10 +285,19 @@ public class BaseActivity extends AppCompatActivity implements NavigationView.On
                 }
                 break;
             case R.id.nav_share:
-                showMessage("分享", null, null);
+                share("麦块", "我正在玩麦块，你也一起来玩吧", "http://www.mckuai.com", null);
+                break;
+            case R.id.nav_prise:
+                Uri uri = Uri.parse("market://details?id=" + getPackageName());
+                intent = new Intent(Intent.ACTION_VIEW, uri);
+                try {
+                    startActivity(intent);
+                } catch (ActivityNotFoundException e) {
+                    showMessage("你还未安装市场", null, null);
+                }
                 break;
             case R.id.checkUpgread:
-                showMessage("已是最新版本", null, null);
+                checkUpgrade(false);
                 break;
             case R.id.nav_logout:
                 if (null != mApplication.user && null != mApplication.user.getLoginToken()) {
@@ -278,6 +309,19 @@ public class BaseActivity extends AppCompatActivity implements NavigationView.On
                 break;
         }
         return true;
+    }
+
+    protected void checkUpgrade(boolean quilte) {
+        if (null == appUpdate) {
+            appUpdate = AppUpdateService.getAppUpdate(BaseActivity.this);
+        }
+        String url = getString(R.string.interface_domainName) + getString(R.string.interface_checkupgread);
+        url = url + "&pushMan=" + BuildConfig.FLAVOR;
+        if (quilte) {
+            appUpdate.checkLatestVersionQuiet(url, new MyJsonParser());
+        } else {
+            appUpdate.checkLatestVersion(url, new MyJsonParser());
+        }
     }
 
     /**
@@ -313,6 +357,29 @@ public class BaseActivity extends AppCompatActivity implements NavigationView.On
             snackbar.setAction(action, listener).setActionTextColor(getResources().getColor(R.color.colorError));
         }
         snackbar.show();
+    }
+
+    class MyJsonParser extends SimpleJSONParser implements ResponseParser {
+        @Override
+        public Version parser(String response) {
+            try {
+                JSONTokener jsonParser = new JSONTokener(response);
+                JSONObject json = (JSONObject) jsonParser.nextValue();
+                Version version = null;
+                if (json.has("state") && json.has("dataObject")) {
+                    JSONObject dataField = json.getJSONObject("dataObject");
+                    int code = dataField.getInt("code");
+                    String name = dataField.getString("name");
+                    String feature = dataField.getString("feature");
+                    String targetUrl = dataField.getString("targetUrl");
+                    version = new Version(code, name, feature, targetUrl);
+                }
+                return version;
+            } catch (JSONException exp) {
+                exp.printStackTrace();
+                return null;
+            }
+        }
     }
 
 

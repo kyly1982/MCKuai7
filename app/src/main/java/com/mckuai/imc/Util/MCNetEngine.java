@@ -12,6 +12,8 @@ import com.loopj.android.http.RequestParams;
 import com.mckuai.imc.Base.MCKuai;
 import com.mckuai.imc.Bean.Cartoon;
 import com.mckuai.imc.Bean.CartoonMessage;
+import com.mckuai.imc.Bean.CartoonMessageList;
+import com.mckuai.imc.Bean.CartoonWorkList;
 import com.mckuai.imc.Bean.CommunityDynamic;
 import com.mckuai.imc.Bean.CommunityDynamicBean;
 import com.mckuai.imc.Bean.CommunityMessage;
@@ -435,7 +437,7 @@ public class MCNetEngine {
      ***************************************************************************/
 
     public interface OnLoadCartoonMessageResponseListener {
-        void onLoadCartoonMessageSuccess(ArrayList<CartoonMessage> cartoons, Page page);
+        void onLoadCartoonMessageSuccess(MCUser user, ArrayList<CartoonMessage> cartoons, Page page);
 
         void onLoadCartoonMessageFailure(String msg);
     }
@@ -450,10 +452,11 @@ public class MCNetEngine {
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                 ParseResponseResult result = new ParseResponseResult(context, response);
                 if (result.isSuccess) {
-                    ArrayList<CartoonMessage> messages = gson.fromJson(result.msg, new TypeToken<ArrayList<CartoonMessage>>() {
-                    }.getType());
+                    /*ArrayList<CartoonMessage> messages = gson.fromJson(result.msg, new TypeToken<ArrayList<CartoonMessage>>() {
+                    }.getType());*/
+                    CartoonMessageList bean = gson.fromJson(result.msg, CartoonMessageList.class);
                     Page page = gson.fromJson(result.pageBean, Page.class);
-                    listener.onLoadCartoonMessageSuccess(messages, page);
+                    listener.onLoadCartoonMessageSuccess(bean.getUser(), bean.getList(), page);
                 } else {
                     if (null != listener) {
                         listener.onLoadCartoonMessageFailure(result.msg);
@@ -473,7 +476,7 @@ public class MCNetEngine {
      ***************************************************************************/
 
     public interface OnLoadCartoonDynamicResponseListener {
-        void onLoadCartoonDynamicSuccess(ArrayList<CartoonMessage> dynamics, Page page);
+        void onLoadCartoonDynamicSuccess(MCUser user, ArrayList<CartoonMessage> dynamics, Page page);
 
         void onLoadCartoonDynamicFailure(String msg);
     }
@@ -488,10 +491,12 @@ public class MCNetEngine {
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                 ParseResponseResult result = new ParseResponseResult(context, response);
                 if (result.isSuccess) {
-                    ArrayList<CartoonMessage> dynamics = gson.fromJson(result.msg, new TypeToken<ArrayList<CartoonMessage>>() {
-                    }.getType());
+                    /*ArrayList<CartoonMessage> dynamics = gson.fromJson(result.msg, new TypeToken<ArrayList<CartoonMessage>>() {
+                    }.getType());*/
+                    //listener.onLoadCartoonDynamicSuccess(dynamics, page);
+                    CartoonMessageList bean = gson.fromJson(result.msg, CartoonMessageList.class);
                     Page page = gson.fromJson(result.pageBean, Page.class);
-                    listener.onLoadCartoonDynamicSuccess(dynamics, page);
+                    listener.onLoadCartoonDynamicSuccess(bean.getUser(), bean.getList(), page);
                 } else {
                     listener.onLoadCartoonDynamicFailure(result.msg);
                 }
@@ -508,7 +513,7 @@ public class MCNetEngine {
      * 个人中心动漫作品
      ***************************************************************************/
     public interface OnLoadCartoonWorkResponseListener {
-        void onLoadCartoonWorkSuccess(ArrayList<Cartoon> work, Page page);
+        void onLoadCartoonWorkSuccess(MCUser user, ArrayList<Cartoon> work, Page page);
 
         void onLoadCartoonWorkFailure(String msg);
     }
@@ -523,10 +528,11 @@ public class MCNetEngine {
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                 ParseResponseResult result = new ParseResponseResult(context, response);
                 if (result.isSuccess) {
-                    ArrayList<Cartoon> cartoons = gson.fromJson(result.msg, new TypeToken<ArrayList<Cartoon>>() {
-                    }.getType());
+                    /*ArrayList<Cartoon> cartoons = gson.fromJson(result.msg, new TypeToken<ArrayList<Cartoon>>() {
+                    }.getType());*/
+                    CartoonWorkList bean = gson.fromJson(result.msg, CartoonWorkList.class);
                     Page page = gson.fromJson(result.pageBean, Page.class);
-                    listener.onLoadCartoonWorkSuccess(cartoons, page);
+                    listener.onLoadCartoonWorkSuccess(bean.getUser(), bean.getList(), page);
                 } else {
                     listener.onLoadCartoonWorkFailure(result.msg);
                 }
@@ -863,6 +869,10 @@ public class MCNetEngine {
         });
     }
 
+    /***************************************************************************
+     * 推送消息
+     ***************************************************************************/
+
     public interface OnLoadMessageResponseListener {
         void onLoadMessageSuccess(ArrayList<Cartoon> messages);
 
@@ -891,6 +901,44 @@ public class MCNetEngine {
             @Override
             public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
                 listener.onLoadMessageFailure(throwable.getLocalizedMessage());
+            }
+        });
+    }
+
+    /***************************************************************************
+     * 取漫画详细信息
+     ***************************************************************************/
+    public interface OnLoadCartoonDetailResponseListener {
+        void onLoadDetailSuccess(Cartoon cartoon);
+
+        void onLoadDetailFailure(String msg);
+    }
+
+    public void loadCartoonDetail(final Context context, int cartoonId, final OnLoadCartoonDetailResponseListener listener) {
+        String url = context.getString(R.string.interface_domainName) + context.getString(R.string.interface_cartoondetial);
+        RequestParams params = new RequestParams();
+        params.put("id", cartoonId);
+        httpClient.get(url, params, new JsonHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                ParseResponseResult result = new ParseResponseResult(context, response);
+                if (result.isSuccess) {
+                    Cartoon cartoon = gson.fromJson(result.msg, Cartoon.class);
+                    if (null != cartoon && null != listener) {
+                        listener.onLoadDetailSuccess(cartoon);
+                    } else {
+                        listener.onLoadDetailFailure("转换数据失败！");
+                    }
+                } else {
+                    listener.onLoadDetailFailure(result.msg);
+                }
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                if (null != listener) {
+                    listener.onLoadDetailFailure(throwable.getLocalizedMessage());
+                }
             }
         });
     }

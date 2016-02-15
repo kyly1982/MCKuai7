@@ -395,7 +395,7 @@ public class UserCenterActivity extends BaseActivity
     }
 
     @Override
-    public void onLoadCartoonDynamicSuccess(final ArrayList<CartoonMessage> dynamics, Page page) {
+    public void onLoadCartoonDynamicSuccess(MCUser user, final ArrayList<CartoonMessage> dynamics, Page page) {
         cartoonDynamicPage = page;
         if (null == cartoonDynamicAdapter) {
             cartoonDynamicAdapter = new CartoonDynamicAdapter(this, new CartoonDynamicAdapter.OnItemClickListener() {
@@ -415,11 +415,15 @@ public class UserCenterActivity extends BaseActivity
         } else {
             cartoonDynamicAdapter.addData(dynamics);
         }
+        if (null != user) {
+            this.user.clone(user);
+            showUserInfo();
+        }
         list.postInvalidate();
     }
 
     @Override
-    public void onLoadCartoonMessageSuccess(ArrayList<CartoonMessage> messages, Page page) {
+    public void onLoadCartoonMessageSuccess(MCUser user, ArrayList<CartoonMessage> messages, Page page) {
         cartoonMessagePage = page;
         if (null == cartoonMessageAdapter) {
             cartoonMessageAdapter = new CartoonMessageAdapter(this, new CartoonMessageAdapter.OnItemClickListener() {
@@ -439,6 +443,10 @@ public class UserCenterActivity extends BaseActivity
         } else {
             cartoonMessageAdapter.addData(messages);
         }
+        if (null != user) {
+            this.user.clone(user);
+            showUserInfo();
+        }
     }
 
     @Override
@@ -447,7 +455,7 @@ public class UserCenterActivity extends BaseActivity
     }
 
     @Override
-    public void onLoadCartoonWorkSuccess(ArrayList<Cartoon> works, Page page) {
+    public void onLoadCartoonWorkSuccess(MCUser user, ArrayList<Cartoon> works, Page page) {
         cartoonWorkPage = page;
         if (null == cartoonWorkAdapter) {
             cartoonWorkAdapter = new CartoonWorkAdapter(this, new CartoonWorkAdapter.OnItemClickListener() {
@@ -466,6 +474,10 @@ public class UserCenterActivity extends BaseActivity
             cartoonWorkAdapter.setData(works);
         } else {
             cartoonWorkAdapter.addData(works);
+        }
+        if (null != user) {
+            this.user.clone(user);
+            showUserInfo();
         }
     }
 

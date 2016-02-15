@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.FrameLayout;
 
+import com.mckuai.imc.Base.MCKuai;
 import com.mckuai.imc.Bean.Comment;
 import com.mckuai.imc.R;
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -40,7 +41,7 @@ public class CommentView extends FrameLayout {
     }
 
     public void setData(Comment comment) {
-        imageLoader.displayImage(comment.getOwner().getHeadImage(), cover);
+        imageLoader.displayImage(comment.getOwner().getHeadImage(), cover, MCKuai.instence.getCircleOptions());
         name.setText(comment.getOwner().getNickEx());
         content.setText(comment.getContent());
         time.setText(comment.getTimeEx());

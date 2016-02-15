@@ -35,6 +35,7 @@ public class MainFragment_Cartoon extends BaseFragment implements RadioGroup.OnC
     private CartoonAdapter mAdapter;
     private int typeIndex = 0;
     private MCKuai mApplication = MCKuai.instence;
+    private boolean isRefreshNeed = false;
 
     private SuperRecyclerView mCartoonListView;
     private View view;
@@ -136,11 +137,17 @@ public class MainFragment_Cartoon extends BaseFragment implements RadioGroup.OnC
                 }
                 break;
         }
+
+        if (isRefreshNeed) {
+            mAdapter.notifyDataSetChanged();
+            isRefreshNeed = false;
+        }
     }
 
     /*点击类型切换的回调*/
     @Override
     public void onCheckedChanged(RadioGroup group, int checkedId) {
+        isRefreshNeed = true;
         switch (checkedId) {
             case R.id.cartoon_type_hot:
                 typeIndex = 1;
@@ -177,7 +184,7 @@ public class MainFragment_Cartoon extends BaseFragment implements RadioGroup.OnC
                 }
                 break;
             case R.id.cartoon_shar://分享
-                ((BaseActivity) getActivity()).showMessage("分享", null, null);
+                ((BaseActivity) getActivity()).share("标题", "内容", getString(R.string.appdownload_url), null);
                 break;
             case R.id.cartoon_comment:
                 if (null != cartoon){

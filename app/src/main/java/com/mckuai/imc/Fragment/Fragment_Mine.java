@@ -386,7 +386,7 @@ public class Fragment_Mine extends BaseFragment
     }
 
     @Override
-    public void onLoadCartoonDynamicSuccess(final ArrayList<CartoonMessage> dynamics, Page page) {
+    public void onLoadCartoonDynamicSuccess(MCUser user, final ArrayList<CartoonMessage> dynamics, Page page) {
         cartoonDynamicPage = page;
         if (null == cartoonDynamicAdapter) {
             cartoonDynamicAdapter = new CartoonDynamicAdapter(getActivity(), new CartoonDynamicAdapter.OnItemClickListener() {
@@ -407,10 +407,14 @@ public class Fragment_Mine extends BaseFragment
             cartoonDynamicAdapter.addData(dynamics);
         }
         list.postInvalidate();
+        if (null != user) {
+            this.user.clone(user);
+            showUserInfo();
+        }
     }
 
     @Override
-    public void onLoadCartoonMessageSuccess(ArrayList<CartoonMessage> messages, Page page) {
+    public void onLoadCartoonMessageSuccess(MCUser user, ArrayList<CartoonMessage> messages, Page page) {
         cartoonMessagePage = page;
         if (null == cartoonMessageAdapter) {
             cartoonMessageAdapter = new CartoonMessageAdapter(getActivity(), new CartoonMessageAdapter.OnItemClickListener() {
@@ -430,6 +434,10 @@ public class Fragment_Mine extends BaseFragment
         } else {
             cartoonMessageAdapter.addData(messages);
         }
+        if (null != user) {
+            this.user.clone(user);
+            showUserInfo();
+        }
     }
 
     @Override
@@ -438,7 +446,7 @@ public class Fragment_Mine extends BaseFragment
     }
 
     @Override
-    public void onLoadCartoonWorkSuccess(ArrayList<Cartoon> works, Page page) {
+    public void onLoadCartoonWorkSuccess(MCUser user, ArrayList<Cartoon> works, Page page) {
         cartoonWorkPage = page;
         if (null == cartoonWorkAdapter) {
             cartoonWorkAdapter = new CartoonWorkAdapter(getActivity(), new CartoonWorkAdapter.OnItemClickListener() {
@@ -457,6 +465,10 @@ public class Fragment_Mine extends BaseFragment
             cartoonWorkAdapter.setData(works);
         } else {
             cartoonWorkAdapter.addData(works);
+        }
+        if (null != user) {
+            this.user.clone(user);
+            showUserInfo();
         }
     }
 

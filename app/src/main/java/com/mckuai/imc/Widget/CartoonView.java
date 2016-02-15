@@ -13,6 +13,7 @@ import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
+import com.mckuai.imc.Base.MCKuai;
 import com.mckuai.imc.Bean.Cartoon;
 import com.mckuai.imc.Bean.Comment;
 import com.mckuai.imc.Bean.User;
@@ -42,28 +43,35 @@ public class CartoonView extends FrameLayout implements View.OnClickListener{
 
     private boolean isDetailed = true;
     private Cartoon cartoon;
+    private Context context;
 
     public interface OnCartoonElementClickListener{
-        public void onOwnerClicked(int ownerId);
-        public void onShareCartoon(Cartoon cartoon);
-        public void onCommentCartoon(Cartoon cartoon);
-        public void onRewardCartoon(Cartoon cartoon);
+        void onOwnerClicked(int ownerId);
+
+        void onShareCartoon(Cartoon cartoon);
+
+        void onCommentCartoon(Cartoon cartoon);
+
+        void onRewardCartoon(Cartoon cartoon);
     }
 
     public CartoonView(Context context) {
         super(context);
+        this.context = context;
         loader = ImageLoader.getInstance();
         initView(context);
     }
 
     public CartoonView(Context context, AttributeSet attrs) {
         super(context, attrs);
+        this.context = context;
         loader = ImageLoader.getInstance();
         initView(context);
     }
 
     public CartoonView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
+        this.context = context;
         loader = ImageLoader.getInstance();
         initView(context);
     }
@@ -142,7 +150,11 @@ public class CartoonView extends FrameLayout implements View.OnClickListener{
 
     private void showImage(String url, AppCompatImageView imageView, boolean isCircle) {
         if (null != url && null != imageView && 10 < url.length()) {
-            loader.displayImage(url, imageView);
+            if (isCircle) {
+                loader.displayImage(url, imageView, MCKuai.instence.getCircleOptions());
+            } else {
+                loader.displayImage(url, imageView);
+            }
         }
     }
 
@@ -159,8 +171,18 @@ public class CartoonView extends FrameLayout implements View.OnClickListener{
     }
 
     private void showRewardUser(ArrayList<User> rewardUsers) {
-        if (null == rewardList) {
+        if (null == rewardList && !rewardUsers.isEmpty()) {
             rewardList = (LinearLayout) findViewById(R.id.cartoon_rewarduser);
+            for (User user : rewardUsers) {
+                AppCompatImageView cover = (AppCompatImageView) inflate(context, R.layout.element_rewarduser, null);
+                LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(getResources().getDimensionPixelSize(R.dimen.usercover_width_small), getResources().getDimensionPixelSize(R.dimen.usercover_width_small));
+                params.setMargins(getResources().getDimensionPixelSize(R.dimen.padding_content), getResources().getDimensionPixelSize(R.dimen.padding_content), getResources().getDimensionPixelSize(R.dimen.padding_content), getResources().getDimensionPixelSize(R.dimen.padding_content));
+                cover.setLayoutParams(params);
+                rewardList.addView(cover);
+                //showImage(user.getHeadImage(), cover, true);
+                //loader.displayImage(user.getHeadImage(), cover, MCKuai.instence.getCircleOptions());
+                loader.displayImage(user.getHeadImage(), cover, MCKuai.instence.getCircleOptions());
+            }
             rewardList.setVisibility(VISIBLE);
         }
     }

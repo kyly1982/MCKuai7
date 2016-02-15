@@ -30,6 +30,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
     private AppCompatImageButton createCartoon;
     private RadioGroup cartoonType;
     private AppCompatRadioButton mNewType;
+    private boolean isCheckUpgread = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +47,10 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         super.onResume();
         if (0 <= currentFragmentIndex && currentFragmentIndex < fragments.size()) {
             mFragmentManager.beginTransaction().show(fragments.get(currentFragmentIndex));
+        }
+        if (!isCheckUpgread) {
+            checkUpgrade(true);
+            isCheckUpgread = true;
         }
     }
 
@@ -104,6 +109,11 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
     }
 
     @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         if (id == R.id.action_settings) {
@@ -155,16 +165,19 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
                         case R.id.nav_chat:
                             cartoonType.setVisibility(View.GONE);
                             title.setVisibility(View.VISIBLE);
+                            title.setText("聊天");
                             currentFragmentIndex = 1;
                             break;
                         case R.id.nav_community:
                             cartoonType.setVisibility(View.GONE);
                             title.setVisibility(View.VISIBLE);
+                            title.setText("社区");
                             currentFragmentIndex = 2;
                             break;
                         case R.id.nav_mine:
                             cartoonType.setVisibility(View.GONE);
                             title.setVisibility(View.VISIBLE);
+                            title.setText("消息");
                             currentFragmentIndex = 3;
                             break;
                     }

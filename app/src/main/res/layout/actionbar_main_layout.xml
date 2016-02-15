@@ -21,7 +21,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:textColor="@color/textPrimary"/>
+                android:textColor="@color/icons" />
             <RadioGroup
                 android:id="@+id/actionbar_cartoon_rg"
                 android:layout_width="wrap_content"
@@ -34,6 +34,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:padding="@dimen/margin_cartoon_layout"
+                    android:checked="true"
                     android:textColor="@color/checkable_text_color_selector"
                     android:text="@string/cartoon_type_new"
                     android:button="@null"/>

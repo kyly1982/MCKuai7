@@ -7,8 +7,7 @@
         android:layout_width="@dimen/usercover_width_small"
         android:layout_height="@dimen/usercover_width_small"
         android:layout_alignParentLeft="true"
-        android:layout_margin="@dimen/margin_cartoon_content"
-        android:background="@color/colorYellow"/>
+        android:layout_margin="@dimen/margin_cartoon_content" />
 
 
 

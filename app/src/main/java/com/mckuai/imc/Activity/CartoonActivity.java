@@ -12,11 +12,14 @@ import com.mckuai.imc.Bean.Cartoon;
 import com.mckuai.imc.R;
 import com.mckuai.imc.Util.MCNetEngine;
 import com.mckuai.imc.Widget.CartoonView;
+import com.umeng.socialize.media.UMImage;
 
-public class CartoonActivity extends BaseActivity implements CartoonView.OnCartoonElementClickListener,View.OnClickListener,MCNetEngine.OnRewardCartoonResponseListener,MCNetEngine.OnCommentCartoonResponseListener {
+public class CartoonActivity extends BaseActivity implements CartoonView.OnCartoonElementClickListener, View.OnClickListener, MCNetEngine.OnRewardCartoonResponseListener, MCNetEngine.OnCommentCartoonResponseListener, MCNetEngine.OnLoadCartoonDetailResponseListener {
     private Cartoon cartoon;
     private AppCompatButton submitComment;
     private AppCompatEditText commentEditer;
+    private CartoonView cartoonView;
+    private boolean isRefreshNeed = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,17 +43,29 @@ public class CartoonActivity extends BaseActivity implements CartoonView.OnCarto
            cartoon = (Cartoon) getIntent().getExtras().getSerializable(getString(R.string.cartoondetail_tag_cartoon));
             initView();
         }
+        if (isRefreshNeed) {
+            showData();
+        }
+    }
+
+    private void showData() {
+        if (null != cartoon) {
+            if (null == cartoon.getOwner()) {
+                mApplication.netEngine.loadCartoonDetail(this, cartoon.getId(), this);
+                return;
+            }
+            cartoonView.setData(cartoon, true);
+        }
+        isRefreshNeed = false;
     }
 
     private void initView(){
-        CartoonView cartoonView = (CartoonView) findViewById(R.id.cartoon);
+        cartoonView = (CartoonView) findViewById(R.id.cartoon);
         submitComment = (AppCompatButton) findViewById(R.id.commentcartoon);
         commentEditer = (AppCompatEditText) findViewById(R.id.commentediter);
         submitComment.setOnClickListener(this);
         cartoonView.setOnCartoonElementClickListener(this);
-        if (null != cartoon){
-            cartoonView.setData(cartoon, true);
-        }
+
     }
 
     private void commentCartoon(){
@@ -97,11 +112,15 @@ public class CartoonActivity extends BaseActivity implements CartoonView.OnCarto
     @Override
     public void onShareCartoon(Cartoon cartoon) {
         //分享
+        if (null != cartoon) {
+            UMImage image = new UMImage(this, cartoon.getImage());
+            share("发现大神作品，快来膜拜吧", cartoon.getContent(), getString(R.string.appdownload_url), image);
+        }
     }
 
     @Override
     public void onRewardCartoon(Cartoon cartoon) {
-        //奖励
+        //打赏
         if (mApplication.isLogin()){
             rewardCartoon();
         } else {
@@ -140,5 +159,17 @@ public class CartoonActivity extends BaseActivity implements CartoonView.OnCarto
     @Override
     public void onRewardaCartoonFailure(String msg) {
         Snackbar.make(commentEditer,"打赏失败，原因："+msg,Snackbar.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onLoadDetailFailure(String msg) {
+        showMessage(msg, null, null);
+    }
+
+    @Override
+    public void onLoadDetailSuccess(Cartoon cartoon) {
+        this.cartoon = cartoon;
+        isRefreshNeed = true;
+        showData();
     }
 }

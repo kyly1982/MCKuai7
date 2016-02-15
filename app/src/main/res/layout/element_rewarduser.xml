@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.AppCompatImageView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="@dimen/usercover_width_small"
+    android:layout_height="@dimen/usercover_width_small"
+    android:scaleType="fitXY"
+    android:layout_margin="5dp">
+
+</android.support.v7.widget.AppCompatImageView>

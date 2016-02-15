@@ -152,6 +152,9 @@ public class TouchableLayout extends RelativeLayout {
         labels.add(lable);
         TextView textView = new TextView(context);
         textView.setText(lable.getContent());
+        RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
+        params.setMargins(lable.getCoordinate().x, lable.getCoordinate().y, 0, 0);
+        textView.setLayoutParams(params);
         addView(textView);
         postInvalidate();
     }

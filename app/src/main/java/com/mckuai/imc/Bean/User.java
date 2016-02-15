@@ -45,6 +45,16 @@ public class User implements Serializable{
         this.isFriend = false;
     }
 
+    public void clone(MCUser user) {
+        this.id = (long) user.getId();
+        this.level = user.getLevel();
+        this.process = user.getProcess();
+        this.name = user.getName();
+        this.nick = user.getNike();
+        this.headImage = user.getHeadImg();
+        this.isFriend = false;
+    }
+
     public Long getId() {
         return id;
     }
