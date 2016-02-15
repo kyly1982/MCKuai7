@@ -944,6 +944,11 @@ public class MCNetEngine {
     }
 
 
+    /***************************************************************************
+     * 取漫画详细信息
+     ***************************************************************************/
+
+
     private static InputStream Bitmap2IS(Bitmap bm) {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         bm.compress(Bitmap.CompressFormat.JPEG, 80, baos);

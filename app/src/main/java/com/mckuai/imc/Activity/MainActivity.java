@@ -3,7 +3,6 @@ package com.mckuai.imc.Activity;
 import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.Snackbar;
 import android.support.v7.widget.AppCompatImageButton;
 import android.support.v7.widget.AppCompatRadioButton;
 import android.support.v7.widget.AppCompatTextView;
@@ -125,7 +124,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
 
     @Override
     public void onClick(View v) {
-        Snackbar.make(mToolbar, "" + v.toString(), Snackbar.LENGTH_LONG).show();
         switch (v.getId()){
             case R.id.nav_create:
                 Intent intent = new Intent(this,CreateActivity.class);

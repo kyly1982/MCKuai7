@@ -10,6 +10,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.RadioGroup;
 
 import com.malinskiy.superrecyclerview.SuperRecyclerView;
@@ -46,7 +47,8 @@ public class UserCenterActivity extends BaseActivity
         MCNetEngine.OnLoadCommunityDynamicResponseListener,
         MCNetEngine.OnLoadCommunityMessageResponseListener,
         MCNetEngine.OnloadCommunityWorkResponseListener,
-        MCNetEngine.OnloadFriendResponseListener {
+        MCNetEngine.OnloadFriendResponseListener,
+        MCNetEngine.OnAddFriendResponseListener {
     private User user;
     private int contentType = 36;//默认显示动漫消息
     private CartoonDynamicAdapter cartoonDynamicAdapter;
@@ -70,6 +72,7 @@ public class UserCenterActivity extends BaseActivity
     private AppCompatImageView userCover;
     private AppCompatTextView userLevel;
     private AppCompatTextView userName;
+    private LinearLayout operation;
     private AppCompatButton chat;
     private AppCompatButton addFriend;
     private RadioGroup group;
@@ -108,6 +111,7 @@ public class UserCenterActivity extends BaseActivity
         userCover = (AppCompatImageView) findViewById(R.id.usercover);
         userLevel = (AppCompatTextView) findViewById(R.id.userlevel);
         userName = (AppCompatTextView) findViewById(R.id.actionbar_title);
+        operation = (LinearLayout) findViewById(R.id.layut_opeartion);
         chat = (AppCompatButton) findViewById(R.id.chat);
         addFriend = (AppCompatButton) findViewById(R.id.addfriend);
         group = (RadioGroup) findViewById(R.id.group);
@@ -149,15 +153,17 @@ public class UserCenterActivity extends BaseActivity
 
     private void changeUIByUser() {
         if (isMySelf()) {
-            chat.setVisibility(View.GONE);
-            addFriend.setVisibility(View.GONE);
+            operation.setVisibility(View.GONE);
+//            chat.setVisibility(View.GONE);
+//            addFriend.setVisibility(View.GONE);
             message.setVisibility(View.VISIBLE);
             friend.setVisibility(View.VISIBLE);
             message.setChecked(true);
             contentType = 36;
         } else {
-            chat.setVisibility(View.VISIBLE);
-            addFriend.setVisibility(View.VISIBLE);
+            operation.setVisibility(View.VISIBLE);
+//            chat.setVisibility(View.VISIBLE);
+//            addFriend.setVisibility(View.VISIBLE);
             message.setVisibility(View.GONE);
             friend.setVisibility(View.GONE);
             dynamic.setChecked(true);
@@ -359,6 +365,7 @@ public class UserCenterActivity extends BaseActivity
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.addfriend:
+                mApplication.netEngine.addFriend(this, user.getId().intValue(), this);
                 break;
             case R.id.chat:
                 if (mApplication.isLogin()) {
@@ -614,5 +621,16 @@ public class UserCenterActivity extends BaseActivity
     @Override
     public void OnloadFriendFailure(String msg) {
         showMessage(msg, null, null);
+    }
+
+    @Override
+    public void onAddFriendFailure(String msg) {
+        showMessage(msg, null, null);
+    }
+
+    @Override
+    public void onAddFriendSuccess() {
+        showMessage("添加好友成功", null, null);
+        addFriend.setVisibility(View.GONE);
     }
 }
