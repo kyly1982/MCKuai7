@@ -97,8 +97,8 @@ public class MCKuai extends Application {
     }
 
     private void initUMPlatform() {
-        PlatformConfig.setWeixin("", "");
-        PlatformConfig.setQQZone("101155101", "");
+        PlatformConfig.setWeixin("wx49ba2c7147d2368d", "85aa75ddb9b37d47698f24417a373134");
+        PlatformConfig.setQQZone("101155101", "78b7e42e255512d6492dfd135037c91c");
     }
 
     private void initImageLoader() {

@@ -22,6 +22,10 @@ import com.mckuai.imc.Activity.SearchActivity;
 import com.mckuai.imc.Activity.UserCenterActivity;
 import com.mckuai.imc.R;
 import com.nostra13.universalimageloader.core.ImageLoader;
+import com.umeng.socialize.ShareAction;
+import com.umeng.socialize.UMShareAPI;
+import com.umeng.socialize.bean.SHARE_MEDIA;
+import com.umeng.socialize.media.UMImage;
 
 import java.util.ArrayList;
 
@@ -41,6 +45,7 @@ public class BaseActivity extends AppCompatActivity implements NavigationView.On
     protected int currentFragmentIndex = -1;
     private ImageLoader loader = ImageLoader.getInstance();
     private boolean isSlidingMenuShow = false;
+    private UMShareAPI mShareAPI = UMShareAPI.get(this);
 
 
     @Override
@@ -164,6 +169,20 @@ public class BaseActivity extends AppCompatActivity implements NavigationView.On
         mDrawer.setDrawerListener(toggle);
         toggle.syncState();
         navigationView.setNavigationItemSelectedListener(this);
+    }
+
+    public void share(String title, String content, String url, UMImage image) {
+        SHARE_MEDIA[] displayList = new SHARE_MEDIA[]{
+                SHARE_MEDIA.WEIXIN_CIRCLE, SHARE_MEDIA.WEIXIN, SHARE_MEDIA.QQ, SHARE_MEDIA.QZONE
+        };
+        ShareAction action = new ShareAction(this).setDisplayList(displayList);
+        action.withTitle(title);
+        action.withText(content);
+        action.withTargetUrl(url);
+        if (null != image) {
+            action.withMedia(image);
+        }
+        action.open();
     }
 
     private void handleUserLogin() {
