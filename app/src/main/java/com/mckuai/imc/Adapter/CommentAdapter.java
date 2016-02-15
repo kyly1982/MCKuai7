@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.mckuai.imc.Base.MCKuai;
 import com.mckuai.imc.Bean.Comment;
 import com.mckuai.imc.R;
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -56,7 +57,7 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
         if (null != mComments && -1 < position && position < mComments.size()){
             Comment comment = mComments.get(position);
             if (null != comment){
-                mImageLoader.displayImage(comment.getOwner().getHeadImage(),holder.cover);
+                mImageLoader.displayImage(comment.getOwner().getHeadImage(), holder.cover, MCKuai.instence.getCircleOptions());
                 holder.name.setText(comment.getOwner().getNickEx());
                 holder.time.setText(comment.getTimeEx());
                 holder.content.setText(comment.getContent());

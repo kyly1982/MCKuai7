@@ -7,8 +7,8 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.RelativeLayout;
 
+import com.mckuai.imc.Base.MCKuai;
 import com.mckuai.imc.Bean.CommunityMessage;
 import com.mckuai.imc.R;
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -96,7 +96,7 @@ public class CommunityMessageAdapter extends RecyclerView.Adapter<CommunityMessa
     }
 
     private void showReplyMessage(ViewHolder holder,CommunityMessage message){
-        loader.displayImage(message.getHeadImg(), holder.cover);
+        loader.displayImage(message.getHeadImg(), holder.cover, MCKuai.instence.getCircleOptions());
         holder.username.setText(message.getUserName());
         holder.username.setVisibility(View.VISIBLE);
         holder.time.setText(message.getInsertTimeEx());
@@ -107,7 +107,7 @@ public class CommunityMessageAdapter extends RecyclerView.Adapter<CommunityMessa
 
     private void showAtMessage(ViewHolder holder,CommunityMessage message){
 
-        loader.displayImage(message.getHeadImg(), holder.cover);
+        loader.displayImage(message.getHeadImg(), holder.cover, MCKuai.instence.getCircleOptions());
         holder.username.setText(message.getUserName());
         holder.username.setVisibility(View.VISIBLE);
         holder.time.setText(message.getInsertTimeEx());

@@ -1,7 +1,8 @@
-package com.mckuai.imc.Activity;
+package com.mckuai.imc.Fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.AppCompatImageView;
 import android.support.v7.widget.AppCompatRadioButton;
@@ -9,10 +10,14 @@ import android.support.v7.widget.AppCompatTextView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.RadioGroup;
 
 import com.malinskiy.superrecyclerview.SuperRecyclerView;
+import com.mckuai.imc.Activity.CartoonActivity;
+import com.mckuai.imc.Activity.PostActivity;
 import com.mckuai.imc.Adapter.CartoonDynamicAdapter;
 import com.mckuai.imc.Adapter.CartoonMessageAdapter;
 import com.mckuai.imc.Adapter.CartoonWorkAdapter;
@@ -20,7 +25,8 @@ import com.mckuai.imc.Adapter.CommunityDynamicAdapter;
 import com.mckuai.imc.Adapter.CommunityMessageAdapter;
 import com.mckuai.imc.Adapter.FriendAdapter;
 import com.mckuai.imc.Adapter.PostAdapter;
-import com.mckuai.imc.Base.BaseActivity;
+import com.mckuai.imc.Base.BaseFragment;
+import com.mckuai.imc.Base.MCKuai;
 import com.mckuai.imc.Bean.Cartoon;
 import com.mckuai.imc.Bean.CartoonMessage;
 import com.mckuai.imc.Bean.CommunityDynamic;
@@ -35,10 +41,7 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 
 import java.util.ArrayList;
 
-import io.rong.imkit.RongIM;
-import io.rong.imlib.RongIMClient;
-
-public class UserCenterActivity extends BaseActivity
+public class Fragment_Mine extends BaseFragment
         implements View.OnClickListener, RadioGroup.OnCheckedChangeListener,
         MCNetEngine.OnLoadCartoonDynamicResponseListener,
         MCNetEngine.OnLoadCartoonMessageResponseListener,
@@ -65,8 +68,10 @@ public class UserCenterActivity extends BaseActivity
     private Page friendPage;
 
     private ImageLoader loader;
+    private MCKuai mApplication;
 
 
+    private View view;
     private AppCompatImageView userCover;
     private AppCompatTextView userLevel;
     private AppCompatTextView userName;
@@ -82,7 +87,7 @@ public class UserCenterActivity extends BaseActivity
     private AppCompatRadioButton friend;
 
 
-    @Override
+   /* @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_usercenter);
@@ -102,29 +107,50 @@ public class UserCenterActivity extends BaseActivity
     @Override
     protected void onDestroy() {
         super.onDestroy();
+    }*/
+
+    @Nullable
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        if (null != view) {
+            container.removeView(view);
+        }
+        view = inflater.inflate(R.layout.fragment_mine, container, false);
+        mApplication = MCKuai.instence;
+        return view;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (null == list) {
+            initView();
+            user = new User(mApplication.user);
+        }
+        showData();
     }
 
     private void initView() {
-        userCover = (AppCompatImageView) findViewById(R.id.usercover);
-        userLevel = (AppCompatTextView) findViewById(R.id.userlevel);
-        userName = (AppCompatTextView) findViewById(R.id.actionbar_title);
-        chat = (AppCompatButton) findViewById(R.id.chat);
-        addFriend = (AppCompatButton) findViewById(R.id.addfriend);
-        group = (RadioGroup) findViewById(R.id.group);
-        friend = (AppCompatRadioButton) findViewById(R.id.friend);
-        type = (RadioGroup) findViewById(R.id.type);
-        cartoon = (AppCompatRadioButton) findViewById(R.id.cartoon);
-        message = (AppCompatRadioButton) findViewById(R.id.message);
-        dynamic = (AppCompatRadioButton) findViewById(R.id.dynamic);
-        list = (SuperRecyclerView) findViewById(R.id.list);
-        work = (SuperRecyclerView) findViewById(R.id.worklist);
+        userCover = (AppCompatImageView) view.findViewById(R.id.usercover);
+        userLevel = (AppCompatTextView) view.findViewById(R.id.userlevel);
+        //userName = (AppCompatTextView) view.findViewById(R.id.actionbar_title);
+        chat = (AppCompatButton) view.findViewById(R.id.chat);
+        addFriend = (AppCompatButton) view.findViewById(R.id.addfriend);
+        group = (RadioGroup) view.findViewById(R.id.group);
+        friend = (AppCompatRadioButton) view.findViewById(R.id.friend);
+        type = (RadioGroup) view.findViewById(R.id.type);
+        cartoon = (AppCompatRadioButton) view.findViewById(R.id.cartoon);
+        message = (AppCompatRadioButton) view.findViewById(R.id.message);
+        dynamic = (AppCompatRadioButton) view.findViewById(R.id.dynamic);
+        list = (SuperRecyclerView) view.findViewById(R.id.list);
+        work = (SuperRecyclerView) view.findViewById(R.id.worklist);
 
-        RecyclerView.LayoutManager linearLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
+        RecyclerView.LayoutManager linearLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
         list.setLayoutManager(linearLayoutManager);
         RecyclerView.LayoutManager manager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
         work.setLayoutManager(manager);
 
-        userName.setTextColor(getResources().getColor(R.color.icons));
+        //userName.setTextColor(getResources().getColor(R.color.icons));
 
         cartoon.setChecked(true);
         changeUIByUser();
@@ -135,17 +161,6 @@ public class UserCenterActivity extends BaseActivity
         type.setOnCheckedChangeListener(this);
     }
 
-    private void getParams() {
-        Intent intent = getIntent();
-        if (null != intent) {
-            int userId = intent.getIntExtra(getString(R.string.usercenter_tag_userid), 0);
-            if (mApplication.isLogin() && mApplication.user.getId() == userId) {
-                user = new User(mApplication.user);
-            } else {
-                user = new User((long) userId);
-            }
-        }
-    }
 
     private void changeUIByUser() {
         if (isMySelf()) {
@@ -175,44 +190,44 @@ public class UserCenterActivity extends BaseActivity
                 if (null == cartoonMessagePage) {
                     cartoonMessagePage = new Page();
                 }
-                mApplication.netEngine.loadCartoonMessage(this, user.getId().intValue(), cartoonMessagePage.getNextPage(), this);
+                mApplication.netEngine.loadCartoonMessage(getActivity(), user.getId().intValue(), cartoonMessagePage.getNextPage(), this);
                 break;
             case 34:
                 if (null == cartoonDynamicPage) {
                     cartoonDynamicPage = new Page();
                 }
-                mApplication.netEngine.loadCartoonDyanmic(this, user.getId().intValue(), cartoonDynamicPage.getNextPage(), this);
+                mApplication.netEngine.loadCartoonDyanmic(getActivity(), user.getId().intValue(), cartoonDynamicPage.getNextPage(), this);
                 break;
             case 33:
                 if (null == cartoonWorkPage) {
                     cartoonWorkPage = new Page();
                 }
-                mApplication.netEngine.loadCartoonWork(this, user.getId().intValue(), cartoonWorkPage.getNextPage(), this);
+                mApplication.netEngine.loadCartoonWork(getActivity(), user.getId().intValue(), cartoonWorkPage.getNextPage(), this);
                 break;
             case 20:
                 if (null == communityMessagePage) {
                     communityMessagePage = new Page();
                 }
-                mApplication.netEngine.loadCommunityMessage(this, user.getId().intValue(), communityMessagePage.getNextPage(), this);
+                mApplication.netEngine.loadCommunityMessage(getActivity(), user.getId().intValue(), communityMessagePage.getNextPage(), this);
                 break;
             case 18:
                 if (null == communityDynamicPage) {
                     communityDynamicPage = new Page();
                 }
-                mApplication.netEngine.loadCommunityDynamic(this, user.getId().intValue(), communityDynamicPage.getNextPage(), this);
+                mApplication.netEngine.loadCommunityDynamic(getActivity(), user.getId().intValue(), communityDynamicPage.getNextPage(), this);
                 break;
             case 17:
                 if (null == communityWorkPage) {
                     communityWorkPage = new Page();
                 }
-                mApplication.netEngine.loadCommunityWork(this, user.getId().intValue(), communityWorkPage.getNextPage(), this);
+                mApplication.netEngine.loadCommunityWork(getActivity(), user.getId().intValue(), communityWorkPage.getNextPage(), this);
                 break;
             default:
-                if (8 == (contentType & 8)){
+                if (8 == (contentType & 8)) {
                     if (null == friendPage) {
                         friendPage = new Page();
                     }
-                    mApplication.netEngine.loadFriendList(this, friendPage.getNextPage(), this);
+                    mApplication.netEngine.loadFriendList(getActivity(), friendPage.getNextPage(), this);
                 }
                 break;
         }
@@ -255,7 +270,7 @@ public class UserCenterActivity extends BaseActivity
                 work.setVisibility(View.GONE);
                 if (null != communityMessageAdapter) {
                     list.setAdapter(communityMessageAdapter);
-                    communityMessageAdapter.notifyDataSetChanged();
+                    communityDynamicAdapter.notifyDataSetChanged();
                 } else {
                     loadData();
                 }
@@ -281,7 +296,7 @@ public class UserCenterActivity extends BaseActivity
                 }
                 break;
             default:
-                if (8 == (contentType & 8)){
+                if (8 == (contentType & 8)) {
                     list.setVisibility(View.VISIBLE);
                     work.setVisibility(View.GONE);
                     if (null != friendAdapter) {
@@ -299,9 +314,9 @@ public class UserCenterActivity extends BaseActivity
     private void showUserInfo() {
         if (null != user && 0 != user.getId() && null != user.getName() && null != user.getHeadImage()) {
             if (null == userCover.getTag() || !userCover.getTag().equals(user.getHeadImage()))
-                loader.displayImage(user.getHeadImage(), userCover, mApplication.getCircleOptions());
-            userName.setText(user.getNickEx());
-            userLevel.setText(getString(R.string.usercenter_userlevel,user.getLevel()));
+                loader.displayImage(user.getHeadImage(), userCover);
+            userName.setText(user.getHeadImage());
+            userLevel.setText(getString(R.string.usercenter_userlevel, user.getLevel()));
         }
     }
 
@@ -343,7 +358,7 @@ public class UserCenterActivity extends BaseActivity
                 contentType = (contentType & 7) | 8;
                 break;
             case R.id.message:
-                contentType = (contentType & 56)|4;//111,100
+                contentType = (contentType & 56) | 4;//111,100
                 break;
             case R.id.dynamic:
                 contentType = (contentType & 56) | 2;//111,010
@@ -361,30 +376,6 @@ public class UserCenterActivity extends BaseActivity
             case R.id.addfriend:
                 break;
             case R.id.chat:
-                if (mApplication.isLogin()) {
-                    if (RongIM.getInstance().getRongIMClient().getCurrentConnectionStatus() == RongIMClient.ConnectionStatusListener.ConnectionStatus.CONNECTED) {
-                        RongIM.getInstance().startPrivateChat(this, user.getName(), user.getNickEx());
-                    } else {
-                        mApplication.loginIM(new RongIMClient.ConnectCallback() {
-                            @Override
-                            public void onTokenIncorrect() {
-
-                            }
-
-                            @Override
-                            public void onSuccess(String s) {
-                                RongIM.getInstance().startPrivateChat(UserCenterActivity.this, user.getName(), user.getNickEx());
-                            }
-
-                            @Override
-                            public void onError(RongIMClient.ErrorCode errorCode) {
-
-                            }
-                        });
-                    }
-                } else {
-                    callLogin(2);
-                }
                 break;
         }
     }
@@ -398,14 +389,14 @@ public class UserCenterActivity extends BaseActivity
     public void onLoadCartoonDynamicSuccess(final ArrayList<CartoonMessage> dynamics, Page page) {
         cartoonDynamicPage = page;
         if (null == cartoonDynamicAdapter) {
-            cartoonDynamicAdapter = new CartoonDynamicAdapter(this, new CartoonDynamicAdapter.OnItemClickListener() {
+            cartoonDynamicAdapter = new CartoonDynamicAdapter(getActivity(), new CartoonDynamicAdapter.OnItemClickListener() {
                 @Override
                 public void onItemClicked(CartoonMessage dynamic) {
-                    Intent intent = new Intent(UserCenterActivity.this, CartoonActivity.class);
+                    Intent intent = new Intent(getActivity(), CartoonActivity.class);
                     Bundle bundle = new Bundle();
                     bundle.putSerializable(getString(R.string.cartoondetail_tag_cartoon), dynamic.getCartoon());
                     intent.putExtras(bundle);
-                    startActivity(intent);
+                    getActivity().startActivity(intent);
                 }
             });
             list.setAdapter(cartoonDynamicAdapter);
@@ -422,14 +413,14 @@ public class UserCenterActivity extends BaseActivity
     public void onLoadCartoonMessageSuccess(ArrayList<CartoonMessage> messages, Page page) {
         cartoonMessagePage = page;
         if (null == cartoonMessageAdapter) {
-            cartoonMessageAdapter = new CartoonMessageAdapter(this, new CartoonMessageAdapter.OnItemClickListener() {
+            cartoonMessageAdapter = new CartoonMessageAdapter(getActivity(), new CartoonMessageAdapter.OnItemClickListener() {
                 @Override
                 public void onItemClicked(CartoonMessage message) {
-                    Intent intent = new Intent(UserCenterActivity.this, CartoonActivity.class);
+                    Intent intent = new Intent(getActivity(), CartoonActivity.class);
                     Bundle bundle = new Bundle();
                     bundle.putSerializable(getString(R.string.cartoondetail_tag_cartoon), message.getCartoon());
                     intent.putExtras(bundle);
-                    startActivity(intent);
+                    getActivity().startActivity(intent);
                 }
             });
             list.setAdapter(cartoonMessageAdapter);
@@ -450,14 +441,14 @@ public class UserCenterActivity extends BaseActivity
     public void onLoadCartoonWorkSuccess(ArrayList<Cartoon> works, Page page) {
         cartoonWorkPage = page;
         if (null == cartoonWorkAdapter) {
-            cartoonWorkAdapter = new CartoonWorkAdapter(this, new CartoonWorkAdapter.OnItemClickListener() {
+            cartoonWorkAdapter = new CartoonWorkAdapter(getActivity(), new CartoonWorkAdapter.OnItemClickListener() {
                 @Override
                 public void onItemClicked(Cartoon cartoon) {
-                    Intent intent = new Intent(UserCenterActivity.this, CartoonActivity.class);
+                    Intent intent = new Intent(getActivity(), CartoonActivity.class);
                     Bundle bundle = new Bundle();
                     bundle.putSerializable(getString(R.string.cartoondetail_tag_cartoon), cartoon);
                     intent.putExtras(bundle);
-                    startActivity(intent);
+                    getActivity().startActivity(intent);
                 }
             });
             work.setAdapter(cartoonWorkAdapter);
@@ -475,15 +466,15 @@ public class UserCenterActivity extends BaseActivity
     }
 
     @Override
-    public void onLoadCommunityDynamicSuccess(ArrayList<CommunityDynamic> dynamics,User user, Page page) {
+    public void onLoadCommunityDynamicSuccess(ArrayList<CommunityDynamic> dynamics, User user, Page page) {
         communityDynamicPage = page;
         if (null == communityDynamicAdapter) {
-            communityDynamicAdapter = new CommunityDynamicAdapter(this, new CommunityDynamicAdapter.OnItemClickListener() {
+            communityDynamicAdapter = new CommunityDynamicAdapter(getActivity(), new CommunityDynamicAdapter.OnItemClickListener() {
                 @Override
                 public void onItemClicked(CommunityDynamic dynamic) {
                     Post post = new Post();
                     post.setId(dynamic.getId());
-                    Intent intent = new Intent(UserCenterActivity.this, PostActivity.class);
+                    Intent intent = new Intent(getActivity(), PostActivity.class);
                     Bundle bundle = new Bundle();
                     bundle.putSerializable(getString(R.string.tag_post), post);
                     intent.putExtras(bundle);
@@ -497,7 +488,7 @@ public class UserCenterActivity extends BaseActivity
         } else {
             communityDynamicAdapter.addData(dynamics);
         }
-        if (null != user){
+        if (null != user) {
             this.user = user;
             showUserInfo();
         }
@@ -509,15 +500,15 @@ public class UserCenterActivity extends BaseActivity
     }
 
     @Override
-    public void onLoadCommunityMessageSuccess(ArrayList<CommunityMessage> messages,User user, Page page) {
+    public void onLoadCommunityMessageSuccess(ArrayList<CommunityMessage> messages, User user, Page page) {
         communityMessagePage = page;
         if (null == communityMessageAdapter) {
-            communityMessageAdapter = new CommunityMessageAdapter(this, new CommunityMessageAdapter.OnItemClickListener() {
+            communityMessageAdapter = new CommunityMessageAdapter(getActivity(), new CommunityMessageAdapter.OnItemClickListener() {
                 @Override
                 public void onItemClicked(CommunityMessage message) {
                     Post post = new Post();
                     post.setId(message.getId());
-                    Intent intent = new Intent(UserCenterActivity.this, PostActivity.class);
+                    Intent intent = new Intent(getActivity(), PostActivity.class);
                     Bundle bundle = new Bundle();
                     bundle.putSerializable(getString(R.string.tag_post), post);
                     intent.putExtras(bundle);
@@ -531,7 +522,7 @@ public class UserCenterActivity extends BaseActivity
         } else {
             communityMessageAdapter.addData(messages);
         }
-        if (null != user){
+        if (null != user) {
             this.user = user;
             showUserInfo();
         }
@@ -543,17 +534,17 @@ public class UserCenterActivity extends BaseActivity
     }
 
     @Override
-    public void onLoadCommunityWorkSuccess(ArrayList<Post> works,User user, Page page) {
+    public void onLoadCommunityWorkSuccess(ArrayList<Post> works, User user, Page page) {
         communityWorkPage = page;
         if (null == communityWorkAdapter) {
-            communityWorkAdapter = new PostAdapter(this, new PostAdapter.OnItemClickListener() {
+            communityWorkAdapter = new PostAdapter(getActivity(), new PostAdapter.OnItemClickListener() {
                 @Override
                 public void onItemClicked(Post post) {
-                    Intent intent = new Intent(UserCenterActivity.this, PostActivity.class);
+                    Intent intent = new Intent(getActivity(), PostActivity.class);
                     Bundle bundle = new Bundle();
                     bundle.putSerializable(getString(R.string.tag_post), post);
                     intent.putExtras(bundle);
-                    startActivity(intent);
+                    getActivity().startActivity(intent);
                 }
 
                 @Override
@@ -563,7 +554,7 @@ public class UserCenterActivity extends BaseActivity
             });
             list.setAdapter(communityWorkAdapter);
         }
-        if (1 == page.getPage()){
+        if (1 == page.getPage()) {
             communityWorkAdapter.setData(works);
         } else {
             communityWorkAdapter.addData(works);
@@ -579,7 +570,7 @@ public class UserCenterActivity extends BaseActivity
     public void onLoadFriendSuccess(ArrayList<MCUser> friends, Page page) {
         friendPage = page;
         if (null == friendAdapter) {
-            friendAdapter = new FriendAdapter(this, new FriendAdapter.OnItemClickListener() {
+            friendAdapter = new FriendAdapter(getActivity(), new FriendAdapter.OnItemClickListener() {
                 @Override
                 public void onItemClicked(MCUser user) {
                     resetUser(new User(user));
@@ -592,7 +583,7 @@ public class UserCenterActivity extends BaseActivity
             });
             list.setAdapter(friendAdapter);
         }
-        if (1 == page.getPage()){
+        if (1 == page.getPage()) {
             friendAdapter.setData(friends);
         } else {
             friendAdapter.addData(friends);

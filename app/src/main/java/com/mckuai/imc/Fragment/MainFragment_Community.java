@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +13,7 @@ import android.widget.RadioGroup;
 import com.malinskiy.superrecyclerview.OnMoreListener;
 import com.malinskiy.superrecyclerview.SuperRecyclerView;
 import com.mckuai.imc.Activity.PostActivity;
+import com.mckuai.imc.Activity.PublishPostActivity;
 import com.mckuai.imc.Activity.UserCenterActivity;
 import com.mckuai.imc.Adapter.ForumAdapter;
 import com.mckuai.imc.Adapter.PostAdapter;
@@ -150,7 +150,15 @@ public class MainFragment_Community extends BaseFragment
 
     @Override
     public void onClick(View v) {
-
+        switch (v.getId()) {
+            case R.id.community_createpost:
+                Intent intent = new Intent(getActivity(), PublishPostActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("FORUM_LIST", mForums);
+                intent.putExtras(bundle);
+                getActivity().startActivity(intent);
+                break;
+        }
     }
 
     @Override
@@ -180,6 +188,7 @@ public class MainFragment_Community extends BaseFragment
         if (null == page){
             this.mForums = forums;
             page = new Page(0,0,20);
+            mCreatePost.setVisibility(View.VISIBLE);
             showForum();
             showPost();
         }

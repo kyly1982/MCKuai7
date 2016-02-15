@@ -23,7 +23,14 @@ public class CartoonActivity extends BaseActivity implements CartoonView.OnCarto
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cartoon);
         initToolbar(R.id.toolbar, 0, null);
-        initDrawer();
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+        //initDrawer();
     }
 
     @Override

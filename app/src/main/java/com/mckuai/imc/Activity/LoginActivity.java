@@ -13,6 +13,8 @@ import com.mckuai.imc.Util.QQLoginListener;
 import com.tencent.tauth.Tencent;
 import com.umeng.analytics.MobclickAgent;
 
+import io.rong.imlib.RongIMClient;
+
 
 /**
  * A login screen that offers login via email/password.
@@ -69,9 +71,28 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
     }
 
     private void loginToMC(MCUser user){
-        mApplication.netEngine.loginServer(this,user,this);
+        mApplication.netEngine.loginServer(this, user, this);
     }
 
+    public void loginIM() {
+        mApplication.loginIM(new RongIMClient.ConnectCallback() {
+            @Override
+            public void onTokenIncorrect() {
+                showMessage("登录融云时失败，令牌无效，请重新登录！", null, null);
+            }
+
+            @Override
+            public void onSuccess(String s) {
+                handleResult(true);
+            }
+
+            @Override
+            public void onError(RongIMClient.ErrorCode errorCode) {
+                showMessage("登录聊天服务器失败，原因：" + errorCode.getMessage(), null, null);
+                handleResult(false);
+            }
+        });
+    }
     private void handleResult(Boolean result) {
         setResult(true == result ? RESULT_OK : RESULT_CANCELED);
         this.finish();
@@ -104,14 +125,15 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
     public void onLoginSuccess(MCUser user) {
         mApplication.user.clone(user);
         mApplication.saveProfile();
-        handleResult(true);
+        loginIM();
+        //handleResult(true);
     }
 
     @Override
     public void onLoginFailure(String msg) {
         if (null != mTencent){
             mTencent.logout(this);
-            showMessage("登录失败！",null,null);
+            showMessage("登录服务器时失败！" + msg, null, null);
         }
     }
 

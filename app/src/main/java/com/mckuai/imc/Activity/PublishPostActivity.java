@@ -12,6 +12,7 @@ import android.os.Message;
 import android.provider.MediaStore;
 import android.support.v7.widget.AppCompatTextView;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnFocusChangeListener;
@@ -93,6 +94,8 @@ public class PublishPostActivity extends BaseActivity implements OnClickListener
         mClient = new AsyncHttpClient();
         Intent intent = getIntent();
         mForums = (ArrayList<ForumInfo>) intent.getSerializableExtra("FORUM_LIST");
+        initToolbar(R.id.toolbar, 0, null);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         setTitle("发帖");
     }
 
@@ -125,6 +128,17 @@ public class PublishPostActivity extends BaseActivity implements OnClickListener
         return true;
     }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_publish:
+                publishPost();
+                break;
+            default:
+                break;
+        }
+        return true;
+    }
 
     private void initView() {
         mFroums = (GridView) findViewById(R.id.gv_forums);
@@ -143,6 +157,7 @@ public class PublishPostActivity extends BaseActivity implements OnClickListener
 		/*findViewById(R.id.btn_right).setOnClickListener(this);
         findViewById(R.id.btn_left).setOnClickListener(this);*/
         mTypeLayout_Checked.setOnClickListener(this);
+        mTypeLayout.setOnClickListener(this);
         mTitle.setOnFocusChangeListener(this);
         mContent.setOnFocusChangeListener(this);
 
@@ -431,8 +446,8 @@ public class PublishPostActivity extends BaseActivity implements OnClickListener
             case R.id.ll_checkedType:
                 mTypeLayout_Checked.setVisibility(View.GONE);
                 mTypeLayout.setVisibility(View.VISIBLE);
-                mTypeLayout_Checked.setFocusable(true);
-                mTypeLayout_Checked.setFocusableInTouchMode(true);
+                //mTypeLayout_Checked.setFocusable(true);
+                //mTypeLayout_Checked.setFocusableInTouchMode(true);
                 break;
 
             default:
@@ -519,8 +534,10 @@ public class PublishPostActivity extends BaseActivity implements OnClickListener
                     ForumInfo forumInfo = (ForumInfo) mSelectFroum.getTag();
                     forumName = forumInfo.getName();
                     mTypeAdapter.show(forumInfo.getIncludeType());
-                    ((RadioButton) mPostType.getChildAt(0)).setChecked(true);
-                    typeName = ((RadioButton) mPostType.getChildAt(0)).getText().toString();
+                    if (null != mPostType && null != mPostType.getChildAt(0)) {
+                        ((RadioButton) mPostType.getChildAt(0)).setChecked(true);
+                        typeName = ((RadioButton) mPostType.getChildAt(0)).getText().toString();
+                    }
                     tv_selectedForum.setText(forumName);
                     tv_selectedType.setText(typeName);
                     break;

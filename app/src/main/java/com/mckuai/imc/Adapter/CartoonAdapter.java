@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
+import com.mckuai.imc.Base.MCKuai;
 import com.mckuai.imc.Bean.Cartoon;
 import com.mckuai.imc.Bean.Comment;
 import com.mckuai.imc.R;
@@ -143,7 +144,12 @@ public class CartoonAdapter extends RecyclerView.Adapter<CartoonAdapter.ViewHold
 
     private void showImage(String url,AppCompatImageView imageView,boolean isCircle){
         if (null != url && null != imageView && 10 < url.length()){
-            imageLoader.displayImage(url,imageView);
+            if (isCircle) {
+                imageLoader.displayImage(url, imageView, MCKuai.instence.getCircleOptions());
+            } else {
+
+                imageLoader.displayImage(url, imageView);
+            }
         }
     }
 

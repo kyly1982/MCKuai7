@@ -8,12 +8,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.mckuai.imc.Base.MCKuai;
 import com.mckuai.imc.R;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
 import java.util.ArrayList;
 
 import io.rong.imlib.model.Conversation;
+import io.rong.imlib.model.MessageContent;
 
 /**
  * Created by kyly on 2016/2/2.
@@ -62,9 +64,17 @@ public class ConversationAdapter extends RecyclerView.Adapter<ConversationAdapte
     public void onBindViewHolder(ViewHolder holder, int position) {
         if (null != conversations && -1 < position && position < conversations.size()){
             Conversation conversation = conversations.get(position);
+            MessageContent message = conversation.getLatestMessage();
+
             if (null != conversation && conversation.getConversationType() == Conversation.ConversationType.PRIVATE){
                 loader.displayImage(conversation.getPortraitUrl(), holder.usercover);
-                holder.username.setText(conversation.getConversationTitle());
+                if (conversation.getSenderUserId().equalsIgnoreCase(MCKuai.instence.user.getName())) {
+                    holder.username.setText(conversation.getTargetId());
+                } else {
+                    holder.username.setText(conversation.getSenderUserName());
+                }
+                String name = conversation.getObjectName();
+                holder.time.setText(conversation.getSentTime() + "");
             }
         }
     }

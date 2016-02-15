@@ -29,6 +29,7 @@ import com.umeng.socialize.PlatformConfig;
 import java.io.File;
 
 import io.rong.imkit.RongIM;
+import io.rong.imlib.RongIMClient;
 
 /**
  * Created by kyly on 2016/1/18.
@@ -50,7 +51,6 @@ public class MCKuai extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        readPreference();
         instence = this;
     }
 
@@ -60,10 +60,29 @@ public class MCKuai extends Application {
     }
 
     public void init() {
+        readPreference();
         initImageLoader();
         initUMPlatform();
         initRongIM();
         netEngine = new MCNetEngine();
+        if (null != user && user.isUserValid() && null != user.getToken() && 10 < user.getToken().length()) {
+            loginIM(new RongIMClient.ConnectCallback() {
+                @Override
+                public void onTokenIncorrect() {
+
+                }
+
+                @Override
+                public void onSuccess(String s) {
+
+                }
+
+                @Override
+                public void onError(RongIMClient.ErrorCode errorCode) {
+
+                }
+            });
+        }
     }
 
     private void initRongIM(){
@@ -80,7 +99,6 @@ public class MCKuai extends Application {
     private void initUMPlatform() {
         PlatformConfig.setWeixin("", "");
         PlatformConfig.setQQZone("101155101", "");
-
     }
 
     private void initImageLoader() {
@@ -97,6 +115,14 @@ public class MCKuai extends Application {
                 .imageDownloader(new BaseImageDownloader(getApplicationContext(), CONNECT_TIME, TIME_OUT))
                 .writeDebugLogs().build();
         ImageLoader.getInstance().init(configuration);
+    }
+
+    public void loginIM(RongIMClient.ConnectCallback listener) {
+        if (null != listener && null != user && null != user.getToken()) {
+            if (getApplicationInfo().packageName.equals(getCurProcessName(getApplicationContext()))) {
+                RongIM.connect(user.getToken(), listener);
+            }
+        }
     }
 
     public MCUser readPreference() {

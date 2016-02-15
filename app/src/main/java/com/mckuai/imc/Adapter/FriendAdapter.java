@@ -9,8 +9,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.mckuai.imc.Base.MCKuai;
 import com.mckuai.imc.Bean.MCUser;
-import com.mckuai.imc.Bean.User;
 import com.mckuai.imc.R;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
@@ -78,7 +78,7 @@ public class FriendAdapter extends RecyclerView.Adapter<FriendAdapter.ViewHolder
             holder.itemView.setTag(user);
             holder.chat.setTag(user);
             if (null != user) {
-                loader.displayImage(user.getHeadImg(), holder.cover);
+                loader.displayImage(user.getHeadImg(), holder.cover, MCKuai.instence.getCircleOptions());
                 holder.name.setText(user.getNike());
                 holder.level.setText(user.getLevel() + "");
                 if (null != listener){

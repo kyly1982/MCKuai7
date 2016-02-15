@@ -53,9 +53,9 @@ public class LeadActivity extends BaseActivity implements ViewPager.OnPageChange
             initView();
             initFragment();
             initAnimation();
+            mApplication.init();
             showData();
         }
-        mApplication.init();
     }
 
     private void initView() {
@@ -143,6 +143,7 @@ public class LeadActivity extends BaseActivity implements ViewPager.OnPageChange
                 //camer.startAnimation(fadein);
             }
         } else {
+
             Intent intent = new Intent(this, MainActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(intent);

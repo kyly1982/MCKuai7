@@ -86,8 +86,8 @@ public class ProfileEditerFragment extends BaseFragment implements View.OnClickL
     }
 
     private void changeCover() {
-//        Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-//        startActivityForResult(intent, 0);
+        Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        startActivityForResult(intent, 0);
         updateCover(null);
     }
 
@@ -137,7 +137,7 @@ public class ProfileEditerFragment extends BaseFragment implements View.OnClickL
     }
 
     private void updateCover(String url) {
-        MCKuai.instence.netEngine.updateUserCover(getActivity(), "http://a.hiphotos.baidu.com/zhidao/pic/item/faf2b2119313b07e42e3be070fd7912397dd8c67.jpg", this);
+        MCKuai.instence.netEngine.updateUserCover(getActivity(), url, this);
     }
 
     private void uploadAddress() {

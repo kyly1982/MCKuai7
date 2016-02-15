@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.mckuai.imc.Base.MCKuai;
 import com.mckuai.imc.Bean.Post;
 import com.mckuai.imc.Bean.User;
 import com.mckuai.imc.R;
@@ -105,7 +106,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
                     }
                 } else {
                     if (null != post.getHeadImg() && 10 < post.getHeadImg().length()) {
-                        imageLoader.displayImage(post.getHeadImg(), holder.usercover);
+                        imageLoader.displayImage(post.getHeadImg(), holder.usercover, MCKuai.instence.getCircleOptions());
                     }
                     holder.username.setText(post.getUserName() + "");
 

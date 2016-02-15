@@ -35,6 +35,7 @@ public class BaseActivity extends AppCompatActivity implements NavigationView.On
     private AppCompatImageView userCover;
     private AppCompatTextView userName;
     private AppCompatTextView userLevel;
+    private MenuItem logout;
 
     protected ArrayList<BaseFragment> fragments;
     protected int currentFragmentIndex = -1;
@@ -133,7 +134,7 @@ public class BaseActivity extends AppCompatActivity implements NavigationView.On
 
 
         Menu menu = navigationView.getMenu();
-        final MenuItem logout = menu.findItem(R.id.nav_logout);
+        logout = menu.findItem(R.id.nav_logout);
 
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, mDrawer, mToolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close) {
             @Override
@@ -153,23 +154,31 @@ public class BaseActivity extends AppCompatActivity implements NavigationView.On
                 if (mApplication.isLogin()) {
                     String url = (String) userCover.getTag();
                     if (null == url || !url.equals(mApplication.user.getHeadImg())) {
-                        loader.displayImage(mApplication.user.getHeadImg(), userCover, mApplication.getCircleOptions());
-                        userName.setText(mApplication.user.getNike());
-                        userLevel.setText(mApplication.user.getLevel() + "");
-                        userCover.setTag(mApplication.user.getHeadImg());
-                        logout.setVisible(true);
+                        handleUserLogin();
                     }
                 } else {
-                    userName.setText("未登录");
-                    userLevel.setText("");
-                    userCover.setBackgroundResource(R.mipmap.ic_usercover_default);
-                    logout.setVisible(false);
+                    handleUserLogout();
                 }
             }
         };
         mDrawer.setDrawerListener(toggle);
         toggle.syncState();
         navigationView.setNavigationItemSelectedListener(this);
+    }
+
+    private void handleUserLogin() {
+        loader.displayImage(mApplication.user.getHeadImg(), userCover, mApplication.getCircleOptions());
+        userName.setText(mApplication.user.getNike());
+        userLevel.setText(mApplication.user.getLevel() + "");
+        userCover.setTag(mApplication.user.getHeadImg());
+        logout.setVisible(true);
+    }
+
+    private void handleUserLogout() {
+        userName.setText("未登录");
+        userLevel.setText("");
+        userCover.setBackgroundResource(R.mipmap.ic_usercover_default);
+        logout.setVisible(false);
     }
 
     /**
@@ -227,7 +236,7 @@ public class BaseActivity extends AppCompatActivity implements NavigationView.On
                 }
                 break;
             case R.id.nav_setting:
-                if (mApplication.isFirstBoot) {
+                if (mApplication.isLogin()) {
                     intent = new Intent(this, ProfileEditerActivity.class);
                     startActivity(intent);
                 } else {
@@ -241,9 +250,12 @@ public class BaseActivity extends AppCompatActivity implements NavigationView.On
                 showMessage("已是最新版本", null, null);
                 break;
             case R.id.nav_logout:
-                mApplication.user.getLoginToken().setExpires(0);
-                mApplication.saveProfile();
-                mApplication.user = null;
+                if (null != mApplication.user && null != mApplication.user.getLoginToken()) {
+                    mApplication.user.getLoginToken().setExpires(0);
+                    mApplication.saveProfile();
+                    mApplication.user = null;
+                    item.setVisible(false);
+                }
                 break;
         }
         return true;

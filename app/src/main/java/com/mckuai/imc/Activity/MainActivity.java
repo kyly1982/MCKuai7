@@ -70,6 +70,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
             MainFragment_Chat chatFragment = new MainFragment_Chat();
             MainFragment_Community communityFragment = new MainFragment_Community();
             MainFragment_Mine mineFragment = new MainFragment_Mine();
+            //Fragment_Mine mineFragment = new Fragment_Mine();
 
             cartoonFragment.setFragmentEventListener(this);
 

@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.mckuai.imc.Base.MCKuai;
 import com.mckuai.imc.Bean.CartoonMessage;
 import com.mckuai.imc.R;
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -77,7 +78,7 @@ public class CartoonMessageAdapter extends RecyclerView.Adapter<CartoonMessageAd
                     loader.displayImage(message.getCartoon().getImage(),holder.cartoonCover);
                 }
                 if (null != message.getOwner()){
-                    loader.displayImage(message.getOwner().getHeadImage(),holder.userCover);
+                    loader.displayImage(message.getOwner().getHeadImage(), holder.userCover, MCKuai.instence.getCircleOptions());
                 }
                 holder.userName.setText(message.getOwner().getNickEx());
                 holder.content.setText(message.getContent()+"");

@@ -49,7 +49,7 @@ public class BaseFragment extends Fragment {
         }
     }
 
-    private void showMessage(String msg, String action, View.OnClickListener listener) {
+    protected void showMessage(String msg, String action, View.OnClickListener listener) {
         if (null != getActivity()) {
             ((BaseActivity) getActivity()).showMessage(msg, action, listener);
         }

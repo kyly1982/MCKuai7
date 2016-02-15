@@ -5,14 +5,17 @@
     android:background="@color/icons"
     tools:context="${relativePackage}.${activityClass}">
 
-    <include layout="@layout/actionbar_normal_layout" />
+    <include
+        android:id="@+id/actionbar"
+        layout="@layout/actionbar_normal_layout" />
 
 
     <FrameLayout
         android:id="@+id/ll_top"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/ll_titlebar"
+
+        android:layout_below="@id/actionbar"
         android:background="@color/icons">
 
         <LinearLayout
@@ -71,6 +74,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
+            android:clickable="true"
             android:padding="10dp">
 
             <TextView
