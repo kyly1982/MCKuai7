@@ -23,6 +23,7 @@ public class MainFragment_Chat extends BaseFragment implements ConversationAdapt
     private ArrayList<Conversation> conversations;
     private View view;
     private SuperRecyclerView conversationList;
+    private SuperRecyclerView userList;
     private ConversationAdapter adapter;
 
     public MainFragment_Chat() {
@@ -57,12 +58,14 @@ public class MainFragment_Chat extends BaseFragment implements ConversationAdapt
 
     private void initView(){
         conversationList = (SuperRecyclerView) view.findViewById(R.id.conversationlist);
+        userList = (SuperRecyclerView) view.findViewById(R.id.waituserlist);
         RecyclerView.LayoutManager manager = new LinearLayoutManager(getActivity(),LinearLayoutManager.VERTICAL,false);
         conversationList.setLayoutManager(manager);
         if (null == adapter){
             adapter = new ConversationAdapter(getActivity(),this);
         }
         conversationList.setAdapter(adapter);
+        conversationList.hideProgress();
     }
 
     private void showData(){

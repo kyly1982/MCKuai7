@@ -3,9 +3,9 @@ package com.mckuai.imc.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
-import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.AppCompatEditText;
 import android.view.View;
+import android.widget.RelativeLayout;
 
 import com.mckuai.imc.Base.BaseActivity;
 import com.mckuai.imc.Bean.Cartoon;
@@ -16,8 +16,8 @@ import com.umeng.socialize.media.UMImage;
 
 public class CartoonActivity extends BaseActivity implements CartoonView.OnCartoonElementClickListener, View.OnClickListener, MCNetEngine.OnRewardCartoonResponseListener, MCNetEngine.OnCommentCartoonResponseListener, MCNetEngine.OnLoadCartoonDetailResponseListener {
     private Cartoon cartoon;
-    private AppCompatButton submitComment;
     private AppCompatEditText commentEditer;
+    private RelativeLayout commentLayout;
     private CartoonView cartoonView;
     private boolean isRefreshNeed = true;
 
@@ -61,9 +61,9 @@ public class CartoonActivity extends BaseActivity implements CartoonView.OnCarto
 
     private void initView(){
         cartoonView = (CartoonView) findViewById(R.id.cartoon);
-        submitComment = (AppCompatButton) findViewById(R.id.commentcartoon);
         commentEditer = (AppCompatEditText) findViewById(R.id.commentediter);
-        submitComment.setOnClickListener(this);
+        commentLayout = (RelativeLayout) findViewById(R.id.comment_layout);
+        findViewById(R.id.commentcartoon).setOnClickListener(this);
         cartoonView.setOnCartoonElementClickListener(this);
 
     }
@@ -80,19 +80,17 @@ public class CartoonActivity extends BaseActivity implements CartoonView.OnCarto
     }
 
     private void showCommentLayout(){
-        submitComment.setVisibility(View.VISIBLE);
-        commentEditer.setVisibility(View.VISIBLE);
+        commentLayout.setVisibility(View.VISIBLE);
     }
 
     private void hideCommentLayout(){
-        submitComment.setVisibility(View.GONE);
-        commentEditer.setVisibility(View.GONE);
+        commentLayout.setVisibility(View.GONE);
     }
 
     @Override
     public void onCommentCartoon(Cartoon cartoon) {
         //输入评论
-        if (submitComment.getVisibility() == View.GONE){
+        if (commentLayout.getVisibility() == View.GONE) {
             showCommentLayout();
         } else {
             hideCommentLayout();
