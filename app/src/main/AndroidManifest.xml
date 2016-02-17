@@ -30,7 +30,7 @@
         android:name=".Base.MCKuai"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
-        android:label="@string/app_name"
+        android:label="${APP_NAME}"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
@@ -48,30 +48,37 @@
         <activity
             android:name=".Activity.CreateActivity"
             android:label="${APP_NAME}"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
         <activity
             android:name=".Activity.LoginActivity"
             android:label="${APP_NAME}"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
         <activity
             android:name=".Activity.CartoonActivity"
             android:label="${APP_NAME}"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
         <activity
             android:name=".Activity.PostActivity"
             android:label="${APP_NAME}"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
         <activity
             android:name=".Activity.SearchActivity"
             android:label="${APP_NAME}"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
         <activity
             android:name=".Activity.UserCenterActivity"
             android:label="${APP_NAME}"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
         <activity
             android:name=".Activity.PublishPostActivity"
             android:label="${APP_NAME}"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
         <!-- ********************************************各种开放平台的配置********************************** -->
         <!-- ********************************************配置腾讯的相关SDK******************************************** -->

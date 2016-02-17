@@ -12,6 +12,7 @@ public class Comment implements Serializable {
     private User owner;  //评论者
     private String content;     //评论内容
     private long time;
+    private String insertTime;
 
     public Comment() {
     }
@@ -46,6 +47,20 @@ public class Comment implements Serializable {
     }
 
     public String getTimeEx(){
-        return TimestampConverter.toString(time);
+        return TimestampConverter.toString(insertTime);
     }
+
+    public String getInsertTime() {
+        return insertTime;
+    }
+
+    public void setInsertTime(String insertTime) {
+        this.insertTime = insertTime;
+    }
+
+    public String getInsertTimeEx() {
+        return TimestampConverter.toString(insertTime);
+    }
+
+
 }

@@ -1,9 +1,9 @@
 package com.mckuai.imc.Fragment;
 
 import android.content.Intent;
-import android.graphics.Rect;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RadioGroup;
 
+import com.malinskiy.superrecyclerview.OnMoreListener;
 import com.malinskiy.superrecyclerview.SuperRecyclerView;
 import com.mckuai.imc.Activity.CartoonActivity;
 import com.mckuai.imc.Activity.LoginActivity;
@@ -28,7 +29,12 @@ import java.util.ArrayList;
 /**
  * A placeholder fragment containing a simple view.
  */
-public class MainFragment_Cartoon extends BaseFragment implements RadioGroup.OnCheckedChangeListener, View.OnClickListener, MCNetEngine.OnLoadCartoonListResponseListener,MCNetEngine.OnRewardCartoonResponseListener {
+public class MainFragment_Cartoon extends BaseFragment implements RadioGroup.OnCheckedChangeListener,
+        View.OnClickListener,
+        MCNetEngine.OnLoadCartoonListResponseListener
+        , MCNetEngine.OnRewardCartoonResponseListener,
+        OnMoreListener,
+        SwipeRefreshLayout.OnRefreshListener {
     private String[] mCartoonType;
     private ArrayList<Cartoon> mHotCartoon;
     private ArrayList<Cartoon> mNewCartoon;
@@ -36,6 +42,8 @@ public class MainFragment_Cartoon extends BaseFragment implements RadioGroup.OnC
     private int typeIndex = 0;
     private MCKuai mApplication = MCKuai.instence;
     private boolean isRefreshNeed = false;
+    private boolean isNewEOF = false;
+    private boolean isHotEOF = false;
 
     private SuperRecyclerView mCartoonListView;
     private View view;
@@ -93,27 +101,27 @@ public class MainFragment_Cartoon extends BaseFragment implements RadioGroup.OnC
         mCartoonListView.setLayoutManager(manager);
        /* int spacingInPixels = getResources().getDimensionPixelSize(R.dimen.margin_cartoon_content);
         mCartoonListView.addItemDecoration(new SpaceItemDecoration(spacingInPixels));*/
+        mCartoonListView.setupMoreListener(this, 1);
+        mCartoonListView.setRefreshListener(this);
     }
 
     private void loadData() {
         switch (typeIndex){
             case 0:
                 if (null != mNewCartoon && !mNewCartoon.isEmpty()){
-                    mApplication.netEngine.loadCartoonList(getActivity(), mCartoonType[typeIndex], mNewCartoon.get(mNewCartoon.size() - 1).getId(), this);
+                    mApplication.netEngine.loadCartoonList(getActivity(), mCartoonType[typeIndex], mNewCartoon.get(0).getId(), this);
                 } else {
                     mApplication.netEngine.loadCartoonList(getActivity(), mCartoonType[typeIndex], 0, this);
                 }
                 break;
             case 1:
                 if (null != mHotCartoon && !mHotCartoon.isEmpty()){
-                    mApplication.netEngine.loadCartoonList(getActivity(), mCartoonType[typeIndex], mHotCartoon.get(mHotCartoon.size() - 1).getId(), this);
+                    mApplication.netEngine.loadCartoonList(getActivity(), mCartoonType[typeIndex], mHotCartoon.get(0).getId(), this);
                 } else {
                     mApplication.netEngine.loadCartoonList(getActivity(), mCartoonType[typeIndex], 0, this);
                 }
                 break;
         }
-      /*  dataMaker();
-        showData();*/
     }
 
     private void showData() {
@@ -139,7 +147,8 @@ public class MainFragment_Cartoon extends BaseFragment implements RadioGroup.OnC
         }
 
         if (isRefreshNeed) {
-            mAdapter.notifyDataSetChanged();
+            //mAdapter.notifyDataSetChanged();
+            mCartoonListView.setTop(0);
             isRefreshNeed = false;
         }
     }
@@ -218,16 +227,34 @@ public class MainFragment_Cartoon extends BaseFragment implements RadioGroup.OnC
     @Override
     public void onLoadCartoonListFailure(String msg) {
         Snackbar.make(mCartoonListView,msg,Snackbar.LENGTH_SHORT).show();
+        switch (typeIndex) {
+            case 0:
+                isNewEOF = true;
+                break;
+            case 1:
+                isHotEOF = true;
+                break;
+        }
     }
 
     @Override
     public void onLoadCartoonListSuccess(ArrayList<Cartoon> cartoons) {
+        if (cartoons.isEmpty() || 1 == cartoons.size() || 1 == cartoons.get(cartoons.size() - 1).getId()) {
+            switch (typeIndex) {
+                case 0:
+                    isNewEOF = true;
+                    break;
+                case 1:
+                    isHotEOF = true;
+                    break;
+            }
+        }
         switch (typeIndex){
             case 0:
                 if (null == mNewCartoon){
                     mNewCartoon = cartoons;
                 } else {
-                    mNewCartoon.addAll(cartoons);
+                    mNewCartoon.addAll(0, cartoons);
                 }
                 break;
             case 1:
@@ -252,20 +279,41 @@ public class MainFragment_Cartoon extends BaseFragment implements RadioGroup.OnC
     }
 
 
-    public class SpaceItemDecoration extends RecyclerView.ItemDecoration{
-
-        private int space;
-
-        public SpaceItemDecoration(int space) {
-            this.space = space;
-        }
-
-        @Override
-        public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
-
-            if(parent.getChildPosition(view) != 0)
-                outRect.top = space;
+    @Override
+    public void onMoreAsked(int overallItemsCount, int itemsBeforeMore, int maxLastVisiblePosition) {
+        switch (typeIndex) {
+            case 0:
+                if (!isNewEOF) {
+                    loadData();
+                } else {
+                    showMessage("已经没有更多了！", null, null);
+                    mCartoonListView.hideMoreProgress();
+                }
+                break;
+            case 1:
+                if (!isHotEOF) {
+                    loadData();
+                } else {
+                    showMessage("已经没有更多了！", null, null);
+                    mCartoonListView.hideMoreProgress();
+                }
+                break;
         }
     }
 
+    @Override
+    public void onRefresh() {
+        switch (typeIndex) {
+            case 0:
+                mNewCartoon.clear();
+                isNewEOF = false;
+                loadData();
+                break;
+            case 1:
+                mHotCartoon.clear();
+                isHotEOF = false;
+                loadData();
+                break;
+        }
+    }
 }

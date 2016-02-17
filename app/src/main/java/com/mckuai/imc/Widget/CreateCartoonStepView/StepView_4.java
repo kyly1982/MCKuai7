@@ -15,15 +15,11 @@ import com.mckuai.imc.R;
  * Created by kyly on 2016/1/26.
  */
 public class StepView_4 extends RelativeLayout {
-    private String name;
-
-    public String getName(){
-        return name;
-    }
-
 
     public interface OnShareButtonClickedListener{
-        public void onShareButtonClicked();
+        void onShareButtonClicked();
+
+        void onTitleChanged(String title);
     }
 
     public StepView_4(Context context,OnShareButtonClickedListener listener) {
@@ -65,11 +61,13 @@ public class StepView_4 extends RelativeLayout {
 
             @Override
             public void afterTextChanged(Editable s) {
-                int length = s.length();
-                if (0 == length){
-                    name = null;
-                } else {
-                    name = s.toString().substring(0,length > 16 ? 15:length);
+                if (null != listener) {
+                    int length = s.length();
+                    if (0 == length) {
+                        listener.onTitleChanged("");
+                    } else {
+                        listener.onTitleChanged(s.toString().substring(0, length > 16 ? 15 : length));
+                    }
                 }
             }
         });

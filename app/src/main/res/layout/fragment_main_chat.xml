@@ -4,11 +4,30 @@
     android:layout_height="match_parent"
     android:background="@color/colorPrimary">
 
+    <View
+        android:id="@+id/wait"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:background="@mipmap/ic_chat_wait" />
+
+    <com.malinskiy.superrecyclerview.SuperRecyclerView
+        android:id="@+id/waituserlist"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_toRightOf="@id/wait"
+        android:layout_alignTop="@id/wait"
+        android:layout_alignBottom="@id/wait"
+        android:background="@color/chat_waitlist"
+        app:layout_empty="@layout/emptyview">
+
+    </com.malinskiy.superrecyclerview.SuperRecyclerView>
+
     <!-- TODO: Update blank fragment layout -->
     <com.malinskiy.superrecyclerview.SuperRecyclerView
         android:id="@+id/conversationlist"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_below="@id/wait"
         app:layout_empty="@layout/emptyview"
         ></com.malinskiy.superrecyclerview.SuperRecyclerView>
 

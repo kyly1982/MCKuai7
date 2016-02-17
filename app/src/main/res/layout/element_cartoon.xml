@@ -118,7 +118,7 @@
                     android:layout_width="@dimen/usercover_width_small"
                     android:layout_height="@dimen/usercover_width_small"
                     android:layout_margin="5dp"
-                    android:src="@mipmap/ic_reply_big" />
+                    android:src="@mipmap/ic_diamond_yellow" />
             </LinearLayout>
 
             <LinearLayout

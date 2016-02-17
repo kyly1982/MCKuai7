@@ -210,8 +210,8 @@ public class MCNetEngine {
     }
 
     public void uploadImage(final Context context, ArrayList<Bitmap> bitmaps, final OnUploadImageResponseListener listener) {
-        //String url = "http://www.mckuai.com/" + context.getString(R.string.interface_uploadimage);
-        String url = "http://192.168.10.104/" + context.getString(R.string.interface_uploadimage_cartoon);
+//        String url = "http://www.mckuai.com/" + context.getString(R.string.interface_uploadimage);
+        String url = context.getString(R.string.interface_domainName) + context.getString(R.string.interface_uploadimage_cartoon);
         RequestParams params = new RequestParams();
         if (null != bitmaps && !bitmaps.isEmpty()) {
             String fileName = null;
@@ -230,6 +230,7 @@ public class MCNetEngine {
                     listener.onImageUploadFailure(result.msg);
                 }
             }
+
 
             @Override
             public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
@@ -252,12 +253,11 @@ public class MCNetEngine {
         String url = context.getString(R.string.interface_domainName) + context.getString(R.string.interface_uploadcartoon);
         RequestParams params = new RequestParams();
         params.put("userId", cartoon.getOwner().getId());
-        params.put("title", "title");
+        params.put("title", cartoon.getContent());
         params.put("imageUrl", cartoon.getImage());
         httpClient.post(context, url, params, new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-                super.onSuccess(statusCode, headers, response);
                 if (null != response && response.toString().length() > 10) {
                     if (response.has("state")) {
                         try {
@@ -274,7 +274,6 @@ public class MCNetEngine {
 
             @Override
             public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
-                super.onFailure(statusCode, headers, responseString, throwable);
                 listener.onUploadCartoonFailure(throwable.getLocalizedMessage());
             }
         });

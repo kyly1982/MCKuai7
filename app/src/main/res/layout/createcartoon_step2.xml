@@ -35,6 +35,7 @@
             android:button="@null"
             android:drawableLeft="@drawable/btn_createcartoon_tool"
             android:gravity="center"
+            android:checked="false"
             android:paddingLeft="@dimen/createcartoon_margin_step1_button"
             android:paddingRight="@dimen/createcartoon_margin_step1_button"
             android:text="@string/createcartoon_tool"
@@ -48,6 +49,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@id/createcartoon_widgets"
+        android:background="@color/colorPrimaryDark"
         app:layout_empty="@layout/emptyview"></com.malinskiy.superrecyclerview.SuperRecyclerView>
 
 

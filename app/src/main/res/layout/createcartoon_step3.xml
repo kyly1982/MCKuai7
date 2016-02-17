@@ -27,6 +27,7 @@
         android:id="@+id/createcartoon_talkcontent"
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:background="@drawable/bg_creatcartoon_step3"
         android:layout_above="@id/createcartoon_addtalk"
         android:layout_below="@id/createcartoon_hint3_1"
         >
@@ -34,6 +35,7 @@
             android:id="@+id/createcartoon_talk"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:gravity="top"
             android:textColor="@color/icons"
             android:textColorHint="@color/textSecondary"
             android:hint="@string/createcartoon_hint_step3_2"/>

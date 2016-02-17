@@ -75,7 +75,7 @@
         android:layout_height="wrap_content"
         android:layout_above="@id/widget1"
         android:layout_toRightOf="@id/camer"
-        android:src="@mipmap/bg_dialog_1" />
+        android:src="@mipmap/ic_leader_dialog1" />
 
     <android.support.v7.widget.AppCompatImageView
         android:id="@+id/dialog2"
@@ -83,7 +83,7 @@
         android:layout_height="wrap_content"
         android:layout_above="@id/widget2"
         android:layout_toLeftOf="@id/camer"
-        android:src="@mipmap/bg_dialog_2" />
+        android:src="@mipmap/ic_leader_dialog2" />
 
     <android.support.v4.view.ViewPager
         android:id="@+id/vp"

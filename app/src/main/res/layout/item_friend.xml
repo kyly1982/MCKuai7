@@ -9,15 +9,14 @@
     <android.support.v7.widget.AppCompatImageView
         android:id="@+id/usercover"
         android:layout_width="@dimen/usercenter_item_catoon_imagewidth"
-        android:layout_height="@dimen/usercenter_item_catoon_imagewidth"
-        android:background="@color/colorYellow"/>
+        android:layout_height="@dimen/usercenter_item_catoon_imagewidth" />
 
     <android.support.v7.widget.AppCompatImageButton
         android:id="@+id/chat"
         android:layout_width="@dimen/usercenter_item_catoon_imagewidth"
         android:layout_height="@dimen/usercenter_item_catoon_imagewidth"
         android:layout_alignParentRight="true"
-        android:background="@color/colorYellow"/>
+        android:background="@drawable/ic_usercenter_frend_chat" />
 
     <android.support.v7.widget.AppCompatTextView
         android:id="@+id/username"

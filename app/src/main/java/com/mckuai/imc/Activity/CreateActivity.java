@@ -7,6 +7,7 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 
@@ -31,7 +32,14 @@ public class CreateActivity extends BaseActivity
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_main);
         initToolbar(R.id.toolbar, 0, null);
-        initDrawer();
+        //initDrawer();
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
         initView();
     }
 
@@ -113,6 +121,7 @@ public class CreateActivity extends BaseActivity
             switch (requestCode){
                 //上传
                 case 1:
+                    createFragment.upload();
                     break;
                 case 2:
                     break;

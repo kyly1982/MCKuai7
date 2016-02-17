@@ -41,6 +41,7 @@ public class CreateCartoonFragment extends BaseFragment implements StepView_4.On
     private ViewFlipper flipper;
     private ArrayList<String> talks;
     private CartoonSceneAdapter adapter;
+    private String title;
 
 
     private View view;
@@ -253,6 +254,11 @@ public class CreateCartoonFragment extends BaseFragment implements StepView_4.On
     }
 
     @Override
+    public void onTitleChanged(String title) {
+        this.title = title;
+    }
+
+    @Override
     public void onSceneSelected(Object scene) {
         if (null != scene) {
             if (scene instanceof Integer) {
@@ -311,7 +317,13 @@ public class CreateCartoonFragment extends BaseFragment implements StepView_4.On
 
     @Override
     public void onUploadCartoonSuccess() {
-        Snackbar.make(cartoonBuilder,"上传成功",Snackbar.LENGTH_SHORT).show();
+        //Snackbar.make(cartoonBuilder,"上传成功",Snackbar.LENGTH_SHORT).show();
+        showMessage("上传成功", "查看", new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
         if (null != mOnFragmentEventListener){
             mOnFragmentEventListener.onFragmentAction(null);
         }
@@ -319,13 +331,14 @@ public class CreateCartoonFragment extends BaseFragment implements StepView_4.On
 
     @Override
     public void onImageUploadSuccess(String url) {
-        Cartoon cartoon = new Cartoon(url,MCKuai.instence.user,null);
+        Cartoon cartoon = new Cartoon(title, url, MCKuai.instence.user, null);
         uploadCartoon(cartoon);
     }
 
     @Override
     public void onImageUploadFailure(String msg) {
-        Snackbar.make(cartoonBuilder,msg,Snackbar.LENGTH_LONG).show();
+        //Snackbar.make(cartoonBuilder,msg,Snackbar.LENGTH_LONG).show();
+        showMessage(msg, null, null);
     }
 
     @Override

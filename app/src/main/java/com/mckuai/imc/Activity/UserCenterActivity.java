@@ -2,7 +2,7 @@ package com.mckuai.imc.Activity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.widget.AppCompatButton;
+import android.support.v7.widget.AppCompatImageButton;
 import android.support.v7.widget.AppCompatImageView;
 import android.support.v7.widget.AppCompatRadioButton;
 import android.support.v7.widget.AppCompatTextView;
@@ -73,8 +73,8 @@ public class UserCenterActivity extends BaseActivity
     private AppCompatTextView userLevel;
     private AppCompatTextView userName;
     private LinearLayout operation;
-    private AppCompatButton chat;
-    private AppCompatButton addFriend;
+    private AppCompatImageButton chat;
+    private AppCompatImageButton addFriend;
     private RadioGroup group;
     private RadioGroup type;
     private SuperRecyclerView list;
@@ -112,8 +112,8 @@ public class UserCenterActivity extends BaseActivity
         userLevel = (AppCompatTextView) findViewById(R.id.userlevel);
         userName = (AppCompatTextView) findViewById(R.id.actionbar_title);
         operation = (LinearLayout) findViewById(R.id.layut_opeartion);
-        chat = (AppCompatButton) findViewById(R.id.chat);
-        addFriend = (AppCompatButton) findViewById(R.id.addfriend);
+        chat = (AppCompatImageButton) findViewById(R.id.chat);
+        addFriend = (AppCompatImageButton) findViewById(R.id.addfriend);
         group = (RadioGroup) findViewById(R.id.group);
         friend = (AppCompatRadioButton) findViewById(R.id.friend);
         type = (RadioGroup) findViewById(R.id.type);
@@ -631,6 +631,6 @@ public class UserCenterActivity extends BaseActivity
     @Override
     public void onAddFriendSuccess() {
         showMessage("添加好友成功", null, null);
-        addFriend.setVisibility(View.GONE);
+        addFriend.setEnabled(false);
     }
 }

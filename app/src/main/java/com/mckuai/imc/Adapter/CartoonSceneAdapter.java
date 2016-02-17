@@ -1,25 +1,26 @@
 package com.mckuai.imc.Adapter;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.support.v7.widget.AppCompatImageView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.RelativeLayout;
 
 import com.mckuai.imc.R;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
+import java.io.InputStream;
 import java.util.ArrayList;
-import java.lang.Object;
 
 /**
  * Created by kyly on 2016/1/26.
  */
 public class CartoonSceneAdapter extends RecyclerView.Adapter<CartoonSceneAdapter.ViewHolder> implements View.OnClickListener {
-    private ArrayList<?> scenes;
+    private ArrayList<Object> scenes;
     private OnSceneSelectedListener listener;
     private Context context;
     private ImageLoader imageLoader;
@@ -33,7 +34,7 @@ public class CartoonSceneAdapter extends RecyclerView.Adapter<CartoonSceneAdapte
         this.listener = listener;
     }
 
-    public void setData(ArrayList<?> scenes) {
+    public void setData(ArrayList<Object> scenes) {
         this.scenes = scenes;
         notifyDataSetChanged();
     }
@@ -64,7 +65,9 @@ public class CartoonSceneAdapter extends RecyclerView.Adapter<CartoonSceneAdapte
     public void onBindViewHolder(ViewHolder holder, int position) {
         if (null != scenes && -1 < position && position < scenes.size() && null != scenes.get(position)) {
             if (scenes.get(position) instanceof Integer) {
-                holder.scene.setImageResource((Integer) scenes.get(position));
+                //holder.scene.setImageResource((Integer) scenes.get(position));
+                int resid = (int) scenes.get(position);
+                holder.scene.setImageBitmap(readBitMap(resid));
             } else {
                 holder.scene.setImageURI((Uri) scenes.get(position));
             }
@@ -88,5 +91,21 @@ public class CartoonSceneAdapter extends RecyclerView.Adapter<CartoonSceneAdapte
         if (null != scene && null != listener) {
             listener.onSceneSelected(scene);
         }
+    }
+
+    /**
+     * 以最省内存的方式读取本地资源的图片
+     *
+     * @param resId
+     * @return
+     */
+    public Bitmap readBitMap(int resId) {
+        BitmapFactory.Options opt = new BitmapFactory.Options();
+        opt.inPreferredConfig = Bitmap.Config.RGB_565;
+        opt.inPurgeable = true;
+        opt.inInputShareable = true;
+        //获取资源图片
+        InputStream is = context.getResources().openRawResource(resId);
+        return BitmapFactory.decodeStream(is, null, opt);
     }
 }

@@ -6,6 +6,7 @@
     <string name="dbname">MCData.db</string>
     <!--空数据-->
     <string name="emptyview_hint">暂时没有数据！</string>
+    <string name="hint_loading">正在加载！</string>
 
     <!--配置-->
     <string name="preferences_filename">config</string>

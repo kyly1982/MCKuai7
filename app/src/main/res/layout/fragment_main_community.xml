@@ -9,7 +9,7 @@
         android:layout_height="@dimen/community_forumlist_height"
         android:paddingTop="@dimen/margin_content"
         android:paddingBottom="@dimen/margin_content"
-        android:background="@color/icons"
+        android:background="@color/colorPrimary"
         app:layout_empty="@layout/emptyview"
         >
 
@@ -21,6 +21,7 @@
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:layout_below="@id/community_forumlist"
+        android:background="@color/icons"
         android:orientation="horizontal" >
 
         <android.support.v7.widget.AppCompatRadioButton

@@ -4,7 +4,6 @@ import com.mckuai.imc.Base.MCKuai;
 import com.mckuai.imc.Bean.Forum;
 import com.mckuai.imc.Bean.ForumInfo;
 import com.mckuai.imc.Bean.MCUser;
-import com.mckuai.imc.Bean.Post;
 import com.mckuai.imc.Bean.PostType;
 import com.mckuai.imc.Bean.Type;
 import com.mckuai.imc.Bean.User;
@@ -13,7 +12,6 @@ import com.mckuai.imc.Util.MCDao.TypeDao;
 import com.mckuai.imc.Util.MCDao.UserDao;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import de.greenrobot.dao.query.QueryBuilder;
@@ -186,9 +184,9 @@ public class MCDaoHelper {
      */
     public static ArrayList<PostType> getPostTypeByIdS(String typeIds){
 
-        if (null != typeIds){
-            String ids[] = typeIds.split("|");
-            if (null != ids && ids.length >0){
+        if (null != typeIds && typeIds.length() > 0) {
+//            String ids[] = typeIds.split("|");
+            String ids = typeIds.replace('|', ',');
                 TypeDao dao = MCKuai.instence.getDaoSession().getTypeDao();
                 QueryBuilder queryBuilder = dao.queryBuilder();
                 queryBuilder.where(TypeDao.Properties.SubId.in(ids));
@@ -200,7 +198,6 @@ public class MCDaoHelper {
                     }
                     return postTypes;
                 }
-            }
         }
         return null;
     }

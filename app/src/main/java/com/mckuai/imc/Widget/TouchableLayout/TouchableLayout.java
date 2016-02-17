@@ -226,13 +226,13 @@ public class TouchableLayout extends RelativeLayout {
             RectF rectf = new RectF(100,200,500,400);
             canvas.drawRect(rectf,p);
             canvas.drawText(labels.get(0),100,baseline,p);*/
-            int count = getChildCount();
+            /*int count = getChildCount();
             for (int i = 0; i < count; i++) {
                 View view = getChildAt(i);
                 if (null != view) {
                     drawChild(canvas, view, getDrawingTime());
                 }
-            }
+            }*/
         }
     }
 
