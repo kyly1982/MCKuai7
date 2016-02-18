@@ -4,6 +4,8 @@ import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.Paint;
+import android.support.v7.widget.AppCompatTextView;
+import android.view.View;
 
 /**
  * Created by Yangchen on 2015/9/7.
@@ -11,6 +13,8 @@ import android.graphics.Paint;
 public class Sticker {
 
     private Bitmap bitmap;
+    private View lable;
+    private AppCompatTextView lableContentView;
 
     /**
      * 是否获取焦点
@@ -101,5 +105,21 @@ public class Sticker {
 
     public void setmBorderPaint(Paint mBorderPaint) {
         this.mBorderPaint = mBorderPaint;
+    }
+
+    public View getLable() {
+        return lable;
+    }
+
+    public void setLable(View lable) {
+        this.lable = lable;
+    }
+
+    public AppCompatTextView getLableContentView() {
+        return lableContentView;
+    }
+
+    public void setLableContentView(AppCompatTextView lableContentView) {
+        this.lableContentView = lableContentView;
     }
 }

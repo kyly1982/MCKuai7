@@ -38,6 +38,7 @@
     <dimen name="createcartoon_builder_width">284dp</dimen>
     <dimen name="createcartoon_widget_height">160dp</dimen>
     <dimen name="createcartoon_widget_itemheight">80dp</dimen>
+    <dimen name="createcartoon_lable_height">40dp</dimen>
 
     <!--首页-->
     <dimen name="cartoon_main_cardwidth">250dp</dimen>
@@ -47,4 +48,5 @@
     <dimen name="cartoondetial_imagewidth">320dp</dimen>
     <dimen name="cartoondetial_imageheight">320dp</dimen>
     <dimen name="cartoondetial_operationbutton_height">26dp</dimen>
+
 </resources>

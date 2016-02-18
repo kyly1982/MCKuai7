@@ -106,7 +106,7 @@ public class MainFragment_Cartoon extends BaseFragment implements RadioGroup.OnC
     }
 
     private void loadData() {
-        switch (typeIndex){
+      /*  switch (typeIndex){
             case 0:
                 if (null != mNewCartoon && !mNewCartoon.isEmpty()){
                     mApplication.netEngine.loadCartoonList(getActivity(), mCartoonType[typeIndex], mNewCartoon.get(0).getId(), this);
@@ -121,7 +121,7 @@ public class MainFragment_Cartoon extends BaseFragment implements RadioGroup.OnC
                     mApplication.netEngine.loadCartoonList(getActivity(), mCartoonType[typeIndex], 0, this);
                 }
                 break;
-        }
+        }*/
     }
 
     private void showData() {

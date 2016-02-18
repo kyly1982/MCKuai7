@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="35dp">
+
+    <android.support.v7.widget.AppCompatTextView
+        android:id="@+id/content"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:singleLine="true"
+        android:maxLength="16"
+        android:background="@drawable/bg_cartoonlable"
+        android:padding="5dp"
+        android:textColor="@color/icons"
+        android:text="测试测试" />
+
+    <RelativeLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@id/content"
+        android:layout_alignRight="@id/content"
+        android:layout_below="@id/content">
+
+        <android.support.v7.widget.AppCompatImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:src="@mipmap/ic_indicator_lable" />
+    </RelativeLayout>
+
+</RelativeLayout>

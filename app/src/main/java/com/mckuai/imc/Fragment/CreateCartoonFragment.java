@@ -272,11 +272,6 @@ public class CreateCartoonFragment extends BaseFragment implements StepView_4.On
 
     @Override
     public void onTalkAdded(String talk) {
-        /*if (null == talks) {
-            talks = new ArrayList<>(3);
-        }
-        talks.add(talk);*/
-        //直接合成到图片上
         Lable lable = new Lable(lastPoint, talk);
         cartoonBuilder.addLable(lable);
     }

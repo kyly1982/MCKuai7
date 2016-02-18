@@ -8,12 +8,12 @@ import android.graphics.Matrix;
 import android.graphics.Point;
 import android.graphics.RectF;
 import android.net.Uri;
+import android.support.v7.widget.AppCompatTextView;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
+import android.widget.FrameLayout;
 
 import com.mckuai.imc.Bean.Lable;
 import com.mckuai.imc.R;
@@ -23,7 +23,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class TouchableLayout extends RelativeLayout {
+public class TouchableLayout extends FrameLayout {
     private Context context;
 
     /**
@@ -150,13 +150,20 @@ public class TouchableLayout extends RelativeLayout {
             labels = new ArrayList<>(3);
         }
         labels.add(lable);
-        TextView textView = new TextView(context);
-        textView.setText(lable.getContent());
-        RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
-        params.setMargins(lable.getCoordinate().x, lable.getCoordinate().y, 0, 0);
-        textView.setLayoutParams(params);
-        addView(textView);
-        postInvalidate();
+        Sticker sticker = stickers.get(focusStickerPosition);
+        if (null == sticker.getLable()) {
+            View view = inflate(context, R.layout.element_cartoonlable, null);
+            AppCompatTextView content = (AppCompatTextView) view.findViewById(R.id.content);
+            content.setText(lable.getContent());
+            sticker.setLable(view);
+            sticker.setLableContentView(content);
+            view.setTag(labels.size() - 1);//将位置信息存入
+            addView(view);
+            view.invalidate();
+            postInvalidate();
+        } else {
+            sticker.getLableContentView().setText(lable.getContent());
+        }
     }
 
 
@@ -173,20 +180,12 @@ public class TouchableLayout extends RelativeLayout {
 
     @Override
     protected void onDraw(Canvas canvas) {
-        super.onDraw(canvas);
-    }
-
-    @Override
-    protected void dispatchDraw(Canvas canvas) {
-        super.dispatchDraw(canvas);
+        //super.onDraw(canvas);
         if (null != bgBitmap) {
             Matrix matrix = new Matrix();
             matrix.setTranslate(55f, 100f);
-            //matrix.setScale(1.5f, 1.5f);
-            matrix.setScale(getWidth() / bgBitmap.getWidth(),getHeight() / bgBitmap.getHeight());
-            //canvas.drawBitmap(bgBitmap, 0, 0, null);
-            //canvas.drawBitmap(bgBitmap, matrix, null);
-            canvas.drawBitmap(bgBitmap,0,0,null);
+            matrix.setScale(getWidth() / bgBitmap.getWidth(), getHeight() / bgBitmap.getHeight());
+            canvas.drawBitmap(bgBitmap, 0, 0, null);
         }
 
         if (stickers.size() <= 0 && getChildCount() <= 0) {
@@ -206,34 +205,12 @@ public class TouchableLayout extends RelativeLayout {
                 canvas.drawBitmap(mDeleteBitmap, stickers.get(i).getMapPointsDst()[0] - mDeleteWidth / 2, stickers.get(i).getMapPointsDst()[1] - mDeleteHeight / 2, null);
             }
         }
+    }
 
-        if (null != labels && !labels.isEmpty()) {
-            /*Paint p = new Paint();
-            p.setColor(Color.YELLOW);
-            p.setTextSize(50);
-            p.setAntiAlias(true);
-            Paint.FontMetrics fm = p.getFontMetrics();
-            int textHeight = (int) (Math.ceil(fm.descent - fm.ascent) + 2);
-            float width = 500;
-            float baseline = 100f;
-            p.setColor(Color.WHITE);
-            float offsetAscent = baseline + fm.ascent;
-            float offsetDescent = baseline + fm.descent;
-            float offsetTop = baseline + fm.top;
-            float offsetBottom = baseline + fm.bottom;
+    @Override
+    protected void dispatchDraw(Canvas canvas) {
 
-
-            RectF rectf = new RectF(100,200,500,400);
-            canvas.drawRect(rectf,p);
-            canvas.drawText(labels.get(0),100,baseline,p);*/
-            /*int count = getChildCount();
-            for (int i = 0; i < count; i++) {
-                View view = getChildAt(i);
-                if (null != view) {
-                    drawChild(canvas, view, getDrawingTime());
-                }
-            }*/
-        }
+        super.dispatchDraw(canvas);
     }
 
     /**
@@ -332,6 +309,11 @@ public class TouchableLayout extends RelativeLayout {
             case MotionEvent.ACTION_UP:
                 if (isInDelete(x, y) && mInDelete) {
                     doDeleteSticker();
+                } else if (mInMove) {
+                    Point point = new Point();
+                    point.x = (int) stickers.get(focusStickerPosition).getMapPointsSrc()[2];
+                    point.y = (int) stickers.get(focusStickerPosition).getMapPointsSrc()[4];
+                    listener.onFocusChange(point);
                 }
             case MotionEvent.ACTION_CANCEL:
                 mLastPointX = 0;
@@ -341,6 +323,7 @@ public class TouchableLayout extends RelativeLayout {
                 mInDelete = false;
                 break;
             case MotionEvent.ACTION_MOVE:
+                //缩放旋转控制
                 if (mInController) {
                     stickers.get(focusStickerPosition).getmMatrix().postRotate(rotation(event), stickers.get(focusStickerPosition).getMapPointsDst()[8], stickers.get(focusStickerPosition).getMapPointsDst()[9]);
                     float nowLenght = caculateLength(stickers.get(focusStickerPosition).getMapPointsDst()[0], stickers.get(focusStickerPosition).getMapPointsDst()[1]);
@@ -360,14 +343,24 @@ public class TouchableLayout extends RelativeLayout {
                     break;
 
                 }
-
+                //移动
                 if (mInMove == true) {
                     float cX = x - mLastPointX;
                     float cY = y - mLastPointY;
                     mInController = false;
 
                     if (Math.sqrt(cX * cX + cY * cY) > 2.0f && canStickerMove(cX, cY)) {
-                        stickers.get(focusStickerPosition).getmMatrix().postTranslate(cX, cY);
+                        Sticker sticker = stickers.get(focusStickerPosition);
+                        sticker.getmMatrix().postTranslate(cX, cY);
+                        if (null != sticker.getLable()) {
+                            //sticker.getLable().getMatrix().postTranslate(cX, cY);
+                            int position = (int) sticker.getLable().getTag();
+                            Lable lable = labels.get(position);
+                            lable.getCoordinate().offset((int) cX, (int) cY);
+                            int childWidth = sticker.getLable().getWidth();
+                            int childHeight = sticker.getLable().getHeight();
+                            sticker.getLable().layout(lable.getCoordinate().x, lable.getCoordinate().y - childHeight, lable.getCoordinate().x + childWidth, lable.getCoordinate().y);
+                        }
                         postInvalidate();
                         mLastPointX = x;
                         mLastPointY = y;
@@ -513,9 +506,11 @@ public class TouchableLayout extends RelativeLayout {
         stickers.add(sticker);
         focusStickerPosition = stickers.size() - 1;
         if (null != listener) {
+            float value[] = {0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f};
+            sticker.getmMatrix().getValues(value);
             Point point = new Point();
-            point.x = (int) sticker.getMapPointsSrc()[2];
-            point.y = (int) sticker.getMapPointsSrc()[4];
+            point.x = (int) value[Matrix.MTRANS_X];
+            point.y = (int) value[Matrix.MTRANS_Y];
             listener.onFocusChange(point);
         }
     }
@@ -565,7 +560,7 @@ public class TouchableLayout extends RelativeLayout {
 
     @Override
     protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
-        final int childCount = labels.size();
+        final int childCount = getChildCount();
 
         /**
          * 只将子控件放在其所设置的位置上，不用管其位置关系
@@ -575,7 +570,16 @@ public class TouchableLayout extends RelativeLayout {
             Lable lable = labels.get(i);
             int childWidth = childview.getMeasuredWidth();
             int childHeight = childview.getMeasuredHeight();
-            childview.layout(lable.getCoordinate().x, top, lable.getCoordinate().x + childWidth, lable.getCoordinate().y + childHeight);
+            childHeight = context.getResources().getDimensionPixelOffset(R.dimen.createcartoon_lable_height);
+            int childLeft = lable.getCoordinate().x;
+            int childTop = lable.getCoordinate().y - childHeight;
+            int childRight = lable.getCoordinate().x + childWidth;
+            int childBottom = lable.getCoordinate().y;
+           /* if (childTop < 0){
+                childTop = 0;
+                childBottom = childHeight;
+            }*/
+            childview.layout(childLeft, childTop, childRight, childBottom);
         }
     }
 

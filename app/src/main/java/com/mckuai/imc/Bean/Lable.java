@@ -1,6 +1,7 @@
 package com.mckuai.imc.Bean;
 
 import android.graphics.Point;
+import android.view.View;
 
 import java.io.Serializable;
 
@@ -11,13 +12,18 @@ import java.io.Serializable;
 public class Lable implements Serializable {
     private Point coordinate;  //标签坐标
     private String content;     //标签内容
+    private View view;
 
     public Lable() {
     }
 
     public Lable(Point coordinate, String content) {
         this.content = content;
-        this.coordinate = coordinate;
+        if (null != coordinate) {
+            this.coordinate = coordinate;
+        } else {
+            this.coordinate = new Point(0, 0);
+        }
     }
 
     public String getContent() {
