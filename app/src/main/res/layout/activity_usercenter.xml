@@ -107,6 +107,7 @@
                     android:textColor="@color/checkable_text_color_selector" />
 
                 <View
+                    android:id="@+id/space_right"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1" />

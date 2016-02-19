@@ -23,6 +23,7 @@ import com.mckuai.imc.Base.MCKuai;
 import com.mckuai.imc.Bean.Cartoon;
 import com.mckuai.imc.R;
 import com.mckuai.imc.Util.MCNetEngine;
+import com.umeng.socialize.utils.Log;
 
 import java.util.ArrayList;
 
@@ -106,7 +107,7 @@ public class MainFragment_Cartoon extends BaseFragment implements RadioGroup.OnC
     }
 
     private void loadData() {
-      /*  switch (typeIndex){
+        switch (typeIndex) {
             case 0:
                 if (null != mNewCartoon && !mNewCartoon.isEmpty()){
                     mApplication.netEngine.loadCartoonList(getActivity(), mCartoonType[typeIndex], mNewCartoon.get(0).getId(), this);
@@ -121,17 +122,20 @@ public class MainFragment_Cartoon extends BaseFragment implements RadioGroup.OnC
                     mApplication.netEngine.loadCartoonList(getActivity(), mCartoonType[typeIndex], 0, this);
                 }
                 break;
-        }*/
+        }
     }
 
     private void showData() {
         if (null == mAdapter) {
+            Log.e("showData", "init adapter....");
             mAdapter = new CartoonAdapter(getActivity(), this);
             mCartoonListView.setAdapter(mAdapter);
+            Log.e("showData", "init adapter commpelt");
         }
         switch (typeIndex) {
             case 0:
                 if (null != mNewCartoon) {
+                    Log.e("showData", "set data 0");
                     mAdapter.setData(mNewCartoon);
                 } else {
                     loadData();
@@ -139,6 +143,7 @@ public class MainFragment_Cartoon extends BaseFragment implements RadioGroup.OnC
                 break;
             case 1:
                 if (null != mHotCartoon) {
+                    Log.e("showData", "set data 1");
                     mAdapter.setData(mHotCartoon);
                 } else {
                     loadData();
@@ -148,7 +153,7 @@ public class MainFragment_Cartoon extends BaseFragment implements RadioGroup.OnC
 
         if (isRefreshNeed) {
             //mAdapter.notifyDataSetChanged();
-            mCartoonListView.setTop(0);
+            // mCartoonListView.setTop(0);
             isRefreshNeed = false;
         }
     }
@@ -226,6 +231,7 @@ public class MainFragment_Cartoon extends BaseFragment implements RadioGroup.OnC
 
     @Override
     public void onLoadCartoonListFailure(String msg) {
+        Log.e("onLoadCartoonListSuccess", "false...");
         Snackbar.make(mCartoonListView,msg,Snackbar.LENGTH_SHORT).show();
         switch (typeIndex) {
             case 0:
@@ -239,6 +245,7 @@ public class MainFragment_Cartoon extends BaseFragment implements RadioGroup.OnC
 
     @Override
     public void onLoadCartoonListSuccess(ArrayList<Cartoon> cartoons) {
+        Log.e("onLoadCartoonListSuccess", "ok...");
         if (cartoons.isEmpty() || 1 == cartoons.size() || 1 == cartoons.get(cartoons.size() - 1).getId()) {
             switch (typeIndex) {
                 case 0:

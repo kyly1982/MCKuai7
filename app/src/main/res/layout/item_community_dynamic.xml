@@ -4,6 +4,7 @@
     android:layout_height="@dimen/usercenter_item_community_height"
     android:layout_marginBottom="1px"
     android:layout_marginTop="1px"
+    android:clickable="true"
     android:background="@color/icons"
     android:padding="@dimen/usercenter_item_layoutpadding">
 

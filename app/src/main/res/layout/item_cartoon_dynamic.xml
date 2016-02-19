@@ -11,8 +11,7 @@
         android:id="@+id/cartooncover"
         android:layout_width="@dimen/usercenter_item_catoon_imagewidth"
         android:layout_height="@dimen/usercenter_item_catoon_imagewidth"
-        android:layout_alignParentRight="true"
-        android:background="@color/colorYellow" />
+        android:layout_alignParentRight="true" />
 
     <android.support.v7.widget.AppCompatTextView
         android:id="@+id/dynamictype"

@@ -39,7 +39,7 @@ public class MainFragment_Chat extends BaseFragment implements ConversationAdapt
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        if (null != view){
+        if (null != view) {
             container.removeView(view);
         }
         view = inflater.inflate(R.layout.fragment_main_chat, container, false);
@@ -50,27 +50,32 @@ public class MainFragment_Chat extends BaseFragment implements ConversationAdapt
     @Override
     public void onResume() {
         super.onResume();
-        if (null != view && null == conversationList){
+        if (null != view && null == conversationList) {
             initView();
         }
         showData();
     }
 
-    private void initView(){
+    private void initView() {
         conversationList = (SuperRecyclerView) view.findViewById(R.id.conversationlist);
         userList = (SuperRecyclerView) view.findViewById(R.id.waituserlist);
-        RecyclerView.LayoutManager manager = new LinearLayoutManager(getActivity(),LinearLayoutManager.VERTICAL,false);
+        RecyclerView.LayoutManager manager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
         conversationList.setLayoutManager(manager);
-        if (null == adapter){
-            adapter = new ConversationAdapter(getActivity(),this);
-        }
-        conversationList.setAdapter(adapter);
+
         conversationList.hideProgress();
+        conversationList.hideMoreProgress();
+        userList.hideMoreProgress();
+        userList.hideProgress();
     }
 
-    private void showData(){
-        if (MCKuai.instence.isLogin() && null != RongIM.getInstance() && null != RongIM.getInstance().getRongIMClient()){
+    private void showData() {
+
+        if (MCKuai.instence.isLogin() && null != RongIM.getInstance() && null != RongIM.getInstance().getRongIMClient()) {
             conversations = (ArrayList<Conversation>) RongIM.getInstance().getRongIMClient().getConversationList();
+            if (null == adapter) {
+                adapter = new ConversationAdapter(getActivity(), this);
+                conversationList.setAdapter(adapter);
+            }
             adapter.setData(conversations);
         }
     }

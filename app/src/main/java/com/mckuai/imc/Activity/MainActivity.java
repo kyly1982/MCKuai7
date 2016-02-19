@@ -3,7 +3,6 @@ package com.mckuai.imc.Activity;
 import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.widget.AppCompatImageButton;
 import android.support.v7.widget.AppCompatRadioButton;
 import android.support.v7.widget.AppCompatTextView;
 import android.view.Menu;
@@ -26,7 +25,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
     private RadioGroup nav;
     private RelativeLayout content;
     private AppCompatTextView title;
-    private AppCompatImageButton createCartoon;
     private RadioGroup cartoonType;
     private AppCompatRadioButton mNewType;
     private boolean isCheckUpgread = false;
@@ -58,14 +56,14 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         title = (AppCompatTextView) findViewById(R.id.actionbar_title);
         cartoonType = (RadioGroup) findViewById(R.id.actionbar_cartoon_rg);
         mNewType = (AppCompatRadioButton) findViewById(R.id.cartoon_type_new);
-        createCartoon = (AppCompatImageButton) findViewById(R.id.nav_create);
-
+        //createCartoon = (AppCompatImageButton) findViewById(R.id.nav_create);
+        findViewById(R.id.nav_create).setOnClickListener(this);
         cartoonType.setVisibility(View.VISIBLE);
         nav.setVisibility(View.VISIBLE);
         nav.setOnCheckedChangeListener(this);
         ((AppCompatRadioButton) findViewById(R.id.nav_cartoon)).setChecked(true);
         cartoonType.setOnCheckedChangeListener(this);
-        createCartoon.setOnClickListener(this);
+        //createCartoon.setOnClickListener(this);
     }
 
     private void initFragment() {
@@ -135,9 +133,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
     @Override
     public void onCheckedChanged(RadioGroup group, int checkedId) {
         switch (checkedId){
-            case R.id.nav_create:
-                callCreateActivity();
-                break;
+
             case R.id.cartoon_type_hot:
                 if (null != fragments){
                     ((MainFragment_Cartoon)fragments.get(0)).setType(1);
@@ -185,15 +181,12 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         }
     }
 
-    private FragmentTransaction hideFragment(){
+/*    private FragmentTransaction hideFragment(){
         FragmentTransaction transaction = mFragmentManager.beginTransaction();
         transaction.hide(fragments.get(currentFragmentIndex));
         return transaction;
-    }
+    }*/
 
-    public void callCreateActivity() {
-
-    }
 
     @Override
     public void onFragmentAttach(int titleResId) {

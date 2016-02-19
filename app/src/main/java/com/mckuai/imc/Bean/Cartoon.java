@@ -16,7 +16,7 @@ public class Cartoon implements Serializable {
     private String insertTime;              //创建时间
     private String image;                   //图片url
     private User owner;                     //所有者
-    private ArrayList<Lable> lables;        //标签
+    //private ArrayList<Lable> lables;        //标签
     private ArrayList<Comment> comments;    //评论
     private ArrayList<User> rewardList;    //打赏用户
     private Page pageBean;
@@ -33,20 +33,20 @@ public class Cartoon implements Serializable {
     public Cartoon(String image,MCUser owner,ArrayList<Lable> lables){
         this.image = image;
         this.owner = new User(owner);
-        this.lables = lables;
+        //this.lables = lables;
     }
 
     public Cartoon(String title, String image, MCUser owner, ArrayList<Lable> lables) {
         this.content = title;
         this.image = image;
         this.owner = new User(owner);
-        this.lables = lables;
+        //this.lables = lables;
     }
 
     public Cartoon(String image, ArrayList<Lable> lables, User owner, ArrayList<Comment> comments, int prise) {
         this.comments = comments;
         this.image = image;
-        this.lables = lables;
+        //this.lables = lables;
         this.owner = owner;
         this.prise = prise;
     }
@@ -54,10 +54,24 @@ public class Cartoon implements Serializable {
     public Cartoon(String image, ArrayList<Lable> lables, User owner, ArrayList<Comment> comments, int prise, Page page) {
         this.comments = comments;
         this.image = image;
-        this.lables = lables;
+        //this.lables = lables;
         this.owner = owner;
         this.prise = prise;
         this.pageBean = page;
+    }
+
+    public Cartoon(ArrayList<Comment> comments, String content, int id, String image, String insertTime, ArrayList<Lable> lables, User owner, Page pageBean, int prise, int replyNum, ArrayList<User> rewardList) {
+        this.comments = comments;
+        this.content = content;
+        this.id = id;
+        this.image = image;
+        this.insertTime = insertTime;
+        //this.lables = lables;
+        this.owner = owner;
+        this.pageBean = pageBean;
+        this.prise = prise;
+        this.replyNum = replyNum;
+        this.rewardList = rewardList;
     }
 
     public ArrayList<Comment> getComments() {
@@ -68,13 +82,13 @@ public class Cartoon implements Serializable {
         this.comments = comments;
     }
 
-    public ArrayList<Lable> getLables() {
+/*    public ArrayList<Lable> getLables() {
         return lables;
     }
 
     public void setLables(ArrayList<Lable> lables) {
         this.lables = lables;
-    }
+    }*/
 
     public User getOwner() {
         return owner;
@@ -171,4 +185,6 @@ public class Cartoon implements Serializable {
     public String getCommentEx(){
         return null == comments ? "0":comments.size() +"";
     }
+
+
 }

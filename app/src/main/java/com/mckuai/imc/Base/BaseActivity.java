@@ -76,6 +76,16 @@ public class BaseActivity extends AppCompatActivity implements NavigationView.On
 
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK) {
+            if (requestCode == 99) {
+                showUserInfo();
+            }
+        }
+    }
+
     /**
      * 配置actionBar,同时可以配置其图标和图标的点击事件（可能会被侧边栏的事件所覆盖）
      *
@@ -154,7 +164,7 @@ public class BaseActivity extends AppCompatActivity implements NavigationView.On
                     intent.putExtra(getString(R.string.usercenter_tag_userid), mApplication.user.getId());
                     startActivity(intent);
                 } else {
-                    callLogin(0);
+                    callLogin(99);
                 }
             }
         });
@@ -172,20 +182,24 @@ public class BaseActivity extends AppCompatActivity implements NavigationView.On
             @Override
             public void onDrawerOpened(View drawerView) {
                 super.onDrawerOpened(drawerView);
-
+                if (!mApplication.isLogin()) {
+                    showUnLoginInfo();
+                } else if (null == userCover.getTag()) {
+                    showUserInfo();
+                }
             }
 
             @Override
             public void onDrawerStateChanged(int newState) {
                 super.onDrawerStateChanged(newState);
-                if (mApplication.isLogin()) {
+               /* if (!mApplication.isLogin()) {
                     String url = (String) userCover.getTag();
                     if (null == url || !url.equals(mApplication.user.getHeadImg())) {
-                        handleUserLogin();
+                        showUserInfo();
                     }
                 } else {
-                    handleUserLogout();
-                }
+                    showUnLoginInfo();
+                }*/
             }
         };
         mDrawer.setDrawerListener(toggle);
@@ -207,17 +221,19 @@ public class BaseActivity extends AppCompatActivity implements NavigationView.On
         action.open();
     }
 
-    private void handleUserLogin() {
+    private void showUserInfo() {
         loader.displayImage(mApplication.user.getHeadImg(), userCover, mApplication.getCircleOptions());
         userName.setText(mApplication.user.getNike());
-        userLevel.setText(mApplication.user.getLevel() + "");
+        //userLevel.setText(mApplication.user.getLevel() + "");
+        userLevel.setText(getString(R.string.usercenter_userlevel, mApplication.user.getLevel()));
         userCover.setTag(mApplication.user.getHeadImg());
         logout.setVisible(true);
+        userCover.setTag(mApplication.user.getHeadImg());
     }
 
-    private void handleUserLogout() {
+    private void showUnLoginInfo() {
         userName.setText("未登录");
-        userLevel.setText("");
+        userLevel.setText("点击头像登录");
         userCover.setBackgroundResource(R.mipmap.ic_usercover_default);
         logout.setVisible(false);
     }
@@ -304,6 +320,10 @@ public class BaseActivity extends AppCompatActivity implements NavigationView.On
                     mApplication.user.getLoginToken().setExpires(0);
                     mApplication.saveProfile();
                     mApplication.user = null;
+                    userCover.setImageResource(R.mipmap.ic_usercover_default);
+                    userCover.setTag(null);
+                    userName.setText("未登录");
+                    userLevel.setText("点击头像登录");
                     item.setVisible(false);
                 }
                 break;

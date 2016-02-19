@@ -11,9 +11,9 @@ import org.json.JSONObject;
  * 对接口返回的结果进行预处理
  */
 public class ParseResponseResult {
-    public boolean isSuccess = false;
+    public static boolean isSuccess = false;
     public String pageBean = null;
-    public String msg =null;
+    public static String msg = null;
 
     /**
      * 将JSONObject类型的返回数据解析成预处理后的类
@@ -35,18 +35,19 @@ public class ParseResponseResult {
     public ParseResponseResult(Context context,JSONObject response,boolean ignoreLength) {
         if (checkLength(context, response, ignoreLength) && checkState(context,response)){
             setData(context,response);
+            setPage(context, response);
         }
 
-        if (checkLength(context,response,ignoreLength)){
+    /*    if (checkLength(context,response,ignoreLength)){
             if (checkState(context,response)){
                 setData(context,response);
                 setPage(context,response);
             }
-        }
+        }*/
 
     }
 
-    private boolean checkLength(Context context,JSONObject response,boolean ignoreLength){
+    public static boolean checkLength(Context context, JSONObject response, boolean ignoreLength) {
         if ((null == response && response.length() > 0) || (!ignoreLength && response.toString().length() < 10)){
             isSuccess = false;
             msg = context.getString(R.string.error_pretreatmentres_nullerror);
@@ -56,7 +57,7 @@ public class ParseResponseResult {
         }
     }
 
-    private boolean checkState(Context context,JSONObject response){
+    public static boolean checkState(Context context, JSONObject response) {
         if (response.has("state")){
             try {
                 if (response.getString("state").equals("ok")){

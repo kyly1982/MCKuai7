@@ -37,7 +37,7 @@
         android:layout_alignLeft="@id/username"
         android:layout_alignParentBottom="true"
         android:padding="3dp"
-        android:background="@color/colorYellow"
+        android:background="@drawable/bg_usercenter_level"
         android:textColor="@color/textAccent"
         android:text="LV 12"/>
 

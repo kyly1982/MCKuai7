@@ -23,7 +23,6 @@
         android:layout_alignTop="@id/usercover"
         android:layout_toRightOf="@id/usercover"
         android:layout_marginLeft="5dp"
-        android:text="点击登录"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
 
     <android.support.v7.widget.AppCompatTextView
@@ -32,7 +31,7 @@
         android:layout_height="wrap_content"
         android:layout_alignBottom="@id/usercover"
         android:layout_alignLeft="@id/username"
-        android:text="LV.5" />
+        android:text="点击头像登录" />
 
     <android.support.v7.widget.SwitchCompat
         android:layout_width="wrap_content"

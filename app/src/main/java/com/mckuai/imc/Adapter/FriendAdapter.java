@@ -80,7 +80,7 @@ public class FriendAdapter extends RecyclerView.Adapter<FriendAdapter.ViewHolder
             if (null != user) {
                 loader.displayImage(user.getHeadImg(), holder.cover, MCKuai.instence.getCircleOptions());
                 holder.name.setText(user.getNike());
-                holder.level.setText(user.getLevel() + "");
+                holder.level.setText(context.getString(R.string.usercenter_userlevel, user.getLevel()));
                 if (null != listener){
                     holder.chat.setOnClickListener(new View.OnClickListener() {
                         @Override
