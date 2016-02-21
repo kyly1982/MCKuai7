@@ -33,22 +33,24 @@ public class ParseResponseResult {
      * @param ignoreLength 是否检查返回的长度
      */
     public ParseResponseResult(Context context,JSONObject response,boolean ignoreLength) {
-        if (checkLength(context, response, ignoreLength) && checkState(context,response)){
-            setData(context,response);
-            setPage(context, response);
-        }
 
-    /*    if (checkLength(context,response,ignoreLength)){
-            if (checkState(context,response)){
-                setData(context,response);
-                setPage(context,response);
+
+        if (ignoreLength) {
+            if (null != response && checkState(context, response)) {
+                setData(context, response);
+                setPage(context, response);
             }
-        }*/
+        } else {
+            if (checkLength(context, response, ignoreLength) && checkState(context, response)) {
+                setData(context, response);
+                setPage(context, response);
+            }
+        }
 
     }
 
     public static boolean checkLength(Context context, JSONObject response, boolean ignoreLength) {
-        if ((null == response && response.length() > 0) || (!ignoreLength && response.toString().length() < 10)){
+        if ((null == response && response.length() == 0) || (!ignoreLength && response.toString().length() < 10)) {
             isSuccess = false;
             msg = context.getString(R.string.error_pretreatmentres_nullerror);
             return false;

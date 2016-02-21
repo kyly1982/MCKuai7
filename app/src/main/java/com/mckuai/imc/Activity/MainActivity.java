@@ -108,6 +108,15 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
     @Override
     public void onBackPressed() {
         super.onBackPressed();
+        if (!isSlidingMenuShow) {
+            showMessage("退出软件？", "退出", new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    mApplication.handleExit();
+                    finish();
+                }
+            });
+        }
     }
 
     @Override
@@ -224,4 +233,5 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
     public void onFragmentAction(Object object) {
 
     }
+
 }

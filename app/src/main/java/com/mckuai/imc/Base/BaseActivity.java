@@ -32,6 +32,7 @@ import com.mckuai.imc.Widget.autoupdate.internal.SimpleJSONParser;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.umeng.socialize.ShareAction;
 import com.umeng.socialize.UMShareAPI;
+import com.umeng.socialize.UMShareListener;
 import com.umeng.socialize.bean.SHARE_MEDIA;
 import com.umeng.socialize.media.UMImage;
 
@@ -53,10 +54,10 @@ public class BaseActivity extends AppCompatActivity implements NavigationView.On
     private AppCompatTextView userLevel;
     private MenuItem logout;
 
+    public boolean isSlidingMenuShow = false;
     protected ArrayList<BaseFragment> fragments;
     protected int currentFragmentIndex = -1;
     private ImageLoader loader = ImageLoader.getInstance();
-    private boolean isSlidingMenuShow = false;
     private UMShareAPI mShareAPI = UMShareAPI.get(this);
     private AppUpdate appUpdate;
 
@@ -177,11 +178,13 @@ public class BaseActivity extends AppCompatActivity implements NavigationView.On
             @Override
             public void onDrawerClosed(View drawerView) {
                 super.onDrawerClosed(drawerView);
+                isSlidingMenuShow = false;
             }
 
             @Override
             public void onDrawerOpened(View drawerView) {
                 super.onDrawerOpened(drawerView);
+                isSlidingMenuShow = true;
                 if (!mApplication.isLogin()) {
                     showUnLoginInfo();
                 } else if (null == userCover.getTag()) {
@@ -192,14 +195,6 @@ public class BaseActivity extends AppCompatActivity implements NavigationView.On
             @Override
             public void onDrawerStateChanged(int newState) {
                 super.onDrawerStateChanged(newState);
-               /* if (!mApplication.isLogin()) {
-                    String url = (String) userCover.getTag();
-                    if (null == url || !url.equals(mApplication.user.getHeadImg())) {
-                        showUserInfo();
-                    }
-                } else {
-                    showUnLoginInfo();
-                }*/
             }
         };
         mDrawer.setDrawerListener(toggle);
@@ -215,6 +210,23 @@ public class BaseActivity extends AppCompatActivity implements NavigationView.On
         action.withTitle(title);
         action.withText(content);
         action.withTargetUrl(url);
+        action.setCallback(new UMShareListener() {
+            @Override
+            public void onResult(SHARE_MEDIA share_media) {
+                closeSlidmenu();
+            }
+
+            @Override
+            public void onError(SHARE_MEDIA share_media, Throwable throwable) {
+                showMessage(throwable.getLocalizedMessage(), null, null);
+                closeSlidmenu();
+            }
+
+            @Override
+            public void onCancel(SHARE_MEDIA share_media) {
+                closeSlidmenu();
+            }
+        });
         if (null != image) {
             action.withMedia(image);
         }
@@ -264,6 +276,12 @@ public class BaseActivity extends AppCompatActivity implements NavigationView.On
         mFragmentManager_V4.beginTransaction().replace(contentId, fragment).commit();
     }
 
+    public void closeSlidmenu() {
+        if (isSlidingMenuShow) {
+            mDrawer.closeDrawers();
+        }
+    }
+
 
     @Override
     public void onBackPressed() {
@@ -282,6 +300,7 @@ public class BaseActivity extends AppCompatActivity implements NavigationView.On
         switch (item.getItemId()) {
             case R.id.nav_search:
                 intent = new Intent(this, SearchActivity.class);
+                closeSlidmenu();
                 startActivity(intent);
                 break;
             case R.id.nav_package:
@@ -302,6 +321,7 @@ public class BaseActivity extends AppCompatActivity implements NavigationView.On
                 break;
             case R.id.nav_share:
                 share("麦块", "我正在玩麦块，你也一起来玩吧", "http://www.mckuai.com", null);
+                closeSlidmenu();
                 break;
             case R.id.nav_prise:
                 Uri uri = Uri.parse("market://details?id=" + getPackageName());

@@ -4,16 +4,13 @@ import android.app.ActivityManager;
 import android.app.Application;
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.os.Environment;
 
 import com.mckuai.imc.Bean.MCUser;
 import com.mckuai.imc.Bean.Token;
 import com.mckuai.imc.R;
-import com.mckuai.imc.Util.MCDBOpenHelper;
-import com.mckuai.imc.Util.MCDao.DaoMaster;
-import com.mckuai.imc.Util.MCDao.DaoSession;
+import com.mckuai.imc.Util.MCDaoHelper;
 import com.mckuai.imc.Util.MCNetEngine;
 import com.nostra13.universalimageloader.cache.disc.impl.UnlimitedDiskCache;
 import com.nostra13.universalimageloader.cache.disc.naming.Md5FileNameGenerator;
@@ -37,7 +34,7 @@ import io.rong.imlib.RongIMClient;
 public class MCKuai extends Application {
     public static MCKuai instence;
     public MCUser user;
-    public DaoSession daoSession;
+    public MCDaoHelper daoHelper;
     public MCNetEngine netEngine;
     private DisplayImageOptions circleOptions;
 
@@ -61,10 +58,10 @@ public class MCKuai extends Application {
 
     public void init() {
         readPreference();
+        daoHelper = new MCDaoHelper(this);
         initImageLoader();
         initUMPlatform();
         initRongIM();
-        netEngine = new MCNetEngine();
         if (null != user && user.isUserValid() && null != user.getToken() && 10 < user.getToken().length()) {
             loginIM(new RongIMClient.ConnectCallback() {
                 @Override
@@ -83,6 +80,7 @@ public class MCKuai extends Application {
                 }
             });
         }
+        netEngine = new MCNetEngine();
     }
 
     private void initRongIM(){
@@ -229,28 +227,10 @@ public class MCKuai extends Application {
     }
 
 
-    public DaoSession getDaoSession() {
-        if (null == daoSession) {
-            MCDBOpenHelper helper = new MCDBOpenHelper(this);
-            SQLiteDatabase db = helper.getWritableDatabase();
-            DaoMaster daoMaster = new DaoMaster(db);
-            daoSession = daoMaster.newSession();
-        }
-        return daoSession;
-    }
 
     public void logout() {
 
         user = null;
-    }
-
-    public void handleExit() {
-        if (null != daoSession) {
-            SQLiteDatabase db = daoSession.getDatabase();
-            //db.close();
-            daoSession.clear();
-            db.close();
-        }
     }
 
     public static String getCurProcessName(Context context) {
@@ -268,5 +248,10 @@ public class MCKuai extends Application {
             }
         }
         return null;
+    }
+
+    public void handleExit() {
+        daoHelper.close();
+        saveProfile();
     }
 }

@@ -88,6 +88,9 @@ public class UserCenterActivity extends BaseActivity
     private AppCompatRadioButton dynamic;
     private AppCompatRadioButton friend;
     private View spaceRight;
+    private boolean checkedFriendship = false;
+    private boolean isFriendShip = false;
+    private boolean isLoading = false;
 
 
     @Override
@@ -208,6 +211,9 @@ public class UserCenterActivity extends BaseActivity
     }
 
     private void loadData(boolean isRefresh) {
+        if (isLoading) {
+            return;
+        }
         switch (contentType) {
             case 36:
                 if (null == cartoonMessagePage) {
@@ -366,7 +372,15 @@ public class UserCenterActivity extends BaseActivity
 
     private void resetUser(User user) {
         this.user = user;
-        contentType = 36;
+        if (user.getId() != mApplication.user.getId()) {
+            contentType = 34;
+        } else {
+            contentType = 36;
+        }
+        isLoading = true;
+        cartoon.setChecked(true);
+        dynamic.setChecked(true);
+        isLoading = false;
         cartoonMessageAdapter = null;
         cartoonDynamicAdapter = null;
         cartoonWorkAdapter = null;
@@ -383,6 +397,9 @@ public class UserCenterActivity extends BaseActivity
         friendPage = null;
         work.setVisibility(View.GONE);
         list.setVisibility(View.VISIBLE);
+        changeUIByUser();
+        checkedFriendship = false;
+        isFriendShip = false;
         loadData(false);
     }
 

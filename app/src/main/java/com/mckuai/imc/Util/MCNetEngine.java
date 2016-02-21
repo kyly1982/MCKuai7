@@ -45,11 +45,13 @@ public class MCNetEngine {
     private AsyncHttpClient httpClient;
     private Gson gson;
     private String domainName = "http://api.mckuai.com/";
+    private MCDaoHelper daoHelper;
 
     public MCNetEngine() {
         httpClient = new AsyncHttpClient();
         httpClient.setTimeout(10);
         gson = new Gson();
+        daoHelper = MCKuai.instence.daoHelper;
     }
 
     public void cancle() {
@@ -463,6 +465,8 @@ public class MCNetEngine {
                     }.getType());*/
                     CartoonMessageList bean = gson.fromJson(ParseResponseResult.msg, CartoonMessageList.class);
                     Page page = gson.fromJson(result.pageBean, Page.class);
+                    MCUser user = bean.getUser();
+                    daoHelper.addUser(user);
                     listener.onLoadCartoonMessageSuccess(bean.getUser(), bean.getList(), page);
                 } else {
                     if (null != listener) {
@@ -503,6 +507,8 @@ public class MCNetEngine {
                     //listener.onLoadCartoonDynamicSuccess(dynamics, page);
                     CartoonMessageList bean = gson.fromJson(ParseResponseResult.msg, CartoonMessageList.class);
                     Page page = gson.fromJson(result.pageBean, Page.class);
+                    MCUser user = bean.getUser();
+                    daoHelper.addUser(user);
                     listener.onLoadCartoonDynamicSuccess(bean.getUser(), bean.getList(), page);
                 } else {
                     listener.onLoadCartoonDynamicFailure(ParseResponseResult.msg);
@@ -539,6 +545,8 @@ public class MCNetEngine {
                     }.getType());*/
                     CartoonWorkList bean = gson.fromJson(ParseResponseResult.msg, CartoonWorkList.class);
                     Page page = gson.fromJson(result.pageBean, Page.class);
+                    MCUser user = bean.getUser();
+                    daoHelper.addUser(user);
                     listener.onLoadCartoonWorkSuccess(bean.getUser(), bean.getList(), page);
                 } else {
                     listener.onLoadCartoonWorkFailure(ParseResponseResult.msg);
@@ -577,6 +585,7 @@ public class MCNetEngine {
                     if (null != bean && null != bean.getList() && null != bean.getUser()) {
                         CommunityMessageList list = bean.getList();
                         Page page = new Page(list.getAllCount(), list.getPage(), list.getPageSize());
+                        daoHelper.addUser(bean.getUser());
                         listener.onLoadCommunityMessageSuccess(list.getData(),bean.getUser(), page);
                     } else {
                         listener.onLoadCommunityMessageFailure("转换数据失败！");
@@ -616,6 +625,7 @@ public class MCNetEngine {
                     CommunityDynamicBean bean = gson.fromJson(ParseResponseResult.msg, CommunityDynamicBean.class);
                     if (null != bean && null != bean.getList() && null != bean.getUser()){
                         Page page = new Page(bean.getList().getAllCount(),bean.getList().getPage(),bean.getList().getPageSize());
+                        daoHelper.addUser(bean.getUser());
                         listener.onLoadCommunityDynamicSuccess(bean.getList().getData(), bean.getUser(), page);
                     } else {
                         listener.onLoadCommunityDynamicFailure("转换数据失败！");
@@ -656,6 +666,7 @@ public class MCNetEngine {
                     CommunityWorkBean bean = gson.fromJson(ParseResponseResult.msg, CommunityWorkBean.class);
                     if (null != bean && null != bean.getList() && null != bean.getUser()){
                         Page page = new Page(bean.getList().getAllCount(),bean.getList().getPage(),bean.getList().getPageSize());
+                        daoHelper.addUser(bean.getUser());
                         listener.onLoadCommunityWorkSuccess(bean.getList().getdata(), bean.getUser(), page);
                     } else {
                         listener.onLoadCommunityWorkFailure("转换数据失败！");
@@ -719,15 +730,23 @@ public class MCNetEngine {
         RequestParams params = new RequestParams();
         params.put("id",MCKuai.instence.user.getId());
         params.put("page",nextPage);
-        httpClient.post(url,params,new JsonHttpResponseHandler(){
+        httpClient.post(url, params, new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-                ParseResponseResult result = new ParseResponseResult(context,response);
+                ParseResponseResult result = new ParseResponseResult(context, response);
                 if (ParseResponseResult.isSuccess) {
                     FriendBean bean = gson.fromJson(ParseResponseResult.msg, FriendBean.class);
-                    if (null != bean){
-                        Page page = new Page(bean.getAllCount(),bean.getPage(),bean.getPageSize());
-                        listener.onLoadFriendSuccess(bean.getData(),page);
+                    if (null != bean) {
+                        Page page = new Page(bean.getAllCount(), bean.getPage(), bean.getPageSize());
+                        ArrayList<MCUser> users = bean.getData();
+                        if (null != users && !users.isEmpty()) {
+                            for (MCUser user : users) {
+                                User tempuser = new User(user);
+                                tempuser.setIsFriend(true);
+                                daoHelper.addUser(tempuser);
+                            }
+                        }
+                        listener.onLoadFriendSuccess(bean.getData(), page);
                     } else {
                         listener.OnloadFriendFailure("转换数据失败！");
                     }
@@ -946,6 +965,73 @@ public class MCNetEngine {
                 if (null != listener) {
                     listener.onLoadDetailFailure(throwable.getLocalizedMessage());
                 }
+            }
+        });
+    }
+
+    /**
+     * 获取用户信息
+     */
+    public interface OnLoadUserInfoResponseListener {
+        void onLoadUserInfoSuccess(User user);
+
+        void onLoadUserInfoFailure(String msg);
+    }
+
+    public void loadUserInfo(final Context context, String userId, final OnLoadUserInfoResponseListener listener) {
+        String url = domainName + "";
+        url += "&id=" + userId;
+        httpClient.get(url, null, new JsonHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                ParseResponseResult result = new ParseResponseResult(context, response);
+                if (ParseResponseResult.isSuccess) {
+                    User user = gson.fromJson(ParseResponseResult.msg, User.class);
+                    if (null != user) {
+                        daoHelper.addUser(user);
+                        listener.onLoadUserInfoSuccess(user);
+                    } else {
+                        listener.onLoadUserInfoFailure("返回数据不正确！");
+                    }
+                } else {
+                    listener.onLoadUserInfoFailure(ParseResponseResult.msg);
+                }
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                listener.onLoadUserInfoFailure(throwable.getLocalizedMessage());
+            }
+        });
+    }
+
+    public interface OnCheckFriendshipResponseListener {
+        void onIsFriendShip();
+
+        void onIsStrangerShip();
+
+        void onError(String msg);
+    }
+
+    public void checkFriendship(final Context context, int userId, final OnCheckFriendshipResponseListener listener) {
+        String url = domainName + "interface.do?act=isAttention";
+        RequestParams params = new RequestParams();
+        params.put("ownerId", MCKuai.instence.user.getId());
+        params.put("otherId", userId);
+        httpClient.get(url, params, new JsonHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                ParseResponseResult result = new ParseResponseResult(context, response);
+                if (ParseResponseResult.isSuccess) {
+                    listener.onIsFriendShip();
+                } else {
+                    listener.onIsStrangerShip();
+                }
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                listener.onError(throwable.getLocalizedMessage());
             }
         });
     }

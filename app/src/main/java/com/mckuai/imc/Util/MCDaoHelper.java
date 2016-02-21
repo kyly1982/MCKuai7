@@ -1,12 +1,16 @@
 package com.mckuai.imc.Util;
 
-import com.mckuai.imc.Base.MCKuai;
+import android.content.Context;
+import android.database.sqlite.SQLiteDatabase;
+
 import com.mckuai.imc.Bean.Forum;
 import com.mckuai.imc.Bean.ForumInfo;
 import com.mckuai.imc.Bean.MCUser;
 import com.mckuai.imc.Bean.PostType;
 import com.mckuai.imc.Bean.Type;
 import com.mckuai.imc.Bean.User;
+import com.mckuai.imc.Util.MCDao.DaoMaster;
+import com.mckuai.imc.Util.MCDao.DaoSession;
 import com.mckuai.imc.Util.MCDao.ForumDao;
 import com.mckuai.imc.Util.MCDao.TypeDao;
 import com.mckuai.imc.Util.MCDao.UserDao;
@@ -20,13 +24,31 @@ import de.greenrobot.dao.query.QueryBuilder;
  * Created by kyly on 2016/1/21.
  */
 public class MCDaoHelper {
+    private DaoSession daoSession;
+
+
+    public MCDaoHelper(Context context) {
+        MCDBOpenHelper helper = new MCDBOpenHelper(context);
+        SQLiteDatabase db = helper.getWritableDatabase();
+        DaoMaster daoMaster = new DaoMaster(db);
+        daoSession = daoMaster.newSession();
+    }
+
+    public void close() {
+        if (null != daoSession) {
+            SQLiteDatabase db = daoSession.getDatabase();
+            //db.close();
+            daoSession.clear();
+            db.close();
+        }
+    }
 
     /**
      * 批量插入版块信息到数据库<BR>
      * 如果数据库中已存在，则更新它<BR>
      * @param forumInfos 要插入的版块<BR>
      */
-    public static void addForums(ArrayList<ForumInfo> forumInfos){
+    public void addForums(ArrayList<ForumInfo> forumInfos) {
         if (null != forumInfos && !forumInfos.isEmpty()){
             for (ForumInfo forumInfo:forumInfos){
                 addForum(forumInfo);
@@ -39,9 +61,9 @@ public class MCDaoHelper {
      * 如果数据库中已存在此版块的记录，则将更新它<BR>
      * @param forumInfo 要插入的版块<BR>
      */
-    public static void addForum(ForumInfo forumInfo){
+    public void addForum(ForumInfo forumInfo) {
         if (null != forumInfo){
-            ForumDao dao = MCKuai.instence.getDaoSession().getForumDao();
+            ForumDao dao = daoSession.getForumDao();
             dao.insertOrReplace(new Forum(forumInfo));
             addTypes(forumInfo.getIncludeType());//将这个版本的帖子信息写入到数据库
         }
@@ -51,8 +73,8 @@ public class MCDaoHelper {
      * 从数据库中获取所有的版块的信息<BR>
      * @return 返回数据库中所有的版块的信息，如果不存在，则返回空<BR>
      */
-    public static ArrayList<ForumInfo> getForums(){
-        ForumDao dao = MCKuai.instence.getDaoSession().getForumDao();
+    public ArrayList<ForumInfo> getForums() {
+        ForumDao dao = daoSession.getForumDao();
         QueryBuilder qb = dao.queryBuilder();
         List<Forum> forums = qb.list();
         ArrayList<ForumInfo> forumInfos = null;
@@ -71,9 +93,9 @@ public class MCDaoHelper {
      * 批量插入用户信息到数据库<BR>
      * @param users 要插入的用户列表<BR>
      */
-    public static void addUsers(ArrayList<User> users){
+    public void addUsers(ArrayList<User> users) {
         if (null != users && !users.isEmpty()){
-            UserDao dao = MCKuai.instence.getDaoSession().getUserDao();
+            UserDao dao = daoSession.getUserDao();
             dao.insertOrReplaceInTx(users);
         }
     }
@@ -82,9 +104,9 @@ public class MCDaoHelper {
      * 插入用户信息到数据库<BR>
      * @param user 要插入的用户<BR>
      */
-    public static void addUser(User user){
+    public void addUser(User user) {
         if (null != user){
-            UserDao dao = MCKuai.instence.getDaoSession().getUserDao();
+            UserDao dao = daoSession.getUserDao();
             dao.insertOrReplace(user);
         }
     }
@@ -93,7 +115,7 @@ public class MCDaoHelper {
      * 插入用户信息到数据库<BR>
      * @param mcUser 要插入的用户<BR>
      */
-    public static void addUser(MCUser mcUser){
+    public void addUser(MCUser mcUser) {
         if (null != mcUser){
             addUser(new User(mcUser));
         }
@@ -104,9 +126,9 @@ public class MCDaoHelper {
      * @param name 要查询的用户名(openId)<BR>
      * @return 查询到的用户，如果不存在，则返回空<BR>
      */
-    public static User getUserByName(String name){
+    public User getUserByName(String name) {
         if (null != name && 0 < name.length()) {
-            UserDao dao = MCKuai.instence.getDaoSession().getUserDao();
+            UserDao dao = daoSession.getUserDao();
             QueryBuilder queryBuilder = dao.queryBuilder();
             queryBuilder.where(UserDao.Properties.Name.eq(name));
             return (User) queryBuilder.unique();
@@ -119,9 +141,9 @@ public class MCDaoHelper {
      * @param userId 要查询的id<BR>
      * @return 查询到的用户，如果不存在则返回空<BR>
      */
-    public static User getUserById(int userId){
+    public User getUserById(int userId) {
         if (0 < userId){
-            UserDao dao = MCKuai.instence.getDaoSession().getUserDao();
+            UserDao dao = daoSession.getUserDao();
             QueryBuilder queryBuilder = dao.queryBuilder();
             queryBuilder.where(UserDao.Properties.Id.eq(userId));
             return (User) queryBuilder.unique();
@@ -133,7 +155,7 @@ public class MCDaoHelper {
      * 添加好友，如果数据库中已存在，则更新它<BR>
      * @param friends 要添加的好友<BR>
      */
-    public static void addFriends(ArrayList<User> friends){
+    public void addFriends(ArrayList<User> friends) {
         if (null != friends && !friends.isEmpty()){
             for (User user:friends){
                 user.setIsFriend(true);//确保isFriend字段是为true
@@ -146,8 +168,8 @@ public class MCDaoHelper {
      * 查询好友，主要是供好友列表使用<BR>
      * @return 返回所有字段isFriend为true的记录<BR>
      */
-    public static List<User> getFriends(){
-        UserDao dao = MCKuai.instence.getDaoSession().getUserDao();
+    public List<User> getFriends() {
+        UserDao dao = daoSession.getUserDao();
         QueryBuilder queryBuilder = dao.queryBuilder();
         queryBuilder.where(UserDao.Properties.IsFriend.eq(true));
         return queryBuilder.list();
@@ -157,7 +179,7 @@ public class MCDaoHelper {
      * 插入帖子类型到数据库，如果类型已存存，则更新<BR>
      * @param postTypes 要插入的类型列表<BR>
      */
-    public static void addTypes(ArrayList<PostType> postTypes){
+    public void addTypes(ArrayList<PostType> postTypes) {
         if (null != postTypes && !postTypes.isEmpty()){
             for (PostType postType:postTypes){
                 addType(postType);
@@ -169,10 +191,10 @@ public class MCDaoHelper {
      * 插入帖子类型到数据库，如果存在，则更新<BR>
      * @param postType 要插入的帖子类型信息<BR>
      */
-    public static void addType(PostType postType){
+    public void addType(PostType postType) {
         if (null != postType){
             Type type = new Type((long)postType.getId(),postType.getSmallId(),postType.getSmallName());
-            TypeDao dao = MCKuai.instence.getDaoSession().getTypeDao();
+            TypeDao dao = daoSession.getTypeDao();
             dao.insertOrReplace(type);
         }
     }
@@ -182,12 +204,12 @@ public class MCDaoHelper {
      * @param typeIds 要获取的类型的Id<BR>
      * @return 查询到的类型信息列表，如果未查询到则返回空
      */
-    public static ArrayList<PostType> getPostTypeByIdS(String typeIds){
+    public ArrayList<PostType> getPostTypeByIdS(String typeIds) {
 
         if (null != typeIds && typeIds.length() > 0) {
 //            String ids[] = typeIds.split("|");
             String ids = typeIds.replace('|', ',');
-                TypeDao dao = MCKuai.instence.getDaoSession().getTypeDao();
+            TypeDao dao = daoSession.getTypeDao();
                 QueryBuilder queryBuilder = dao.queryBuilder();
                 queryBuilder.where(TypeDao.Properties.SubId.in(ids));
                 List<Type> types = queryBuilder.list();
