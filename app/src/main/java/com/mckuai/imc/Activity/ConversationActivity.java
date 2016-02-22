@@ -49,6 +49,7 @@ public class ConversationActivity extends BaseActivity implements MCNetEngine.On
                 finish();
             }
         });
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         daoHelper = mApplication.daoHelper;
         Intent intent = getIntent();
         getIntentDate(intent);
@@ -72,7 +73,7 @@ public class ConversationActivity extends BaseActivity implements MCNetEngine.On
     private void getUser() {
         if (null != mTargetId) {
             User user = daoHelper.getUserByName(mTargetId);
-            if (null != user) {
+            if (null == user) {
                 //从网络获取用户信息
                 mApplication.netEngine.loadUserInfo(this, mTargetId, this);
             } else {

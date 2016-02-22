@@ -55,6 +55,18 @@ public class User implements Serializable{
         this.isFriend = false;
     }
 
+    public void update(User user) {
+        if (this.name.equalsIgnoreCase(user.getName())) {
+            this.id = user.getId();
+            this.level = user.getLevel();
+            this.process = user.getProcess();
+            //this.name = user.getName();
+            this.nick = user.getNick();
+            this.headImage = user.getHeadImage();
+            this.isFriend = user.getIsFriend();
+        }
+    }
+
     public Long getId() {
         return id;
     }

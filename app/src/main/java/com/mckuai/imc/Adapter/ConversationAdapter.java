@@ -9,13 +9,17 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.mckuai.imc.Base.MCKuai;
+import com.mckuai.imc.Bean.User;
 import com.mckuai.imc.R;
+import com.mckuai.imc.Util.TimestampConverter;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
 import java.util.ArrayList;
 
+import io.rong.imkit.RongIMClientWrapper;
+import io.rong.imlib.RongIMClient;
 import io.rong.imlib.model.Conversation;
-import io.rong.imlib.model.MessageContent;
+import io.rong.imlib.model.Message;
 
 /**
  * Created by kyly on 2016/2/2.
@@ -24,7 +28,9 @@ public class ConversationAdapter extends RecyclerView.Adapter<ConversationAdapte
     private Context context;
     private ImageLoader loader;
     private ArrayList<Conversation> conversations;
+    private ArrayList<User> users;
     private OnItemClickListener listener;
+    // private ArrayList<String> lastMsg;
 
     public ConversationAdapter(Context context, OnItemClickListener listener) {
         this.context = context;
@@ -32,10 +38,12 @@ public class ConversationAdapter extends RecyclerView.Adapter<ConversationAdapte
         loader = ImageLoader.getInstance();
     }
 
-    public void setData(ArrayList<Conversation> conversations){
+    public void setData(ArrayList<Conversation> conversations, ArrayList<User> users) {
         this.conversations = conversations;
+        this.users = users;
         notifyDataSetChanged();
     }
+
 
     public interface OnItemClickListener{
         void onItemClicked(Conversation conversation);
@@ -61,22 +69,49 @@ public class ConversationAdapter extends RecyclerView.Adapter<ConversationAdapte
     PUSH_SERVICE(9, "push_service");*/
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
+    public void onBindViewHolder(final ViewHolder holder, int position) {
         if (null != conversations && -1 < position && position < conversations.size()){
-            Conversation conversation = conversations.get(position);
-            MessageContent message = conversation.getLatestMessage();
+            final Conversation conversation = conversations.get(position);
+            User user = users.get(position);
 
-            if (null != conversation && conversation.getConversationType() == Conversation.ConversationType.PRIVATE){
-                loader.displayImage(conversation.getPortraitUrl(), holder.usercover);
-                if (conversation.getSenderUserId().equalsIgnoreCase(MCKuai.instence.user.getName())) {
-                    holder.username.setText(conversation.getTargetId());
+            if (null != conversation && conversation.getConversationType() == Conversation.ConversationType.PRIVATE) {
+                loader.displayImage(user.getHeadImage(), holder.usercover, MCKuai.instence.getCircleOptions());
+                holder.username.setText(user.getNickEx());
+                long time = conversation.getSentTime() > conversation.getReceivedTime() ? conversation.getSentTime() : conversation.getReceivedTime();
+                holder.time.setText(TimestampConverter.toString(time));
+                int count = conversation.getUnreadMessageCount();
+                if (0 == count) {
+                    //holder.lastmessage.setVisibility(View.INVISIBLE);
+                    holder.lastmessage.setText("没有新消息");
                 } else {
-                    holder.username.setText(conversation.getSenderUserName());
+                    holder.lastmessage.setText(count + "条新消息");
+                    //holder.lastmessage.setVisibility(View.VISIBLE);
                 }
-                String name = conversation.getObjectName();
-                holder.time.setText(conversation.getSentTime() + "");
+
+                if (null != listener) {
+                    holder.itemView.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            listener.onItemClicked(conversation);
+                        }
+                    });
+                }
             }
         }
+    }
+
+    private void showLastMessage(RongIMClientWrapper client, int msgId, Conversation conversation) {
+        client.getMessage(msgId, new RongIMClient.ResultCallback<Message>() {
+            @Override
+            public void onSuccess(Message message) {
+
+            }
+
+            @Override
+            public void onError(RongIMClient.ErrorCode errorCode) {
+
+            }
+        });
     }
 
     @Override

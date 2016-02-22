@@ -107,8 +107,10 @@ public class MCKuai extends Application {
                 .denyCacheImageMultipleSizesInMemory()
                         // 对于同一url只缓存一个图
                         //.memoryCache(new UsingFreqLimitedMemoryCache(MEM_CACHE_SIZE)).memoryCacheSize(MEM_CACHE_SIZE)
-                .discCacheFileNameGenerator(new Md5FileNameGenerator()).tasksProcessingOrder(QueueProcessingType.FIFO)
-                .discCache(new UnlimitedDiskCache(new File(getImageCacheDir())))
+               /* .discCacheFileNameGenerator(new Md5FileNameGenerator()).tasksProcessingOrder(QueueProcessingType.FIFO)
+                .discCache(new UnlimitedDiskCache(new File(getImageCacheDir())))*/
+                .diskCache(new UnlimitedDiskCache(new File(getImageCacheDir())))
+                .diskCacheFileNameGenerator(new Md5FileNameGenerator()).tasksProcessingOrder(QueueProcessingType.FIFO)
                 .defaultDisplayImageOptions(DisplayImageOptions.createSimple())
                 .imageDownloader(new BaseImageDownloader(getApplicationContext(), CONNECT_TIME, TIME_OUT))
                 .writeDebugLogs().build();

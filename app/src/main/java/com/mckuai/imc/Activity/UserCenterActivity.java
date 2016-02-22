@@ -465,7 +465,7 @@ public class UserCenterActivity extends BaseActivity
                 mApplication.loginIM(new RongIMClient.ConnectCallback() {
                     @Override
                     public void onTokenIncorrect() {
-
+                        showMessage("令牌已过期，请重新登录", null, null);
                     }
 
                     @Override
@@ -475,7 +475,7 @@ public class UserCenterActivity extends BaseActivity
 
                     @Override
                     public void onError(RongIMClient.ErrorCode errorCode) {
-
+                        showMessage("登录聊天服务器失败，原因：" + errorCode.getMessage(), null, null);
                     }
                 });
             }

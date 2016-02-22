@@ -159,6 +159,7 @@ public class BaseActivity extends AppCompatActivity implements NavigationView.On
         userCover.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                closeSlidmenu();
                 if (mApplication.isLogin()) {
                     Intent intent;
                     intent = new Intent(BaseActivity.this, UserCenterActivity.class);
@@ -282,6 +283,12 @@ public class BaseActivity extends AppCompatActivity implements NavigationView.On
         }
     }
 
+    public void openSlidmenu() {
+        if (null != mDrawer && !isSlidingMenuShow) {
+
+        }
+    }
+
 
     @Override
     public void onBackPressed() {
@@ -299,8 +306,8 @@ public class BaseActivity extends AppCompatActivity implements NavigationView.On
         Intent intent;
         switch (item.getItemId()) {
             case R.id.nav_search:
-                intent = new Intent(this, SearchActivity.class);
                 closeSlidmenu();
+                intent = new Intent(this, SearchActivity.class);
                 startActivity(intent);
                 break;
             case R.id.nav_package:
@@ -313,6 +320,7 @@ public class BaseActivity extends AppCompatActivity implements NavigationView.On
                 break;
             case R.id.nav_setting:
                 if (mApplication.isLogin()) {
+                    closeSlidmenu();
                     intent = new Intent(this, ProfileEditerActivity.class);
                     startActivity(intent);
                 } else {
@@ -324,6 +332,7 @@ public class BaseActivity extends AppCompatActivity implements NavigationView.On
                 closeSlidmenu();
                 break;
             case R.id.nav_prise:
+                closeSlidmenu();
                 Uri uri = Uri.parse("market://details?id=" + getPackageName());
                 intent = new Intent(Intent.ACTION_VIEW, uri);
                 try {
@@ -333,9 +342,11 @@ public class BaseActivity extends AppCompatActivity implements NavigationView.On
                 }
                 break;
             case R.id.checkUpgread:
+                closeSlidmenu();
                 checkUpgrade(false);
                 break;
             case R.id.nav_logout:
+                closeSlidmenu();
                 if (null != mApplication.user && null != mApplication.user.getLoginToken()) {
                     mApplication.user.getLoginToken().setExpires(0);
                     mApplication.saveProfile();
@@ -378,7 +389,7 @@ public class BaseActivity extends AppCompatActivity implements NavigationView.On
     public void showMessage(String msg, String action, View.OnClickListener listener) {
         Snackbar snackbar = Snackbar.make(mToolbar, msg, Snackbar.LENGTH_LONG);
         if (null != action) {
-            snackbar.setAction(action, listener).setActionTextColor(getResources().getColor(R.color.colorPrimary));
+            snackbar.setAction(action, listener).setActionTextColor(getResources().getColor(R.color.colorAccent));
         }
         snackbar.show();
     }

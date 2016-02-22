@@ -2,6 +2,7 @@ package com.mckuai.imc.Activity;
 
 import android.app.FragmentTransaction;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.widget.AppCompatRadioButton;
 import android.support.v7.widget.AppCompatTextView;
@@ -10,24 +11,32 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
 
 import com.mckuai.imc.Base.BaseActivity;
 import com.mckuai.imc.Base.BaseFragment;
+import com.mckuai.imc.Bean.User;
 import com.mckuai.imc.Fragment.MainFragment_Cartoon;
 import com.mckuai.imc.Fragment.MainFragment_Chat;
 import com.mckuai.imc.Fragment.MainFragment_Community;
 import com.mckuai.imc.Fragment.MainFragment_Mine;
 import com.mckuai.imc.R;
+import com.mckuai.imc.Util.MCNetEngine;
 
 import java.util.ArrayList;
 
-public class MainActivity extends BaseActivity implements View.OnClickListener,  RadioGroup.OnCheckedChangeListener, BaseFragment.OnFragmentEventListener {
+import io.rong.imkit.RongIM;
+import io.rong.imlib.RongIMClient;
+import io.rong.imlib.model.UserInfo;
+
+public class MainActivity extends BaseActivity implements View.OnClickListener, RadioGroup.OnCheckedChangeListener, BaseFragment.OnFragmentEventListener, MCNetEngine.OnLoadUserInfoResponseListener, RongIMClient.ConnectionStatusListener, RongIM.UserInfoProvider {
     private RadioGroup nav;
     private RelativeLayout content;
     private AppCompatTextView title;
     private RadioGroup cartoonType;
     private AppCompatRadioButton mNewType;
     private boolean isCheckUpgread = false;
+    private boolean isIMListenerInit = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,6 +58,9 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
             checkUpgrade(true);
             isCheckUpgread = true;
         }
+        if (!isIMListenerInit) {
+            initIMListener();
+        }
     }
 
     private void initView() {
@@ -67,7 +79,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
     }
 
     private void initFragment() {
-        if (null== fragments) {
+        if (null == fragments) {
             MainFragment_Cartoon cartoonFragment = new MainFragment_Cartoon();
             MainFragment_Chat chatFragment = new MainFragment_Chat();
             MainFragment_Community communityFragment = new MainFragment_Community();
@@ -98,6 +110,37 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         }
     }
 
+    private void initIMListener() {
+        if (RongIM.getInstance() != null && RongIM.getInstance().getRongIMClient() != null) {
+            RongIM.setUserInfoProvider(this, true);
+            /*RongIM.setUserInfoProvider(new RongIM.UserInfoProvider() {
+                @Override
+                public UserInfo getUserInfo(String id) {
+                    User user = mApplication.daoHelper.getUserByName(id);
+                    if (null == user) {
+                        mApplication.netEngine.loadUserInfo(this, id, new MCNetEngine.OnLoadUserInfoResponseListener() {
+                            @Override
+                            public void onLoadUserInfoSuccess(User user) {
+                                UserInfo userInfo = new UserInfo(user.getName(),user.getNickEx(),Uri.parse(user.getHeadImage()));
+                            }
+
+                            @Override
+                            public void onLoadUserInfoFailure(String msg) {
+                                showMessage(msg,null,null);
+                            }
+                        });
+                        return null;
+                    } else {
+                        UserInfo userInfo = new UserInfo(id, user.getNickEx(), Uri.parse(user.getHeadImage()));
+                        return userInfo;
+                    }
+                }
+            }, true);*/
+            RongIM.getInstance().getRongIMClient().setConnectionStatusListener(this);
+            isIMListenerInit = true;
+        }
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -107,15 +150,18 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
 
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
+        //super.onBackPressed();
         if (!isSlidingMenuShow) {
             showMessage("退出软件？", "退出", new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     mApplication.handleExit();
-                    finish();
+                    //finish();
+                    System.exit(0);
                 }
             });
+        } else {
+            super.onBackPressed();
         }
     }
 
@@ -131,9 +177,9 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.nav_create:
-                Intent intent = new Intent(this,CreateActivity.class);
+                Intent intent = new Intent(this, CreateActivity.class);
                 startActivity(intent);
                 break;
         }
@@ -141,25 +187,25 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
 
     @Override
     public void onCheckedChanged(RadioGroup group, int checkedId) {
-        switch (checkedId){
+        switch (checkedId) {
 
             case R.id.cartoon_type_hot:
-                if (null != fragments){
-                    ((MainFragment_Cartoon)fragments.get(0)).setType(1);
+                if (null != fragments) {
+                    ((MainFragment_Cartoon) fragments.get(0)).setType(1);
                 }
                 break;
             case R.id.cartoon_type_new:
-                if (null != fragments){
-                    ((MainFragment_Cartoon)fragments.get(0)).setType(0);
+                if (null != fragments) {
+                    ((MainFragment_Cartoon) fragments.get(0)).setType(0);
                 }
                 break;
             default:
-                if (null != fragments && !fragments.isEmpty()){
+                if (null != fragments && !fragments.isEmpty()) {
                     FragmentTransaction transaction = mFragmentManager.beginTransaction();
                     if (0 <= currentFragmentIndex) {
                         transaction.hide(fragments.get(currentFragmentIndex));
                     }
-                    switch (checkedId){
+                    switch (checkedId) {
                         case R.id.nav_cartoon:
                             cartoonType.setVisibility(View.VISIBLE);
                             title.setVisibility(View.GONE);
@@ -234,4 +280,60 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
 
     }
 
+    @Override
+    public void onLoadUserInfoFailure(String msg) {
+        showMessage("获取用户信息失败，原因：" + msg, null, null);
+    }
+
+    @Override
+    public void onLoadUserInfoSuccess(User user) {
+        UserInfo userInfo = new UserInfo(user.getName(), user.getNickEx(), Uri.parse(user.getHeadImage()));
+    }
+
+    @Override
+    public void onChanged(ConnectionStatus connectionStatus) {
+        switch (connectionStatus) {
+            case CONNECTED:
+                Toast.makeText(MainActivity.this, "已连接上聊天服务器！", Toast.LENGTH_SHORT).show();
+                break;
+            case DISCONNECTED:
+                Toast.makeText(MainActivity.this, "聊天服务器断开！", Toast.LENGTH_SHORT).show();
+                break;
+            case CONNECTING:
+                Toast.makeText(MainActivity.this, "正在连接...", Toast.LENGTH_SHORT).show();
+                break;
+            case NETWORK_UNAVAILABLE:
+                Toast.makeText(MainActivity.this, "网络不可用！", Toast.LENGTH_SHORT).show();
+                break;
+            case KICKED_OFFLINE_BY_OTHER_CLIENT:
+                Toast.makeText(MainActivity.this, "账号在其它设备上登录！", Toast.LENGTH_SHORT).show();
+                break;
+        }
+    }
+
+    @Override
+    public UserInfo getUserInfo(String id) {
+        if (id.equals(mApplication.user.getName())) {
+            UserInfo userInfo = new UserInfo(id, mApplication.user.getNike(), Uri.parse(mApplication.user.getHeadImg()));
+            return userInfo;
+        }
+        User user = mApplication.daoHelper.getUserByName(id);
+        if (null == user) {
+            mApplication.netEngine.loadUserInfo(this, id, new MCNetEngine.OnLoadUserInfoResponseListener() {
+                @Override
+                public void onLoadUserInfoSuccess(User user) {
+                    UserInfo userInfo = new UserInfo(user.getName(), user.getNickEx(), Uri.parse(user.getHeadImage()));
+                }
+
+                @Override
+                public void onLoadUserInfoFailure(String msg) {
+                    showMessage(msg, null, null);
+                }
+            });
+            return null;
+        } else {
+            UserInfo userInfo = new UserInfo(id, user.getNickEx(), Uri.parse(user.getHeadImage()));
+            return userInfo;
+        }
+    }
 }

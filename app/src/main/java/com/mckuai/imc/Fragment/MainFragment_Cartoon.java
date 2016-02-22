@@ -41,6 +41,8 @@ public class MainFragment_Cartoon extends BaseFragment implements RadioGroup.OnC
     private ArrayList<Cartoon> mNewCartoon;
     private CartoonAdapter mAdapter;
     private int typeIndex = 0;
+    private int lastId_new = 0;
+    private int lastId_hot = 0;
     private MCKuai mApplication = MCKuai.instence;
     private boolean isRefreshNeed = false;
     private boolean isNewEOF = false;
@@ -109,18 +111,10 @@ public class MainFragment_Cartoon extends BaseFragment implements RadioGroup.OnC
     private void loadData() {
         switch (typeIndex) {
             case 0:
-                if (null != mNewCartoon && !mNewCartoon.isEmpty()){
-                    mApplication.netEngine.loadCartoonList(getActivity(), mCartoonType[typeIndex], mNewCartoon.get(0).getId(), this);
-                } else {
-                    mApplication.netEngine.loadCartoonList(getActivity(), mCartoonType[typeIndex], 0, this);
-                }
+                mApplication.netEngine.loadCartoonList(getActivity(), mCartoonType[typeIndex], lastId_new, this);
                 break;
             case 1:
-                if (null != mHotCartoon && !mHotCartoon.isEmpty()){
-                    mApplication.netEngine.loadCartoonList(getActivity(), mCartoonType[typeIndex], mHotCartoon.get(0).getId(), this);
-                } else {
-                    mApplication.netEngine.loadCartoonList(getActivity(), mCartoonType[typeIndex], 0, this);
-                }
+                mApplication.netEngine.loadCartoonList(getActivity(), mCartoonType[typeIndex], lastId_hot, this);
                 break;
         }
     }
@@ -258,13 +252,15 @@ public class MainFragment_Cartoon extends BaseFragment implements RadioGroup.OnC
         }
         switch (typeIndex){
             case 0:
+                lastId_new = cartoons.get(cartoons.size() - 1).getId();
                 if (null == mNewCartoon){
                     mNewCartoon = cartoons;
                 } else {
-                    mNewCartoon.addAll(0, cartoons);
+                    mNewCartoon.addAll(cartoons);
                 }
                 break;
             case 1:
+                lastId_hot = cartoons.get(cartoons.size() - 1).getId();
                 if (null == mHotCartoon){
                     mHotCartoon = cartoons;
                 } else {

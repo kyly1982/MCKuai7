@@ -978,18 +978,24 @@ public class MCNetEngine {
         void onLoadUserInfoFailure(String msg);
     }
 
-    public void loadUserInfo(final Context context, String userId, final OnLoadUserInfoResponseListener listener) {
-        String url = domainName + "";
-        url += "&id=" + userId;
-        httpClient.get(url, null, new JsonHttpResponseHandler() {
+    public void loadUserInfo(final Context context, String userName, final OnLoadUserInfoResponseListener listener) {
+        String url = domainName + "interface.do?act=newUserInfo";
+        RequestParams params = new RequestParams();
+        params.put("userName", userName);
+        httpClient.post(url, params, new JsonHttpResponseHandler() {
+            @Override
+            public void onStart() {
+                super.onStart();
+            }
+
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                 ParseResponseResult result = new ParseResponseResult(context, response);
                 if (ParseResponseResult.isSuccess) {
-                    User user = gson.fromJson(ParseResponseResult.msg, User.class);
+                    MCUser user = gson.fromJson(ParseResponseResult.msg, MCUser.class);
                     if (null != user) {
                         daoHelper.addUser(user);
-                        listener.onLoadUserInfoSuccess(user);
+                        listener.onLoadUserInfoSuccess(new User(user));
                     } else {
                         listener.onLoadUserInfoFailure("返回数据不正确！");
                     }
@@ -1001,6 +1007,11 @@ public class MCNetEngine {
             @Override
             public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
                 listener.onLoadUserInfoFailure(throwable.getLocalizedMessage());
+            }
+
+            @Override
+            public void onCancel() {
+                super.onCancel();
             }
         });
     }

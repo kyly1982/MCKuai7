@@ -29,6 +29,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
     private static Tencent mTencent;
     private QQLoginListener mQQListener;
     String title = "登录";
+    private boolean isFullLoginNeed = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,6 +80,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
             @Override
             public void onTokenIncorrect() {
                 showMessage("登录融云时失败，令牌无效，请重新登录！", null, null);
+                isFullLoginNeed = true;
             }
 
             @Override
@@ -103,7 +105,8 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.login_qqlogin:
-                if (null != mApplication.user && mApplication.user.isUserTokenValid()) {
+
+                if (null != mApplication.user && mApplication.user.isUserTokenValid() && !isFullLoginNeed) {
                     loginToMC( mApplication.user);
                 } else {
                     loginToQQ();
