@@ -359,8 +359,6 @@ public class PublishPostActivity extends BaseActivity implements OnClickListener
                 // TODO Auto-generated method stub
                 super.onFailure(statusCode, headers, responseString, throwable);
                 isUploading = false;
-                // Toast.makeText(PublishPostActivity.this, "发帖失败了,原因:" +
-                // throwable.getLocalizedMessage(),Toast.LENGTH_LONG).show();
 //				showNotification(2,"发帖失败,原因" + throwable.getLocalizedMessage(), R.id.ll_top);
             }
 

@@ -1,11 +1,11 @@
 package com.mckuai.imc.Activity;
 
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 
+import com.mckuai.imc.Base.BaseActivity;
 import com.mckuai.imc.R;
 
-public class ConversationListActivity extends AppCompatActivity {
+public class ConversationListActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

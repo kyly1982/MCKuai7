@@ -18,7 +18,7 @@ import com.mckuai.imc.R;
 
 import java.util.ArrayList;
 
-public class CreateActivity extends BaseActivity
+public class CreateCartoonActivity extends BaseActivity
         implements NavigationView.OnNavigationItemSelectedListener,BaseFragment.OnFragmentEventListener {
     CreateCartoonFragment createFragment;
     private MenuItem menu_next;

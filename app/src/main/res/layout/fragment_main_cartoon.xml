@@ -3,6 +3,7 @@
     android:id="@+id/cartoonlist"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/colorPrimary"
     app:layout_empty="@layout/emptyview">
 
 </com.malinskiy.superrecyclerview.SuperRecyclerView>

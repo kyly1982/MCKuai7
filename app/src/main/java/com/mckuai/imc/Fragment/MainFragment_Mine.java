@@ -113,7 +113,7 @@ public class MainFragment_Mine extends BaseFragment implements MessageAdapter.On
         if (null != cartoon) {
             Intent intent = new Intent(getActivity(), CartoonActivity.class);
             Bundle bundle = new Bundle();
-            bundle.putSerializable("", cartoon);
+            bundle.putSerializable(getString(R.string.cartoondetail_tag_cartoon), cartoon);
             intent.putExtras(bundle);
             getActivity().startActivity(intent);
         }

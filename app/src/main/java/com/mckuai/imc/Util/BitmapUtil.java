@@ -21,6 +21,14 @@ public class BitmapUtil {
         return bitmap;
     }
 
+    public static Bitmap decodeFile(String fileName, int width, int height) {
+        Bitmap bitmap = getPreviewBitmap(fileName, width, height);
+        if (bitmap.getHeight() != height || bitmap.getWidth() != width) {
+            return cutBitmap(bitmap, width, height);
+        }
+        return bitmap;
+    }
+
     private static String getFilePath(Context context,Uri uri){
         String path = null;
         String[] files = {MediaStore.Images.Media.DATA};

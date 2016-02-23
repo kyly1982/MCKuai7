@@ -29,6 +29,15 @@
         android:layout_height="match_parent"
         android:layout_below="@id/wait"
         app:layout_empty="@layout/emptyview"
+        android:visibility="gone"
         ></com.malinskiy.superrecyclerview.SuperRecyclerView>
+
+    <android.support.v7.widget.AppCompatTextView
+        android:id="@+id/unlogin"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:textColor="@color/icons"
+        android:text="需登录后才能获取聊天信息！" />
 
 </RelativeLayout>

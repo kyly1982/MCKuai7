@@ -206,7 +206,19 @@
                 android:background="@color/icons"
                 android:visibility="gone"
                 app:layout_empty="@layout/emptyview"></com.malinskiy.superrecyclerview.SuperRecyclerView>
+
+            <android.support.v7.widget.AppCompatTextView
+                android:id="@+id/emptyview"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_above="@id/layut_opeartion"
+                android:layout_below="@id/type"
+                android:gravity="center"
+                android:visibility="gone"
+                android:textColor="@color/colorAccent"
+                android:text="什么也没有!" />
         </RelativeLayout>
+
 
         <include layout="@layout/slidingview_layout" />
 

@@ -5,6 +5,7 @@ import android.app.FragmentManager;
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
 import android.support.v4.view.GravityCompat;
@@ -18,8 +19,15 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
+import com.mckuai.imc.Activity.CartoonActivity;
+import com.mckuai.imc.Activity.ConversationActivity;
+import com.mckuai.imc.Activity.ConversationListActivity;
+import com.mckuai.imc.Activity.CreateCartoonActivity;
 import com.mckuai.imc.Activity.LoginActivity;
+import com.mckuai.imc.Activity.MainActivity;
+import com.mckuai.imc.Activity.PostActivity;
 import com.mckuai.imc.Activity.ProfileEditerActivity;
+import com.mckuai.imc.Activity.PublishPostActivity;
 import com.mckuai.imc.Activity.SearchActivity;
 import com.mckuai.imc.Activity.UserCenterActivity;
 import com.mckuai.imc.BuildConfig;
@@ -30,6 +38,8 @@ import com.mckuai.imc.Widget.autoupdate.ResponseParser;
 import com.mckuai.imc.Widget.autoupdate.Version;
 import com.mckuai.imc.Widget.autoupdate.internal.SimpleJSONParser;
 import com.nostra13.universalimageloader.core.ImageLoader;
+import com.umeng.analytics.MobclickAgent;
+import com.umeng.message.PushAgent;
 import com.umeng.socialize.ShareAction;
 import com.umeng.socialize.UMShareAPI;
 import com.umeng.socialize.UMShareListener;
@@ -53,6 +63,7 @@ public class BaseActivity extends AppCompatActivity implements NavigationView.On
     private AppCompatTextView userName;
     private AppCompatTextView userLevel;
     private MenuItem logout;
+    protected int mTitleResId;
 
     public boolean isSlidingMenuShow = false;
     protected ArrayList<BaseFragment> fragments;
@@ -61,20 +72,46 @@ public class BaseActivity extends AppCompatActivity implements NavigationView.On
     private UMShareAPI mShareAPI = UMShareAPI.get(this);
     private AppUpdate appUpdate;
 
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        if (this instanceof CartoonActivity) {
+            mTitleResId = R.string.activity_cartoondetial;
+        } else if (this instanceof ConversationActivity) {
+            mTitleResId = R.string.activity_conversation;
+        } else if (this instanceof ConversationListActivity) {
+            mTitleResId = R.string.activity_conversationlist;
+        } else if (this instanceof CreateCartoonActivity) {
+            mTitleResId = R.string.activity_createcartoon;
+        } else if (this instanceof LoginActivity) {
+            mTitleResId = R.string.activity_login;
+        } else if (this instanceof MainActivity) {
+            mTitleResId = R.string.activity_main;
+            MobclickAgent.openActivityDurationTrack(false);//将页面和fragment分开统计
+        } else if (this instanceof PostActivity) {
+            mTitleResId = R.string.activity_postdetial;
+        } else if (this instanceof ProfileEditerActivity) {
+            mTitleResId = R.string.activity_profile;
+        } else if (this instanceof PublishPostActivity) {
+            mTitleResId = R.string.activity_createpost;
+        } else if (this instanceof SearchActivity) {
+            mTitleResId = R.string.activity_search;
+        } else if (this instanceof UserCenterActivity) {
+            mTitleResId = R.string.activity_usercenter;
+        }
+        PushAgent.getInstance(this).onAppStart();
+    }
 
     @Override
     protected void onResume() {
         super.onResume();
-        if (mApplication.isLogin()) {
-
-        }
-
+        MobclickAgent.onResume(this);
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-
+        MobclickAgent.onPause(this);
     }
 
     @Override
@@ -85,7 +122,11 @@ public class BaseActivity extends AppCompatActivity implements NavigationView.On
                 showUserInfo();
             }
         }
+        if (-1 < currentFragmentIndex) {
+            fragments.get(currentFragmentIndex).onActivityResult(requestCode, resultCode, data);
+        }
     }
+
 
     /**
      * 配置actionBar,同时可以配置其图标和图标的点击事件（可能会被侧边栏的事件所覆盖）
@@ -127,6 +168,7 @@ public class BaseActivity extends AppCompatActivity implements NavigationView.On
                     appUpdate = AppUpdateService.getAppUpdate(BaseActivity.this);
                 }
                 appUpdate.callOnResume();
+                MobclickAgent.onEvent(BaseActivity.this, "openSlidmenu");
             }
 
             @Override
@@ -160,6 +202,7 @@ public class BaseActivity extends AppCompatActivity implements NavigationView.On
             @Override
             public void onClick(View v) {
                 closeSlidmenu();
+                MobclickAgent.onEvent(BaseActivity.this, "clickSlidmenu_usercover");
                 if (mApplication.isLogin()) {
                     Intent intent;
                     intent = new Intent(BaseActivity.this, UserCenterActivity.class);
@@ -203,6 +246,14 @@ public class BaseActivity extends AppCompatActivity implements NavigationView.On
         navigationView.setNavigationItemSelectedListener(this);
     }
 
+    /**
+     * 分享
+     *
+     * @param title   分享的标题
+     * @param content 分享内容
+     * @param url     链拉地址
+     * @param image   图片
+     */
     public void share(String title, String content, String url, UMImage image) {
         SHARE_MEDIA[] displayList = new SHARE_MEDIA[]{
                 SHARE_MEDIA.WEIXIN_CIRCLE, SHARE_MEDIA.WEIXIN, SHARE_MEDIA.QQ, SHARE_MEDIA.QZONE
@@ -319,6 +370,7 @@ public class BaseActivity extends AppCompatActivity implements NavigationView.On
                 }
                 break;
             case R.id.nav_setting:
+                MobclickAgent.onEvent(this, "clickSlidmenu_setting");
                 if (mApplication.isLogin()) {
                     closeSlidmenu();
                     intent = new Intent(this, ProfileEditerActivity.class);
@@ -328,10 +380,13 @@ public class BaseActivity extends AppCompatActivity implements NavigationView.On
                 }
                 break;
             case R.id.nav_share:
-                share("麦块", "我正在玩麦块，你也一起来玩吧", "http://www.mckuai.com", null);
+                MobclickAgent.onEvent(this, "clickSlidmenu_share");
+                UMImage image = new UMImage(this, R.mipmap.ic_share_default);
+                share("邀你一起玩", "我正在使用《麦块for我的世界盒子》，真的太棒了，快来用用吧！", getString(R.string.appdownload_url), null);
                 closeSlidmenu();
                 break;
             case R.id.nav_prise:
+                MobclickAgent.onEvent(this, "clickSlidmenu_prise");
                 closeSlidmenu();
                 Uri uri = Uri.parse("market://details?id=" + getPackageName());
                 intent = new Intent(Intent.ACTION_VIEW, uri);
@@ -342,10 +397,12 @@ public class BaseActivity extends AppCompatActivity implements NavigationView.On
                 }
                 break;
             case R.id.checkUpgread:
+                MobclickAgent.onEvent(this, "clickSlidmenu_checkupgrade");
                 closeSlidmenu();
                 checkUpgrade(false);
                 break;
             case R.id.nav_logout:
+                MobclickAgent.onEvent(this, "clickSlidmenu_logout");
                 closeSlidmenu();
                 if (null != mApplication.user && null != mApplication.user.getLoginToken()) {
                     mApplication.user.getLoginToken().setExpires(0);

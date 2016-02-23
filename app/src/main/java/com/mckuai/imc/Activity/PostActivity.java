@@ -22,7 +22,6 @@ import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -37,11 +36,9 @@ import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 import com.mckuai.imc.Base.BaseActivity;
-import com.mckuai.imc.Bean.MCUser;
 import com.mckuai.imc.Bean.Post;
 import com.mckuai.imc.R;
 import com.umeng.analytics.MobclickAgent;
-import com.umeng.socialize.bean.SHARE_MEDIA;
 import com.umeng.socialize.media.UMImage;
 
 import org.apache.http.Header;
@@ -123,7 +120,6 @@ public class PostActivity extends BaseActivity implements OnClickListener, TextW
 		mClient = new AsyncHttpClient();
 		post = (Post) getIntent().getSerializableExtra(getString(R.string.tag_post));
 		mHandler.sendMessageDelayed(mHandler.obtainMessage(5), 1000);
-		//mShareService = UMServiceFactory.getUMSocialService("com.umeng.share");
 	}
 
 	@Override
@@ -683,10 +679,10 @@ public class PostActivity extends BaseActivity implements OnClickListener, TextW
 							{
 								if (isReplyPost)
 								{
-//									MobclickAgent.onEvent(PostActivity.this, "replyPost_Success");
+									MobclickAgent.onEvent(PostActivity.this, "replyPost_Success");
 								} else
 								{
-//									MobclickAgent.onEvent(PostActivity.this, "replyFoolr_Success");
+									MobclickAgent.onEvent(PostActivity.this, "replyFoolr_Success");
 								}
 								// 恢复显示
 								resumeShowPost();
@@ -708,28 +704,20 @@ public class PostActivity extends BaseActivity implements OnClickListener, TextW
 
 						}
 					}
-//                    showNotification(1, "发送失败，请重试！", R.id.rl_post);
-//					Toast.makeText(PostActivity.this, "发送失败，请重试！", Toast.LENGTH_SHORT).show();
-//					cancleLodingToast(false);
+					showMessage("发送失败，是否重试？", "重发", new OnClickListener() {
+						@Override
+						public void onClick(View v) {
+							replyPost();
+						}
+					});
 				}
 
-				/*
-				 * (non-Javadoc)
-				 * 
-				 * @see
-				 * com.loopj.android.http.JsonHttpResponseHandler#onFailure(int,
-				 * org.apache.http.Header[], java.lang.String,
-				 * java.lang.Throwable)
-				 */
 				@Override
 				public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable)
 				{
 					// TODO Auto-generated method stub
 					super.onFailure(statusCode, headers, responseString, throwable);
-//                    showNotification(1, "发送失败，请重试！", R.id.rl_post);
-//					Toast.makeText(PostActivity.this, "操作失败！原因：" + throwable.getLocalizedMessage(), Toast.LENGTH_SHORT)
-//							.show();
-//					cancleLodingToast(false);
+					showMessage("发送失败，原因：" + throwable.getLocalizedMessage(), null, null);
 				}
 			});
 		}
@@ -761,7 +749,7 @@ public class PostActivity extends BaseActivity implements OnClickListener, TextW
 				bmp = BitmapFactory.decodeFile(picturePath, opts);
 			} catch (OutOfMemoryError err)
 			{
-//				showNotification(2,"图片太大!", R.id.root);
+				showMessage("图片太大，请重新选择！", null, null);
 				return;
 			}
 			if (null == picsList)
@@ -824,7 +812,7 @@ public class PostActivity extends BaseActivity implements OnClickListener, TextW
 			{
 				// TODO Auto-generated method stub
 				super.onStart();
-//				showNotification(1,"正在上传图片...", R.id.root);
+				showMessage("正在上传图片，请稍候...", null, null);
 			}
 
 			/*
@@ -848,7 +836,6 @@ public class PostActivity extends BaseActivity implements OnClickListener, TextW
 							picUrl = response.getString("msg");
 							if (null != picUrl)
 							{
-//								showNotification(1,"图片上传完成!", R.id.root);
 								isPicUpload = true;
                                 picsList.clear();
                                 mpics.removeAllViews();
@@ -860,12 +847,10 @@ public class PostActivity extends BaseActivity implements OnClickListener, TextW
 					} catch (Exception e)
 					{
 						// TODO: handle exception
-						// showNotification("上传图片返回内容不正确！");
 						Toast.makeText(PostActivity.this, "上传图片返回内容不正确！", Toast.LENGTH_SHORT).show();
 						return;
 					}
 				}
-				// showNotification("上传图片失败！");
 				Toast.makeText(PostActivity.this, "上传图片失败！", Toast.LENGTH_SHORT).show();
 			}
 
@@ -881,8 +866,6 @@ public class PostActivity extends BaseActivity implements OnClickListener, TextW
 			{
 				// TODO Auto-generated method stub
 				super.onFailure(statusCode, headers, responseString, throwable);
-				// showNotification("上传图片失败！原因：" +
-				// throwable.getLocalizedMessage());
 				Toast.makeText(PostActivity.this, "上传图片失败！原因：" + throwable.getLocalizedMessage(), Toast.LENGTH_SHORT)
 						.show();
 			}
@@ -975,7 +958,7 @@ public class PostActivity extends BaseActivity implements OnClickListener, TextW
 				replyPost();
 			}
 			else {
-				Toast.makeText(PostActivity.this, "登录后才能回复!", Toast.LENGTH_SHORT).show();;
+				Toast.makeText(PostActivity.this, "登录后才能回复!", Toast.LENGTH_SHORT).show();
 			}
 			break;
 		case REWARD_POST:
@@ -1174,7 +1157,6 @@ public class PostActivity extends BaseActivity implements OnClickListener, TextW
 				//callLogin();
 				break;
 			case 5:
-				configPlatforms();
 				break;
 
 			case 6:
@@ -1203,7 +1185,7 @@ public class PostActivity extends BaseActivity implements OnClickListener, TextW
 					}
 				});
 			}
-		};
+		}
 	};
 
 	// 加载大图时,计算缩放比例,以免出现OOM
@@ -1258,14 +1240,18 @@ public class PostActivity extends BaseActivity implements OnClickListener, TextW
 	{
 		if (null == post)
 		{
+			showMessage("未获取到帖子信息，请重试！", null, null);
 			return;
+		} else {
+			String targetUrl = "http://www.mckuai.com/thread-" + post.getId() + ".html";
+			UMImage image;
+			if (null != post.getMobilePic() && 10 < post.getMobilePic().length()) {
+				image = new UMImage(this, post.getMobilePic());
+			} else {
+				image = new UMImage(this, R.mipmap.ic_share_default);
+			}
+			share(post.getTalkTitle(), post.getContent(), targetUrl, image);
 		}
-		/*mShareService.setShareContent(post.getTalkTitle());
-		if (null != post.getMobilePic() && 10 < post.getMobilePic().length())
-		{
-			mShareService.setShareMedia(new UMImage(this, post.getMobilePic()));
-		}*/
-		//mShareService.openShare(this, false);
 	}
 
 	private void getPostMark()
@@ -1276,32 +1262,24 @@ public class PostActivity extends BaseActivity implements OnClickListener, TextW
 			params.put("userId", mApplication.user.getId() + "");
 			params.put("talkId", post.getId() + "");
 			String url = getString(R.string.interface_domainName) + getString(R.string.interface_getpostmark);
-			mClient.get(url, params, new JsonHttpResponseHandler()
-			{
+			mClient.get(url, params, new JsonHttpResponseHandler() {
 				@Override
-				public void onSuccess(int statusCode, Header[] headers, JSONObject response)
-				{
+				public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
 					// TODO Auto-generated method stub
 					super.onSuccess(statusCode, headers, response);
-					if (null != response && response.has("state"))
-					{
-						try
-						{
-							if (response.getString("state").equalsIgnoreCase("ok"))
-							{
+					if (null != response && response.has("state")) {
+						try {
+							if (response.getString("state").equalsIgnoreCase("ok")) {
 								String result = response.getString("msg");
-								if (-1 < result.indexOf("dashang"))
-								{
+								if (-1 < result.indexOf("dashang")) {
 									isReward = true;
 								}
-								if (-1 < result.indexOf("collect"))
-								{
+								if (-1 < result.indexOf("collect")) {
 									isCollect = true;
 								}
 								setButtonFunction();
 							}
-						} catch (Exception e)
-						{
+						} catch (Exception e) {
 							// TODO: handle exception
 						}
 					}
@@ -1329,54 +1307,5 @@ public class PostActivity extends BaseActivity implements OnClickListener, TextW
 			btn_collect.setBackgroundResource(R.drawable.btn_post_collect);
 		}
 	}
-
-	private void configPlatforms()
-	{
-		/*Log.e(TAG,"configPlatforms");
-	String targetUrl = "http://www.mckuai.com/thread-" + post.getId() + ".html";
-	String title = "麦块for我的世界盒子";
-	String context = post.getTalkTitle();
-	UMImage image;
-	if (null != post.getMobilePic() && 10 < post.getMobilePic().length())
-	{
-		image = new UMImage(this, post.getMobilePic());
-	} else
-	{
-		image = new UMImage(this, R.drawable.icon_share_default);
-	}
-	// 添加内容和图片
-	mShareService.setShareContent(context);
-	mShareService.setShareMedia(image);
-
-	String appID_QQ = "101155101";
-	String appAppKey_QQ = "78b7e42e255512d6492dfd135037c91c";
-	// 添加qq
-	UMQQSsoHandler qqSsoHandler = new UMQQSsoHandler(this, appID_QQ, appAppKey_QQ);
-	qqSsoHandler.setTargetUrl(targetUrl);
-	qqSsoHandler.setTitle(title);
-	qqSsoHandler.addToSocialSDK();
-	// 添加QQ空间参数
-	QZoneSsoHandler qZoneSsoHandler = new QZoneSsoHandler(this, appID_QQ, appAppKey_QQ);
-	qZoneSsoHandler.setTargetUrl(targetUrl);
-	qZoneSsoHandler.addToSocialSDK();
-
-	String appIDWX = "wx49ba2c7147d2368d";
-	String appSecretWX = "85aa75ddb9b37d47698f24417a373134";
-	// 添加微信
-	UMWXHandler wxHandler = new UMWXHandler(this, appIDWX, appSecretWX);
-	wxHandler.setTargetUrl(targetUrl);
-	wxHandler.setTitle(title);
-	wxHandler.showCompressToast(false);
-	wxHandler.addToSocialSDK();
-	// 添加微信朋友圈
-	UMWXHandler wxCircleHandler = new UMWXHandler(this, appIDWX, appSecretWX);
-	wxCircleHandler.setToCircle(true);
-	wxCircleHandler.setTargetUrl(targetUrl);
-	wxHandler.showCompressToast(false);
-	wxCircleHandler.setTitle(title);
-	wxCircleHandler.addToSocialSDK();
-	// 移除多余平台
-	mShareService.getConfig().removePlatform(SHARE_MEDIA.TENCENT, SHARE_MEDIA.SINA);*/
-}
 
 }

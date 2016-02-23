@@ -29,7 +29,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:lines="2"
-            android:textColorHint="@color/icons"
+            android:textColor="@color/icons"
+            android:textColorHint="@color/colorAccent"
             android:hint="@string/createcartoon_hint_step3_2"/>
     </android.support.design.widget.TextInputLayout>
 
@@ -42,6 +43,7 @@
         android:clickable="true"
         android:background="@null"
         android:textColor="@color/icons"
+        android:visibility="gone"
         android:text="@string/createcartoon_share"/>
 
 </RelativeLayout>

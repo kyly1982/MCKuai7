@@ -86,29 +86,6 @@ public class Fragment_Mine extends BaseFragment
     private AppCompatRadioButton dynamic;
     private AppCompatRadioButton friend;
 
-
-   /* @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_usercenter);
-        initToolbar(R.id.toolbar, 0, null);
-        initDrawer();
-        getParams();
-        initView();
-        loader = ImageLoader.getInstance();
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        showData();
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-    }*/
-
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {

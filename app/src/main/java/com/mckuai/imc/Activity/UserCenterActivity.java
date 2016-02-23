@@ -88,6 +88,8 @@ public class UserCenterActivity extends BaseActivity
     private AppCompatRadioButton dynamic;
     private AppCompatRadioButton friend;
     private View spaceRight;
+    private AppCompatTextView emptyView;
+
     private boolean checkedFriendship = false;
     private boolean isFriendShip = false;
     private boolean isLoading = false;
@@ -153,6 +155,7 @@ public class UserCenterActivity extends BaseActivity
         list = (SuperRecyclerView) findViewById(R.id.list);
         work = (SuperRecyclerView) findViewById(R.id.worklist);
         spaceRight = findViewById(R.id.space_right);
+        emptyView = (AppCompatTextView) findViewById(R.id.emptyview);
 
         RecyclerView.LayoutManager linearLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         list.setLayoutManager(linearLayoutManager);
@@ -299,8 +302,11 @@ public class UserCenterActivity extends BaseActivity
                 if (null != cartoonDynamicAdapter) {
                     list.setVisibility(View.VISIBLE);
                     work.setVisibility(View.GONE);
+                    list.hideMoreProgress();
+                    list.hideProgress();
                     list.setAdapter(cartoonDynamicAdapter);
                     cartoonDynamicAdapter.notifyDataSetChanged();
+//                    Toast.makeText(this,"11111",Toast.LENGTH_LONG).show();
                 } else {
                     loadData(false);
                 }
@@ -403,6 +409,7 @@ public class UserCenterActivity extends BaseActivity
         loadData(false);
     }
 
+
     @Override
     public void onCheckedChanged(RadioGroup group, int checkedId) {
         switch (checkedId) {
@@ -485,14 +492,46 @@ public class UserCenterActivity extends BaseActivity
 
     }
 
+    private void showEmptyView() {
+        list.setVisibility(View.GONE);
+        work.setVisibility(View.GONE);
+        emptyView.setVisibility(View.VISIBLE);
+    }
+
+    private void showDataView(boolean isWork) {
+        if (emptyView.getVisibility() == View.VISIBLE) {
+            if (isWork) {
+                work.setVisibility(View.VISIBLE);
+                list.setVisibility(View.GONE);
+            } else {
+                list.setVisibility(View.VISIBLE);
+                work.setVisibility(View.GONE);
+            }
+            emptyView.setVisibility(View.GONE);
+        }
+    }
+
     @Override
     public void onLoadCartoonDynamicFailure(String msg) {
+        if (null == cartoonDynamicAdapter) {
+            emptyView.setVisibility(View.VISIBLE);
+        }
         showMessage(msg, null, null);
     }
 
     @Override
     public void onLoadCartoonDynamicSuccess(MCUser user, final ArrayList<CartoonMessage> dynamics, Page page) {
         cartoonDynamicPage = page;
+        if (null != user) {
+            this.user.clone(user);
+            showUserInfo();
+        }
+        if (null == dynamics || dynamics.isEmpty()) {
+            showEmptyView();
+            return;
+        } else {
+            showDataView(false);
+        }
         if (null == cartoonDynamicAdapter) {
             cartoonDynamicAdapter = new CartoonDynamicAdapter(this, new CartoonDynamicAdapter.OnItemClickListener() {
                 @Override
@@ -511,15 +550,21 @@ public class UserCenterActivity extends BaseActivity
         } else {
             cartoonDynamicAdapter.addData(dynamics);
         }
-        if (null != user) {
-            this.user.clone(user);
-            showUserInfo();
-        }
         list.postInvalidate();
     }
 
     @Override
     public void onLoadCartoonMessageSuccess(MCUser user, ArrayList<CartoonMessage> messages, Page page) {
+        if (null != user) {
+            this.user.clone(user);
+            showUserInfo();
+        }
+        if (null == messages || messages.isEmpty()) {
+            showEmptyView();
+            return;
+        } else {
+            showDataView(false);
+        }
         cartoonMessagePage = page;
         if (null == cartoonMessageAdapter) {
             cartoonMessageAdapter = new CartoonMessageAdapter(this, new CartoonMessageAdapter.OnItemClickListener() {
@@ -539,19 +584,29 @@ public class UserCenterActivity extends BaseActivity
         } else {
             cartoonMessageAdapter.addData(messages);
         }
-        if (null != user) {
-            this.user.clone(user);
-            showUserInfo();
-        }
+
     }
 
     @Override
     public void onLoadCartoonMessageFailure(String msg) {
         showMessage(msg, null, null);
+        if (null == cartoonMessageAdapter) {
+            showEmptyView();
+        }
     }
 
     @Override
     public void onLoadCartoonWorkSuccess(MCUser user, ArrayList<Cartoon> works, Page page) {
+        if (null != user) {
+            this.user.clone(user);
+            showUserInfo();
+        }
+        if (null == works || works.isEmpty()) {
+            showEmptyView();
+            return;
+        } else {
+            showDataView(true);
+        }
         cartoonWorkPage = page;
         if (null == cartoonWorkAdapter) {
             cartoonWorkAdapter = new CartoonWorkAdapter(this, new CartoonWorkAdapter.OnItemClickListener() {
@@ -571,20 +626,29 @@ public class UserCenterActivity extends BaseActivity
         } else {
             cartoonWorkAdapter.addData(works);
         }
-        if (null != user) {
-            this.user.clone(user);
-            showUserInfo();
-        }
     }
 
     @Override
     public void onLoadCartoonWorkFailure(String msg) {
         showMessage(msg, null, null);
+        if (null == cartoonWorkAdapter) {
+            showEmptyView();
+        }
     }
 
     @Override
     public void onLoadCommunityDynamicSuccess(ArrayList<CommunityDynamic> dynamics,User user, Page page) {
+        if (null != user) {
+            this.user = user;
+            showUserInfo();
+        }
         communityDynamicPage = page;
+        if (null == dynamics || dynamics.isEmpty()) {
+            showEmptyView();
+            return;
+        } else {
+            showDataView(false);
+        }
         if (null == communityDynamicAdapter) {
             communityDynamicAdapter = new CommunityDynamicAdapter(this, new CommunityDynamicAdapter.OnItemClickListener() {
                 @Override
@@ -605,20 +669,29 @@ public class UserCenterActivity extends BaseActivity
         } else {
             communityDynamicAdapter.addData(dynamics);
         }
-        if (null != user){
-            this.user = user;
-            showUserInfo();
-        }
     }
 
     @Override
     public void onLoadCommunityDynamicFailure(String msg) {
         showMessage(msg, null, null);
+        if (null == communityDynamicAdapter) {
+            showEmptyView();
+        }
     }
 
     @Override
     public void onLoadCommunityMessageSuccess(ArrayList<CommunityMessage> messages,User user, Page page) {
+        if (null != user) {
+            this.user = user;
+            showUserInfo();
+        }
         communityMessagePage = page;
+        if (null == messages || messages.isEmpty()) {
+            showEmptyView();
+            return;
+        } else {
+            showDataView(false);
+        }
         if (null == communityMessageAdapter) {
             communityMessageAdapter = new CommunityMessageAdapter(this, new CommunityMessageAdapter.OnItemClickListener() {
                 @Override
@@ -639,20 +712,25 @@ public class UserCenterActivity extends BaseActivity
         } else {
             communityMessageAdapter.addData(messages);
         }
-        if (null != user){
-            this.user = user;
-            showUserInfo();
-        }
     }
 
     @Override
     public void onLoadCommunityMessageFailure(String msg) {
         showMessage(msg, null, null);
+        if (null == communityMessageAdapter) {
+            showEmptyView();
+        }
     }
 
     @Override
     public void onLoadCommunityWorkSuccess(ArrayList<Post> works,User user, Page page) {
         communityWorkPage = page;
+        if (null == works || works.isEmpty()) {
+            showEmptyView();
+            return;
+        } else {
+            showDataView(false);
+        }
         if (null == communityWorkAdapter) {
             communityWorkAdapter = new PostAdapter(this, new PostAdapter.OnItemClickListener() {
                 @Override
@@ -681,11 +759,20 @@ public class UserCenterActivity extends BaseActivity
     @Override
     public void onLoadCommunityWorkFailure(String msg) {
         showMessage(msg, null, null);
+        if (null == communityWorkAdapter) {
+            showEmptyView();
+        }
     }
 
     @Override
     public void onLoadFriendSuccess(ArrayList<MCUser> friends, Page page) {
         friendPage = page;
+        if (null == friends || friends.isEmpty()) {
+            showEmptyView();
+            return;
+        } else {
+            showDataView(false);
+        }
         if (null == friendAdapter) {
             friendAdapter = new FriendAdapter(this, new FriendAdapter.OnItemClickListener() {
                 @Override
@@ -710,6 +797,7 @@ public class UserCenterActivity extends BaseActivity
     @Override
     public void OnloadFriendFailure(String msg) {
         showMessage(msg, null, null);
+        showEmptyView();
     }
 
     @Override

@@ -40,4 +40,16 @@
         android:textSize="@dimen/font_hint"
         android:text="@string/login_anonymous"/>
 
+    <android.support.v7.widget.AppCompatTextView
+        android:id="@+id/loginmsg"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/login_hint"
+        android:layout_above="@id/login_anonymous"
+        android:gravity="center"
+        android:textColor="@color/icons"
+        android:textSize="@dimen/font_hint"
+        android:text="正在登录！" />
+
 </RelativeLayout>

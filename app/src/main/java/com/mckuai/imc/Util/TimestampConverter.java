@@ -13,7 +13,7 @@ public class TimestampConverter {
     }
 
     public static String toString(String timestamp) {
-        SimpleDateFormat timeFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.sss");
+        SimpleDateFormat timeFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
         Date insertTime = null;
         try {
             insertTime = timeFormat.parse(timestamp);

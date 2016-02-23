@@ -39,7 +39,7 @@
             android:layout_height="match_parent"
             android:gravity="top"
             android:textColor="@color/icons"
-            android:textColorHint="@color/textSecondary"
+            android:textColorHint="@color/colorAccent"
             android:hint="@string/createcartoon_hint_step3_2"/>
     </android.support.design.widget.TextInputLayout>
 

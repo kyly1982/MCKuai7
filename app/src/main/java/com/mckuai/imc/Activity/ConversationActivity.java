@@ -19,7 +19,7 @@ import io.rong.imlib.model.Conversation;
 
 public class ConversationActivity extends BaseActivity implements MCNetEngine.OnLoadUserInfoResponseListener {
     private MCDaoHelper daoHelper;
-    private AppCompatTextView title;
+    private AppCompatTextView titleView;
 
     /**
      * 目标 Id
@@ -40,9 +40,10 @@ public class ConversationActivity extends BaseActivity implements MCNetEngine.On
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        //title = getString(R.string.activity_conversation);
         setContentView(R.layout.conversation);
         initToolbar(R.id.toolbar, 0, null);
-        title = (AppCompatTextView) findViewById(R.id.actionbar_title);
+        titleView = (AppCompatTextView) findViewById(R.id.actionbar_title);
         mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -83,7 +84,7 @@ public class ConversationActivity extends BaseActivity implements MCNetEngine.On
     }
 
     private void showUser(User user) {
-        title.setText(user.getNickEx());
+        titleView.setText(user.getNickEx());
     }
 
     /**
@@ -110,7 +111,7 @@ public class ConversationActivity extends BaseActivity implements MCNetEngine.On
 
     @Override
     public void onLoadUserInfoFailure(String msg) {
-        title.setText("未知");
+        titleView.setText("未知");
         showMessage(msg, null, null);
     }
 }

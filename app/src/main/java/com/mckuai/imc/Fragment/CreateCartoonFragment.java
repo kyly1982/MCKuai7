@@ -25,6 +25,7 @@ import com.mckuai.imc.Base.MCKuai;
 import com.mckuai.imc.Bean.Cartoon;
 import com.mckuai.imc.Bean.Lable;
 import com.mckuai.imc.R;
+import com.mckuai.imc.Util.BitmapUtil;
 import com.mckuai.imc.Util.MCNetEngine;
 import com.mckuai.imc.Widget.CreateCartoonStepView.StepView_1;
 import com.mckuai.imc.Widget.CreateCartoonStepView.StepView_2;
@@ -33,7 +34,9 @@ import com.mckuai.imc.Widget.CreateCartoonStepView.StepView_4;
 import com.mckuai.imc.Widget.TouchableLayout.TouchableLayout;
 
 import java.io.File;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 public class CreateCartoonFragment extends BaseFragment implements StepView_4.OnShareButtonClickedListener, StepView_1.OnButtonClickListener, StepView_2.OnWidgetCheckedListener,
         StepView_3.OnTalkAddedListener, CartoonSceneAdapter.OnSceneSelectedListener,MCNetEngine.OnUploadImageResponseListener,MCNetEngine.OnUploadCartoonResponseListener {
@@ -42,6 +45,8 @@ public class CreateCartoonFragment extends BaseFragment implements StepView_4.On
     private ArrayList<String> talks;
     private CartoonSceneAdapter adapter;
     private String title;
+    private String imagePath;
+    private String fileName;
 
 
     private View view;
@@ -65,9 +70,11 @@ public class CreateCartoonFragment extends BaseFragment implements StepView_4.On
                 builderHint.setText(R.string.createcartoon_hint_step2);
                 break;
             case 2:
+                //cartoonBuilder.frozenWidget(true);
                 builderHint.setText(R.string.createcartoon_hint_step3);
                 break;
             case 3:
+                cartoonBuilder.frozenBuilder(true);
                 builderHint.setText(R.string.createcartoon_hint_step4);
                 break;
         }
@@ -96,18 +103,37 @@ public class CreateCartoonFragment extends BaseFragment implements StepView_4.On
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (Activity.RESULT_OK == resultCode) {
-            if (null != data && null != data.getData()) {
-                cartoonBuilder.setBitmapBackground(data.getData());
-            } else {
-                Bundle bundle = data.getExtras();
-                if (null != bundle) {
-                    Bitmap bitmap = (Bitmap) bundle.get("data");
-                } else {
-                    Snackbar.make(cartoonBuilder, "未获取到图片", Snackbar.LENGTH_SHORT).show();
-                }
+            switch (requestCode) {
+                case 10:
+                    //相机
+                    File file = new File(imagePath, fileName);
+                    if (file.isFile() && file.exists()) {
+                        Bitmap bitmap = BitmapUtil.decodeFile(imagePath + "/" + fileName, cartoonBuilder.getWidth(), cartoonBuilder.getHeight());
+                        if (null != bitmap) {
+                            BitmapDrawable drawable = new BitmapDrawable(bitmap);
+                            //cartoonBuilder.setBackground(drawable);
+                            cartoonBuilder.setBitmapBackground(bitmap);
+                        }
+//                        cartoonBuilder.setBitmapBackground(imagePath+"/"+fileName);
+//                        cartoonBuilder.postInvalidate();
+                    } else {
+                        showMessage("未获取到照片！", null, null);
+                    }
+                    break;
+                case 11:
+                    //相册
+                    if (null != data && null != data.getData()) {
+                        Bitmap bitmap = BitmapUtil.decodeFile(getActivity(), data.getData(), cartoonBuilder.getWidth(), cartoonBuilder.getHeight());
+                        cartoonBuilder.setBitmapBackground(bitmap);
+                        /*cartoonBuilder.setBitmapBackground(data.getData());
+                        cartoonBuilder.postInvalidate();*/
+                    } else {
+                        showMessage("未获取到图片！", null, null);
+                    }
+                    break;
             }
         } else {
-            Snackbar.make(cartoonBuilder, "未获取到图片", Snackbar.LENGTH_SHORT).show();
+            //Snackbar.make(cartoonBuilder, "未获取到图片", Snackbar.LENGTH_SHORT).show();
         }
     }
 
@@ -125,6 +151,8 @@ public class CreateCartoonFragment extends BaseFragment implements StepView_4.On
                 lastPoint = point;
             }
         });
+
+        cartoonBuilder.setBackgroundResource(R.mipmap.ic_share_default);
 
         StepView_1 step1 = new StepView_1(getActivity(), this);
         StepView_2 step2 = new StepView_2(getActivity(), this);
@@ -222,12 +250,19 @@ public class CreateCartoonFragment extends BaseFragment implements StepView_4.On
     public void onTakePhotoClicked() {
         //拍照
         Intent intent = new Intent("android.media.action.IMAGE_CAPTURE");
-        File file = new File(Environment.getExternalStorageDirectory() + "DCIM/MCKuai/", "camera.jpg");
+        Date date = new Date(System.currentTimeMillis());
+        if (null == imagePath) {
+            imagePath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES) + "/MCKuai";
+        }
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd_HHmmss");
+        fileName = sdf.format(date) + ".jpg";
+        File file = new File(imagePath, fileName);
         if (file.exists()) {
             file.delete();
         } else {
             file.getParentFile().mkdirs();
         }
+
         intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(file));
         intent.putExtra(MediaStore.EXTRA_VIDEO_QUALITY, 0);
         intent.putExtra(MediaStore.EXTRA_MEDIA_TITLE, "拍取一张照片做为背景");
@@ -272,8 +307,12 @@ public class CreateCartoonFragment extends BaseFragment implements StepView_4.On
 
     @Override
     public void onTalkAdded(String talk) {
-        Lable lable = new Lable(lastPoint, talk);
-        cartoonBuilder.addLable(lable);
+        if (0 < cartoonBuilder.getWidgetCount()) {
+            Lable lable = new Lable(lastPoint, talk);
+            cartoonBuilder.addLable(lable);
+        } else {
+            showMessage("你还未添加有人物或工具", null, null);
+        }
     }
 
     private void uploadCartoon(Cartoon cartoon) {

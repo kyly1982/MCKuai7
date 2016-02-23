@@ -4,6 +4,7 @@ package com.mckuai.imc.Fragment;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.widget.AppCompatTextView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -33,6 +34,7 @@ public class MainFragment_Chat extends BaseFragment implements ConversationAdapt
     private View view;
     private SuperRecyclerView conversationList;
     private SuperRecyclerView userList;
+    private AppCompatTextView unloginHint;
     private ConversationAdapter adapter;
     private MCKuai application;
 
@@ -54,6 +56,9 @@ public class MainFragment_Chat extends BaseFragment implements ConversationAdapt
             container.removeView(view);
         }
         view = inflater.inflate(R.layout.fragment_main_chat, container, false);
+        if (null == unloginHint) {
+            unloginHint = (AppCompatTextView) view.findViewById(R.id.unlogin);
+        }
         return view;
     }
 
@@ -89,51 +94,89 @@ public class MainFragment_Chat extends BaseFragment implements ConversationAdapt
 
     private void showData() {
 
-        if (MCKuai.instence.isLogin() && null != RongIM.getInstance() && null != RongIM.getInstance().getRongIMClient()) {
-            if (RongIM.getInstance().getRongIMClient().getCurrentConnectionStatus() != RongIMClient.ConnectionStatusListener.ConnectionStatus.CONNECTED) {
-                Intent intent = new Intent(getActivity(), LoginActivity.class);
-                getActivity().startActivityForResult(intent, 0);
-                return;
-            }
-            conversations = (ArrayList<Conversation>) RongIM.getInstance().getRongIMClient().getConversationList();
-            if (null == adapter) {
-                adapter = new ConversationAdapter(getActivity(), this);
-                conversationList.setAdapter(adapter);
-            }
-            if (null == users) {
-                users = new ArrayList<>(10);
-            }
-            if (null == lastMessages) {
-                lastMessages = new ArrayList<>(10);
-            }
-            if (null != conversations) {
-                for (Conversation conversation : conversations) {
-                    //聊天对象信息
-                    String id = conversation.getTargetId();
-                    User tempUser = application.daoHelper.getUserByName(id);
-                    if (null == tempUser) {
-                        tempUser = new User();
-                        tempUser.setName(id);
-                        application.netEngine.loadUserInfo(getActivity(), id, new MCNetEngine.OnLoadUserInfoResponseListener() {
-                            @Override
-                            public void onLoadUserInfoSuccess(User user) {
-                                if (null != user) {
-                                    updateUserInfo(user);
-                                }
-                            }
-
-                            @Override
-                            public void onLoadUserInfoFailure(String msg) {
-
-                            }
-                        });
+        if (MCKuai.instence.isLogin()) {
+            unloginHint.setVisibility(View.GONE);
+            conversationList.setVisibility(View.VISIBLE);
+            if (null != RongIM.getInstance() && null != RongIM.getInstance().getRongIMClient()) {
+                if (RongIM.getInstance().getRongIMClient().getCurrentConnectionStatus() == RongIMClient.ConnectionStatusListener.ConnectionStatus.CONNECTED) {
+                    conversations = (ArrayList<Conversation>) RongIM.getInstance().getRongIMClient().getConversationList();
+                    if (null == adapter) {
+                        adapter = new ConversationAdapter(getActivity(), this);
+                        conversationList.setAdapter(adapter);
                     }
-                    users.add(tempUser);
+                    if (null == users) {
+                        users = new ArrayList<>(10);
+                    }
+                    if (null == lastMessages) {
+                        lastMessages = new ArrayList<>(10);
+                    }
+                    if (null != conversations) {
+                        for (Conversation conversation : conversations) {
+                            //聊天对象信息
+                            String id = conversation.getTargetId();
+                            User tempUser = application.daoHelper.getUserByName(id);
+                            if (null == tempUser) {
+                                tempUser = new User();
+                                tempUser.setName(id);
+                                application.netEngine.loadUserInfo(getActivity(), id, new MCNetEngine.OnLoadUserInfoResponseListener() {
+                                    @Override
+                                    public void onLoadUserInfoSuccess(User user) {
+                                        if (null != user) {
+                                            updateUserInfo(user);
+                                        }
+                                    }
 
+                                    @Override
+                                    public void onLoadUserInfoFailure(String msg) {
+
+                                    }
+                                });
+                            }
+                            users.add(tempUser);
+
+                        }
+                    }
+                    adapter.setData(conversations, users);
+                    return;
+                } else {
+                    //聊天服务器未连接上
+                    showMessage("正在连接聊天服务器,请稍后!", null, null);
+                    RongIM.connect(MCKuai.instence.user.getToken(), new RongIMClient.ConnectCallback() {
+                        @Override
+                        public void onTokenIncorrect() {
+                            showMessage("用户令牌失效，需要重新登录，是否登录？", "登录", new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    callLogin();
+                                }
+                            });
+                        }
+
+                        @Override
+                        public void onSuccess(String s) {
+                            showData();
+                        }
+
+                        @Override
+                        public void onError(RongIMClient.ErrorCode errorCode) {
+                            showMessage("连接聊天服务器失败，原因：" + errorCode.getMessage(), null, null);
+                        }
+                    });
+                    return;
                 }
+            } else {
+                showMessage("", null, null);
             }
-            adapter.setData(conversations, users);
+        } else {
+            unloginHint.setVisibility(View.VISIBLE);
+            conversationList.setVisibility(View.GONE);
         }
+        callLogin();
+    }
+
+    private void callLogin() {
+        Intent intent = new Intent(getActivity(), LoginActivity.class);
+        getActivity().startActivityForResult(intent, 0);
     }
 
     @Override

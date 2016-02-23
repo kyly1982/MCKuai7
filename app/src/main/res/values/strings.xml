@@ -8,6 +8,31 @@
     <string name="emptyview_hint">暂时没有数据！</string>
     <string name="hint_loading">正在加载！</string>
 
+
+    <!--activity-->
+    <string name="activity_boot">启动页</string>
+    <string name="activity_leady">引导页</string>
+    <string name="activity_main">主页</string>
+    <string name="activity_createcartoon">创建漫画</string>
+    <string name="activity_cartoondetial">漫画细节</string>
+    <string name="activity_conversation">聊天对话</string>
+    <string name="activity_conversationlist">聊天列表</string>
+    <string name="activity_login">登录</string>
+    <string name="activity_postdetial">帖子详情</string>
+    <string name="activity_profile">设置</string>
+    <string name="activity_createpost">创建帖子</string>
+    <string name="activity_search">搜索</string>
+    <string name="activity_usercenter">个人中心</string>
+
+    <!--fragment-->
+    <string name="fragment_mine">我的</string>
+    <string name="fragment_cartoon">推荐动漫</string>
+    <string name="fragment_chat">聊天会话列表</string>
+    <string name="fragment_community">社区</string>
+    <string name="fragment_createcartoon">创建漫画</string>
+    <string name="fragment_profile">设置</string>
+
+
     <!--配置-->
     <string name="preferences_filename">config</string>
     <string name="preferences_isFirstBoot">FIRSTBOOT</string>
@@ -138,17 +163,6 @@
     <string name="nav_community">社区</string>
     <string name="nav_mine">我的</string>
 
-    <!--activity-->
-    <string name="activity_boot">启动页</string>
-    <string name="activity_leady">引导页</string>
-    <string name="activity_main">主页</string>
-    <string name="activity_create">创造漫画</string>
-
-    <!--fragment-->
-    <string name="fragment_cartoon">漫画</string>
-    <string name="fragment_chat">聊天</string>
-    <string name="fragment_community">社区</string>
-    <string name="fragment_mine">我的</string>
 
 
     <!--漫画首页-->

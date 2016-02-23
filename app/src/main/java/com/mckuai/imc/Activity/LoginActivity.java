@@ -25,6 +25,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
     private final String TAG = "LoginActivity";
 
     private AppCompatTextView tv_title;
+    private AppCompatTextView loginMsg;
 
     private static Tencent mTencent;
     private QQLoginListener mQQListener;
@@ -37,6 +38,13 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
         setContentView(R.layout.activity_login);
         initToolbar(R.id.toolbar, 0, this);
         mTencent = Tencent.createInstance("101155101", getApplicationContext());
+        mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                handleResult(false);
+            }
+        });
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
     @Override
@@ -51,6 +59,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
         tv_title.setText(title);
         findViewById(R.id.login_qqlogin).setOnClickListener(this);
         findViewById(R.id.login_anonymous).setOnClickListener(this);
+        loginMsg = (AppCompatTextView) findViewById(R.id.loginmsg);
     }
 
     private void logoutQQ() {
@@ -61,6 +70,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
 
 
     private void loginToQQ() {
+        loginMsg.setText("获取账号信息...");
         MobclickAgent.onEvent(this, "qqLogin");
         if (null == mTencent) {
             mTencent = Tencent.createInstance("101155101", getApplicationContext());
@@ -72,26 +82,57 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
     }
 
     private void loginToMC(MCUser user){
+        MobclickAgent.onEvent(this, "login");
+        loginMsg.setText("登录服务器...");
         mApplication.netEngine.loginServer(this, user, this);
     }
 
     public void loginIM() {
+        MobclickAgent.onEvent(this, "loginChatServer");
+        loginMsg.setText("登录聊天服务器...");
         mApplication.loginIM(new RongIMClient.ConnectCallback() {
             @Override
             public void onTokenIncorrect() {
-                showMessage("登录融云时失败，令牌无效，请重新登录！", null, null);
+                MobclickAgent.onEvent(LoginActivity.this, "chatLogin_F");
+                loginMsg.setText("登录聊天服务器时失败，原因:令牌无效！");
+                showMessage("是否重新登录？", "重新登录", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        mApplication.logout();
+                        onClick(findViewById(R.id.login_qqlogin));
+                    }
+                });
                 isFullLoginNeed = true;
             }
 
             @Override
             public void onSuccess(String s) {
                 handleResult(true);
+                MobclickAgent.onEvent(LoginActivity.this, "chatLogin_S");
             }
 
             @Override
             public void onError(RongIMClient.ErrorCode errorCode) {
-                showMessage("登录聊天服务器失败，原因：" + errorCode.getMessage(), null, null);
-                handleResult(false);
+                MobclickAgent.onEvent(LoginActivity.this, "chatLogin_F");
+                loginMsg.setText("登录聊天服务器失败，原因：" + errorCode.getMessage());
+                //handleResult(false);
+            }
+
+            @Override
+            public void onFail(RongIMClient.ErrorCode errorCode) {
+                super.onFail(errorCode);
+                loginMsg.setText("登录聊天服务器失败，原因：" + errorCode.getMessage());
+            }
+
+            @Override
+            public void onFail(int errorCode) {
+                super.onFail(errorCode);
+                loginMsg.setText("登录聊天服务器失败，原因：" + errorCode);
+            }
+
+            @Override
+            public void onCallback(String s) {
+                super.onCallback(s);
             }
         });
     }
@@ -105,7 +146,6 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.login_qqlogin:
-
                 if (null != mApplication.user && mApplication.user.isUserTokenValid() && !isFullLoginNeed) {
                     loginToMC( mApplication.user);
                 } else {
@@ -126,6 +166,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
 
     @Override
     public void onLoginSuccess(MCUser user) {
+        MobclickAgent.onEvent(this, "login_S");
         mApplication.user.clone(user);
         mApplication.saveProfile();
         loginIM();
@@ -134,14 +175,16 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
 
     @Override
     public void onLoginFailure(String msg) {
+        MobclickAgent.onEvent(this, "login_F");
         if (null != mTencent){
             mTencent.logout(this);
-            showMessage("登录服务器时失败！" + msg, null, null);
+            loginMsg.setText("登录服务器时失败，原因:" + msg);
         }
     }
 
     @Override
     public void onQQLoginSuccess( MCUser user) {
+        MobclickAgent.onEvent(this, "qqLogin_S");
         if (null == mApplication.user){
             mApplication.user = user;
         } else {
@@ -153,8 +196,9 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
 
     @Override
     public void onQQLoginFaile(String msg) {
+        MobclickAgent.onEvent(this, "qqLogin_F");
         if (null != msg) {
-            showMessage("登录到QQ失败，原因:"+msg,null,null);
+            loginMsg.setText("登录到QQ失败，原因:" + msg);
         }
     }
 }

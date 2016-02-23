@@ -65,6 +65,7 @@ public class StepView_3 extends RelativeLayout {
             public void onClick(View v) {
                 if (null != listener && 0 != editText.getText().toString().trim().length()) {
                     listener.onTalkAdded(editText.getText().toString());
+                    editText.setText("");
                     //editText.setFocusable(false);
                 }
             }

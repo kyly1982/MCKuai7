@@ -22,6 +22,8 @@ import com.mckuai.imc.Fragment.MainFragment_Community;
 import com.mckuai.imc.Fragment.MainFragment_Mine;
 import com.mckuai.imc.R;
 import com.mckuai.imc.Util.MCNetEngine;
+import com.umeng.analytics.MobclickAgent;
+import com.umeng.message.PushAgent;
 
 import java.util.ArrayList;
 
@@ -37,6 +39,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
     private AppCompatRadioButton mNewType;
     private boolean isCheckUpgread = false;
     private boolean isIMListenerInit = false;
+    private long lastBlckPressTime = 0;
+    //private int currentFragmentIndex = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +50,9 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         initFragment();
         initDrawer();
         initView();
+        //友盟推送
+        PushAgent mPushAgent = PushAgent.getInstance(this);
+        mPushAgent.enable();
     }
 
     @Override
@@ -68,14 +75,12 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         title = (AppCompatTextView) findViewById(R.id.actionbar_title);
         cartoonType = (RadioGroup) findViewById(R.id.actionbar_cartoon_rg);
         mNewType = (AppCompatRadioButton) findViewById(R.id.cartoon_type_new);
-        //createCartoon = (AppCompatImageButton) findViewById(R.id.nav_create);
         findViewById(R.id.nav_create).setOnClickListener(this);
         cartoonType.setVisibility(View.VISIBLE);
         nav.setVisibility(View.VISIBLE);
         nav.setOnCheckedChangeListener(this);
         ((AppCompatRadioButton) findViewById(R.id.nav_cartoon)).setChecked(true);
         cartoonType.setOnCheckedChangeListener(this);
-        //createCartoon.setOnClickListener(this);
     }
 
     private void initFragment() {
@@ -113,29 +118,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
     private void initIMListener() {
         if (RongIM.getInstance() != null && RongIM.getInstance().getRongIMClient() != null) {
             RongIM.setUserInfoProvider(this, true);
-            /*RongIM.setUserInfoProvider(new RongIM.UserInfoProvider() {
-                @Override
-                public UserInfo getUserInfo(String id) {
-                    User user = mApplication.daoHelper.getUserByName(id);
-                    if (null == user) {
-                        mApplication.netEngine.loadUserInfo(this, id, new MCNetEngine.OnLoadUserInfoResponseListener() {
-                            @Override
-                            public void onLoadUserInfoSuccess(User user) {
-                                UserInfo userInfo = new UserInfo(user.getName(),user.getNickEx(),Uri.parse(user.getHeadImage()));
-                            }
-
-                            @Override
-                            public void onLoadUserInfoFailure(String msg) {
-                                showMessage(msg,null,null);
-                            }
-                        });
-                        return null;
-                    } else {
-                        UserInfo userInfo = new UserInfo(id, user.getNickEx(), Uri.parse(user.getHeadImage()));
-                        return userInfo;
-                    }
-                }
-            }, true);*/
             RongIM.getInstance().getRongIMClient().setConnectionStatusListener(this);
             isIMListenerInit = true;
         }
@@ -150,16 +132,15 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
 
     @Override
     public void onBackPressed() {
-        //super.onBackPressed();
         if (!isSlidingMenuShow) {
-            showMessage("退出软件？", "退出", new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    mApplication.handleExit();
-                    //finish();
-                    System.exit(0);
-                }
-            });
+            if (System.currentTimeMillis() - lastBlckPressTime < 3000) {
+                mApplication.handleExit();
+                MobclickAgent.onKillProcess(MainActivity.this);
+                System.exit(0);
+            } else {
+                lastBlckPressTime = System.currentTimeMillis();
+                showMessage("再次点击退出软件", null, null);
+            }
         } else {
             super.onBackPressed();
         }
@@ -179,7 +160,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.nav_create:
-                Intent intent = new Intent(this, CreateActivity.class);
+                Intent intent = new Intent(this, CreateCartoonActivity.class);
                 startActivity(intent);
                 break;
         }
@@ -207,23 +188,27 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
                     }
                     switch (checkedId) {
                         case R.id.nav_cartoon:
+                            MobclickAgent.onEvent(this, "clickCartoon");
                             cartoonType.setVisibility(View.VISIBLE);
                             title.setVisibility(View.GONE);
                             currentFragmentIndex = 0;
                             break;
                         case R.id.nav_chat:
+                            MobclickAgent.onEvent(this, "clickChat");
                             cartoonType.setVisibility(View.GONE);
                             title.setVisibility(View.VISIBLE);
                             title.setText("聊天");
                             currentFragmentIndex = 1;
                             break;
                         case R.id.nav_community:
+                            MobclickAgent.onEvent(this, "clickForum");
                             cartoonType.setVisibility(View.GONE);
                             title.setVisibility(View.VISIBLE);
                             title.setText("社区");
                             currentFragmentIndex = 2;
                             break;
                         case R.id.nav_mine:
+                            MobclickAgent.onEvent(this, "clickMine");
                             cartoonType.setVisibility(View.GONE);
                             title.setVisibility(View.VISIBLE);
                             title.setText("消息");
@@ -236,11 +221,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         }
     }
 
-/*    private FragmentTransaction hideFragment(){
-        FragmentTransaction transaction = mFragmentManager.beginTransaction();
-        transaction.hide(fragments.get(currentFragmentIndex));
-        return transaction;
-    }*/
 
 
     @Override
@@ -294,13 +274,13 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
     public void onChanged(ConnectionStatus connectionStatus) {
         switch (connectionStatus) {
             case CONNECTED:
-                Toast.makeText(MainActivity.this, "已连接上聊天服务器！", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(MainActivity.this, "已连接上聊天服务器！", Toast.LENGTH_SHORT).show();
                 break;
             case DISCONNECTED:
                 Toast.makeText(MainActivity.this, "聊天服务器断开！", Toast.LENGTH_SHORT).show();
                 break;
             case CONNECTING:
-                Toast.makeText(MainActivity.this, "正在连接...", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(MainActivity.this, "正在连接...", Toast.LENGTH_SHORT).show();
                 break;
             case NETWORK_UNAVAILABLE:
                 Toast.makeText(MainActivity.this, "网络不可用！", Toast.LENGTH_SHORT).show();
@@ -336,4 +316,5 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
             return userInfo;
         }
     }
+
 }
