@@ -38,6 +38,7 @@ public class CartoonDynamicAdapter extends RecyclerView.Adapter<CartoonDynamicAd
         notifyDataSetChanged();
     }
 
+
     public void addData(ArrayList<CartoonMessage> dynamics){
         if (null == dynamics) {
             this.dynamics = dynamics;

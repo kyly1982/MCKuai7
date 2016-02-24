@@ -122,11 +122,16 @@
                 android:background="@color/usercenter_subtype"
                 android:padding="2dp">
 
+                <View
+                    android:id="@+id/space_left"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1" />
+
                 <android.support.v7.widget.AppCompatRadioButton
                     android:id="@+id/message"
-                    android:layout_width="wrap_content"
+                    android:layout_width="70dp"
                     android:layout_height="match_parent"
-                    android:layout_weight="1"
                     android:background="@drawable/ic_usercenter_subtype"
                     android:button="@null"
                     android:gravity="center"
@@ -134,27 +139,40 @@
                     android:text="@string/message"
                     android:textColor="@color/checkable_text_color_selector" />
 
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1" />
+
                 <android.support.v7.widget.AppCompatRadioButton
                     android:id="@+id/dynamic"
-                    android:layout_width="wrap_content"
+                    android:layout_width="70dp"
                     android:layout_height="match_parent"
-                    android:layout_weight="1"
                     android:background="@drawable/ic_usercenter_subtype"
                     android:button="@null"
                     android:gravity="center"
                     android:text="@string/dynamic"
                     android:textColor="@color/checkable_text_color_selector" />
 
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1" />
+
                 <android.support.v7.widget.AppCompatRadioButton
                     android:id="@+id/work"
-                    android:layout_width="wrap_content"
+                    android:layout_width="70dp"
                     android:layout_height="match_parent"
-                    android:layout_weight="1"
                     android:background="@drawable/ic_usercenter_subtype"
                     android:button="@null"
                     android:gravity="center"
                     android:text="@string/work"
                     android:textColor="@color/checkable_text_color_selector" />
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1" />
             </RadioGroup>
 
 
@@ -194,7 +212,7 @@
                 android:layout_height="wrap_content"
                 android:layout_above="@id/layut_opeartion"
                 android:layout_below="@id/type"
-                android:background="@color/usercenter_subtype"
+                android:background="@color/icons"
                 app:layout_empty="@layout/emptyview"></com.malinskiy.superrecyclerview.SuperRecyclerView>
 
             <com.malinskiy.superrecyclerview.SuperRecyclerView

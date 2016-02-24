@@ -14,6 +14,7 @@ import com.mckuai.imc.Util.MCDaoHelper;
 import com.mckuai.imc.Util.MCNetEngine;
 import com.nostra13.universalimageloader.cache.disc.impl.UnlimitedDiskCache;
 import com.nostra13.universalimageloader.cache.disc.naming.Md5FileNameGenerator;
+import com.nostra13.universalimageloader.cache.memory.impl.UsingFreqLimitedMemoryCache;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
@@ -39,8 +40,9 @@ public class MCKuai extends Application {
     private DisplayImageOptions circleOptions;
 
     private final int IMAGE_POOL_SIZE = 3;// 线程池数量
-    private final int CONNECT_TIME = 15 * 1000;// 连接时间
-    private final int TIME_OUT = 30 * 1000;// 超时时间
+    private final int CONNECT_TIME = 5 * 1000;// 连接时间
+    private final int TIME_OUT = 10 * 1000;// 超时时间
+    private final int MEM_CACHE_SIZE = 8 * 1024 * 1024;//内存缓存大小
 
     private String mCacheDir;
     public boolean isFirstBoot = true;
@@ -101,16 +103,15 @@ public class MCKuai extends Application {
 
     private void initImageLoader() {
         ImageLoaderConfiguration configuration = new ImageLoaderConfiguration.Builder(getApplicationContext())
-                .memoryCacheExtraOptions(750, 480)
+                //.memoryCacheExtraOptions(1080, 1080) //不指定，其将默认为屏幕宽度
                 .threadPoolSize(IMAGE_POOL_SIZE)
                 .threadPriority(Thread.NORM_PRIORITY - 2)
-                .denyCacheImageMultipleSizesInMemory()
+                        //.denyCacheImageMultipleSizesInMemory()
                         // 对于同一url只缓存一个图
-                        //.memoryCache(new UsingFreqLimitedMemoryCache(MEM_CACHE_SIZE)).memoryCacheSize(MEM_CACHE_SIZE)
-               /* .discCacheFileNameGenerator(new Md5FileNameGenerator()).tasksProcessingOrder(QueueProcessingType.FIFO)
-                .discCache(new UnlimitedDiskCache(new File(getImageCacheDir())))*/
+                .memoryCache(new UsingFreqLimitedMemoryCache(MEM_CACHE_SIZE)).memoryCacheSize(MEM_CACHE_SIZE)
                 .diskCache(new UnlimitedDiskCache(new File(getImageCacheDir())))
-                .diskCacheFileNameGenerator(new Md5FileNameGenerator()).tasksProcessingOrder(QueueProcessingType.FIFO)
+                .diskCacheFileNameGenerator(new Md5FileNameGenerator())
+                .tasksProcessingOrder(QueueProcessingType.FIFO)
                 .defaultDisplayImageOptions(DisplayImageOptions.createSimple())
                 .imageDownloader(new BaseImageDownloader(getApplicationContext(), CONNECT_TIME, TIME_OUT))
                 .writeDebugLogs().build();

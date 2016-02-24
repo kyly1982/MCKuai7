@@ -21,6 +21,8 @@
     <color name="colorBlack_lable">#CC000000</color>
     <color name="coloruserlevel">#FFC203</color>
 
+    <color name="colorlistdivier">#E8E8E8</color>
+
     <!--个人中心-->
     <color name="usercenter_subtype">#5A5148</color>
 

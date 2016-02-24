@@ -88,6 +88,7 @@ public class UserCenterActivity extends BaseActivity
     private AppCompatRadioButton dynamic;
     private AppCompatRadioButton friend;
     private View spaceRight;
+    private View spaceLeft;
     private AppCompatTextView emptyView;
 
     private boolean checkedFriendship = false;
@@ -155,6 +156,7 @@ public class UserCenterActivity extends BaseActivity
         list = (SuperRecyclerView) findViewById(R.id.list);
         work = (SuperRecyclerView) findViewById(R.id.worklist);
         spaceRight = findViewById(R.id.space_right);
+        spaceLeft = findViewById(R.id.space_left);
         emptyView = (AppCompatTextView) findViewById(R.id.emptyview);
 
         RecyclerView.LayoutManager linearLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
@@ -197,6 +199,7 @@ public class UserCenterActivity extends BaseActivity
             message.setVisibility(View.VISIBLE);
             friend.setVisibility(View.VISIBLE);
             spaceRight.setVisibility(View.VISIBLE);
+            spaceLeft.setVisibility(View.VISIBLE);
             message.setChecked(true);
             contentType = 36;
         } else {
@@ -204,6 +207,7 @@ public class UserCenterActivity extends BaseActivity
             message.setVisibility(View.GONE);
             friend.setVisibility(View.GONE);
             spaceRight.setVisibility(View.GONE);
+            spaceLeft.setVisibility(View.GONE);
             dynamic.setChecked(true);
             contentType = 34;
         }

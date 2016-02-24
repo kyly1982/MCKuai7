@@ -1,17 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?><!-- 普通帖 -->
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="@dimen/community_item_postheight_normal"
-    android:layout_marginTop="1px"
-    android:layout_marginBottom="1px"
-    android:background="@color/icons">
+    android:layout_height="@dimen/community_item_postheight_normal">
 
     <View
         android:id="@+id/bottomfarm"
         android:layout_width="match_parent"
         android:layout_height="1px"
         android:layout_alignParentBottom="true"
-        android:background="@color/colorDivider" />
+        android:background="@color/colorlistdivier" />
 
     <!-- 顶部所有者 -->
 

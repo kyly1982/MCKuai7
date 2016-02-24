@@ -1,23 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="65dp"
-    android:padding="5dp"
-    android:layout_marginBottom="1px"
-    android:background="@color/icons">
+    android:layout_height="65dp">
 
     <android.support.v7.widget.AppCompatImageView
         android:id="@+id/usercover"
         android:layout_width="32dp"
         android:layout_height="32dp"
+        android:layout_margin="@dimen/usercenter_item_layoutpadding"
         android:scaleType="fitXY" />
 
     <android.support.v7.widget.AppCompatTextView
         android:id="@+id/username"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignTop="@id/usercover"
         android:layout_marginTop="3dp"
-        android:layout_marginLeft="5dp"
         android:singleLine="true"
         android:layout_toRightOf="@id/usercover"
         android:text="22341"/>
@@ -27,6 +25,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignLeft="@id/username"
+        android:layout_marginBottom="@dimen/usercenter_item_layoutpadding"
         android:layout_alignParentBottom="true"
         android:textSize="@dimen/font_hint"
         android:text="01-20"/>
@@ -41,6 +40,10 @@
         android:singleLine="true"
         android:text="dasafweqrweprq;ewrlweqr"/>
 
-
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:background="@color/colorlistdivier"
+        android:layout_alignParentBottom="true" />
 
 </RelativeLayout>

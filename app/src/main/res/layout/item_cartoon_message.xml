@@ -1,24 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="@dimen/usercenter_item_cartoon_height"
-    android:layout_marginBottom="1px"
-    android:layout_marginTop="1px"
-    android:background="@color/icons"
-    android:padding="@dimen/usercenter_item_layoutpadding">
+    android:layout_height="@dimen/usercenter_item_cartoon_height">
 
     <android.support.v7.widget.AppCompatImageView
         android:id="@+id/usercover"
         android:layout_width="@dimen/usercenter_item_cartoon_usercover_width"
-        android:layout_height="@dimen/usercenter_item_cartoon_usercover_width" />
+        android:layout_height="@dimen/usercenter_item_cartoon_usercover_width"
+        android:layout_marginLeft="@dimen/usercenter_item_layoutpadding"
+        android:layout_marginTop="@dimen/usercenter_item_layoutpadding" />
 
 
     <android.support.v7.widget.AppCompatImageView
         android:id="@+id/cartooncover"
         android:layout_width="@dimen/usercenter_item_catoon_imagewidth"
         android:layout_height="@dimen/usercenter_item_catoon_imagewidth"
-        android:layout_alignParentRight="true"
-        android:layout_margin="@dimen/usercneter_item_cartoon_workmargin" />
+        android:layout_margin="3dp"
+        android:layout_alignTop="@id/usercover"
+        android:layout_alignParentRight="true" />
 
     <android.support.v7.widget.AppCompatTextView
         android:id="@+id/cartoon_messagetype"
@@ -35,6 +34,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="3dp"
+        android:layout_alignTop="@id/usercover"
         android:layout_toLeftOf="@id/cartoon_messagetype"
         android:layout_toRightOf="@id/usercover"
         android:singleLine="true"
@@ -59,10 +59,17 @@
         android:id="@+id/time"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/usercenter_item_layoutpadding"
         android:layout_alignLeft="@id/username"
         android:layout_alignParentBottom="true"
         android:text="01-20"
         android:textColor="@color/textSecondary"
         android:textSize="@dimen/font_normal" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:background="@color/colorlistdivier"
+        android:layout_alignParentBottom="true" />
 
 </RelativeLayout>

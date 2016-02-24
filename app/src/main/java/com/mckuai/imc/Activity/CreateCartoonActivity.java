@@ -30,7 +30,7 @@ public class CreateCartoonActivity extends BaseActivity
         super.onCreate(savedInstanceState);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_normal);
         initToolbar(R.id.toolbar, 0, null);
         //initDrawer();
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);

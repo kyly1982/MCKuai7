@@ -149,11 +149,15 @@ public class CartoonAdapter extends RecyclerView.Adapter<CartoonAdapter.ViewHold
 
     private void showImage(String url, AppCompatImageView imageView, boolean isCircle) {
         if (null != url && null != imageView && 10 < url.length()) {
+            Cartoon oldCartoon = (Cartoon) imageView.getTag();
             if (isCircle) {
-                imageLoader.displayImage(url, imageView, MCKuai.instence.getCircleOptions());
+                if (null == oldCartoon || !oldCartoon.getOwner().getHeadImage().equalsIgnoreCase(url)) {
+                    imageLoader.displayImage(url, imageView, MCKuai.instence.getCircleOptions());
+                }
             } else {
-
-                imageLoader.displayImage(url, imageView);
+                if (null == oldCartoon || !oldCartoon.getImage().equalsIgnoreCase(url)) {
+                    imageLoader.displayImage(url, imageView);
+                }
             }
         }
     }

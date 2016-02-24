@@ -1,22 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="@dimen/usercenter_item_cartoon_height"
-    android:layout_marginBottom="1px"
-    android:layout_marginTop="1px"
-    android:background="@color/icons"
-    android:padding="@dimen/usercenter_item_layoutpadding">
+    android:layout_height="@dimen/usercenter_item_cartoon_height">
 
     <android.support.v7.widget.AppCompatImageView
         android:id="@+id/cartooncover"
         android:layout_width="@dimen/usercenter_item_catoon_imagewidth"
         android:layout_height="@dimen/usercenter_item_catoon_imagewidth"
-        android:layout_alignParentRight="true" />
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="@dimen/usercenter_item_layoutpadding" />
 
     <android.support.v7.widget.AppCompatTextView
         android:id="@+id/dynamictype"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/usercenter_item_layoutpadding"
+        android:layout_marginLeft="@dimen/usercenter_item_layoutpadding"
         android:text="评论了"
         android:textColor="@color/textSecondary"
         android:textSize="@dimen/font_normal" />
@@ -25,6 +24,7 @@
         android:id="@+id/cartoon_ownername"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignTop="@id/dynamictype"
         android:layout_marginBottom="@dimen/usercenter_item_layoutpadding"
         android:layout_marginLeft="@dimen/usercenter_item_layoutpadding"
         android:layout_marginRight="@dimen/usercenter_item_layoutpadding"
@@ -40,6 +40,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
+        android:layout_alignLeft="@id/dynamictype"
+        android:layout_marginBottom="@dimen/usercenter_item_layoutpadding"
         android:text="01-20"
         android:textColor="@color/textSecondary"
         android:textSize="@dimen/font_normal" />
@@ -48,11 +50,17 @@
         android:id="@+id/dynamiccontent"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
+        android:layout_alignLeft="@id/dynamictype"
         android:layout_below="@id/cartoon_ownername"
         android:layout_toLeftOf="@id/cartooncover"
         android:lines="2"
         android:text="炒鸡大狒狒炒鸡大狒狒炒鸡大狒狒炒鸡大狒狒炒鸡大狒狒炒鸡大狒狒炒鸡大狒狒炒鸡大狒狒炒鸡大狒狒"
         android:textColor="@color/textPrimary"
         android:textSize="@dimen/font_accent" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:background="@color/colorlistdivier"
+        android:layout_alignParentBottom="true" />
 </RelativeLayout>

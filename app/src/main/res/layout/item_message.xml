@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="93dp"
-    android:layout_marginBottom="1px"
-    android:background="@color/icons">
+    android:layout_height="93dp">
 
     <android.support.v7.widget.AppCompatImageView
         android:id="@+id/usercover"
@@ -18,6 +16,8 @@
         android:id="@+id/cartooncover"
         android:layout_width="93dp"
         android:layout_height="93dp"
+        android:paddingTop="1px"
+        android:paddingBottom="1px"
         android:layout_alignParentRight="true" />
 
     <android.support.v7.widget.AppCompatTextView
@@ -38,35 +38,54 @@
         android:textSize="@dimen/font_normal"
         android:text="快来看看我的作品吧！" />
 
-    <android.support.v7.widget.AppCompatButton
-        android:id="@+id/addfriend"
-        android:layout_width="100dp"
+    <LinearLayout
+        android:id="@+id/layut_opeartion"
+        android:layout_width="wrap_content"
         android:layout_height="30dp"
-        android:layout_alignParentBottom="true"
+        android:orientation="horizontal"
         android:layout_alignLeft="@id/usercover"
-        android:layout_marginBottom="10dp"
-        android:background="@color/textGreen"
-        android:textColor="@color/icons"
-        android:text="加好友" />
+        android:layout_alignParentBottom="true"
+        android:layout_toLeftOf="@id/cartooncover"
+        android:layout_marginRight="20dp"
+        android:layout_marginBottom="10dp">
 
-    <android.support.v7.widget.AppCompatButton
-        android:id="@+id/chat"
-        android:layout_width="100dp"
-        android:layout_height="30dp"
-        android:layout_alignTop="@id/addfriend"
-        android:layout_toRightOf="@id/addfriend"
-        android:layout_marginLeft="20dp"
-        android:background="@color/textGreen"
-        android:textColor="@color/icons"
-        android:text="聊天" />
+        <android.support.v7.widget.AppCompatButton
+            android:id="@+id/addfriend"
+            android:layout_width="100dp"
+            android:layout_height="30dp"
+            android:background="@color/textGreen"
+            android:textColor="@color/icons"
+            android:text="加好友" />
+
+        <View
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
+
+
+        <android.support.v7.widget.AppCompatButton
+            android:id="@+id/chat"
+            android:layout_width="100dp"
+            android:layout_height="30dp"
+            android:background="@color/textGreen"
+            android:textColor="@color/icons"
+            android:text="聊天" />
+    </LinearLayout>
+
 
     <android.support.v7.widget.AppCompatTextView
         android:id="@+id/time"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignRight="@id/chat"
+        android:layout_alignRight="@id/layut_opeartion"
         android:layout_alignBottom="@id/usercover"
         android:textColor="@color/textHint"
         android:text="01-20" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:background="@color/colorlistdivier"
+        android:layout_alignParentBottom="true" />
 
 </RelativeLayout>

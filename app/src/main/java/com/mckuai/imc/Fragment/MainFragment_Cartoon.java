@@ -25,7 +25,6 @@ import com.mckuai.imc.Bean.User;
 import com.mckuai.imc.R;
 import com.mckuai.imc.Util.MCNetEngine;
 import com.umeng.socialize.media.UMImage;
-import com.umeng.socialize.utils.Log;
 
 import java.util.ArrayList;
 
@@ -122,15 +121,12 @@ public class MainFragment_Cartoon extends BaseFragment implements RadioGroup.OnC
 
     private void showData() {
         if (null == mAdapter) {
-            Log.e("showData", "init adapter....");
             mAdapter = new CartoonAdapter(getActivity(), this);
             mCartoonListView.setAdapter(mAdapter);
-            Log.e("showData", "init adapter commpelt");
         }
         switch (typeIndex) {
             case 0:
                 if (null != mNewCartoon) {
-                    Log.e("showData", "set data 0");
                     mAdapter.setData(mNewCartoon);
                 } else {
                     loadData();
@@ -138,7 +134,6 @@ public class MainFragment_Cartoon extends BaseFragment implements RadioGroup.OnC
                 break;
             case 1:
                 if (null != mHotCartoon) {
-                    Log.e("showData", "set data 1");
                     mAdapter.setData(mHotCartoon);
                 } else {
                     loadData();
@@ -225,7 +220,8 @@ public class MainFragment_Cartoon extends BaseFragment implements RadioGroup.OnC
 
     @Override
     public void onLoadCartoonListFailure(String msg) {
-        Log.e("onLoadCartoonListSuccess", "false...");
+        mCartoonListView.hideMoreProgress();
+        mCartoonListView.hideProgress();
         Snackbar.make(mCartoonListView, msg, Snackbar.LENGTH_SHORT).show();
         switch (typeIndex) {
             case 0:
@@ -239,7 +235,8 @@ public class MainFragment_Cartoon extends BaseFragment implements RadioGroup.OnC
 
     @Override
     public void onLoadCartoonListSuccess(ArrayList<Cartoon> cartoons) {
-        Log.e("onLoadCartoonListSuccess", "ok...");
+        mCartoonListView.hideMoreProgress();
+        mCartoonListView.hideProgress();
         if (cartoons.isEmpty() || 1 == cartoons.size() || 1 == cartoons.get(cartoons.size() - 1).getId()) {
             switch (typeIndex) {
                 case 0:

@@ -75,9 +75,17 @@ public class CartoonWorkAdapter extends RecyclerView.Adapter<CartoonWorkAdapter.
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         if (null != cartoons && -1 < position && position < cartoons.size()){
-            String url = cartoons.get(position).getImage();
-            if (null != url){
-                loader.displayImage(url,holder.cover);
+            final Cartoon cartoon = cartoons.get(position);
+            if (null != cartoon && null != cartoon.getImage()) {
+                loader.displayImage(cartoon.getImage(), holder.cover);
+            }
+            if (null != listener) {
+                holder.cover.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        listener.onItemClicked(cartoon);
+                    }
+                });
             }
 
         }

@@ -2,7 +2,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorPrimary">
+    android:background="@color/icons">
 
     <View
         android:id="@+id/wait"
@@ -17,7 +17,6 @@
         android:layout_toRightOf="@id/wait"
         android:layout_alignTop="@id/wait"
         android:layout_alignBottom="@id/wait"
-        android:background="@color/chat_waitlist"
         app:layout_empty="@layout/emptyview">
 
     </com.malinskiy.superrecyclerview.SuperRecyclerView>
@@ -37,7 +36,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
-        android:textColor="@color/icons"
-        android:text="需登录后才能获取聊天信息！" />
+        android:textColor="@color/textSecondary"
+        android:text="登录后才能使用聊天功能！" />
 
 </RelativeLayout>
