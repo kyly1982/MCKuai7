@@ -113,10 +113,15 @@ public class PostActivity extends BaseActivity implements OnClickListener, TextW
 		{
 			savedInstanceState = new Bundle();
 		}
-//		 savedInstanceState.putString("PAGE_ID", getString(R.string.post));
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_post);
-//		initSlidingMenu();
+		initToolbar(R.id.toolbar, 0, new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				finish();
+			}
+		});
+		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 		mClient = new AsyncHttpClient();
 		post = (Post) getIntent().getSerializableExtra(getString(R.string.tag_post));
 		mHandler.sendMessageDelayed(mHandler.obtainMessage(5), 1000);

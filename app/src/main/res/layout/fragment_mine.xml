@@ -4,13 +4,16 @@
     style="@style/AppTheme"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    android:fitsSystemWindows="true">
+    android:fitsSystemWindows="true"
+    android:background="@color/colorPrimaryLight"
+    android:clickable="true"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
     <RelativeLayout
         android:id="@+id/header"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/usercenter_header_height">
+        android:layout_height="@dimen/usercenter_header_height"
+        android:background="@color/colorPrimary">
 
         <android.support.v7.widget.AppCompatImageView
             android:id="@+id/usercover"
@@ -23,141 +26,188 @@
             android:id="@+id/userlevel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
             android:layout_alignParentBottom="true"
-            android:paddingTop="2dp"
+            android:layout_centerHorizontal="true"
+            android:background="@drawable/bg_usercenter_level"
             android:paddingBottom="2dp"
             android:paddingLeft="10dp"
             android:paddingRight="10dp"
-            android:background="@drawable/bg_usercenter_level"
-            android:textColor="@color/icons"
-            android:text="lv 12" />
+            android:paddingTop="2dp"
+            android:text="lv 12"
+            android:textColor="@color/icons" />
     </RelativeLayout>
 
     <RadioGroup
         android:id="@+id/group"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="40dp"
         android:layout_below="@id/header"
         android:layout_margin="2dp"
+        android:background="@color/colorPrimary"
         android:orientation="horizontal"
         android:padding="2dp">
 
+        <View
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1" />
+
         <android.support.v7.widget.AppCompatRadioButton
             android:id="@+id/cartoon"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
+            android:layout_width="70dp"
+            android:layout_height="match_parent"
+            android:background="@drawable/ic_usercenter_type"
             android:button="@null"
-            android:gravity="center"
             android:checked="true"
-            android:textColor="@color/checkable_text_color_selector"
-            android:text="@string/cartoon" />
+            android:gravity="center"
+            android:text="@string/cartoon"
+            android:textColor="@color/checkable_text_color_selector" />
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1" />
 
         <android.support.v7.widget.AppCompatRadioButton
             android:id="@+id/community"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
+            android:layout_width="70dp"
+            android:layout_height="match_parent"
+            android:background="@drawable/ic_usercenter_type"
             android:button="@null"
             android:gravity="center"
-            android:textColor="@color/checkable_text_color_selector"
-            android:text="@string/community" />
+            android:text="@string/community"
+            android:textColor="@color/checkable_text_color_selector" />
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1" />
 
         <android.support.v7.widget.AppCompatRadioButton
             android:id="@+id/friend"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
+            android:layout_width="70dp"
+            android:layout_height="match_parent"
+            android:background="@drawable/ic_usercenter_type"
             android:button="@null"
             android:gravity="center"
-            android:textColor="@color/checkable_text_color_selector"
-            android:text="@string/friend" />
+            android:text="@string/friend"
+            android:textColor="@color/checkable_text_color_selector" />
+
+        <View
+            android:id="@+id/space_right"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1" />
     </RadioGroup>
 
     <RadioGroup
         android:id="@+id/type"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="35dp"
         android:layout_below="@id/group"
+        android:background="@color/usercenter_subtype"
         android:orientation="horizontal"
         android:padding="2dp">
 
+        <View
+            android:id="@+id/space_left"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1" />
+
         <android.support.v7.widget.AppCompatRadioButton
             android:id="@+id/message"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
+            android:layout_width="70dp"
+            android:layout_height="match_parent"
+            android:background="@drawable/ic_usercenter_subtype"
             android:button="@null"
+            android:checked="true"
             android:gravity="center"
-            android:textColor="@color/checkable_text_color_selector"
-            android:text="@string/message" />
+            android:text="@string/message"
+            android:textColor="@color/checkable_text_color_selector" />
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1" />
 
         <android.support.v7.widget.AppCompatRadioButton
             android:id="@+id/dynamic"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
+            android:layout_width="70dp"
+            android:layout_height="match_parent"
+            android:background="@drawable/ic_usercenter_subtype"
             android:button="@null"
             android:gravity="center"
-            android:textColor="@color/checkable_text_color_selector"
-            android:text="@string/dynamic" />
+            android:text="@string/dynamic"
+            android:textColor="@color/checkable_text_color_selector" />
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1" />
 
         <android.support.v7.widget.AppCompatRadioButton
             android:id="@+id/work"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
+            android:layout_width="70dp"
+            android:layout_height="match_parent"
+            android:background="@drawable/ic_usercenter_subtype"
             android:button="@null"
             android:gravity="center"
-            android:textColor="@color/checkable_text_color_selector"
-            android:text="@string/work" />
+            android:text="@string/work"
+            android:textColor="@color/checkable_text_color_selector" />
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1" />
     </RadioGroup>
 
-    <View
-        android:id="@+id/center"
-        android:layout_width="1px"
-        android:layout_height="0dp"
-        android:layout_centerInParent="true" />
 
-    <android.support.v7.widget.AppCompatButton
-        android:id="@+id/addfriend"
-        android:layout_width="0dp"
-        android:layout_height="@dimen/usercenter_chatbutton_height"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentBottom="true"
-        android:layout_toLeftOf="@id/center"
-        android:background="@color/textGreen"
-        android:textColor="@color/icons"
-        android:text="加好友" />
-
-    <android.support.v7.widget.AppCompatButton
-        android:id="@+id/chat"
-        android:layout_width="0dp"
-        android:layout_height="@dimen/usercenter_chatbutton_height"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentBottom="true"
-        android:layout_toRightOf="@id/center"
-        android:background="@color/textGreen"
-        android:textColor="@color/icons"
-        android:text="私聊" />
 
     <com.malinskiy.superrecyclerview.SuperRecyclerView
         android:id="@+id/list"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_above="@id/layut_opeartion"
         android:layout_below="@id/type"
-        android:layout_above="@id/chat"
+        android:background="@color/icons"
         app:layout_empty="@layout/emptyview"></com.malinskiy.superrecyclerview.SuperRecyclerView>
 
     <com.malinskiy.superrecyclerview.SuperRecyclerView
         android:id="@+id/worklist"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_above="@id/layut_opeartion"
         android:layout_below="@id/type"
-        android:layout_above="@id/chat"
-        android:visibility="gone"
         android:background="@color/icons"
+        android:visibility="gone"
         app:layout_empty="@layout/emptyview"></com.malinskiy.superrecyclerview.SuperRecyclerView>
+
+    <android.support.v7.widget.AppCompatTextView
+        android:id="@+id/emptyview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/layut_opeartion"
+        android:layout_below="@id/type"
+        android:gravity="center"
+        android:text="什么也没有!"
+        android:textColor="@color/colorAccent"
+        android:visibility="gone" />
+
+    <RelativeLayout
+        android:id="@+id/empty"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/colorPrimaryLight"
+        android:clickable="true"
+        android:visibility="visible">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:textColor="@color/textColorSecondary"
+            android:text="需要登录才能查看个人中心!" />
+    </RelativeLayout>
 
 </RelativeLayout>

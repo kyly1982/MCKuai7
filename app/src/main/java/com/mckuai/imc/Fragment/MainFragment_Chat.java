@@ -52,10 +52,11 @@ public class MainFragment_Chat extends BaseFragment implements ConversationAdapt
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        if (null != view) {
-            container.removeView(view);
+        if (null == view) {
+//            container.removeView(view);
+            view = inflater.inflate(R.layout.fragment_main_chat, container, false);
         }
-        view = inflater.inflate(R.layout.fragment_main_chat, container, false);
+
         if (null == unloginHint) {
             unloginHint = (AppCompatTextView) view.findViewById(R.id.unlogin);
         }
@@ -69,14 +70,15 @@ public class MainFragment_Chat extends BaseFragment implements ConversationAdapt
         if (null != view && null == conversationList) {
             initView();
         }
-        //showData();
     }
 
     @Override
     public void onHiddenChanged(boolean hidden) {
         super.onHiddenChanged(hidden);
-        if (!hidden) {
-            showData();
+        if (null != view) {
+            if (!hidden) {
+                showData();
+            }
         }
     }
 
@@ -95,6 +97,7 @@ public class MainFragment_Chat extends BaseFragment implements ConversationAdapt
     private void showData() {
 
         if (MCKuai.instence.isLogin()) {
+
             unloginHint.setVisibility(View.GONE);
             conversationList.setVisibility(View.VISIBLE);
             if (null != RongIM.getInstance() && null != RongIM.getInstance().getRongIMClient()) {
@@ -170,8 +173,8 @@ public class MainFragment_Chat extends BaseFragment implements ConversationAdapt
         } else {
             unloginHint.setVisibility(View.VISIBLE);
             conversationList.setVisibility(View.GONE);
+            callLogin();
         }
-        callLogin();
     }
 
     private void callLogin() {

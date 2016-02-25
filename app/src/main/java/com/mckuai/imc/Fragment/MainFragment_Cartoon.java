@@ -81,12 +81,12 @@ public class MainFragment_Cartoon extends BaseFragment implements RadioGroup.OnC
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        if (null != view) {
-            container.removeView(view);
+        if (null == view) {
+            //container.removeView(view);
+            view = inflater.inflate(R.layout.fragment_main_cartoon, container, false);
         }
-        view = inflater.inflate(R.layout.fragment_main_cartoon, container, true);
         mCartoonType = getResources().getStringArray(R.array.cartoon_ordertype);
-        return mCartoonListView;
+        return view;
     }
 
     @Override
@@ -95,7 +95,17 @@ public class MainFragment_Cartoon extends BaseFragment implements RadioGroup.OnC
         if (null != getActivity() && null == mCartoonListView) {
             initView();
         }
-        showData();
+    }
+
+    @Override
+    public void onHiddenChanged(boolean hidden) {
+        super.onHiddenChanged(hidden);
+        if (null != view) {
+            if (!hidden) {
+                view.setVisibility(View.VISIBLE);
+                showData();
+            }
+        }
     }
 
     private void initView() {

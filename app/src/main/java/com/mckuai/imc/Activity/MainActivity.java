@@ -37,10 +37,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
     private AppCompatTextView title;
     private RadioGroup cartoonType;
     private AppCompatRadioButton mNewType;
-/*    private AppCompatRadioButton mCartoon;
-    private AppCompatRadioButton mChat;
-    private AppCompatRadioButton mCommunity;
-    private AppCompatRadioButton mMine;*/
 
 
     private boolean isCheckUpgread = false;
@@ -64,9 +60,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
     @Override
     protected void onResume() {
         super.onResume();
-        if (0 <= currentFragmentIndex && currentFragmentIndex < fragments.size()) {
-            mFragmentManager.beginTransaction().show(fragments.get(currentFragmentIndex));
-        }
+        mFragmentManager.beginTransaction().show(fragments.get(currentFragmentIndex)).commit();
         if (!isCheckUpgread) {
             checkUpgrade(true);
             isCheckUpgread = true;
@@ -95,7 +89,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
             MainFragment_Chat chatFragment = new MainFragment_Chat();
             MainFragment_Community communityFragment = new MainFragment_Community();
             MainFragment_Mine mineFragment = new MainFragment_Mine();
-            //Fragment_Mine mineFragment = new Fragment_Mine();
 
             cartoonFragment.setFragmentEventListener(this);
 
@@ -113,11 +106,11 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
             for (BaseFragment fragment : fragments) {
                 transaction.add(content.getId(), fragment);
             }
-            transaction.show(fragments.get(0));
-            for (int i = 1; i < 4; i++) {
+            for (int i = 0; i < 4; i++) {
                 transaction.hide(fragments.get(i));
             }
             transaction.commit();
+            currentFragmentIndex = 0;
         }
     }
 

@@ -62,14 +62,11 @@ public class MainFragment_Community extends BaseFragment
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        if (null != view){
-            container.removeView(view);
+        if (null == view) {
+            view = inflater.inflate(R.layout.fragment_main_community, container, false);
+//            container.removeView(view);
         }
-        view =  inflater.inflate(R.layout.fragment_main_community, container, false);
-        if (null == mForumList){
-            initView();
-            mNetEngine = MCKuai.instence.netEngine;
-        }
+
 
         return view;
     }
@@ -77,7 +74,20 @@ public class MainFragment_Community extends BaseFragment
     @Override
     public void onResume() {
         super.onResume();
-        showForum();
+        if (null == mForumList) {
+            initView();
+            mNetEngine = MCKuai.instence.netEngine;
+        }
+    }
+
+    @Override
+    public void onHiddenChanged(boolean hidden) {
+        super.onHiddenChanged(hidden);
+        if (null != view) {
+            if (!hidden) {
+                showForum();
+            }
+        }
     }
 
     private void initView(){

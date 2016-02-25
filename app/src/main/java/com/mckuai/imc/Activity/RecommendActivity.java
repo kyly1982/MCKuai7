@@ -5,12 +5,12 @@ import android.support.v7.widget.AppCompatTextView;
 import android.view.View;
 
 import com.mckuai.imc.Base.BaseActivity;
-import com.mckuai.imc.Fragment.MainFragment_Mine;
+import com.mckuai.imc.Fragment.RecommendFragment;
 import com.mckuai.imc.R;
 
 public class RecommendActivity extends BaseActivity {
     private AppCompatTextView title;
-    private MainFragment_Mine fragment;
+    private RecommendFragment fragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,7 +32,7 @@ public class RecommendActivity extends BaseActivity {
             initView();
         }
         if (null == fragment) {
-            fragment = new MainFragment_Mine();
+            fragment = new RecommendFragment();
             setContentFragment(R.id.context, fragment);
         }
     }

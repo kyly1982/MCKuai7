@@ -10,8 +10,8 @@ import com.mckuai.imc.Fragment.CreateCartoonFragment;
 import com.mckuai.imc.Fragment.MainFragment_Cartoon;
 import com.mckuai.imc.Fragment.MainFragment_Chat;
 import com.mckuai.imc.Fragment.MainFragment_Community;
-import com.mckuai.imc.Fragment.MainFragment_Mine;
 import com.mckuai.imc.Fragment.ProfileEditerFragment;
+import com.mckuai.imc.Fragment.RecommendFragment;
 import com.mckuai.imc.R;
 import com.umeng.analytics.MobclickAgent;
 
@@ -31,7 +31,7 @@ public class BaseFragment extends Fragment {
             mTitleResId = R.string.fragment_chat;
         } else if (this instanceof MainFragment_Community) {
             mTitleResId = R.string.fragment_community;
-        } else if (this instanceof MainFragment_Mine) {
+        } else if (this instanceof RecommendFragment) {
             mTitleResId = R.string.fragment_mine;
         } else if (this instanceof ProfileEditerFragment) {
             mTitleResId = R.string.fragment_profile;
