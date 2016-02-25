@@ -1,4 +1,4 @@
-<com.malinskiy.superrecyclerview.SuperRecyclerView xmlns:android="http://schemas.android.com/apk/res/android"
+<com.marshalchen.ultimaterecyclerview.UltimateRecyclerView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/cartoonlist"
     android:layout_width="match_parent"
@@ -6,4 +6,4 @@
     android:background="@color/colorPrimary"
     app:layout_empty="@layout/emptyview">
 
-</com.malinskiy.superrecyclerview.SuperRecyclerView>
+</com.marshalchen.ultimaterecyclerview.UltimateRecyclerView>

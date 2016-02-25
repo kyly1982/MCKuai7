@@ -74,7 +74,7 @@
         android:layout_alignParentBottom="true"
         android:layout_margin="@dimen/usercenter_item_layoutpadding"
         android:lines="1"
-        android:textColor="@color/textPrimary"
+        android:textColor="@color/textColorPrimary"
         android:textSize="@dimen/font_accent" />
 
     <View

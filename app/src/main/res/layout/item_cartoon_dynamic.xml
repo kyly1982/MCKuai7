@@ -17,7 +17,7 @@
         android:layout_marginTop="@dimen/usercenter_item_layoutpadding"
         android:layout_marginLeft="@dimen/usercenter_item_layoutpadding"
         android:text="评论了"
-        android:textColor="@color/textSecondary"
+        android:textColor="@color/textColorSecondary"
         android:textSize="@dimen/font_normal" />
 
     <android.support.v7.widget.AppCompatTextView
@@ -43,7 +43,7 @@
         android:layout_alignLeft="@id/dynamictype"
         android:layout_marginBottom="@dimen/usercenter_item_layoutpadding"
         android:text="01-20"
-        android:textColor="@color/textSecondary"
+        android:textColor="@color/textColorSecondary"
         android:textSize="@dimen/font_normal" />
 
     <android.support.v7.widget.AppCompatTextView
@@ -55,7 +55,7 @@
         android:layout_toLeftOf="@id/cartooncover"
         android:lines="2"
         android:text="炒鸡大狒狒炒鸡大狒狒炒鸡大狒狒炒鸡大狒狒炒鸡大狒狒炒鸡大狒狒炒鸡大狒狒炒鸡大狒狒炒鸡大狒狒"
-        android:textColor="@color/textPrimary"
+        android:textColor="@color/textColorPrimary"
         android:textSize="@dimen/font_accent" />
 
     <View

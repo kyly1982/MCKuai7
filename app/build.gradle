@@ -6,7 +6,7 @@ android {
 
     defaultConfig {
         applicationId "com.mckuai.imc"
-        minSdkVersion 14
+        minSdkVersion 15
         targetSdkVersion 21
         versionCode 29
         versionName "7.0"
@@ -74,4 +74,5 @@ dependencies {
     //compile 'com.github.florent37:hollyviewpager:1.0.1'
     compile 'com.github.ksoichiro:android-observablescrollview:1.5.2'
     compile 'com.yqritc:recyclerview-flexibledivider:1.2.8'
+    compile 'com.marshalchen.ultimaterecyclerview:library:0.4.0'
 }

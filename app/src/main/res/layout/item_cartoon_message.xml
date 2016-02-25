@@ -52,7 +52,7 @@
         android:layout_toRightOf="@id/usercover"
         android:lines="2"
         android:text="2222233332222333322223333222233332222333322223333222233333"
-        android:textColor="@color/textPrimary"
+        android:textColor="@color/textColorPrimary"
         android:textSize="@dimen/font_accent" />
 
     <android.support.v7.widget.AppCompatTextView
@@ -63,7 +63,7 @@
         android:layout_alignLeft="@id/username"
         android:layout_alignParentBottom="true"
         android:text="01-20"
-        android:textColor="@color/textSecondary"
+        android:textColor="@color/textColorSecondary"
         android:textSize="@dimen/font_normal" />
 
     <View

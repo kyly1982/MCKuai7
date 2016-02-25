@@ -25,7 +25,7 @@
         android:singleLine="true"
         android:layout_toRightOf="@id/usercover"
         android:layout_toLeftOf="@id/chat"
-        android:textColor="@color/textPrimary"
+        android:textColor="@color/textColorPrimary"
         android:text="小猪涉猎"/>
 
     <android.support.v7.widget.AppCompatTextView

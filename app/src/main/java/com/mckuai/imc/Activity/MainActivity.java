@@ -37,10 +37,16 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
     private AppCompatTextView title;
     private RadioGroup cartoonType;
     private AppCompatRadioButton mNewType;
+/*    private AppCompatRadioButton mCartoon;
+    private AppCompatRadioButton mChat;
+    private AppCompatRadioButton mCommunity;
+    private AppCompatRadioButton mMine;*/
+
+
     private boolean isCheckUpgread = false;
     private boolean isIMListenerInit = false;
     private long lastBlckPressTime = 0;
-    //private int currentFragmentIndex = 0;
+    private boolean isRecommendPressed = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,11 +81,11 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         title = (AppCompatTextView) findViewById(R.id.actionbar_title);
         cartoonType = (RadioGroup) findViewById(R.id.actionbar_cartoon_rg);
         mNewType = (AppCompatRadioButton) findViewById(R.id.cartoon_type_new);
+
         findViewById(R.id.nav_create).setOnClickListener(this);
         cartoonType.setVisibility(View.VISIBLE);
         nav.setVisibility(View.VISIBLE);
         nav.setOnCheckedChangeListener(this);
-        ((AppCompatRadioButton) findViewById(R.id.nav_cartoon)).setChecked(true);
         cartoonType.setOnCheckedChangeListener(this);
     }
 
@@ -150,6 +156,12 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         if (id == R.id.action_recommend) {
+            if (!isRecommendPressed) {
+                item.setIcon(R.drawable.ic_menu_recommend);
+                isRecommendPressed = true;
+            }
+            Intent intent = new Intent(this, RecommendActivity.class);
+            startActivity(intent);
             return true;
         }
 
@@ -211,7 +223,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
                             MobclickAgent.onEvent(this, "clickMine");
                             cartoonType.setVisibility(View.GONE);
                             title.setVisibility(View.VISIBLE);
-                            title.setText("消息");
+                            title.setText("我的");
                             currentFragmentIndex = 3;
                             break;
                     }

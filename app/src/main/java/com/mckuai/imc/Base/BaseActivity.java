@@ -28,6 +28,7 @@ import com.mckuai.imc.Activity.MainActivity;
 import com.mckuai.imc.Activity.PostActivity;
 import com.mckuai.imc.Activity.ProfileEditerActivity;
 import com.mckuai.imc.Activity.PublishPostActivity;
+import com.mckuai.imc.Activity.RecommendActivity;
 import com.mckuai.imc.Activity.SearchActivity;
 import com.mckuai.imc.Activity.UserCenterActivity;
 import com.mckuai.imc.BuildConfig;
@@ -98,6 +99,8 @@ public class BaseActivity extends AppCompatActivity implements NavigationView.On
             mTitleResId = R.string.activity_search;
         } else if (this instanceof UserCenterActivity) {
             mTitleResId = R.string.activity_usercenter;
+        } else if (this instanceof RecommendActivity) {
+            mTitleResId = R.string.activity_recommend;
         }
         PushAgent.getInstance(this).onAppStart();
     }

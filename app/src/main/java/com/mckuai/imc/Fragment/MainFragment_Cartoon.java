@@ -11,8 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RadioGroup;
 
-import com.malinskiy.superrecyclerview.OnMoreListener;
-import com.malinskiy.superrecyclerview.SuperRecyclerView;
+import com.marshalchen.ultimaterecyclerview.UltimateRecyclerView;
 import com.mckuai.imc.Activity.CartoonActivity;
 import com.mckuai.imc.Activity.LoginActivity;
 import com.mckuai.imc.Activity.UserCenterActivity;
@@ -31,13 +30,13 @@ import java.util.ArrayList;
 /**
  * A placeholder fragment containing a simple view.
  */
-public class MainFragment_Cartoon extends BaseFragment implements RadioGroup.OnCheckedChangeListener,
-        View.OnClickListener,
-        MCNetEngine.OnLoadCartoonListResponseListener
-        , MCNetEngine.OnRewardCartoonResponseListener,
-        OnMoreListener,
-        SwipeRefreshLayout.OnRefreshListener,
-        CartoonAdapter.OnItemClickListener {
+public class MainFragment_Cartoon extends BaseFragment implements RadioGroup.OnCheckedChangeListener
+        , View.OnClickListener
+        , MCNetEngine.OnLoadCartoonListResponseListener
+        , MCNetEngine.OnRewardCartoonResponseListener
+        , SwipeRefreshLayout.OnRefreshListener
+        , UltimateRecyclerView.OnLoadMoreListener
+        , CartoonAdapter.OnItemClickListener {
     private String[] mCartoonType;
     private ArrayList<Cartoon> mHotCartoon;
     private ArrayList<Cartoon> mNewCartoon;
@@ -50,7 +49,7 @@ public class MainFragment_Cartoon extends BaseFragment implements RadioGroup.OnC
     private boolean isNewEOF = false;
     private boolean isHotEOF = false;
 
-    private SuperRecyclerView mCartoonListView;
+    private UltimateRecyclerView mCartoonListView;
     private View view;
 
     public MainFragment_Cartoon() {
@@ -101,11 +100,14 @@ public class MainFragment_Cartoon extends BaseFragment implements RadioGroup.OnC
 
     private void initView() {
 
-        mCartoonListView = (SuperRecyclerView) view.findViewById(R.id.cartoonlist);
+        mCartoonListView = (UltimateRecyclerView) view.findViewById(R.id.cartoonlist);
         RecyclerView.LayoutManager manager = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
         mCartoonListView.setLayoutManager(manager);
-        mCartoonListView.setupMoreListener(this, 1);
-        mCartoonListView.setRefreshListener(this);
+        mCartoonListView.setEmptyView(R.layout.emptyview);
+        mCartoonListView.setDefaultOnRefreshListener(this);
+        mCartoonListView.setOnLoadMoreListener(this);
+       /* mCartoonListView.setupMoreListener(this, 1);
+        mCartoonListView.setRefreshListener(this);*/
     }
 
     private void loadData() {
@@ -220,8 +222,6 @@ public class MainFragment_Cartoon extends BaseFragment implements RadioGroup.OnC
 
     @Override
     public void onLoadCartoonListFailure(String msg) {
-        mCartoonListView.hideMoreProgress();
-        mCartoonListView.hideProgress();
         Snackbar.make(mCartoonListView, msg, Snackbar.LENGTH_SHORT).show();
         switch (typeIndex) {
             case 0:
@@ -235,8 +235,6 @@ public class MainFragment_Cartoon extends BaseFragment implements RadioGroup.OnC
 
     @Override
     public void onLoadCartoonListSuccess(ArrayList<Cartoon> cartoons) {
-        mCartoonListView.hideMoreProgress();
-        mCartoonListView.hideProgress();
         if (cartoons.isEmpty() || 1 == cartoons.size() || 1 == cartoons.get(cartoons.size() - 1).getId()) {
             switch (typeIndex) {
                 case 0:
@@ -279,15 +277,15 @@ public class MainFragment_Cartoon extends BaseFragment implements RadioGroup.OnC
     }
 
 
+
     @Override
-    public void onMoreAsked(int overallItemsCount, int itemsBeforeMore, int maxLastVisiblePosition) {
+    public void loadMore(int itemsCount, int maxLastVisiblePosition) {
         switch (typeIndex) {
             case 0:
                 if (!isNewEOF) {
                     loadData();
                 } else {
                     showMessage("已经没有更多了！", null, null);
-                    mCartoonListView.hideMoreProgress();
                 }
                 break;
             case 1:
@@ -295,7 +293,6 @@ public class MainFragment_Cartoon extends BaseFragment implements RadioGroup.OnC
                     loadData();
                 } else {
                     showMessage("已经没有更多了！", null, null);
-                    mCartoonListView.hideMoreProgress();
                 }
                 break;
         }

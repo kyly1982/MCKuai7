@@ -25,9 +25,9 @@ import io.rong.imkit.RongIM;
 import io.rong.imlib.RongIMClient;
 
 public class MainFragment_Mine extends BaseFragment implements MessageAdapter.OnItemClickListener, MCNetEngine.OnLoadMessageResponseListener, MCNetEngine.OnAddFriendResponseListener {
-
     public MainFragment_Mine() {
         mTitleResId = R.string.fragment_mine;
+        application = MCKuai.instence;
     }
 
     private MessageAdapter adapter;
@@ -35,6 +35,7 @@ public class MainFragment_Mine extends BaseFragment implements MessageAdapter.On
     private View view;
     private ArrayList<Cartoon> messages;
     private Cartoon cartoon;
+    private MCKuai application;
 
 
     @Override
@@ -45,7 +46,6 @@ public class MainFragment_Mine extends BaseFragment implements MessageAdapter.On
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         if (null == view) {
             view = inflater.inflate(R.layout.fragment_main_mine, container, false);
         }
@@ -85,7 +85,11 @@ public class MainFragment_Mine extends BaseFragment implements MessageAdapter.On
     }
 
     private void loadData() {
-        MCKuai.instence.netEngine.loadMessage(getActivity(), null, this);
+        if (application.isLogin()) {
+            application.netEngine.loadRecommend(getActivity(), application.user.getId(), messages, this);
+        } else {
+            application.netEngine.loadRecommend(getActivity(), null, messages, this);
+        }
     }
 
     private void showData() {
@@ -98,7 +102,6 @@ public class MainFragment_Mine extends BaseFragment implements MessageAdapter.On
 
     @Override
     public void OnAddFriendClick(Cartoon cartoon) {
-//        ((BaseActivity) getActivity()).showWarning("添加好友", null, null);
         if (MCKuai.instence.isLogin()) {
             MCKuai.instence.netEngine.addFriend(getActivity(), cartoon.getOwner().getId().intValue(), this);
         } else {
@@ -109,7 +112,6 @@ public class MainFragment_Mine extends BaseFragment implements MessageAdapter.On
 
     @Override
     public void OnItemClicked(Cartoon cartoon) {
-        ((BaseActivity) getActivity()).showWarning(cartoon.getContent(), null, null);
         if (null != cartoon) {
             Intent intent = new Intent(getActivity(), CartoonActivity.class);
             Bundle bundle = new Bundle();
@@ -121,7 +123,6 @@ public class MainFragment_Mine extends BaseFragment implements MessageAdapter.On
 
     @Override
     public void OnChatClick(Cartoon cartoon) {
-//        ((BaseActivity) getActivity()).showWarning("聊天", null, null);
         if (MCKuai.instence.isLogin()) {
             if (null != RongIM.getInstance() && null != RongIM.getInstance().getRongIMClient() && RongIM.getInstance().getRongIMClient().getCurrentConnectionStatus() == RongIMClient.ConnectionStatusListener.ConnectionStatus.CONNECTED) {
                 RongIM.getInstance().startPrivateChat(getActivity(), cartoon.getOwner().getName(), cartoon.getOwner().getNickEx());

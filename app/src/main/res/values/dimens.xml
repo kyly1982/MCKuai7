@@ -37,6 +37,9 @@
     <dimen name="createcartoon_button_addtalk_height">30dp</dimen>
     <dimen name="createcartoon_builder_width">325dp</dimen>
 
+    <!--主界面-->
+    <dimen name="actionbar_menu_buttonwidth">50dp</dimen>
+
     <!--个人中心-->
     <dimen name="usercenter_header_height">100dp</dimen>
     <dimen name="usercneter_usercover_width">64dp</dimen>

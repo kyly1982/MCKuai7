@@ -21,7 +21,7 @@
         android:layout_marginTop="@dimen/community_margin_content"
         android:gravity="center_vertical"
         android:lines="2"
-        android:textColor="@color/textPrimary" />
+        android:textColor="@color/textColorPrimary" />
 
     <android.support.v7.widget.AppCompatImageView
         android:id="@+id/postowner_cover"
@@ -41,7 +41,7 @@
         android:layout_centerHorizontal="true"
         android:singleLine="true"
         android:gravity="center"
-        android:textColor="@color/textSecondary"
+        android:textColor="@color/textColorSecondary"
         />
 
     <android.support.v7.widget.AppCompatTextView
@@ -55,7 +55,7 @@
         android:layout_toRightOf="@id/postowner_cover"
         android:singleLine="true"
         android:gravity="center_vertical"
-        android:textColor="@color/textSecondary"
+        android:textColor="@color/textColorSecondary"
         />
 
     <android.support.v7.widget.AppCompatTextView
@@ -67,7 +67,7 @@
         android:layout_alignParentRight="true"
         android:layout_marginRight="@dimen/community_margin_content"
         android:gravity="center_vertical"
-        android:textColor="@color/textSecondary"
+        android:textColor="@color/textColorSecondary"
         android:singleLine="true"
         />
 

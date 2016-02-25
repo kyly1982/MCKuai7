@@ -23,6 +23,7 @@
     <string name="activity_createpost">创建帖子</string>
     <string name="activity_search">搜索</string>
     <string name="activity_usercenter">个人中心</string>
+    <string name="activity_recommend">推荐</string>
 
     <!--fragment-->
     <string name="fragment_mine">我的</string>
@@ -31,6 +32,7 @@
     <string name="fragment_community">社区</string>
     <string name="fragment_createcartoon">创建漫画</string>
     <string name="fragment_profile">设置</string>
+    <string name="fragment_recommend">私你</string>
 
 
     <!--配置-->
@@ -81,6 +83,7 @@
     <!--菜单-->
     <string name="createcartoon_next">下一步</string>
     <string name="createcartoon_publish">发布</string>
+    <string name="action_main_recommend">推荐</string>
 
 
     <!--标题-->
@@ -162,7 +165,6 @@
     <string name="nav_chat">聊天</string>
     <string name="nav_community">社区</string>
     <string name="nav_mine">我的</string>
-
 
 
     <!--漫画首页-->

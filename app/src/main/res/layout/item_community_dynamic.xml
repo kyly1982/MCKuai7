@@ -22,7 +22,7 @@
         android:layout_marginRight="@dimen/usercenter_item_layoutpadding"
         android:gravity="center_vertical"
         android:text="5分钟前"
-        android:textColor="@color/textSecondary"
+        android:textColor="@color/textColorSecondary"
         android:textSize="@dimen/font_accent" />
 
     <android.support.v7.widget.AppCompatTextView
@@ -60,7 +60,7 @@
         android:layout_margin="@dimen/usercenter_item_layoutpadding"
         android:lines="1"
         android:text="回复内容"
-        android:textColor="@color/textPrimary"
+        android:textColor="@color/textColorPrimary"
         android:textSize="@dimen/font_accent" />
 
     <View

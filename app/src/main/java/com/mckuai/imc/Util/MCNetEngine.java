@@ -905,11 +905,19 @@ public class MCNetEngine {
         void onLoadMessageFailure(String msg);
     }
 
-    public void loadMessage(final Context context, Integer lastId, final OnLoadMessageResponseListener listener) {
+    public void loadRecommend(final Context context, Integer userId, ArrayList<Cartoon> cartoons, final OnLoadMessageResponseListener listener) {
         String url = domainName + context.getString(R.string.itnerface_loadmessage);
         RequestParams params = new RequestParams();
-        if (null != lastId) {
-            params.put("ids", lastId);
+        if (null != userId) {
+            params.put("userId", userId);
+        }
+        if (null != cartoons && !cartoons.isEmpty()) {
+            String ids = "";
+            for (Cartoon cartoon : cartoons) {
+                ids += cartoon.getId() + ",";
+            }
+            ids.subSequence(1, ids.length());
+            params.put("ids", ids);
         }
         httpClient.get(url, params, new JsonHttpResponseHandler() {
             @Override

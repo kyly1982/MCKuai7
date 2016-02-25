@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="MCRadioButoon">
+        <attr name="textColor_normal" format="color"></attr>
+        <attr name="textColor_checked" format="color"></attr>
+        <attr name="textSize" format="dimension"></attr>
+        <attr name="text" format="string"></attr>
+        <attr name="button_normal" format="reference"></attr>
+        <attr name="button_checked" format="reference"></attr>
+        <attr name="checked" format="boolean"></attr>
+    </declare-styleable>
+</resources>

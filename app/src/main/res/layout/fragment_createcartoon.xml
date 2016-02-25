@@ -52,7 +52,7 @@
         android:gravity="center"
         android:layout_below="@id/createcartoon_imagebuilder_layout"
         android:layout_above="@id/createcartoon_divier"
-        android:textColor="@color/textSecondary"
+        android:textColor="@color/textColorSecondary"
         android:text="@string/createcartoon_hint_step1"
         />
 

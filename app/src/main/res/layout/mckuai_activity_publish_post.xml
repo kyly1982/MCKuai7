@@ -33,7 +33,7 @@
                 android:drawablePadding="10dp"
                 android:paddingTop="10dp"
                 android:text="选择版块"
-                android:textColor="@color/textSecondary" />
+                android:textColor="@color/textColorSecondary" />
 
             <GridView
                 android:id="@+id/gv_forums"
@@ -53,7 +53,7 @@
                 android:layout_height="wrap_content"
                 android:drawablePadding="10dp"
                 android:text="选择类型"
-                android:textColor="@color/textSecondary" />
+                android:textColor="@color/textColorSecondary" />
 
             <GridView
                 android:id="@+id/gv_type"
@@ -81,7 +81,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="版块:"
-                android:textColor="@color/textSecondary" />
+                android:textColor="@color/textColorSecondary" />
 
             <TextView
                 android:id="@+id/tv_forum_Checked"
@@ -99,7 +99,7 @@
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
                 android:text="类型:"
-                android:textColor="@color/textSecondary" />
+                android:textColor="@color/textColorSecondary" />
 
             <TextView
                 android:id="@+id/tv_type_Checked"

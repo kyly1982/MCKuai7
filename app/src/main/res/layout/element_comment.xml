@@ -34,7 +34,7 @@
         android:layout_alignTop="@id/comment_username"
         android:layout_alignBottom="@id/comment_username"
         android:gravity="center_vertical"
-        android:textColor="@color/textSecondary"
+        android:textColor="@color/textColorSecondary"
         android:text="2分钟前"/>
 
     <android.support.v7.widget.AppCompatTextView
@@ -47,7 +47,7 @@
         android:maxLines="3"
         android:gravity="center_vertical"
         android:ellipsize="end"
-        android:textColor="@color/textPrimary"
+        android:textColor="@color/textColorPrimary"
         android:text="哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈"
         />
 

@@ -28,22 +28,26 @@
                 android:layout_height="match_parent"
                 android:orientation="horizontal"
                 android:layout_gravity="center"
-                android:visibility="gone">
+                android:visibility="visible">
                 <android.support.v7.widget.AppCompatRadioButton
                     android:id="@+id/cartoon_type_new"
-                    android:layout_width="wrap_content"
+                    android:layout_width="@dimen/actionbar_menu_buttonwidth"
                     android:layout_height="match_parent"
-                    android:padding="@dimen/margin_cartoon_layout"
+                    android:layout_marginRight="15dp"
                     android:checked="true"
+                    android:gravity="center"
                     android:textColor="@color/checkable_text_color_selector"
+                    android:background="@drawable/bg_main_cartoon_type"
                     android:text="@string/cartoon_type_new"
                     android:button="@null"/>
                 <android.support.v7.widget.AppCompatRadioButton
                     android:id="@+id/cartoon_type_hot"
-                    android:layout_width="wrap_content"
+                    android:layout_width="@dimen/actionbar_menu_buttonwidth"
                     android:layout_height="match_parent"
-                    android:padding="@dimen/margin_cartoon_layout"
+                    android:gravity="center"
+                    android:layout_marginLeft="15dp"
                     android:textColor="@color/checkable_text_color_selector"
+                    android:background="@drawable/bg_main_cartoon_type"
                     android:text="@string/cartoon_type_hot"
                     android:button="@null"/>
 
