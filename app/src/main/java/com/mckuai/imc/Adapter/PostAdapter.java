@@ -90,7 +90,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
 
                 if (0 == post.getUserId()) {
                     if (null != post.getIcon() && 10 < post.getIcon().length()){
-                        imageLoader.displayImage(post.getIcon(),holder.usercover);
+                        imageLoader.displayImage(post.getIcon(), holder.usercover, MCKuai.instence.getCircleOptions());
                     }
                     holder.username.setText(post.getForumName());
 
