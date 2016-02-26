@@ -225,6 +225,11 @@ public class UserCenterActivity extends BaseActivity
             case 36:
                 if (null == cartoonMessagePage) {
                     cartoonMessagePage = new Page();
+                } else {
+                    if (cartoonMessagePage.getPage() == cartoonMessagePage.getNextPage() && !isRefresh) {
+                        hideProgress();
+                        return;
+                    }
                 }
                 if (isRefresh) {
                     cartoonMessagePage.setPage(0);
@@ -234,6 +239,11 @@ public class UserCenterActivity extends BaseActivity
             case 34:
                 if (null == cartoonDynamicPage) {
                     cartoonDynamicPage = new Page();
+                } else {
+                    if (cartoonDynamicPage.getNextPage() == cartoonDynamicPage.getPage() && !isRefresh) {
+                        hideProgress();
+                        return;
+                    }
                 }
                 if (isRefresh) {
                     cartoonDynamicPage.setPage(0);
@@ -243,6 +253,11 @@ public class UserCenterActivity extends BaseActivity
             case 33:
                 if (null == cartoonWorkPage) {
                     cartoonWorkPage = new Page();
+                } else {
+                    if (cartoonWorkPage.getPage() == cartoonWorkPage.getNextPage() && !isRefresh) {
+                        hideProgress();
+                        return;
+                    }
                 }
                 if (isRefresh) {
                     cartoonWorkPage.setPage(0);
@@ -252,6 +267,11 @@ public class UserCenterActivity extends BaseActivity
             case 20:
                 if (null == communityMessagePage) {
                     communityMessagePage = new Page();
+                } else {
+                    if (communityMessagePage.getPage() == communityMessagePage.getNextPage() && !isRefresh) {
+                        hideProgress();
+                        return;
+                    }
                 }
                 if (isRefresh) {
                     communityMessagePage.setPage(0);
@@ -261,6 +281,9 @@ public class UserCenterActivity extends BaseActivity
             case 18:
                 if (null == communityDynamicPage) {
                     communityDynamicPage = new Page();
+                } else if (communityDynamicPage.getPage() == communityDynamicPage.getNextPage() && !isRefresh) {
+                    hideProgress();
+                    return;
                 }
                 if (isRefresh) {
                     communityDynamicPage.setPage(0);
@@ -270,6 +293,9 @@ public class UserCenterActivity extends BaseActivity
             case 17:
                 if (null == communityWorkPage) {
                     communityWorkPage = new Page();
+                } else if (communityWorkPage.getPage() == communityWorkPage.getNextPage() && !isRefresh) {
+                    hideProgress();
+                    return;
                 }
                 if (isRefresh) {
                     communityWorkPage.setPage(0);
@@ -280,6 +306,9 @@ public class UserCenterActivity extends BaseActivity
                 if (8 == (contentType & 8)){
                     if (null == friendPage) {
                         friendPage = new Page();
+                    } else if (friendPage.getPage() == friendPage.getNextPage() && !isRefresh) {
+                        hideProgress();
+                        return;
                     }
                     if (isRefresh) {
                         friendPage.setPage(0);
@@ -289,6 +318,7 @@ public class UserCenterActivity extends BaseActivity
                 break;
         }
     }
+
 
     private void showData() {
         switch (contentType) {
@@ -413,6 +443,12 @@ public class UserCenterActivity extends BaseActivity
         loadData(false);
     }
 
+    private void hideProgress() {
+        list.hideProgress();
+        list.hideMoreProgress();
+        work.hideProgress();
+        work.hideMoreProgress();
+    }
 
     @Override
     public void onCheckedChanged(RadioGroup group, int checkedId) {

@@ -4,7 +4,6 @@
     android:layout_height="match_parent"
     android:paddingLeft="@dimen/createcartoon_margin_builder"
     android:paddingRight="@dimen/createcartoon_margin_builder"
-    android:paddingTop="@dimen/createcartoon_margin_builder"
     android:background="@drawable/frame_black_normal">
 
     <android.support.v7.widget.AppCompatTextView
@@ -14,6 +13,8 @@
         android:drawablePadding="@dimen/createcartoon_frame_builder"
         android:drawableLeft="@mipmap/ic_createcartoon_hint"
         android:text="@string/createcartoon_hint_step3_1"
+        android:paddingTop="@dimen/createcartoon_margin_builder"
+        android:paddingBottom="@dimen/createcartoon_margin_builder"
         android:textColor="@color/icons"/>
 
     <android.support.v7.widget.AppCompatButton

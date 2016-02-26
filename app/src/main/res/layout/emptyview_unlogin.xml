@@ -4,12 +4,11 @@
     android:layout_height="match_parent">
 
     <android.support.v7.widget.AppCompatTextView
+        android:id="@+id/unlogin"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
-        android:layout_centerHorizontal="true"
-        android:textColor="@color/textColorSecondary"
-        android:text="@string/emptyview_hint"
-        android:layout_margin="@dimen/margin_cartoon_content"/>
+        android:text="登录后才能使用聊天功能！"
+        android:textColor="@color/textColorSecondary" />
 
 </RelativeLayout>

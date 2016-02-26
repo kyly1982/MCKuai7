@@ -23,13 +23,6 @@
     </FrameLayout>
 
 
-
-
-
-
-
-
-
     <ViewFlipper
         android:id="@+id/createcartoon_operation"
         android:layout_width="match_parent"

@@ -21,6 +21,7 @@
         android:src="@drawable/btn_createcartoon_storager"
         android:background="@null"
         android:text="@string/createcartoon_storage"
+        android:visibility="gone"
         android:textColor="@color/icons"/>
 
     <android.support.v7.widget.AppCompatImageButton

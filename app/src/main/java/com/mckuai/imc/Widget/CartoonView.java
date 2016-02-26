@@ -1,8 +1,6 @@
 package com.mckuai.imc.Widget;
 
 import android.content.Context;
-import android.support.v7.widget.AppCompatButton;
-import android.support.v7.widget.AppCompatCheckBox;
 import android.support.v7.widget.AppCompatImageButton;
 import android.support.v7.widget.AppCompatImageView;
 import android.support.v7.widget.AppCompatTextView;
@@ -29,14 +27,16 @@ import java.util.ArrayList;
 public class CartoonView extends FrameLayout implements View.OnClickListener{
     private AppCompatImageView userCover;
     private AppCompatImageButton share;
-    private AppCompatButton comment;
-    private AppCompatCheckBox prise;
+    private RelativeLayout comment;
+    private RelativeLayout prise;
     private AppCompatTextView userName;
     private AppCompatTextView time;
     private AppCompatTextView name;
     private AppCompatImageView image;
     private LinearLayout commentList;
     private LinearLayout rewardList;
+    private AppCompatTextView commentCount;
+    private AppCompatTextView priseCount;
 
     private ImageLoader loader;
     private OnCartoonElementClickListener listener;
@@ -94,11 +94,14 @@ public class CartoonView extends FrameLayout implements View.OnClickListener{
         userCover = (AppCompatImageView) findViewById(R.id.cartoon_usercover);
         time = (AppCompatTextView) findViewById(R.id.cartoon_createtime);
         share = (AppCompatImageButton) findViewById(R.id.cartoon_shar);
-        comment = (AppCompatButton) findViewById(R.id.cartoon_comment);
-        prise = (AppCompatCheckBox) findViewById(R.id.cartoon_prise);
+        comment = (RelativeLayout) findViewById(R.id.cartoon_comment);
+        prise = (RelativeLayout) findViewById(R.id.cartoon_prise);
         image = (AppCompatImageView) findViewById(R.id.cartoon_image);
         commentList = (LinearLayout) findViewById(R.id.cartoon_comment_root);
         userName = (AppCompatTextView) findViewById(R.id.cartoon_username);
+
+        commentCount = (AppCompatTextView) findViewById(R.id.commentCount);
+        priseCount = (AppCompatTextView) findViewById(R.id.priseCount);
 
 
         ViewTreeObserver viewTreeObserver = getViewTreeObserver();
@@ -128,8 +131,16 @@ public class CartoonView extends FrameLayout implements View.OnClickListener{
         }
         userName.setText(cartoon.getOwner().getNickEx());
         time.setText(cartoon.getTimeEx());
-        comment.setText(cartoon.getReplyNum() + "");
-        prise.setText(cartoon.getPrise() + "");
+        if (cartoon.getReplyNum() != 0) {
+            commentCount.setText(cartoon.getReplyNum() + "");
+        } else {
+            commentCount.setText("");
+        }
+        if (cartoon.getPrise() != 0) {
+            priseCount.setText(cartoon.getPrise() + "");
+        } else {
+            priseCount.setText("");
+        }
 
         if (isDetailed) {
             name = (AppCompatTextView) findViewById(R.id.cartoon_name);

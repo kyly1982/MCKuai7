@@ -8,7 +8,7 @@ android {
         applicationId "com.mckuai.imc"
         minSdkVersion 15
         targetSdkVersion 21
-        versionCode 29
+        versionCode 30
         versionName "7.0"
     }
     buildTypes {
@@ -47,6 +47,10 @@ android {
         mckuai_tencent {
             manifestPlaceholders = [UMENG_CHANNEL_VALUE: "mckuai_tencent", APP_NAME: "麦块"]
         }*/
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_7
+        targetCompatibility JavaVersion.VERSION_1_7
     }
 }
 

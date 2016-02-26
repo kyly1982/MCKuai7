@@ -2,8 +2,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:clickable="true"
-    android:background="@color/icons">
+    android:clickable="true">
 
     <View
         android:id="@+id/wait"
@@ -14,10 +13,9 @@
     <com.malinskiy.superrecyclerview.SuperRecyclerView
         android:id="@+id/waituserlist"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:layout_height="70dp"
         android:layout_toRightOf="@id/wait"
-        android:layout_alignTop="@id/wait"
-        android:layout_alignBottom="@id/wait"
+        android:background="@color/colorSecondary"
         app:layout_empty="@layout/emptyview">
 
     </com.malinskiy.superrecyclerview.SuperRecyclerView>
@@ -28,8 +26,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/wait"
+        android:background="@color/icons"
         app:layout_empty="@layout/emptyview"
-        android:visibility="gone"
         ></com.malinskiy.superrecyclerview.SuperRecyclerView>
 
     <android.support.v7.widget.AppCompatTextView

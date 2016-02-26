@@ -22,7 +22,7 @@
         android:maxLines="1"
         android:gravity="center_vertical"
         android:ellipsize="end"
-        android:textColor="@color/textGreen"
+        android:textColor="@color/textColorAccentr"
         android:text="大猩猩大猩猩大猩猩大猩猩大猩猩大猩猩大猩猩"/>
 
     <android.support.v7.widget.AppCompatTextView

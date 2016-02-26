@@ -27,43 +27,46 @@
             <RadioGroup
                 android:id="@+id/nav"
                 android:layout_width="match_parent"
-                android:layout_height="82dp"
+                android:layout_height="?attr/actionBarSize"
                 android:background="@null"
                 android:layout_alignParentBottom="true"
+                android:layout_marginTop="5dp"
                 android:orientation="horizontal">
 
                 <android.support.v7.widget.AppCompatRadioButton
                     android:id="@+id/nav_cartoon"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="8dp"
                     android:checked="true"
                     android:layout_weight="1"
                     android:button="@null"
-                    android:layout_marginTop="8dp"
                     android:drawableTop="@drawable/btn_nav_cartoon"
                     android:drawableBottom="@drawable/btn_nav_indicator"
                     android:gravity="center_horizontal"
                     android:background="@null"
                     android:textColor="@color/checkable_text_color_selector"
+                    android:textSize="10dp"
                     android:text="@string/nav_cartoon" />
 
                 <android.support.v7.widget.AppCompatRadioButton
                     android:id="@+id/nav_chat"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
+                    android:layout_marginTop="8dp"
                     android:layout_weight="1"
                     android:button="@null"
                     android:drawableTop="@drawable/btn_nav_chat"
                     android:drawableBottom="@drawable/btn_nav_indicator"
-                    android:gravity="center_horizontal|center_vertical"
-                    android:layout_marginTop="8dp"
+                    android:gravity="center_horizontal"
+                    android:textSize="10dp"
                     android:textColor="@color/checkable_text_color_selector"
                     android:text="@string/nav_chat" />
 
                 <android.support.v7.widget.AppCompatImageButton
                     android:id="@+id/nav_create"
-                    android:layout_width="60dp"
-                    android:layout_height="60dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:layout_marginLeft="6dp"
                     android:layout_marginRight="6dp"
                     android:layout_gravity="center"
@@ -72,26 +75,28 @@
                 <android.support.v7.widget.AppCompatRadioButton
                     android:id="@+id/nav_community"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="8dp"
                     android:layout_weight="1"
                     android:button="@null"
                     android:drawableTop="@drawable/btn_nav_community"
                     android:drawableBottom="@drawable/btn_nav_indicator"
                     android:gravity="center_horizontal"
-                    android:layout_marginTop="8dp"
+                    android:textSize="10dp"
                     android:textColor="@color/checkable_text_color_selector"
                     android:text="@string/nav_community" />
 
                 <android.support.v7.widget.AppCompatRadioButton
                     android:id="@+id/nav_mine"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="8dp"
                     android:layout_weight="1"
                     android:button="@null"
                     android:drawableTop="@drawable/btn_nav_mine"
                     android:drawableBottom="@drawable/btn_nav_indicator"
                     android:gravity="center_horizontal"
-                    android:layout_marginTop="8dp"
+                    android:textSize="10dp"
                     android:textColor="@color/checkable_text_color_selector"
                     android:text="@string/nav_mine" />
             </RadioGroup>

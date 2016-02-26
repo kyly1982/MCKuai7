@@ -3,13 +3,10 @@ package com.mckuai.imc.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
-import android.support.v4.view.GravityCompat;
-import android.support.v4.widget.DrawerLayout;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
-import android.view.WindowManager;
 
 import com.mckuai.imc.Base.BaseActivity;
 import com.mckuai.imc.Base.BaseFragment;
@@ -19,17 +16,19 @@ import com.mckuai.imc.R;
 import java.util.ArrayList;
 
 public class CreateCartoonActivity extends BaseActivity
-        implements NavigationView.OnNavigationItemSelectedListener,BaseFragment.OnFragmentEventListener {
+        implements NavigationView.OnNavigationItemSelectedListener
+        , BaseFragment.OnFragmentEventListener
+        , CreateCartoonFragment.OnBackgroundSetListener {
     CreateCartoonFragment createFragment;
     private MenuItem menu_next;
     private MenuItem menu_publish;
     private int currentStep = 0;
+    private boolean isBackgroundSet = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-                WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        //getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_normal);
         initToolbar(R.id.toolbar, 0, null);
         //initDrawer();
@@ -46,10 +45,11 @@ public class CreateCartoonActivity extends BaseActivity
     @Override
     protected void onResume() {
         super.onResume();
-        if (null == createFragment){
+        if (null == createFragment) {
             createFragment = new CreateCartoonFragment();
+            createFragment.setOnBackgroundSetListener(this);
             createFragment.setFragmentEventListener(this);
-            if (null == fragments){
+            if (null == fragments) {
                 fragments = new ArrayList<>(1);
             }
             fragments.add(createFragment);
@@ -58,7 +58,7 @@ public class CreateCartoonActivity extends BaseActivity
         }
     }
 
-    private void initView(){
+    private void initView() {
 
     }
 
@@ -74,11 +74,15 @@ public class CreateCartoonActivity extends BaseActivity
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()){
-            case  R.id.menu_cartoonaction_next:
+        if (!isBackgroundSet) {
+            showMessage("还未设置场景，创造场景后才能下一步", null, null);
+            return super.onOptionsItemSelected(item);
+        }
+        switch (item.getItemId()) {
+            case R.id.menu_cartoonaction_next:
                 currentStep++;
                 createFragment.showNextStep(currentStep);
-                if (3 == currentStep){
+                if (3 == currentStep) {
                     menu_next.setVisible(false);
                     menu_publish.setVisible(true);
                     getWindow().invalidatePanelMenu(Window.FEATURE_OPTIONS_PANEL);
@@ -96,29 +100,12 @@ public class CreateCartoonActivity extends BaseActivity
         return super.onOptionsItemSelected(item);
     }
 
-    @SuppressWarnings("StatementWithEmptyBody")
-    @Override
-    public boolean onNavigationItemSelected(MenuItem item) {
-        // Handle navigation view item clicks here.
-
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        drawer.closeDrawer(GravityCompat.START);
-        return true;
-    }
-
-   /* @Override
-    public void onActivityReenter(int resultCode, Intent data) {
-        super.onActivityReenter(resultCode, data);
-        if (resultCode == RESULT_OK){
-            createFragment.upload();
-        }
-    }*/
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (RESULT_OK == resultCode){
-            switch (requestCode){
+        if (RESULT_OK == resultCode) {
+            switch (requestCode) {
                 //上传
                 case 1:
                     createFragment.upload();
@@ -151,4 +138,8 @@ public class CreateCartoonActivity extends BaseActivity
 
     }
 
+    @Override
+    public void onBackgroundSet() {
+        isBackgroundSet = true;
+    }
 }

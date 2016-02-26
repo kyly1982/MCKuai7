@@ -15,7 +15,7 @@ public class RecommendActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_normal);
+        setContentView(R.layout.activity_normal_slidmenu);
         initToolbar(R.id.toolbar, 0, new View.OnClickListener() {
             @Override
             public void onClick(View v) {

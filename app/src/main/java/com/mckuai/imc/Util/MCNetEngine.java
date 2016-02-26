@@ -401,17 +401,15 @@ public class MCNetEngine {
      ***************************************************************************/
 
     public interface OnLoadCartoonListResponseListener {
-        void onLoadCartoonListSuccess(ArrayList<Cartoon> cartoons);
+        void onLoadCartoonListSuccess(ArrayList<Cartoon> cartoons, Page page);
 
         void onLoadCartoonListFailure(String msg);
     }
 
-    public void loadCartoonList(final Context context, String cartoonType, Integer lastCartoonId, final OnLoadCartoonListResponseListener listener) {
+    public void loadCartoonList(final Context context, String cartoonType, Page page, final OnLoadCartoonListResponseListener listener) {
         String url = domainName + context.getString(R.string.interface_loadcartoonlist);
         RequestParams params = new RequestParams();
-        if (lastCartoonId != null) {
-            params.put("id", lastCartoonId);
-        }
+        params.put("page", page.getNextPage());
         params.put("type", cartoonType);
         httpClient.get(context, url, params, new JsonHttpResponseHandler() {
             @Override
@@ -422,12 +420,12 @@ public class MCNetEngine {
                         Type type = new TypeToken<ArrayList<Cartoon>>() {
                         }.getType();
                         ArrayList<Cartoon> cartoons = gson.fromJson(ParseResponseResult.msg, type);
-                        listener.onLoadCartoonListSuccess(cartoons);
+                        Page page1 = gson.fromJson(result.pageBean, Page.class);
+                        listener.onLoadCartoonListSuccess(cartoons, page1);
                     } catch (Exception e) {
                         e.printStackTrace();
+                        listener.onLoadCartoonListFailure(e.getLocalizedMessage());
                     }
-
-
                 } else {
                     listener.onLoadCartoonListFailure(ParseResponseResult.msg);
                 }
@@ -935,6 +933,42 @@ public class MCNetEngine {
             @Override
             public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
                 listener.onLoadMessageFailure(throwable.getLocalizedMessage());
+            }
+        });
+    }
+
+    /***************************************************************************
+     * 推荐用户
+     ***************************************************************************/
+    public interface OnLoadRecommendUserListener {
+        void onLoadUserSuccess(ArrayList<User> users);
+
+        void onLoadUserFailure(String msg);
+    }
+
+    public void loadRecommendUser(final Context context, Integer userId, final OnLoadRecommendUserListener listener) {
+        String url = domainName + "interface.do?act=recPeople";
+        if (null != userId) {
+            url += ("&userId=" + userId);
+        }
+        httpClient.get(url, new JsonHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                //super.onSuccess(statusCode, headers, response);
+                ParseResponseResult result = new ParseResponseResult(context, response);
+                if (ParseResponseResult.isSuccess) {
+                    ArrayList<User> users = gson.fromJson(ParseResponseResult.msg, new TypeToken<ArrayList<User>>() {
+                    }.getType());
+                    listener.onLoadUserSuccess(users);
+                } else {
+                    listener.onLoadUserFailure(ParseResponseResult.msg);
+                }
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                //super.onFailure(statusCode, headers, responseString, throwable);
+                listener.onLoadUserFailure(throwable.getLocalizedMessage());
             }
         });
     }

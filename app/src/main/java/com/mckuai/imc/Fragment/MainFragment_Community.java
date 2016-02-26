@@ -111,7 +111,10 @@ public class MainFragment_Community extends BaseFragment
         mPostList.setRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-
+                if (null == page) {
+                    page = new Page();
+                } else page.setPage(0);
+                loadPostList();
             }
         });
 
@@ -158,6 +161,13 @@ public class MainFragment_Community extends BaseFragment
         }
     }
 
+    private void hideProgress() {
+        mForumList.hideProgress();
+        mForumList.hideMoreProgress();
+        mPostList.hideProgress();
+        mPostList.hideMoreProgress();
+    }
+
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
@@ -190,7 +200,8 @@ public class MainFragment_Community extends BaseFragment
 
     @Override
     public void onLoadForumListFailure(String msg) {
-
+        showMessage("加载板块失败，原因：" + msg, null, null);
+        hideProgress();
     }
 
     @Override
@@ -217,7 +228,8 @@ public class MainFragment_Community extends BaseFragment
 
     @Override
     public void onLoadPostListFailure(String msg) {
-
+        showMessage("加载失败，向下拉动以重新加载", null, null);
+        hideProgress();
     }
 
 

@@ -16,7 +16,7 @@ public class ProfileEditerActivity extends BaseActivity implements BaseFragment.
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_normal);
+        setContentView(R.layout.activity_normal_slidmenu);
         initToolbar(R.id.toolbar, 0, null);
         initDrawer();
         initFragment();

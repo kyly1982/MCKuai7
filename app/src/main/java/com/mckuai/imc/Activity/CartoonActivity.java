@@ -1,5 +1,6 @@
 package com.mckuai.imc.Activity;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
@@ -20,6 +21,8 @@ public class CartoonActivity extends BaseActivity implements CartoonView.OnCarto
     private RelativeLayout commentLayout;
     private CartoonView cartoonView;
     private boolean isRefreshNeed = true;
+    private boolean isReawrdSuccess = false;
+    private boolean isCommentSuccess = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -112,7 +115,7 @@ public class CartoonActivity extends BaseActivity implements CartoonView.OnCarto
         //分享
         if (null != cartoon) {
             UMImage image = new UMImage(this, cartoon.getImage());
-            share("发现大神作品，快来膜拜吧", cartoon.getContent(), getString(R.string.appdownload_url), image);
+            share("麦块漫画来了", "我刚在《麦块我的世界盒子》上发现一个在非常有意思的漫画，跟我来膜拜大神！", getString(R.string.shareCartoon) + cartoon.getId(), image);
         }
     }
 
@@ -141,6 +144,9 @@ public class CartoonActivity extends BaseActivity implements CartoonView.OnCarto
     public void onCommentCartoonSuccess() {
         Snackbar.make(commentEditer,"评论成功",Snackbar.LENGTH_SHORT).show();
         commentEditer.setText("");
+        cartoon.setReplyNum(cartoon.getReplyNum() + 1);
+        isCommentSuccess = true;
+        showData();
         hideCommentLayout();
     }
 
@@ -152,6 +158,9 @@ public class CartoonActivity extends BaseActivity implements CartoonView.OnCarto
     @Override
     public void onRewardCartoonSuccess() {
         Snackbar.make(commentEditer,"打赏成功！",Snackbar.LENGTH_SHORT).show();
+        cartoon.setPrise(cartoon.getPrise() + 1);
+        isReawrdSuccess = true;
+        showData();
     }
 
     @Override
@@ -169,5 +178,22 @@ public class CartoonActivity extends BaseActivity implements CartoonView.OnCarto
         this.cartoon = cartoon;
         isRefreshNeed = true;
         showData();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        Intent intent = new Intent();
+        if (isReawrdSuccess) {
+            intent.putExtra("REWARD", 1);
+        }
+        if (isCommentSuccess) {
+            intent.putExtra("COMMENT", 1);
+        }
+        if (isCommentSuccess || isReawrdSuccess) {
+            setResult(Activity.RESULT_OK, intent);
+        } else {
+            setResult(Activity.RESULT_CANCELED);
+        }
     }
 }

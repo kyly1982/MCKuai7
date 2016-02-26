@@ -13,7 +13,7 @@ import com.mckuai.imc.R;
 import com.mckuai.imc.Util.MCDaoHelper;
 import com.mckuai.imc.Util.MCNetEngine;
 import com.nostra13.universalimageloader.cache.disc.impl.UnlimitedDiskCache;
-import com.nostra13.universalimageloader.cache.disc.naming.Md5FileNameGenerator;
+import com.nostra13.universalimageloader.cache.disc.naming.HashCodeFileNameGenerator;
 import com.nostra13.universalimageloader.cache.memory.impl.UsingFreqLimitedMemoryCache;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -106,17 +106,22 @@ public class MCKuai extends Application {
                 //.memoryCacheExtraOptions(1080, 1080) //不指定，其将默认为屏幕宽度
                 .threadPoolSize(IMAGE_POOL_SIZE)
                 .threadPriority(Thread.NORM_PRIORITY - 2)
-                        //.denyCacheImageMultipleSizesInMemory()
-                        // 对于同一url只缓存一个图
-                .memoryCache(new UsingFreqLimitedMemoryCache(MEM_CACHE_SIZE)).memoryCacheSize(MEM_CACHE_SIZE)
-                .diskCache(new UnlimitedDiskCache(new File(getImageCacheDir())))
-                .diskCacheFileNameGenerator(new Md5FileNameGenerator())
+                .denyCacheImageMultipleSizesInMemory() // 对于同一url只缓存一个图
+                .memoryCache(new UsingFreqLimitedMemoryCache(MEM_CACHE_SIZE))
+                .memoryCacheSize(MEM_CACHE_SIZE)
+                        // .diskCache(new UnlimitedDiskCache(new File(getImageCacheDir())))
+                .diskCache(new UnlimitedDiskCache(new File(getImageCacheDir()), null, new HashCodeFileNameGenerator()))
+                        //.diskCacheFileNameGenerator(new Md5FileNameGenerator())
+                .diskCacheExtraOptions(1080, 1080, null)
+                .diskCacheSize(100 * 1024 * 1024)
                 .tasksProcessingOrder(QueueProcessingType.FIFO)
-                .defaultDisplayImageOptions(DisplayImageOptions.createSimple())
+                .defaultDisplayImageOptions(getNormalOptions())
                 .imageDownloader(new BaseImageDownloader(getApplicationContext(), CONNECT_TIME, TIME_OUT))
-                .writeDebugLogs().build();
+                        //.writeDebugLogs()//上线前移除
+                .build();
         ImageLoader.getInstance().init(configuration);
     }
+
 
     public void loginIM(RongIMClient.ConnectCallback listener) {
         if (null != listener && null != user && null != user.getToken()) {
@@ -221,12 +226,28 @@ public class MCKuai extends Application {
                     // 加载过程中显示的图片
                     .showStubImage(R.mipmap.ic_usercover_default)
                     .showImageForEmptyUri(R.mipmap.ic_usercover_default)
-                    .showImageOnFail(R.mipmap.ic_usercover_default).cacheInMemory(true).cacheOnDisk(true)
-                    .imageScaleType(ImageScaleType.EXACTLY).bitmapConfig(Bitmap.Config.RGB_565).delayBeforeLoading(150)
+                    .showImageOnFail(R.mipmap.ic_usercover_default)
+                    .cacheInMemory(true)
+                    .cacheOnDisk(true)
+                    .imageScaleType(ImageScaleType.EXACTLY)
+                    .bitmapConfig(Bitmap.Config.RGB_565)
+                    .delayBeforeLoading(150)
                     .displayer(new CircleBitmapDisplayer())// 此处需要修改大小
                     .build();
         }
         return circleOptions;
+    }
+
+    public DisplayImageOptions getNormalOptions() {
+        DisplayImageOptions options = new DisplayImageOptions
+                .Builder()
+                .cacheOnDisk(true)
+                .cacheInMemory(true)
+                .imageScaleType(ImageScaleType.EXACTLY)
+                .bitmapConfig(Bitmap.Config.RGB_565)
+                .delayBeforeLoading(150)
+                .build();
+        return options;
     }
 
 

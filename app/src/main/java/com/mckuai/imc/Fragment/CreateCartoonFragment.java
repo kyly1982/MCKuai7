@@ -39,7 +39,7 @@ import java.util.ArrayList;
 import java.util.Date;
 
 public class CreateCartoonFragment extends BaseFragment implements StepView_4.OnShareButtonClickedListener, StepView_1.OnButtonClickListener, StepView_2.OnWidgetCheckedListener,
-        StepView_3.OnTalkAddedListener, CartoonSceneAdapter.OnSceneSelectedListener,MCNetEngine.OnUploadImageResponseListener,MCNetEngine.OnUploadCartoonResponseListener {
+        StepView_3.OnTalkAddedListener, CartoonSceneAdapter.OnSceneSelectedListener, MCNetEngine.OnUploadImageResponseListener, MCNetEngine.OnUploadCartoonResponseListener {
 
     private ViewFlipper flipper;
     private ArrayList<String> talks;
@@ -54,9 +54,17 @@ public class CreateCartoonFragment extends BaseFragment implements StepView_4.On
     private AppCompatTextView builderHint;
     private SuperRecyclerView sceneList;
     private Point lastPoint;
+    private OnBackgroundSetListener listener;
 
+    public interface OnBackgroundSetListener {
+        void onBackgroundSet();
+    }
 
     public CreateCartoonFragment() {
+    }
+
+    public void setOnBackgroundSetListener(OnBackgroundSetListener listener) {
+        this.listener = listener;
     }
 
 
@@ -70,7 +78,6 @@ public class CreateCartoonFragment extends BaseFragment implements StepView_4.On
                 builderHint.setText(R.string.createcartoon_hint_step2);
                 break;
             case 2:
-                //cartoonBuilder.frozenWidget(true);
                 builderHint.setText(R.string.createcartoon_hint_step3);
                 break;
             case 3:
@@ -79,7 +86,6 @@ public class CreateCartoonFragment extends BaseFragment implements StepView_4.On
                 break;
         }
     }
-
 
 
     @Override
@@ -110,13 +116,13 @@ public class CreateCartoonFragment extends BaseFragment implements StepView_4.On
                     if (file.isFile() && file.exists()) {
                         Bitmap bitmap = BitmapUtil.decodeFile(imagePath + "/" + fileName, cartoonBuilder.getWidth(), cartoonBuilder.getHeight());
                         if (null != bitmap) {
-                            BitmapDrawable drawable = new BitmapDrawable(bitmap);
-                            //cartoonBuilder.setBackground(drawable);
+                            cartoonBuilder.setBackgroundDrawable(null);
                             cartoonBuilder.setBitmapBackground(bitmap);
+                            if (null != listener) {
+                                listener.onBackgroundSet();
+                            }
+                            return;
                         }
-//                        cartoonBuilder.setBitmapBackground(imagePath+"/"+fileName);
-//                        cartoonBuilder.postInvalidate();
-                    } else {
                         showMessage("未获取到照片！", null, null);
                     }
                     break;
@@ -124,9 +130,15 @@ public class CreateCartoonFragment extends BaseFragment implements StepView_4.On
                     //相册
                     if (null != data && null != data.getData()) {
                         Bitmap bitmap = BitmapUtil.decodeFile(getActivity(), data.getData(), cartoonBuilder.getWidth(), cartoonBuilder.getHeight());
-                        cartoonBuilder.setBitmapBackground(bitmap);
-                        /*cartoonBuilder.setBitmapBackground(data.getData());
-                        cartoonBuilder.postInvalidate();*/
+                        if (null != bitmap) {
+                            cartoonBuilder.setBackgroundDrawable(null);
+                            cartoonBuilder.setBitmapBackground(bitmap);
+                            if (null != listener) {
+                                listener.onBackgroundSet();
+                            }
+                            return;
+                        }
+
                     } else {
                         showMessage("未获取到图片！", null, null);
                     }
@@ -143,7 +155,6 @@ public class CreateCartoonFragment extends BaseFragment implements StepView_4.On
         cartoonBuilder = (TouchableLayout) view.findViewById(R.id.createcartoon_imagebuilder);
 
 
-
         sceneList = (SuperRecyclerView) view.findViewById(R.id.createcartoon_scenelist);
         cartoonBuilder.setOnFocusChangeListener(new TouchableLayout.OnFocusChangeListener() {
             @Override
@@ -151,8 +162,8 @@ public class CreateCartoonFragment extends BaseFragment implements StepView_4.On
                 lastPoint = point;
             }
         });
-
-        cartoonBuilder.setBackgroundResource(R.mipmap.ic_share_default);
+        //cartoonBuilder.setBitmapBackground(R.mipmap.bg_builder_default);
+        cartoonBuilder.setBackgroundResource(R.mipmap.bg_builder_default);
 
         StepView_1 step1 = new StepView_1(getActivity(), this);
         StepView_2 step2 = new StepView_2(getActivity(), this);
@@ -171,12 +182,9 @@ public class CreateCartoonFragment extends BaseFragment implements StepView_4.On
     }
 
 
-
-
     public void upload() {
         uploadCartoon(null);
     }
-
 
 
     private void showScene(ArrayList<Object> scenes) {
@@ -320,7 +328,7 @@ public class CreateCartoonFragment extends BaseFragment implements StepView_4.On
             uploadImage();
             return;
         } else {
-            MCKuai.instence.netEngine.uploadCartoon(getActivity(),cartoon,this);
+            MCKuai.instence.netEngine.uploadCartoon(getActivity(), cartoon, this);
         }
     }
 
@@ -331,7 +339,7 @@ public class CreateCartoonFragment extends BaseFragment implements StepView_4.On
             bitmaps.add(bitmap);
             MCKuai.instence.netEngine.uploadImage(getActivity(), bitmaps, this);
         } else {
-            Snackbar.make(cartoonBuilder,"错误，不能获取图片内容!",Snackbar.LENGTH_SHORT).show();
+            Snackbar.make(cartoonBuilder, "错误，不能获取图片内容!", Snackbar.LENGTH_SHORT).show();
         }
     }
 
@@ -342,11 +350,9 @@ public class CreateCartoonFragment extends BaseFragment implements StepView_4.On
     }
 
 
-
-
     @Override
     public void onUploadCartoonFailure(String msg) {
-        Snackbar.make(cartoonBuilder,msg,Snackbar.LENGTH_LONG).show();
+        Snackbar.make(cartoonBuilder, msg, Snackbar.LENGTH_LONG).show();
     }
 
     @Override
@@ -358,7 +364,7 @@ public class CreateCartoonFragment extends BaseFragment implements StepView_4.On
 
             }
         });
-        if (null != mOnFragmentEventListener){
+        if (null != mOnFragmentEventListener) {
             mOnFragmentEventListener.onFragmentAction(null);
         }
     }
@@ -377,7 +383,7 @@ public class CreateCartoonFragment extends BaseFragment implements StepView_4.On
 
     @Override
     public boolean onBackPressed() {
-        if (null != sceneList && View.VISIBLE == sceneList.getVisibility()){
+        if (null != sceneList && View.VISIBLE == sceneList.getVisibility()) {
             hideScene();
             return true;
         } else {

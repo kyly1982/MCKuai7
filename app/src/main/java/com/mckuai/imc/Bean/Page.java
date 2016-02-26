@@ -65,6 +65,10 @@ public class Page implements Serializable {
         } else return page;
     }
 
+    public int getPageCount() {
+        return pageCount;
+    }
+
     public Page clone(@NonNull Page page) {
         this.page = page.getPage();
         this.pageSize = page.getPageSize();

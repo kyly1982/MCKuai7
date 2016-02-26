@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.mckuai.imc.Base.MCKuai;
 import com.mckuai.imc.Bean.User;
 import com.mckuai.imc.R;
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -52,9 +53,15 @@ public class WaitUserAdapter extends RecyclerView.Adapter<WaitUserAdapter.ViewHo
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        User user = users.get(position);
-        loader.displayImage(user.getHeadImage(), holder.cover);
+        final User user = users.get(position);
+        loader.displayImage(user.getHeadImage(), holder.cover, MCKuai.instence.getCircleOptions());
         holder.name.setText(user.getNickEx());
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                listener.onItemClicked(user);
+            }
+        });
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {

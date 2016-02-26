@@ -1,5 +1,6 @@
 package com.mckuai.imc.Fragment;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
@@ -20,6 +21,7 @@ import com.mckuai.imc.Base.BaseActivity;
 import com.mckuai.imc.Base.BaseFragment;
 import com.mckuai.imc.Base.MCKuai;
 import com.mckuai.imc.Bean.Cartoon;
+import com.mckuai.imc.Bean.Page;
 import com.mckuai.imc.Bean.User;
 import com.mckuai.imc.R;
 import com.mckuai.imc.Util.MCNetEngine;
@@ -42,12 +44,12 @@ public class MainFragment_Cartoon extends BaseFragment implements RadioGroup.OnC
     private ArrayList<Cartoon> mNewCartoon;
     private CartoonAdapter mAdapter;
     private int typeIndex = 0;
-    private int lastId_new = 0;
-    private int lastId_hot = 0;
+    private Page pageNew = new Page();
+    private Page pageHot = new Page();
     private MCKuai mApplication = MCKuai.instence;
     private boolean isRefreshNeed = false;
-    private boolean isNewEOF = false;
-    private boolean isHotEOF = false;
+    private Cartoon commentCartoon;
+    private Cartoon priseCartoon;
 
     private UltimateRecyclerView mCartoonListView;
     private View view;
@@ -114,6 +116,7 @@ public class MainFragment_Cartoon extends BaseFragment implements RadioGroup.OnC
         RecyclerView.LayoutManager manager = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
         mCartoonListView.setLayoutManager(manager);
         mCartoonListView.setEmptyView(R.layout.emptyview);
+        mCartoonListView.enableLoadmore();
         mCartoonListView.setDefaultOnRefreshListener(this);
         mCartoonListView.setOnLoadMoreListener(this);
        /* mCartoonListView.setupMoreListener(this, 1);
@@ -123,10 +126,10 @@ public class MainFragment_Cartoon extends BaseFragment implements RadioGroup.OnC
     private void loadData() {
         switch (typeIndex) {
             case 0:
-                mApplication.netEngine.loadCartoonList(getActivity(), mCartoonType[typeIndex], lastId_new, this);
+                mApplication.netEngine.loadCartoonList(getActivity(), mCartoonType[typeIndex], pageNew, this);
                 break;
             case 1:
-                mApplication.netEngine.loadCartoonList(getActivity(), mCartoonType[typeIndex], lastId_hot, this);
+                mApplication.netEngine.loadCartoonList(getActivity(), mCartoonType[typeIndex], pageHot, this);
                 break;
         }
     }
@@ -135,22 +138,24 @@ public class MainFragment_Cartoon extends BaseFragment implements RadioGroup.OnC
         if (null == mAdapter) {
             mAdapter = new CartoonAdapter(getActivity(), this);
             mCartoonListView.setAdapter(mAdapter);
-        }
-        switch (typeIndex) {
-            case 0:
-                if (null != mNewCartoon) {
-                    mAdapter.setData(mNewCartoon);
-                } else {
-                    loadData();
-                }
-                break;
-            case 1:
-                if (null != mHotCartoon) {
-                    mAdapter.setData(mHotCartoon);
-                } else {
-                    loadData();
-                }
-                break;
+            loadData();
+        } else {
+            switch (typeIndex) {
+                case 0:
+                    if (null != mNewCartoon) {
+                        mAdapter.setData(mNewCartoon);
+                    } else {
+                        loadData();
+                    }
+                    break;
+                case 1:
+                    if (null != mHotCartoon) {
+                        mAdapter.setData(mHotCartoon);
+                    } else {
+                        loadData();
+                    }
+                    break;
+            }
         }
 
         if (isRefreshNeed) {
@@ -233,31 +238,14 @@ public class MainFragment_Cartoon extends BaseFragment implements RadioGroup.OnC
     @Override
     public void onLoadCartoonListFailure(String msg) {
         Snackbar.make(mCartoonListView, msg, Snackbar.LENGTH_SHORT).show();
-        switch (typeIndex) {
-            case 0:
-                isNewEOF = true;
-                break;
-            case 1:
-                isHotEOF = true;
-                break;
-        }
     }
 
     @Override
-    public void onLoadCartoonListSuccess(ArrayList<Cartoon> cartoons) {
-        if (cartoons.isEmpty() || 1 == cartoons.size() || 1 == cartoons.get(cartoons.size() - 1).getId()) {
-            switch (typeIndex) {
-                case 0:
-                    isNewEOF = true;
-                    break;
-                case 1:
-                    isHotEOF = true;
-                    break;
-            }
-        }
+    public void onLoadCartoonListSuccess(ArrayList<Cartoon> cartoons, Page page) {
+
         switch (typeIndex) {
             case 0:
-                lastId_new = cartoons.get(cartoons.size() - 1).getId();
+                pageNew = page;
                 if (null == mNewCartoon) {
                     mNewCartoon = cartoons;
                 } else {
@@ -265,7 +253,7 @@ public class MainFragment_Cartoon extends BaseFragment implements RadioGroup.OnC
                 }
                 break;
             case 1:
-                lastId_hot = cartoons.get(cartoons.size() - 1).getId();
+                pageHot = page;
                 if (null == mHotCartoon) {
                     mHotCartoon = cartoons;
                 } else {
@@ -279,11 +267,43 @@ public class MainFragment_Cartoon extends BaseFragment implements RadioGroup.OnC
     @Override
     public void onRewardCartoonSuccess() {
         Snackbar.make(mCartoonListView, "打赏成功!", Snackbar.LENGTH_LONG).show();
+        updateDate(priseCartoon, true);
     }
 
     @Override
     public void onRewardaCartoonFailure(String msg) {
         Snackbar.make(mCartoonListView, "打赏失败!", Snackbar.LENGTH_LONG).show();
+    }
+
+    private void updateDate(Cartoon newCartoon, boolean isReward) {
+        switch (typeIndex) {
+            case 0:
+                for (Cartoon cartoon : mNewCartoon) {
+                    if (cartoon.getId() == newCartoon.getId()) {
+                        if (isReward) {
+                            cartoon.setPrise(cartoon.getPrise() + 1);
+                        } else {
+                            cartoon.setReplyNum(cartoon.getReplyNum() + 1);
+                        }
+                        mAdapter.notifyDataSetChanged();
+                        break;
+                    }
+                }
+                break;
+            case 1:
+                for (Cartoon cartoon : mHotCartoon) {
+                    if (cartoon.getId() == newCartoon.getId()) {
+                        if (isReward) {
+                            cartoon.setPrise(cartoon.getPrise() + 1);
+                        } else {
+                            cartoon.setReplyNum(cartoon.getReplyNum() + 1);
+                        }
+                        mAdapter.notifyDataSetChanged();
+                        break;
+                    }
+                }
+                break;
+        }
     }
 
 
@@ -292,14 +312,14 @@ public class MainFragment_Cartoon extends BaseFragment implements RadioGroup.OnC
     public void loadMore(int itemsCount, int maxLastVisiblePosition) {
         switch (typeIndex) {
             case 0:
-                if (!isNewEOF) {
+                if (pageNew.getPageCount() > pageNew.getPage()) {
                     loadData();
                 } else {
                     showMessage("已经没有更多了！", null, null);
                 }
                 break;
             case 1:
-                if (!isHotEOF) {
+                if (pageHot.getPageCount() > pageHot.getPage()) {
                     loadData();
                 } else {
                     showMessage("已经没有更多了！", null, null);
@@ -313,12 +333,12 @@ public class MainFragment_Cartoon extends BaseFragment implements RadioGroup.OnC
         switch (typeIndex) {
             case 0:
                 mNewCartoon.clear();
-                isNewEOF = false;
+                pageNew.setPage(0);
                 loadData();
                 break;
             case 1:
                 mHotCartoon.clear();
-                isHotEOF = false;
+                pageHot.setPage(0);
                 loadData();
                 break;
         }
@@ -329,25 +349,27 @@ public class MainFragment_Cartoon extends BaseFragment implements RadioGroup.OnC
     public void onCommentClick(Cartoon cartoon) {
         Intent intent = new Intent(getActivity(), CartoonActivity.class);
         Bundle bundle = new Bundle();
+        commentCartoon = cartoon;
         bundle.putSerializable(getString(R.string.cartoondetail_tag_cartoon), cartoon);
         intent.putExtras(bundle);
-        startActivity(intent);
+        startActivityForResult(intent, 99);
     }
 
     @Override
     public void onItemClick(Cartoon cartoon) {
         Intent intent = new Intent(getActivity(), CartoonActivity.class);
         Bundle bundle = new Bundle();
+        commentCartoon = cartoon;
         bundle.putSerializable(getString(R.string.cartoondetail_tag_cartoon), cartoon);
         intent.putExtras(bundle);
-        startActivity(intent);
+        startActivityForResult(intent, 99);
     }
 
     @Override
     public void onShareClick(Cartoon cartoon) {
         if (null != cartoon) {
             UMImage image = new UMImage(getActivity(), cartoon.getImage());
-            ((BaseActivity) getActivity()).share(cartoon.getContent(), "我刚通过《麦块我的世界盒子》制作了一部大作，快来膜拜吧！", getString(R.string.appdownload_url), image);
+            ((BaseActivity) getActivity()).share("麦块漫画来了", "我刚在《麦块我的世界盒子》上发现一个在非常有意思的漫画，跟我来膜拜大神！", getString(R.string.shareCartoon) + cartoon.getId(), image);
         }
     }
 
@@ -357,6 +379,40 @@ public class MainFragment_Cartoon extends BaseFragment implements RadioGroup.OnC
             Intent intent = new Intent(getActivity(), UserCenterActivity.class);
             intent.putExtra(getString(R.string.usercenter_tag_userid), user.getId().intValue());
             startActivity(intent);
+        }
+    }
+
+    @Override
+    public void onPriseClick(Cartoon cartoon) {
+        priseCartoon = cartoon;
+        if (mApplication.isLogin()) {
+            rewardCartoon(cartoon);
+        } else {
+            ((BaseActivity) getActivity()).callLogin(3);
+        }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (Activity.RESULT_OK == resultCode) {
+            switch (requestCode) {
+                case 3:
+                    rewardCartoon(priseCartoon);
+                    break;
+                case 99:
+                    if (null != data) {
+                        int reward = data.getIntExtra("REWARD", -1);
+                        int comment = data.getIntExtra("COMMENT", -1);
+                        if (-1 != reward) {
+                            updateDate(commentCartoon, true);
+                        }
+                        if (-1 != comment) {
+                            updateDate(commentCartoon, false);
+                        }
+                    }
+                    break;
+            }
         }
     }
 }

@@ -244,6 +244,7 @@
 
     <!--分享-->
     <string name="appdownload_url">http://www.mckuai.com/down.html</string>
+    <string name="shareCartoon">http://api.mckuai.com/cartoon/</string>
 
 
 </resources>

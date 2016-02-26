@@ -10,71 +10,59 @@
 
     <include layout="@layout/actionbar_normal_layout" />
 
-    <android.support.v4.widget.DrawerLayout
-        android:id="@+id/drawer_layout"
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/colorPrimary"
-        android:fitsSystemWindows="true"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-        <RelativeLayout
+        <com.mckuai.imc.Widget.CartoonView
+            android:id="@+id/cartoon"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:background="@color/icons"></com.mckuai.imc.Widget.CartoonView>
 
-            <com.mckuai.imc.Widget.CartoonView
-                android:id="@+id/cartoon"
-                android:layout_width="match_parent"
+        <RelativeLayout
+            android:id="@+id/comment_layout"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_alignParentBottom="true"
+            android:background="@color/colorBlack_1"
+            android:paddingRight="@dimen/margin_cartoon_content"
+            android:paddingLeft="@dimen/margin_cartoon_content"
+            android:paddingTop="5dp"
+            android:paddingBottom="5dp"
+            android:visibility="gone">
+
+            <android.support.v7.widget.AppCompatButton
+                android:id="@+id/commentcartoon"
+                android:layout_width="33dp"
                 android:layout_height="match_parent"
-                android:background="@color/icons"></com.mckuai.imc.Widget.CartoonView>
-
-            <RelativeLayout
-                android:id="@+id/comment_layout"
-                android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:layout_alignParentBottom="true"
-                android:background="@color/colorBlack_1"
-                android:paddingRight="@dimen/margin_cartoon_content"
-                android:paddingLeft="@dimen/margin_cartoon_content"
-                android:paddingTop="5dp"
-                android:paddingBottom="5dp"
-                android:visibility="gone">
-
-                <android.support.v7.widget.AppCompatButton
-                    android:id="@+id/commentcartoon"
-                    android:layout_width="33dp"
-                    android:layout_height="match_parent"
-                    android:layout_alignParentRight="true"
-                    android:background="@drawable/bg_green_corner"
-                    android:text="评论"
-                    android:visibility="visible"
-                    android:textSize="@dimen/font_hint" />
+                android:layout_alignParentRight="true"
+                android:background="@drawable/bg_green_corner"
+                android:text="评论"
+                android:visibility="visible"
+                android:textSize="@dimen/font_hint" />
 
 
-
-                <android.support.v7.widget.AppCompatEditText
-                    android:id="@+id/commentediter"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_alignParentLeft="true"
-                    android:layout_toLeftOf="@id/commentcartoon"
-                    android:layout_marginRight="5dp"
-                    android:paddingLeft="5dp"
-                    android:paddingRight="5dp"
-                    android:background="@drawable/bg_corner_lightgreay"
-                    android:hint="输入评论"
-                    android:textColorHint="@color/colorAccent"
-                    android:textColor="@color/icons"
-                    android:singleLine="true" />
-            </RelativeLayout>
-
-
+            <android.support.v7.widget.AppCompatEditText
+                android:id="@+id/commentediter"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_alignParentLeft="true"
+                android:layout_toLeftOf="@id/commentcartoon"
+                android:layout_marginRight="5dp"
+                android:paddingLeft="5dp"
+                android:paddingRight="5dp"
+                android:background="@drawable/bg_corner_lightgreay"
+                android:hint="输入评论"
+                android:textColorHint="@color/colorAccent"
+                android:textColor="@color/icons"
+                android:singleLine="true" />
         </RelativeLayout>
 
 
-        <include layout="@layout/slidingview_layout" />
-
-    </android.support.v4.widget.DrawerLayout>
+    </RelativeLayout>
 
 </android.support.design.widget.CoordinatorLayout>
 

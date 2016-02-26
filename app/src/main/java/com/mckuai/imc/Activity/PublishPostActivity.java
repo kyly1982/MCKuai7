@@ -94,7 +94,12 @@ public class PublishPostActivity extends BaseActivity implements OnClickListener
         mClient = new AsyncHttpClient();
         Intent intent = getIntent();
         mForums = (ArrayList<ForumInfo>) intent.getSerializableExtra("FORUM_LIST");
-        initToolbar(R.id.toolbar, 0, null);
+        initToolbar(R.id.toolbar, 0, new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         setTitle("发帖");
     }
