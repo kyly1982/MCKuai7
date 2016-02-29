@@ -3,6 +3,7 @@ package com.mckuai.imc.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
+import android.support.v7.widget.AppCompatTextView;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -24,6 +25,7 @@ public class CreateCartoonActivity extends BaseActivity
     private MenuItem menu_publish;
     private int currentStep = 0;
     private boolean isBackgroundSet = false;
+    public AppCompatTextView title;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,7 +61,8 @@ public class CreateCartoonActivity extends BaseActivity
     }
 
     private void initView() {
-
+        title = (AppCompatTextView) findViewById(R.id.actionbar_title);
+        title.setText("创作");
     }
 
 
@@ -69,6 +72,9 @@ public class CreateCartoonActivity extends BaseActivity
         getMenuInflater().inflate(R.menu.menu_createcartoon, menu);
         menu_next = menu.findItem(R.id.menu_cartoonaction_next);
         menu_publish = menu.findItem(R.id.menu_cartoonaction_publish);
+        menu_publish.setVisible(false);
+        menu_next.setVisible(true);
+        menu_next.setTitle("下一步");
         return true;
     }
 

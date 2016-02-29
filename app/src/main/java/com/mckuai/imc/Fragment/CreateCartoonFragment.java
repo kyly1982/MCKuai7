@@ -19,6 +19,7 @@ import android.view.ViewGroup;
 import android.widget.ViewFlipper;
 
 import com.malinskiy.superrecyclerview.SuperRecyclerView;
+import com.mckuai.imc.Activity.CartoonActivity;
 import com.mckuai.imc.Adapter.CartoonSceneAdapter;
 import com.mckuai.imc.Base.BaseFragment;
 import com.mckuai.imc.Base.MCKuai;
@@ -356,14 +357,20 @@ public class CreateCartoonFragment extends BaseFragment implements StepView_4.On
     }
 
     @Override
-    public void onUploadCartoonSuccess() {
-        //Snackbar.make(cartoonBuilder,"上传成功",Snackbar.LENGTH_SHORT).show();
-        showMessage("上传成功", "查看", new View.OnClickListener() {
+    public void onUploadCartoonSuccess(int cartoonId) {
+        /*showMessage("上传成功", "查看", new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
             }
-        });
+        });*/
+        Cartoon cartoon = new Cartoon();
+        cartoon.setId(cartoonId);
+        Intent intent = new Intent(getActivity(), CartoonActivity.class);
+        Bundle bundle = new Bundle();
+        bundle.putSerializable(getResources().getString(R.string.cartoondetail_tag_cartoon), cartoon);
+        intent.putExtras(bundle);
+        getActivity().startActivity(intent);
         if (null != mOnFragmentEventListener) {
             mOnFragmentEventListener.onFragmentAction(null);
         }

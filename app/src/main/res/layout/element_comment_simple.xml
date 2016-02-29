@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <android.support.v7.widget.AppCompatImageView
+        android:id="@+id/comment_usercover"
+        android:layout_width="@dimen/usercover_width_small"
+        android:layout_height="@dimen/usercover_width_small"
+        android:layout_alignParentLeft="true"
+        android:layout_margin="@dimen/margin_cartoon_content" />
+
+
+    <android.support.v7.widget.AppCompatTextView
+        android:id="@+id/comment_username"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@id/comment_usercover"
+        android:layout_alignBottom="@id/comment_usercover"
+        android:layout_toRightOf="@id/comment_usercover"
+        android:maxLength="6"
+        android:singleLine="true"
+        android:gravity="center_vertical"
+        android:ellipsize="end"
+        android:textColor="@color/textColorAccentr"
+        android:text="大猩猩大猩猩大猩猩大猩猩大猩猩大猩猩大猩猩" />
+
+    <android.support.v7.widget.AppCompatTextView
+        android:id="@+id/comment_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="@dimen/margin_cartoon_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignTop="@id/comment_username"
+        android:layout_alignBottom="@id/comment_username"
+        android:gravity="center_vertical"
+        android:textColor="@color/textColorSecondary"
+        android:text="2分钟前" />
+
+    <android.support.v7.widget.AppCompatTextView
+        android:id="@+id/comment_content"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@id/comment_username"
+        android:layout_toLeftOf="@id/comment_time"
+        android:layout_alignTop="@id/comment_username"
+        android:layout_alignBottom="@id/comment_username"
+        android:paddingLeft="5dp"
+        android:paddingRight="5dp"
+        android:singleLine="true"
+        android:gravity="center_vertical"
+        android:ellipsize="end"
+        android:textColor="@color/textColorPrimary"
+        android:text="哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈" />
+
+</RelativeLayout>

@@ -44,7 +44,7 @@
     <dimen name="usercenter_header_height">100dp</dimen>
     <dimen name="usercneter_usercover_width">64dp</dimen>
     <dimen name="usercenter_chatbutton_height">40dp</dimen>
-    <dimen name="usercenter_item_cartoon_height">78dp</dimen>
+    <dimen name="usercenter_item_cartoon_height">81dp</dimen>
     <dimen name="usercenter_item_layoutpadding">5dp</dimen>
     <dimen name="usercenter_item_catoon_imagewidth">50dp</dimen>
     <dimen name="usercenter_item_cartoon_usercover_width">32dp</dimen>
@@ -52,4 +52,8 @@
     <dimen name="usercenter_item_community_height">87dp</dimen>
     <dimen name="usercenter_item_friend_height">68dp</dimen>
     <dimen name="usercenter_item_friend_padding">9dp</dimen>
+
+    <!--step1-->
+    <dimen name="createcartoon_step1_buttonwidth">60dp</dimen>
+    <dimen name="createcartoon_step1_buttonpadding">35dp</dimen>
 </resources>

@@ -24,17 +24,19 @@
         android:visibility="gone"
         android:textColor="@color/icons"/>
 
-    <android.support.v7.widget.AppCompatImageButton
+
+    <android.support.v7.widget.AppCompatButton
         android:id="@+id/createcartoon_photo"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="@dimen/createcartoon_step1_buttonwidth"
+        android:layout_height="@dimen/createcartoon_step1_buttonwidth"
         android:layout_marginRight="@dimen/createcartoon_margin_step1_button"
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
-        android:src="@drawable/btn_createcartoon_photo"
-        android:background="@null"
+        android:paddingTop="@dimen/createcartoon_step1_buttonpadding"
         android:textColor="@color/icons"
-        android:text="@string/createcartoon_photo"/>
+        android:text="我的相册"
+        android:textSize="@dimen/font_hint"
+        android:background="@drawable/btn_createcartoon_photo" />
 
 
 

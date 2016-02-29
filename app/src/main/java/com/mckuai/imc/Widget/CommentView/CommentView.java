@@ -25,15 +25,20 @@ public class CommentView extends FrameLayout {
 
     private ImageLoader imageLoader;
 
-    public CommentView(Context context) {
+    public CommentView(Context context, boolean isSimpleLayout) {
         super(context);
-        initView(context);
+        initView(context, isSimpleLayout);
         addView(view);
         imageLoader = ImageLoader.getInstance();
     }
 
-    private void initView(Context context) {
-        view = LayoutInflater.from(context).inflate(R.layout.element_comment, this, false);
+    private void initView(Context context, boolean isSimpleLayout) {
+        if (isSimpleLayout) {
+            view = LayoutInflater.from(context).inflate(R.layout.element_comment_simple, this, false);
+        } else {
+            view = LayoutInflater.from(context).inflate(R.layout.element_comment, this, false);
+        }
+
         cover = (AppCompatImageView) view.findViewById(R.id.comment_usercover);
         name = (AppCompatTextView) view.findViewById(R.id.comment_username);
         time = (AppCompatTextView) view.findViewById(R.id.comment_time);

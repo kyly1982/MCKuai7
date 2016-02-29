@@ -1,8 +1,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical" >
+    android:orientation="vertical">
 
     <include layout="@layout/actionbar_normal_layout"/>
 
@@ -107,6 +106,7 @@
                 android:layout_above="@id/tv_lengthHint"
                 android:layout_alignParentTop="true"
                 android:background="@color/icons"
+                android:textColor="@color/textColorPrimary"
                 android:gravity="top"
                 android:hint="评论..."
                 android:padding="10dp" />

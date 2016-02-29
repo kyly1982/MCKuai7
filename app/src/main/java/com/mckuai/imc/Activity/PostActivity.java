@@ -118,8 +118,13 @@ public class PostActivity extends BaseActivity implements OnClickListener, TextW
 		initToolbar(R.id.toolbar, 0, new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				finish();
-			}
+                if (isShowPost) {
+                    finish();
+                } else {
+                    isShowPost = true;
+                    resumeShowPost();
+                }
+            }
 		});
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 		mClient = new AsyncHttpClient();
@@ -466,12 +471,26 @@ public class PostActivity extends BaseActivity implements OnClickListener, TextW
                         } else {
                             //showNotification(1, "打赏失败！", R.id.rl_post);
                             //cancleLodingToast(false);
+                            showMessage("打赏失败！", "重试", new OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    rewardPost();
+                                    return;
+                                }
+                            });
                             return;
                         }
                     } catch (Exception e) {
                         // TODO: handle exception
                         e.printStackTrace();
                     }
+                    showMessage("打赏失败！", "重试", new OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            rewardPost();
+                            return;
+                        }
+                    });
                     //showNotification(1, "打赏失败！", R.id.rl_post);
                     //cancleLodingToast(false);
                 }
@@ -490,9 +509,27 @@ public class PostActivity extends BaseActivity implements OnClickListener, TextW
                     super.onFailure(statusCode, headers, responseString, throwable);
                     //showNotification(1, "操作失败！", R.id.rl_post);
                     //cancleLodingToast(false);
+                    showMessage("打赏失败！原因：" + throwable.getLocalizedMessage(), "重试", new OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            rewardPost();
+                            return;
+                        }
+                    });
+                }
+
+                @Override
+                public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+                    showMessage("打赏失败！原因：" + throwable.getLocalizedMessage(), "重试", new OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            rewardPost();
+                            return;
+                        }
+                    });
                 }
             });
-		} else
+        } else
 		{
 			callLogin(REWARD_POST);
 		}
@@ -579,7 +616,12 @@ public class PostActivity extends BaseActivity implements OnClickListener, TextW
 					//cancleLodingToast(false);
                     //showNotification(1, "收藏失败！", R.id.rl_post);
 				}
-			});
+
+                @Override
+                public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+                    super.onFailure(statusCode, headers, throwable, errorResponse);
+                }
+            });
 		} else
 		{
 			callLogin(COLLECT_POST);
@@ -1306,8 +1348,8 @@ public class PostActivity extends BaseActivity implements OnClickListener, TextW
 
 		if (isCollect)
 		{
-			btn_collect.setBackgroundResource(R.drawable.btn_post_collect);
-		} else
+            btn_collect.setBackgroundResource(R.mipmap.btn_post_collection_pressed);
+        } else
 		{
 			btn_collect.setBackgroundResource(R.drawable.btn_post_collect);
 		}

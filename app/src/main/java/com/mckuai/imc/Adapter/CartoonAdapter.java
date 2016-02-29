@@ -189,13 +189,13 @@ public class CartoonAdapter extends UltimateViewAdapter<CartoonAdapter.ViewHolde
         showComment(cartoon, holder.commentList);
         holder.userName.setText(cartoon.getOwner().getNickEx());
         holder.time.setText(cartoon.getTimeEx());
-        if (0 != cartoon.getReplyNum()) {
-            holder.commentCount.setText(cartoon.getReplyNum() + "");
+        if (null != cartoon.getComments()) {
+            holder.commentCount.setText(cartoon.getComments().size() + "");
         } else {
             holder.commentCount.setText("");
         }
-        if (0 != cartoon.getPrise()) {
-            holder.priseCount.setText(cartoon.getPrise() + "");
+        if (null != cartoon.getRewardList()) {
+            holder.priseCount.setText(cartoon.getRewardList().size() + "");
         } else {
             holder.priseCount.setText("");
         }
@@ -243,7 +243,7 @@ public class CartoonAdapter extends UltimateViewAdapter<CartoonAdapter.ViewHolde
             if (null == oldCartoon || oldCartoon.getId() != cartoon.getId()) {
                 root.removeAllViews();
                 for (Comment comment : cartoon.getComments()) {
-                    CommentView commentView = new CommentView(mContext);
+                    CommentView commentView = new CommentView(mContext, true);
                     commentView.setData(comment);
                     root.addView(commentView);
                 }

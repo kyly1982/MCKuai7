@@ -1,13 +1,13 @@
 package com.mckuai.imc.Widget.CreateCartoonStepView;
 
 import android.content.Context;
-import android.support.design.widget.TextInputLayout;
 import android.support.v7.widget.AppCompatEditText;
 import android.support.v7.widget.AppCompatTextView;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
 
 import com.mckuai.imc.R;
 
@@ -28,12 +28,11 @@ public class StepView_4 extends RelativeLayout {
     }
 
 
-    private void initView(Context context, final OnShareButtonClickedListener listener){
-        View view = inflate(context, R.layout.createcartoon_step4,this);
+    private void initView(final Context context, final OnShareButtonClickedListener listener) {
+        inflate(context, R.layout.createcartoon_step4, this);
         AppCompatTextView sync = (AppCompatTextView) findViewById(R.id.createcartoon_sync);
-        final TextInputLayout inputLayout = (TextInputLayout) findViewById(R.id.createcartoon_name);
-        inputLayout.setHint("给大作起个名");
-        AppCompatEditText editText = (AppCompatEditText) inputLayout.getEditText();
+        //inputLayout.setHint("给大作起个名");
+        AppCompatEditText editText = (AppCompatEditText) findViewById(R.id.createcartoon_talk);
         sync.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -45,12 +44,8 @@ public class StepView_4 extends RelativeLayout {
         editText.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                if (17 == count){
-                    inputLayout.setHint("最多只能输入16个字");
-                } else if (count < 16 && count > 0){
-                    inputLayout.setHint("还能输入"+(16 - count) + "个字");
-                } else if (0 == count){
-                    inputLayout.setHint("给大作起个名");
+                if (25 == count) {
+                    Toast.makeText(context, "最多只能输入25个字", Toast.LENGTH_SHORT).show();
                 }
             }
 
@@ -66,7 +61,7 @@ public class StepView_4 extends RelativeLayout {
                     if (0 == length) {
                         listener.onTitleChanged("");
                     } else {
-                        listener.onTitleChanged(s.toString().substring(0, length > 16 ? 15 : length));
+                        listener.onTitleChanged(s.toString().substring(0, length > 25 ? 25 : length));
                     }
                 }
             }

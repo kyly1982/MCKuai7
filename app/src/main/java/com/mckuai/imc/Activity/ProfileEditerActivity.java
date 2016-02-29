@@ -1,24 +1,33 @@
 package com.mckuai.imc.Activity;
 
 import android.os.Bundle;
+import android.support.v7.widget.AppCompatTextView;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 
 import com.mckuai.imc.Base.BaseActivity;
 import com.mckuai.imc.Base.BaseFragment;
 import com.mckuai.imc.Fragment.ProfileEditerFragment;
 import com.mckuai.imc.R;
 
-public class ProfileEditerActivity extends BaseActivity implements BaseFragment.OnFragmentEventListener {
-    ProfileEditerFragment fragment;
+import java.util.ArrayList;
 
+public class ProfileEditerActivity extends BaseActivity implements BaseFragment.OnFragmentEventListener, View.OnClickListener {
+    private ProfileEditerFragment fragment;
+
+    private AppCompatTextView title;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_normal_slidmenu);
+        setContentView(R.layout.activity_normal);
         initToolbar(R.id.toolbar, 0, null);
-        initDrawer();
+        mToolbar.setNavigationOnClickListener(this);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        title = (AppCompatTextView) findViewById(R.id.actionbar_title);
+        title.setText("设置");
+        //initDrawer();
         initFragment();
     }
 
@@ -30,7 +39,9 @@ public class ProfileEditerActivity extends BaseActivity implements BaseFragment.
     private void initFragment(){
         fragment = new ProfileEditerFragment();
         fragment.setFragmentEventListener(this);
-        setContentFragment(R.id.context,fragment);
+        fragments = new ArrayList<>(1);
+        fragments.add(fragment);
+        setContentFragment(R.id.context, fragment);
     }
 
     @Override
@@ -56,11 +67,18 @@ public class ProfileEditerActivity extends BaseActivity implements BaseFragment.
 
     @Override
     public void onFragmentAttach(int titleResId) {
-        fragment.showData();
+        //fragment.showData();
     }
 
     @Override
     public void onFragmentAction(Object object) {
 
+    }
+
+    @Override
+    public void onClick(View v) {
+        if (!fragment.onBackPressed()) {
+            finish();
+        }
     }
 }

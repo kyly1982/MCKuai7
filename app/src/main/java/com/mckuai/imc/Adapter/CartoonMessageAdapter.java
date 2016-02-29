@@ -81,9 +81,19 @@ public class CartoonMessageAdapter extends RecyclerView.Adapter<CartoonMessageAd
                     loader.displayImage(message.getOwner().getHeadImage(), holder.userCover, MCKuai.instence.getCircleOptions());
                 }
                 holder.userName.setText(message.getOwner().getNickEx());
-                holder.content.setText(message.getContent()+"");
                 holder.time.setText(message.getTimeEx()+"");
                 holder.itemView.setTag(message);
+                switch (message.getType()) {
+                    case "comment":
+                        holder.type.setText("评论了");
+                        holder.content.setText(message.getContent() + "");
+                        holder.content.setVisibility(View.VISIBLE);
+                        break;
+                    case "cartoon":
+                        holder.type.setText("点赞了");
+                        holder.content.setVisibility(View.GONE);
+                        break;
+                }
             }
         }
     }
@@ -100,6 +110,7 @@ public class CartoonMessageAdapter extends RecyclerView.Adapter<CartoonMessageAd
         public AppCompatTextView userName;
         public AppCompatTextView content;
         public AppCompatTextView time;
+        public AppCompatTextView type;
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -108,6 +119,7 @@ public class CartoonMessageAdapter extends RecyclerView.Adapter<CartoonMessageAd
             userName = (AppCompatTextView) itemView.findViewById(R.id.username);
             content = (AppCompatTextView) itemView.findViewById(R.id.messagecontent);
             time = (AppCompatTextView) itemView.findViewById(R.id.time);
+            type = (AppCompatTextView) itemView.findViewById(R.id.cartoon_messagetype);
         }
     }
 }

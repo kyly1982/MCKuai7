@@ -482,6 +482,7 @@ public class MainFragment_Mine extends BaseFragment
         list.postInvalidate();
         if (null != user) {
             this.user.clone(user);
+            mApplication.user.clone(user);
             showUserInfo();
         }
     }
@@ -510,6 +511,7 @@ public class MainFragment_Mine extends BaseFragment
         }
         if (null != user) {
             this.user.clone(user);
+            mApplication.user.clone(user);
             showUserInfo();
         }
     }
@@ -542,6 +544,7 @@ public class MainFragment_Mine extends BaseFragment
         }
         if (null != user) {
             this.user.clone(user);
+            mApplication.user.clone(user);
             showUserInfo();
         }
     }

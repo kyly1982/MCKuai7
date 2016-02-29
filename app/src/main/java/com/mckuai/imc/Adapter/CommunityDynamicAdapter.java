@@ -53,7 +53,7 @@ public class CommunityDynamicAdapter extends RecyclerView.Adapter<CommunityDynam
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(context).inflate(R.layout.item_community_dynamic,parent,false);
         ViewHolder holder = new ViewHolder(view);
-        if (null != listener){
+    /*    if (null != listener){
             view.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -63,14 +63,14 @@ public class CommunityDynamicAdapter extends RecyclerView.Adapter<CommunityDynam
                     }
                 }
             });
-        }
+        }*/
         return holder;
     }
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         if (null != dynamics && -1 < position && position < dynamics.size()){
-            CommunityDynamic dynamic = dynamics.get(position);
+            final CommunityDynamic dynamic = dynamics.get(position);
             if (null != dynamic){
                 switch (dynamic.getTypeEx()){
                     case CommunityDynamic.TYPE_CREATE:
@@ -79,6 +79,14 @@ public class CommunityDynamicAdapter extends RecyclerView.Adapter<CommunityDynam
                     case CommunityDynamic.TYPE_REPLY:
                         showReply(holder,dynamic);
                         break;
+                }
+                if (null != listener) {
+                    holder.itemView.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            listener.onItemClicked(dynamic);
+                        }
+                    });
                 }
             }
         }

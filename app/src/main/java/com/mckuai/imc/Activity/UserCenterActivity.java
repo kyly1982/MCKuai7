@@ -565,6 +565,9 @@ public class UserCenterActivity extends BaseActivity
         if (null != user) {
             this.user.clone(user);
             showUserInfo();
+            if (mApplication.isLogin() && mApplication.user.getId() == user.getId()) {
+                mApplication.user.clone(user);
+            }
         }
         if (null == dynamics || dynamics.isEmpty()) {
             showEmptyView();
@@ -598,6 +601,9 @@ public class UserCenterActivity extends BaseActivity
         if (null != user) {
             this.user.clone(user);
             showUserInfo();
+            if (mApplication.isLogin() && mApplication.user.getId() == user.getId()) {
+                mApplication.user.clone(user);
+            }
         }
         if (null == messages || messages.isEmpty()) {
             showEmptyView();
@@ -640,6 +646,9 @@ public class UserCenterActivity extends BaseActivity
         if (null != user) {
             this.user.clone(user);
             showUserInfo();
+            if (mApplication.isLogin() && mApplication.user.getId() == user.getId()) {
+                mApplication.user.clone(user);
+            }
         }
         if (null == works || works.isEmpty()) {
             showEmptyView();

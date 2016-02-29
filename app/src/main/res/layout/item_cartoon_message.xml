@@ -59,9 +59,9 @@
         android:id="@+id/time"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/usercenter_item_layoutpadding"
+        android:layout_below="@id/messagecontent"
         android:layout_alignLeft="@id/username"
-        android:layout_alignParentBottom="true"
+        android:gravity="center_vertical"
         android:text="01-20"
         android:textColor="@color/textColorSecondary"
         android:textSize="@dimen/font_normal" />

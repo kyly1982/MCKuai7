@@ -137,6 +137,7 @@
                     android:gravity="center"
                     android:checked="true"
                     android:text="@string/message"
+                    android:textSize="11sp"
                     android:textColor="@color/checkable_text_color_selector" />
 
                 <View
@@ -152,6 +153,7 @@
                     android:button="@null"
                     android:gravity="center"
                     android:text="@string/dynamic"
+                    android:textSize="11sp"
                     android:textColor="@color/checkable_text_color_selector" />
 
                 <View
@@ -167,6 +169,7 @@
                     android:button="@null"
                     android:gravity="center"
                     android:text="@string/work"
+                    android:textSize="11sp"
                     android:textColor="@color/checkable_text_color_selector" />
 
                 <View

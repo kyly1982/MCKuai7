@@ -73,11 +73,21 @@ public class CartoonDynamicAdapter extends RecyclerView.Adapter<CartoonDynamicAd
         if (null != dynamics && -1 < position && position < dynamics.size()){
             CartoonMessage dynamic = dynamics.get(position);
             if (null != dynamic){
-                loader.displayImage(dynamic.getCartoon().getImage(),holder.cartoonCover);
+                loader.displayImage(dynamic.getCartoon().getImage(), holder.cartoonCover);
                 holder.ownerName.setText(dynamic.getOwner().getNickEx());
-                holder.content.setText(dynamic.getContent()+"");
                 holder.time.setText(dynamic.getTimeEx());
                 holder.itemView.setTag(dynamic);
+                switch (dynamic.getType()) {
+                    case "comment":
+                        holder.type.setText("评论了");
+                        holder.content.setText(dynamic.getContent() + "");
+                        holder.content.setVisibility(View.VISIBLE);
+                        break;
+                    case "cartoon":
+                        holder.type.setText("点赞了");
+                        holder.content.setVisibility(View.GONE);
+                        break;
+                }
             }
         }
     }
@@ -92,6 +102,7 @@ public class CartoonDynamicAdapter extends RecyclerView.Adapter<CartoonDynamicAd
         public AppCompatTextView content;
         public AppCompatTextView time;
         public AppCompatImageView cartoonCover;
+        public AppCompatTextView type;
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -99,6 +110,7 @@ public class CartoonDynamicAdapter extends RecyclerView.Adapter<CartoonDynamicAd
             content = (AppCompatTextView) itemView.findViewById(R.id.dynamiccontent);
             time = (AppCompatTextView) itemView.findViewById(R.id.time);
             cartoonCover = (AppCompatImageView) itemView.findViewById(R.id.cartooncover);
+            type = (AppCompatTextView) itemView.findViewById(R.id.dynamictype);
         }
     }
 }

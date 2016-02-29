@@ -8,15 +8,18 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.support.design.widget.TextInputLayout;
 import android.support.v7.widget.AppCompatAutoCompleteTextView;
 import android.support.v7.widget.AppCompatEditText;
-import android.support.v7.widget.AppCompatImageButton;
+import android.support.v7.widget.AppCompatImageView;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.mckuai.imc.Base.BaseActivity;
 import com.mckuai.imc.Base.BaseFragment;
@@ -30,57 +33,151 @@ import com.nostra13.universalimageloader.core.ImageLoader;
  * Created by kyly on 2016/2/2.
  */
 public class ProfileEditerFragment extends BaseFragment implements View.OnClickListener, View.OnFocusChangeListener, TextWatcher, MCNetEngine.OnUploadUserCoverResponseListener, MCNetEngine.OnUpdateUserCoverResponseListener {
-    private MCUser user ;
+    private MCUser user;
     private ImageLoader loader;
-    private AppCompatImageButton usercover;
+    private AppCompatImageView usercover;
     private AppCompatAutoCompleteTextView useraddress;
-    private TextInputLayout usernick;
-    private AppCompatEditText nickediter;
+    private AppCompatEditText usernick;
     private View view;
+    private BaseActivity parentActivity;
+    private LinearLayout uploadView;
 
-    boolean isChange = false;
-    boolean isUpdata = false;
+    boolean isCoverChange = false;
+    boolean isNickChange = false;
+    boolean isAddressChange = false;
+    boolean isCoverUpload = false;
+    boolean isCoverUpdate = false;
+    long lastBackPressTime = 0;
 
+    private String coverUrl;
     private Bitmap newCover;
+    private MCKuai application = MCKuai.instence;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        if (null != view){
-            container.removeView(view);
+        if (null == view) {
+            view = inflater.inflate(R.layout.fragment_profile_editer, container, false);
+            loader = ImageLoader.getInstance();
+            user = MCKuai.instence.user;
+            parentActivity = (BaseActivity) getActivity();
         }
-        view = inflater.inflate(R.layout.fragment_profile_editer,container,false);
-        loader = ImageLoader.getInstance();
-        user = MCKuai.instence.user;
         return view;
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        if (null == usercover){
+        if (null == usercover) {
             initView();
         }
         showData();
     }
 
-    private void initView(){
-        usercover = (AppCompatImageButton) view.findViewById(R.id.usercover);
+    private void initView() {
+        usercover = (AppCompatImageView) view.findViewById(R.id.usercover);
         useraddress = (AppCompatAutoCompleteTextView) view.findViewById(R.id.useraddr);
-        usernick = (TextInputLayout) view.findViewById(R.id.usernick);
-        nickediter = (AppCompatEditText) usernick.getEditText();
-
-        useraddress.setEnabled(false);
-        nickediter.setEnabled(false);
+        usernick = (AppCompatEditText) view.findViewById(R.id.usernick);
+        uploadView = (LinearLayout) view.findViewById(R.id.uploadview);
 
         usercover.setOnClickListener(this);
-        nickediter.setOnFocusChangeListener(this);
+        usernick.setOnFocusChangeListener(this);
         useraddress.setOnFocusChangeListener(this);
-        nickediter.addTextChangedListener(this);
+        usernick.addTextChangedListener(this);
+
+        usernick.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if (actionId == EditorInfo.IME_ACTION_DONE) {
+                    handleEditNick();
+                    parentActivity.toggleSoftKeyPad();
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+        });
+
+        useraddress.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if (actionId == EditorInfo.IME_ACTION_DONE) {
+                    handleEditAddress();
+                    parentActivity.toggleSoftKeyPad();
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+        });
     }
 
-    public void showData(){
+    private void handleEditNick() {
+        setFocus();
+        if (usernick.getText().toString().length() == 0) {
+            resetNickView(null);
+            isNickChange = false;
+        } else {
+            if (usernick.getText().toString().equals(user.getNike())) {
+                resetNickView(null);
+                isNickChange = false;
+            } else {
+                resetNickView(usernick.getText().toString());
+                isNickChange = true;
+            }
+        }
+    }
+
+    private void handleEditAddress() {
+        setFocus();
+        if (useraddress.getText().toString().trim().length() == 0) {
+            resetAddressView(null);
+            isAddressChange = false;
+        } else if (useraddress.getText().toString().trim().equals(user.getAddr())) {
+            resetAddressView(null);
+            isAddressChange = false;
+        } else {
+            resetAddressView(useraddress.getText().toString().trim());
+            isAddressChange = true;
+        }
+    }
+
+    private void resetNickView(String nick) {
+        if (null == nick) {
+            usernick.setText(user.getNike());
+            usernick.setTextColor(getResources().getColor(R.color.textColorPrimary));
+        } else {
+            if (nick.equals(user.getNike())) {
+                usernick.setText(user.getNike());
+                usernick.setTextColor(getResources().getColor(R.color.textColorPrimary));
+            } else {
+                usernick.setText(nick);
+                usernick.setTextColor(getResources().getColor(R.color.textColorAccentr));
+            }
+        }
+    }
+
+    private void resetAddressView(String address) {
+        if (null == address) {
+            useraddress.setText(user.getAddr());
+            useraddress.setTextColor(getResources().getColor(R.color.textColorPrimary));
+        } else if (address.equals(user.getAddr())) {
+            useraddress.setText(user.getAddr());
+            useraddress.setTextColor(getResources().getColor(R.color.textColorPrimary));
+        } else {
+            useraddress.setText(address);
+            useraddress.setTextColor(getResources().getColor(R.color.textColorAccentr));
+        }
+    }
+
+
+    private void setFocus() {
+        usercover.setFocusable(true);
+        usercover.requestFocus();
+    }
+
+    public void showData() {
         loader.displayImage(user.getHeadImg(), usercover, MCKuai.instence.getCircleOptions());
-        nickediter.setText(user.getNike());
+        usernick.setText(user.getNike());
         useraddress.setText(user.getAddr());
         usernick.setHint("昵称");
     }
@@ -88,7 +185,6 @@ public class ProfileEditerFragment extends BaseFragment implements View.OnClickL
     private void changeCover() {
         Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
         startActivityForResult(intent, 0);
-        updateCover(null);
     }
 
     private void getNewCover(Intent data) {
@@ -106,7 +202,7 @@ public class ProfileEditerFragment extends BaseFragment implements View.OnClickL
         BitmapFactory.Options opts = new BitmapFactory.Options();
         opts.inJustDecodeBounds = true;
         BitmapFactory.decodeFile(picturePath, opts);
-        opts.inSampleSize = computeSampleSize(opts, -1, 1080 * 700);
+        opts.inSampleSize = computeSampleSize(opts, -1, 1080 * 1080);
         opts.inJustDecodeBounds = false;
         Bitmap bmp = null;
         try {
@@ -116,32 +212,90 @@ public class ProfileEditerFragment extends BaseFragment implements View.OnClickL
             return;
         }
         loader.displayImage(picturePath, usercover, MCKuai.instence.getCircleOptions());
-        usercover.setImageBitmap(bmp);
-        usercover.postInvalidate();
-        // isCoverChanged = true;
+        //usercover.setImageBitmap(bmp);
+        //usercover.postInvalidate();
+        //usercover.setImageBitmap(bmp);
+//        usercover.setImageDrawable(new BitmapDrawable(bmp));
         newCover = bmp;
-        uploadCover();
+        isCoverChange = true;
     }
 
 
     public void upload() {
-
-    }
-
-    private void uploadNick() {
-
+        if (isCoverChange) {
+            if (!isCoverUpload) {
+                uploadView.setVisibility(View.VISIBLE);
+                uploadCover();
+            } else if (!isCoverUpdate) {
+                updateCover();
+            }
+            return;
+        }
+        if (isNickChange) {
+            uploadView.setVisibility(View.VISIBLE);
+            updateNick();
+            return;
+        }
+        if (isAddressChange) {
+            uploadView.setVisibility(View.VISIBLE);
+            updateAddress();
+            return;
+        }
+        if (uploadView.getVisibility() == View.VISIBLE) {
+            uploadView.setVisibility(View.GONE);
+            parentActivity.finish();
+        }
     }
 
     private void uploadCover() {
         MCKuai.instence.netEngine.uploadUserCover(getActivity(), newCover, this);
     }
 
-    private void updateCover(String url) {
-        MCKuai.instence.netEngine.updateUserCover(getActivity(), url, this);
+    private void updateCover() {
+        MCKuai.instence.netEngine.updateUserCover(getActivity(), coverUrl, this);
     }
 
-    private void uploadAddress() {
+    private void updateNick() {
+        MCKuai.instence.netEngine.updateNickName(getActivity(), usernick.getText().toString(), new MCNetEngine.OnUpdateUserNickResponseListener() {
+            @Override
+            public void onUpdateUserNickSuccess() {
+                isNickChange = false;
+                application.user.setNike(usernick.getText().toString());
+                upload();
+            }
 
+            @Override
+            public void onUpdateUserNickFailure(String msg) {
+                showMessage("更新昵称失败，原因：" + msg, "重试", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        upload();
+                    }
+                });
+            }
+        });
+    }
+
+
+    private void updateAddress() {
+        MCKuai.instence.netEngine.updateUserAddress(getActivity(), useraddress.getText().toString().trim(), new MCNetEngine.OnUpdateUserAddressResponseListener() {
+            @Override
+            public void onUpdateAddressSuccess() {
+                isAddressChange = false;
+                application.user.setAddr(useraddress.getText().toString().trim());
+                upload();
+            }
+
+            @Override
+            public void onUpdateAddressFailure(String msg) {
+                showMessage("更新地址失败，原因：" + msg, "重试", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        upload();
+                    }
+                });
+            }
+        });
     }
 
     @Override
@@ -156,14 +310,20 @@ public class ProfileEditerFragment extends BaseFragment implements View.OnClickL
 
     @Override
     public boolean onBackPressed() {
-        if (isChange && !isUpdata) {
-            ((BaseActivity) getActivity()).showMessage("你的修改还未保存，是否退出？", "退出", new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    getActivity().finish();
-                }
-            });
-            return true;
+        int time = (int) (System.currentTimeMillis() - lastBackPressTime);
+        if ((isCoverChange || isNickChange || isAddressChange)) {
+            if (time > 3000) {
+                lastBackPressTime = System.currentTimeMillis();
+                parentActivity.showMessage("你的修改还未保存，是否保存？", "保存", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        upload();
+                    }
+                });
+                return true;
+            } else {
+                return false;
+            }
         } else {
             return false;
         }
@@ -175,12 +335,25 @@ public class ProfileEditerFragment extends BaseFragment implements View.OnClickL
             case R.id.usercover:
                 changeCover();
                 break;
+            case R.id.usernick:
+                usernick.setEnabled(true);
+                break;
+
         }
     }
 
     @Override
     public void onFocusChange(View v, boolean hasFocus) {
-
+        if (!hasFocus) {
+            switch (v.getId()) {
+                case R.id.usernick:
+                    handleEditNick();
+                    break;
+                case R.id.useraddr:
+                    handleEditAddress();
+                    break;
+            }
+        }
     }
 
     @Override
@@ -200,22 +373,37 @@ public class ProfileEditerFragment extends BaseFragment implements View.OnClickL
 
     @Override
     public void onUploadCoverFailure(String msg) {
-
+        showMessage("上传头像失败，原因：" + msg, "重试", new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                upload();
+            }
+        });
     }
 
     @Override
     public void onUploadCoverSuccess(String url) {
-        updateCover(url);
+        coverUrl = url;
+        application.user.setHeadImg(url);
+        isCoverUpload = true;
+        upload();
     }
 
     @Override
     public void onUpdateUserCoverFailure(String msg) {
-
+        showMessage("更新头像失败，原因：" + msg, "重试", new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                upload();
+            }
+        });
     }
 
     @Override
     public void onUpdateUserCoverSuccess() {
-
+        isCoverChange = false;
+        isCoverUpload = false;
+        upload();
     }
 
     // 加载大图时,计算缩放比例,以免出现OOM

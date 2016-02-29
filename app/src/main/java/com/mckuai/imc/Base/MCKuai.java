@@ -61,8 +61,8 @@ public class MCKuai extends Application {
     public void init() {
         readPreference();
         daoHelper = new MCDaoHelper(this);
-        initImageLoader();
         initUMPlatform();
+        initImageLoader();
         initRongIM();
         if (null != user && user.isUserValid() && null != user.getToken() && 10 < user.getToken().length()) {
             loginIM(new RongIMClient.ConnectCallback() {

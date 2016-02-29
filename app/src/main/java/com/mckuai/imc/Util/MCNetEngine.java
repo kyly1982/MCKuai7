@@ -247,12 +247,12 @@ public class MCNetEngine {
      ***************************************************************************/
 
     public interface OnUploadCartoonResponseListener {
-        void onUploadCartoonSuccess();
+        void onUploadCartoonSuccess(int cartoonId);
 
         void onUploadCartoonFailure(String msg);
     }
 
-    public void uploadCartoon(Context context, Cartoon cartoon, final OnUploadCartoonResponseListener listener) {
+    public void uploadCartoon(final Context context, Cartoon cartoon, final OnUploadCartoonResponseListener listener) {
         String url = domainName + context.getString(R.string.interface_uploadcartoon);
         RequestParams params = new RequestParams();
         params.put("userId", cartoon.getOwner().getId());
@@ -261,18 +261,29 @@ public class MCNetEngine {
         httpClient.post(context, url, params, new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-                if (null != response && response.toString().length() > 10) {
+                ParseResponseResult result = new ParseResponseResult(context, response);
+                if (ParseResponseResult.isSuccess) {
+                    int id = Integer.valueOf(ParseResponseResult.msg);
+                    if (0 != id) {
+                        listener.onUploadCartoonSuccess(id);
+                    } else {
+                        listener.onUploadCartoonFailure("返回数据不正确！");
+                    }
+                } else {
+                    listener.onUploadCartoonFailure(ParseResponseResult.msg);
+                }
+                /*if (null != response && response.toString().length() > 10) {
                     if (response.has("state")) {
                         try {
                             if ("ok".equals(response.getString("state"))) {
-                                listener.onUploadCartoonSuccess();
+                                listener.onUploadCartoonSuccess(1);
                             }
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
                     }
                 }
-                listener.onUploadCartoonFailure("上传失败");
+                listener.onUploadCartoonFailure("上传失败");*/
             }
 
             @Override

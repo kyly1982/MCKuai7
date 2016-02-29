@@ -35,16 +35,7 @@
         android:textColor="@color/textGreen"
         android:textSize="@dimen/font_normal" />
 
-    <android.support.v7.widget.AppCompatTextView
-        android:id="@+id/time"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignLeft="@id/dynamictype"
-        android:layout_marginBottom="@dimen/usercenter_item_layoutpadding"
-        android:text="01-20"
-        android:textColor="@color/textColorSecondary"
-        android:textSize="@dimen/font_normal" />
+
 
     <android.support.v7.widget.AppCompatTextView
         android:id="@+id/dynamiccontent"
@@ -57,6 +48,17 @@
         android:text="炒鸡大狒狒炒鸡大狒狒炒鸡大狒狒炒鸡大狒狒炒鸡大狒狒炒鸡大狒狒炒鸡大狒狒炒鸡大狒狒炒鸡大狒狒"
         android:textColor="@color/textColorPrimary"
         android:textSize="@dimen/font_accent" />
+
+    <android.support.v7.widget.AppCompatTextView
+        android:id="@+id/time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/dynamiccontent"
+        android:layout_alignLeft="@id/dynamictype"
+        android:layout_marginBottom="@dimen/usercenter_item_layoutpadding"
+        android:text="01-20"
+        android:textColor="@color/textColorSecondary"
+        android:textSize="@dimen/font_normal" />
 
     <View
         android:layout_width="match_parent"

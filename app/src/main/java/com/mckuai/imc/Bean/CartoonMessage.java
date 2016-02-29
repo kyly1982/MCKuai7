@@ -10,6 +10,7 @@ public class CartoonMessage {
     private Cartoon cartoon;
     private String content;
     private String insertTime;
+    private String type;
     private User owner;
 
     public Cartoon getCartoon() {
@@ -36,6 +37,14 @@ public class CartoonMessage {
         this.insertTime = insertTime;
     }
 
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
     public User getOwner() {
         return owner;
     }
@@ -54,4 +63,5 @@ public class CartoonMessage {
             return "未知";
         }
     }
+
 }

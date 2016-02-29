@@ -45,4 +45,6 @@
 
     <!--聊天-->
     <color name="chat_waitlist">#EEEDED</color>
+
+    <color name="background_cartoonlist">#403830</color>
 </resources>

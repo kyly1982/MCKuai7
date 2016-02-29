@@ -9,6 +9,7 @@ import android.support.v7.widget.AppCompatTextView;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewConfiguration;
 import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
@@ -25,6 +26,7 @@ import com.mckuai.imc.Util.MCNetEngine;
 import com.umeng.analytics.MobclickAgent;
 import com.umeng.message.PushAgent;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 
 import io.rong.imkit.RongIM;
@@ -55,6 +57,15 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         //友盟推送
         PushAgent mPushAgent = PushAgent.getInstance(this);
         mPushAgent.enable();
+        try {
+            ViewConfiguration mconfig = ViewConfiguration.get(this);
+            Field menuKeyField = ViewConfiguration.class.getDeclaredField("sHasPermanentMenuKey");
+            if (menuKeyField != null) {
+                menuKeyField.setAccessible(true);
+                menuKeyField.setBoolean(mconfig, false);
+            }
+        } catch (Exception ex) {
+        }
     }
 
     @Override

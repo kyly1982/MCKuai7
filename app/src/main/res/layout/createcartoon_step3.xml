@@ -26,22 +26,20 @@
         android:textColor="@color/icons"
         android:text="@string/createcartoon_addtalk"/>
 
-    <android.support.design.widget.TextInputLayout
-        android:id="@+id/createcartoon_talkcontent"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:background="@drawable/bg_creatcartoon_step3"
-        android:layout_above="@id/createcartoon_addtalk"
-        android:layout_below="@id/createcartoon_hint3_1"
-        >
+
         <android.support.v7.widget.AppCompatEditText
             android:id="@+id/createcartoon_talk"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_below="@id/createcartoon_hint3_1"
+            android:layout_above="@id/createcartoon_addtalk"
             android:gravity="top"
+            android:paddingTop="@dimen/padding_content"
+            android:paddingLeft="@dimen/padding_content"
+            android:paddingRight="@dimen/padding_content"
             android:textColor="@color/icons"
-            android:textColorHint="@color/colorAccent"
+            android:textColorHint="@color/textColorSecondary"
+            android:background="@drawable/bg_creatcartoon_step3"
             android:hint="@string/createcartoon_hint_step3_2"/>
-    </android.support.design.widget.TextInputLayout>
 
 </RelativeLayout>

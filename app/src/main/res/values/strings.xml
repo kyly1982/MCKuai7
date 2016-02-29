@@ -246,5 +246,10 @@
     <string name="appdownload_url">http://www.mckuai.com/down.html</string>
     <string name="shareCartoon">http://api.mckuai.com/cartoon/</string>
 
+    <!--设置-->
+    <string name="setting_user_cover">头像</string>
+    <string name="setting_user_nick">昵称：%1$s</string>
+    <string name="setting_user_address">地址：%1$s</string>
+
 
 </resources>

@@ -3,6 +3,7 @@ package com.mckuai.imc.Base;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.content.ActivityNotFoundException;
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -18,6 +19,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 
 import com.mckuai.imc.Activity.CartoonActivity;
 import com.mckuai.imc.Activity.ConversationActivity;
@@ -42,7 +44,6 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 import com.umeng.analytics.MobclickAgent;
 import com.umeng.message.PushAgent;
 import com.umeng.socialize.ShareAction;
-import com.umeng.socialize.UMShareAPI;
 import com.umeng.socialize.UMShareListener;
 import com.umeng.socialize.bean.SHARE_MEDIA;
 import com.umeng.socialize.media.UMImage;
@@ -70,7 +71,7 @@ public class BaseActivity extends AppCompatActivity implements NavigationView.On
     protected ArrayList<BaseFragment> fragments;
     protected int currentFragmentIndex = -1;
     private ImageLoader loader = ImageLoader.getInstance();
-    private UMShareAPI mShareAPI = UMShareAPI.get(this);
+    //private UMShareAPI mShareAPI = UMShareAPI.get(this);
     private AppUpdate appUpdate;
 
     @Override
@@ -352,6 +353,11 @@ public class BaseActivity extends AppCompatActivity implements NavigationView.On
                 return;
             }
         }
+        if (null != fragments && 1 == fragments.size()) {
+            if (fragments.get(0).onBackPressed()) {
+                return;
+            }
+        }
         super.onBackPressed();
     }
 
@@ -491,6 +497,11 @@ public class BaseActivity extends AppCompatActivity implements NavigationView.On
                 return null;
             }
         }
+    }
+
+    public void toggleSoftKeyPad() {
+        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.toggleSoftInput(0, InputMethodManager.HIDE_NOT_ALWAYS);
     }
 
 

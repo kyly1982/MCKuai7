@@ -24,7 +24,7 @@ import java.util.ArrayList;
 /**
  * Created by kyly on 2016/1/28.
  */
-public class CartoonView extends FrameLayout implements View.OnClickListener{
+public class CartoonView extends FrameLayout implements View.OnClickListener {
     private AppCompatImageView userCover;
     private AppCompatImageButton share;
     private RelativeLayout comment;
@@ -45,7 +45,7 @@ public class CartoonView extends FrameLayout implements View.OnClickListener{
     private Cartoon cartoon;
     private Context context;
 
-    public interface OnCartoonElementClickListener{
+    public interface OnCartoonElementClickListener {
         void onOwnerClicked(int ownerId);
 
         void onShareCartoon(Cartoon cartoon);
@@ -85,7 +85,7 @@ public class CartoonView extends FrameLayout implements View.OnClickListener{
         }
     }
 
-    public void setOnCartoonElementClickListener(OnCartoonElementClickListener listener){
+    public void setOnCartoonElementClickListener(OnCartoonElementClickListener listener) {
         this.listener = listener;
     }
 
@@ -172,7 +172,7 @@ public class CartoonView extends FrameLayout implements View.OnClickListener{
     private void showComment(ArrayList<Comment> comments, LinearLayout root) {
         if (null == root.getTag()) {
             for (Comment comment : comments) {
-                CommentView commentView = new CommentView(getContext());
+                CommentView commentView = new CommentView(getContext(), !isDetailed);
                 commentView.setData(comment);
                 root.addView(commentView);
             }
@@ -201,7 +201,7 @@ public class CartoonView extends FrameLayout implements View.OnClickListener{
     @Override
     public void onClick(View v) {
         if (null != listener) {
-            switch (v.getId()){
+            switch (v.getId()) {
                 case R.id.cartoon_usercover:
                     listener.onOwnerClicked(cartoon.getOwner().getId().intValue());
                     break;

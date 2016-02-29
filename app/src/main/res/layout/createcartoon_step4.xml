@@ -11,34 +11,30 @@
         android:layout_height="wrap_content"
         android:drawablePadding="@dimen/createcartoon_frame_builder"
         android:drawableLeft="@mipmap/ic_createcartoon_hint"
+        android:layout_marginBottom="@dimen/createcartoon_margin_builder"
         android:text="@string/createcartoon_hint_step4_1"
         android:textColor="@color/icons"/>
 
 
-
-    <android.support.design.widget.TextInputLayout
-        android:id="@+id/createcartoon_name"
+    <android.support.v7.widget.AppCompatEditText
+        android:id="@+id/createcartoon_talk"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/createcartoon_hint4_1"
-        android:background="@drawable/bg_creatcartoon_step3"
-        android:drawablePadding="@dimen/createcartoon_frame_builder"
-        >
-        <android.support.v7.widget.AppCompatEditText
-            android:id="@+id/createcartoon_talk"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:lines="2"
-            android:textColor="@color/icons"
-            android:textColorHint="@color/colorAccent"
-            android:hint="@string/createcartoon_hint_step3_2"/>
-    </android.support.design.widget.TextInputLayout>
+        android:lines="2"
+        android:textColor="@color/icons"
+        android:paddingTop="@dimen/padding_content"
+        android:paddingLeft="@dimen/padding_content"
+        android:paddingRight="@dimen/padding_content"
+        android:textColorHint="@color/textColorSecondary"
+        android:hint="@string/createcartoon_hint_step4"
+        android:background="@drawable/bg_creatcartoon_step3" />
 
     <android.support.v7.widget.AppCompatTextView
         android:id="@+id/createcartoon_sync"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/createcartoon_name"
+        android:layout_below="@id/createcartoon_talk"
         android:drawableRight="@drawable/umeng_socialize_qq_on"
         android:clickable="true"
         android:background="@null"
