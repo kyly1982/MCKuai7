@@ -3,7 +3,6 @@
     android:id="@+id/cartoonlist"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/background_cartoonlist"
     android:clickable="true"
     app:layout_empty="@layout/emptyview"
     android:layout_marginBottom="10dp">

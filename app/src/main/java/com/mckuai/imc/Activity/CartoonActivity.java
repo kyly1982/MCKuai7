@@ -10,10 +10,14 @@ import android.widget.RelativeLayout;
 
 import com.mckuai.imc.Base.BaseActivity;
 import com.mckuai.imc.Bean.Cartoon;
+import com.mckuai.imc.Bean.Comment;
+import com.mckuai.imc.Bean.User;
 import com.mckuai.imc.R;
 import com.mckuai.imc.Util.MCNetEngine;
 import com.mckuai.imc.Widget.CartoonView;
 import com.umeng.socialize.media.UMImage;
+
+import java.util.ArrayList;
 
 public class CartoonActivity extends BaseActivity implements CartoonView.OnCartoonElementClickListener, View.OnClickListener, MCNetEngine.OnRewardCartoonResponseListener, MCNetEngine.OnCommentCartoonResponseListener, MCNetEngine.OnLoadCartoonDetailResponseListener {
     private Cartoon cartoon;
@@ -143,9 +147,15 @@ public class CartoonActivity extends BaseActivity implements CartoonView.OnCarto
     @Override
     public void onCommentCartoonSuccess() {
         Snackbar.make(commentEditer,"评论成功",Snackbar.LENGTH_SHORT).show();
-        commentEditer.setText("");
         cartoon.setReplyNum(cartoon.getReplyNum() + 1);
+        Comment comment = new Comment(new User(mApplication.user), commentEditer.getText().toString());
+        if (null == cartoon.getComments()) {
+            ArrayList<Comment> comments = new ArrayList<>(1);
+            cartoon.setComments(comments);
+        }
+        cartoon.getComments().add(comment);
         isCommentSuccess = true;
+        commentEditer.setText("");
         showData();
         hideCommentLayout();
     }

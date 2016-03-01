@@ -33,6 +33,7 @@ import com.mckuai.imc.Widget.CreateCartoonStepView.StepView_2;
 import com.mckuai.imc.Widget.CreateCartoonStepView.StepView_3;
 import com.mckuai.imc.Widget.CreateCartoonStepView.StepView_4;
 import com.mckuai.imc.Widget.TouchableLayout.TouchableLayout;
+import com.umeng.analytics.MobclickAgent;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
@@ -73,15 +74,19 @@ public class CreateCartoonFragment extends BaseFragment implements StepView_4.On
         flipper.showNext();
         switch (currentStep) {
             case 0:
+                MobclickAgent.onEvent(getActivity(), "createCartoon_step1");
                 builderHint.setText(R.string.createcartoon_hint_step1);
                 break;
             case 1:
+                MobclickAgent.onEvent(getActivity(), "createCartoon_step2");
                 builderHint.setText(R.string.createcartoon_hint_step2);
                 break;
             case 2:
+                MobclickAgent.onEvent(getActivity(), "createCartoon_step3");
                 builderHint.setText(R.string.createcartoon_hint_step3);
                 break;
             case 3:
+                MobclickAgent.onEvent(getActivity(), "createCartoon_step4");
                 cartoonBuilder.frozenBuilder(true);
                 builderHint.setText(R.string.createcartoon_hint_step4);
                 break;
@@ -102,11 +107,6 @@ public class CreateCartoonFragment extends BaseFragment implements StepView_4.On
     }
 
     @Override
-    public void onResume() {
-        super.onResume();
-    }
-
-    @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (Activity.RESULT_OK == resultCode) {
@@ -115,6 +115,7 @@ public class CreateCartoonFragment extends BaseFragment implements StepView_4.On
                     //相机
                     File file = new File(imagePath, fileName);
                     if (file.isFile() && file.exists()) {
+                        MobclickAgent.onEvent(getActivity(), "createCartoon_takephoto_S");
                         Bitmap bitmap = BitmapUtil.decodeFile(imagePath + "/" + fileName, cartoonBuilder.getWidth(), cartoonBuilder.getHeight());
                         if (null != bitmap) {
                             cartoonBuilder.setBackgroundDrawable(null);
@@ -124,12 +125,14 @@ public class CreateCartoonFragment extends BaseFragment implements StepView_4.On
                             }
                             return;
                         }
-                        showMessage("未获取到照片！", null, null);
                     }
+                    MobclickAgent.onEvent(getActivity(), "createCartoon_takephoto_F");
+                    showMessage("未获取到照片！", null, null);
                     break;
                 case 11:
                     //相册
                     if (null != data && null != data.getData()) {
+                        MobclickAgent.onEvent(getActivity(), "createCartoon_takepicture_S");
                         Bitmap bitmap = BitmapUtil.decodeFile(getActivity(), data.getData(), cartoonBuilder.getWidth(), cartoonBuilder.getHeight());
                         if (null != bitmap) {
                             cartoonBuilder.setBackgroundDrawable(null);
@@ -140,9 +143,9 @@ public class CreateCartoonFragment extends BaseFragment implements StepView_4.On
                             return;
                         }
 
-                    } else {
-                        showMessage("未获取到图片！", null, null);
                     }
+                    showMessage("未获取到图片！", null, null);
+                    MobclickAgent.onEvent(getActivity(), "createCartoon_takepicture_F");
                     break;
             }
         } else {
@@ -242,6 +245,7 @@ public class CreateCartoonFragment extends BaseFragment implements StepView_4.On
     @Override
     public void onPhotoClicked() {
         //打开相册
+        MobclickAgent.onEvent(getActivity(), "createCartoon_takepicture");
         Intent intent = new Intent(Intent.ACTION_PICK, null);
         intent.setDataAndType(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "image/*");
         startActivityForResult(intent, 11);
@@ -252,12 +256,14 @@ public class CreateCartoonFragment extends BaseFragment implements StepView_4.On
      */
     @Override
     public void onStoragerClicked() {
+        MobclickAgent.onEvent(getActivity(), "createCartoon_openscene");
         showScene(getScene(true));
     }
 
     @Override
     public void onTakePhotoClicked() {
         //拍照
+        MobclickAgent.onEvent(getActivity(), "createCartoon_takephoto");
         Intent intent = new Intent("android.media.action.IMAGE_CAPTURE");
         Date date = new Date(System.currentTimeMillis());
         if (null == imagePath) {
@@ -283,6 +289,7 @@ public class CreateCartoonFragment extends BaseFragment implements StepView_4.On
     @Override
     public void onWidgetChecked(int widgetId) {
         //已选择物品或者工具
+        MobclickAgent.onEvent(getActivity(), "createCartoon_checkwidget");
         BitmapDrawable drawable = (BitmapDrawable) getResources().getDrawable(widgetId);
         if (null != drawable) {
             Bitmap bitmap = drawable.getBitmap();
@@ -304,6 +311,7 @@ public class CreateCartoonFragment extends BaseFragment implements StepView_4.On
 
     @Override
     public void onSceneSelected(Object scene) {
+        MobclickAgent.onEvent(getActivity(), "createCartoon_checkdscene");
         if (null != scene) {
             if (scene instanceof Integer) {
                 cartoonBuilder.setBackgroundResource((int) scene);
@@ -316,6 +324,7 @@ public class CreateCartoonFragment extends BaseFragment implements StepView_4.On
 
     @Override
     public void onTalkAdded(String talk) {
+        MobclickAgent.onEvent(getActivity(), "createCartoon_addtalk");
         if (0 < cartoonBuilder.getWidgetCount()) {
             Lable lable = new Lable(lastPoint, talk);
             cartoonBuilder.addLable(lable);
@@ -329,11 +338,13 @@ public class CreateCartoonFragment extends BaseFragment implements StepView_4.On
             uploadImage();
             return;
         } else {
+            MobclickAgent.onEvent(getActivity(), "");
             MCKuai.instence.netEngine.uploadCartoon(getActivity(), cartoon, this);
         }
     }
 
     private void uploadImage() {
+        MobclickAgent.onEvent(getActivity(), "createCartoon_uploadpic");
         Bitmap bitmap = getCartoonBitmap();
         if (null != bitmap) {
             ArrayList<Bitmap> bitmaps = new ArrayList<>(1);
@@ -354,16 +365,12 @@ public class CreateCartoonFragment extends BaseFragment implements StepView_4.On
     @Override
     public void onUploadCartoonFailure(String msg) {
         Snackbar.make(cartoonBuilder, msg, Snackbar.LENGTH_LONG).show();
+        MobclickAgent.onEvent(getActivity(), "createCartoon_publish_F");
     }
 
     @Override
     public void onUploadCartoonSuccess(int cartoonId) {
-        /*showMessage("上传成功", "查看", new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-            }
-        });*/
+        MobclickAgent.onEvent(getActivity(), "createCartoon_publish_S");
         Cartoon cartoon = new Cartoon();
         cartoon.setId(cartoonId);
         Intent intent = new Intent(getActivity(), CartoonActivity.class);
@@ -378,6 +385,7 @@ public class CreateCartoonFragment extends BaseFragment implements StepView_4.On
 
     @Override
     public void onImageUploadSuccess(String url) {
+        MobclickAgent.onEvent(getActivity(), "createCartoon_uploadpic_S");
         Cartoon cartoon = new Cartoon(title, url, MCKuai.instence.user, null);
         uploadCartoon(cartoon);
     }
@@ -385,6 +393,7 @@ public class CreateCartoonFragment extends BaseFragment implements StepView_4.On
     @Override
     public void onImageUploadFailure(String msg) {
         //Snackbar.make(cartoonBuilder,msg,Snackbar.LENGTH_LONG).show();
+        MobclickAgent.onEvent(getActivity(), "createCartoon_uploadpic_F");
         showMessage(msg, null, null);
     }
 

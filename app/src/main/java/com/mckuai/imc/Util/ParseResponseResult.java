@@ -65,6 +65,8 @@ public class ParseResponseResult {
                 if (response.getString("state").equals("ok")){
                     isSuccess = true;
                     return true;
+                } else {
+                    isSuccess = false;
                 }
             } catch (Exception e){
                 e.printStackTrace();

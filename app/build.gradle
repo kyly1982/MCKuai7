@@ -26,27 +26,27 @@ android {
     //针对不同的渠道打包
     productFlavors {
         mckuai_mckuai {
-            manifestPlaceholders = [UMENG_CHANNEL_VALUE: "mckuai_mckuai", APP_NAME: "麦块我的世界盒子"]
+            manifestPlaceholders = [UMENG_CHANNEL_VALUE: "mckuai_mckuai_V7", APP_NAME: "麦块我的世界盒子"]
         }
-        /*mckuai_xiaomi {
-            manifestPlaceholders = [UMENG_CHANNEL_VALUE: "mckuai_xiaomi", APP_NAME: "麦块我的世界盒子"]
+        mckuai_xiaomi {
+            manifestPlaceholders = [UMENG_CHANNEL_VALUE: "mckuai_xiaomi_V7", APP_NAME: "麦块我的世界盒子"]
         }
 
         mckuai_360 {
-            manifestPlaceholders = [UMENG_CHANNEL_VALUE: "mckuai_360", APP_NAME: "麦块"]
+            manifestPlaceholders = [UMENG_CHANNEL_VALUE: "mckuai_360_V7", APP_NAME: "麦块"]
         }
 
         mckuai_wandoujia {
-            manifestPlaceholders = [UMENG_CHANNEL_VALUE: "mckuai_wandoujia", APP_NAME: "麦块我的世界盒子"]
+            manifestPlaceholders = [UMENG_CHANNEL_VALUE: "mckuai_wandoujia_V7", APP_NAME: "麦块我的世界盒子"]
         }
 
         mckuai_baidu {
-            manifestPlaceholders = [UMENG_CHANNEL_VALUE: "mckuai_baidu", APP_NAME: "麦块"]
+            manifestPlaceholders = [UMENG_CHANNEL_VALUE: "mckuai_baidu_V7", APP_NAME: "麦块"]
         }
 
         mckuai_tencent {
-            manifestPlaceholders = [UMENG_CHANNEL_VALUE: "mckuai_tencent", APP_NAME: "麦块"]
-        }*/
+            manifestPlaceholders = [UMENG_CHANNEL_VALUE: "mckuai_tencent_V7", APP_NAME: "麦块"]
+        }
     }
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_7

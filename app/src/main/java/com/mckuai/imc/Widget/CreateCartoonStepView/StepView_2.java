@@ -11,6 +11,7 @@ import android.widget.RelativeLayout;
 import com.malinskiy.superrecyclerview.SuperRecyclerView;
 import com.mckuai.imc.Adapter.WidgetAdapter;
 import com.mckuai.imc.R;
+import com.umeng.analytics.MobclickAgent;
 
 import java.util.ArrayList;
 
@@ -29,7 +30,7 @@ public class StepView_2 extends RelativeLayout implements RadioGroup.OnCheckedCh
 
 
     public interface OnWidgetCheckedListener{
-        public void onWidgetChecked(int widgetId);
+        void onWidgetChecked(int widgetId);
     }
 
     public StepView_2(Context context, OnWidgetCheckedListener listener) {
@@ -95,10 +96,12 @@ public class StepView_2 extends RelativeLayout implements RadioGroup.OnCheckedCh
     public void onCheckedChanged(RadioGroup group, int checkedId) {
         switch (checkedId){
             case R.id.createcartoon_character:
+                MobclickAgent.onEvent(context, "createCartoon_showcharacter");
                 widgetPageIndex = 0;
                 loadData();
                 break;
             case R.id.createcartoon_tool:
+                MobclickAgent.onEvent(context, "createCartoon_showtools");
                 widgetPageIndex = 1;
                 loadData();
                 break;

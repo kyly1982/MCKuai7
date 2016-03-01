@@ -272,18 +272,6 @@ public class MCNetEngine {
                 } else {
                     listener.onUploadCartoonFailure(ParseResponseResult.msg);
                 }
-                /*if (null != response && response.toString().length() > 10) {
-                    if (response.has("state")) {
-                        try {
-                            if ("ok".equals(response.getString("state"))) {
-                                listener.onUploadCartoonSuccess(1);
-                            }
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-                    }
-                }
-                listener.onUploadCartoonFailure("上传失败");*/
             }
 
             @Override

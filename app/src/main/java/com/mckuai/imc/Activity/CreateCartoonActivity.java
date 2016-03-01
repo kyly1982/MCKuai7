@@ -13,6 +13,7 @@ import com.mckuai.imc.Base.BaseActivity;
 import com.mckuai.imc.Base.BaseFragment;
 import com.mckuai.imc.Fragment.CreateCartoonFragment;
 import com.mckuai.imc.R;
+import com.umeng.analytics.MobclickAgent;
 
 import java.util.ArrayList;
 
@@ -86,6 +87,7 @@ public class CreateCartoonActivity extends BaseActivity
         }
         switch (item.getItemId()) {
             case R.id.menu_cartoonaction_next:
+                MobclickAgent.onEvent(this, "createCartoon_next");
                 currentStep++;
                 createFragment.showNextStep(currentStep);
                 if (3 == currentStep) {
@@ -95,6 +97,7 @@ public class CreateCartoonActivity extends BaseActivity
                 }
                 break;
             case R.id.menu_cartoonaction_publish:
+                MobclickAgent.onEvent(this, "createCartoon_publish");
                 if (mApplication.isLogin()) {
                     createFragment.upload();
                 } else {
