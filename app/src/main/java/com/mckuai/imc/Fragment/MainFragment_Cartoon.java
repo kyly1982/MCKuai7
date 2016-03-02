@@ -85,7 +85,6 @@ public class MainFragment_Cartoon extends BaseFragment implements RadioGroup.OnC
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         if (null == view) {
-            //container.removeView(view);
             view = inflater.inflate(R.layout.fragment_main_cartoon, container, false);
         }
         mCartoonType = getResources().getStringArray(R.array.cartoon_ordertype);
@@ -231,6 +230,7 @@ public class MainFragment_Cartoon extends BaseFragment implements RadioGroup.OnC
 
 
     private void rewardCartoon(Cartoon cartoon) {
+        rewardCartoonId = cartoon.getId();
         mApplication.netEngine.rewardCartoon(getActivity(), true, cartoon.getId(), this);
     }
 
@@ -267,7 +267,6 @@ public class MainFragment_Cartoon extends BaseFragment implements RadioGroup.OnC
     public void onRewardCartoonSuccess() {
         Snackbar.make(mCartoonListView, "打赏成功!", Snackbar.LENGTH_LONG).show();
         updateDate(priseCartoon, true);
-        ArrayList<Cartoon> cartoons = null;
         switch (typeIndex) {
             case 0:
                 refreshData(mNewCartoon);
@@ -277,6 +276,7 @@ public class MainFragment_Cartoon extends BaseFragment implements RadioGroup.OnC
                 break;
         }
         mAdapter.notifyDataSetChanged();
+        rewardCartoonId = -1;
     }
 
     private void refreshData(ArrayList<Cartoon> cartoons) {

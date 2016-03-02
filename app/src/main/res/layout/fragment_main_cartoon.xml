@@ -1,10 +1,15 @@
-<com.marshalchen.ultimaterecyclerview.UltimateRecyclerView xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/cartoonlist"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:clickable="true"
-    app:layout_empty="@layout/emptyview"
-    android:layout_marginBottom="10dp">
+    android:background="@null"
+    android:paddingBottom="10dp">
 
-</com.marshalchen.ultimaterecyclerview.UltimateRecyclerView>
+    <com.marshalchen.ultimaterecyclerview.UltimateRecyclerView
+        android:id="@+id/cartoonlist"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_empty="@layout/emptyview"></com.marshalchen.ultimaterecyclerview.UltimateRecyclerView>
+
+</RelativeLayout>
