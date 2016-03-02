@@ -61,6 +61,7 @@ public class MCKuai extends Application {
     public void init() {
         readPreference();
         daoHelper = new MCDaoHelper(this);
+        netEngine = new MCNetEngine();
         initUMPlatform();
         initImageLoader();
         initRongIM();
@@ -82,7 +83,6 @@ public class MCKuai extends Application {
                 }
             });
         }
-        netEngine = new MCNetEngine();
     }
 
     private void initRongIM(){
