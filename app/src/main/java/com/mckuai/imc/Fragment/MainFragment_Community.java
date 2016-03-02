@@ -134,7 +134,9 @@ public class MainFragment_Community extends BaseFragment
     }
 
     private void loadPostList(){
-        mNetEngine.loadPostList(getActivity(), mForums.get(currentForumIndex).getId(), postType[typeindex], page.getNextPage(), this);
+        if (null != mForums) {
+            mNetEngine.loadPostList(getActivity(), mForums.get(currentForumIndex).getId(), postType[typeindex], page.getNextPage(), this);
+        }
     }
 
     private void showForum(){
