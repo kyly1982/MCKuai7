@@ -8,8 +8,8 @@ android {
         applicationId "com.mckuai.imc"
         minSdkVersion 15
         targetSdkVersion 21
-        versionCode 32
-        versionName "7.0.1"
+        versionCode 33
+        versionName "7.0.2"
     }
     buildTypes {
         release {
@@ -48,6 +48,18 @@ android {
             manifestPlaceholders = [UMENG_CHANNEL_VALUE: "mckuai_tencent_V7", APP_NAME: "麦块"]
         }
     }
+
+    android.applicationVariants.all { variant ->
+        variant.outputs.each {
+            output ->
+                def outputFile = output.outputFile
+                if (outputFile != null && outputFile.name.endsWith('.apk')) {
+                    def fileName = "${variant.productFlavors[0].name}-${defaultConfig.versionName}.apk"
+                    output.outputFile = new File(outputFile.parent, fileName)
+                }
+        }
+    }
+
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_7
         targetCompatibility JavaVersion.VERSION_1_7
