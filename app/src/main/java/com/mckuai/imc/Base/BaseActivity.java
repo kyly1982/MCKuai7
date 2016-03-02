@@ -71,7 +71,6 @@ public class BaseActivity extends AppCompatActivity implements NavigationView.On
     protected ArrayList<BaseFragment> fragments;
     protected int currentFragmentIndex = -1;
     private ImageLoader loader = ImageLoader.getInstance();
-    //private UMShareAPI mShareAPI = UMShareAPI.get(this);
     private AppUpdate appUpdate;
 
     @Override
@@ -292,7 +291,6 @@ public class BaseActivity extends AppCompatActivity implements NavigationView.On
     private void showUserInfo() {
         loader.displayImage(mApplication.user.getHeadImg(), userCover, mApplication.getCircleOptions());
         userName.setText(mApplication.user.getNike());
-        //userLevel.setText(mApplication.user.getLevel() + "");
         userLevel.setText(getString(R.string.usercenter_userlevel, mApplication.user.getLevel()));
         userCover.setTag(mApplication.user.getHeadImg());
         logout.setVisible(true);
@@ -391,7 +389,7 @@ public class BaseActivity extends AppCompatActivity implements NavigationView.On
             case R.id.nav_share:
                 MobclickAgent.onEvent(this, "clickSlidmenu_share");
                 UMImage image = new UMImage(this, R.mipmap.ic_share_default);
-                share("邀你一起玩", "我正在使用《麦块for我的世界盒子》，真的太棒了，快来用用吧！", getString(R.string.appdownload_url), null);
+                share("邀你一起玩麦块", "我正在使用最好用最好玩的麦块辅助工具——《麦块for我的世界盒子》，妈妈再也不用担心我玩不好麦块了，你也来看看吧！", getString(R.string.appdownload_url), image);
                 closeSlidmenu();
                 break;
             case R.id.nav_prise:
