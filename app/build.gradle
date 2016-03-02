@@ -1,9 +1,16 @@
 apply plugin: 'com.android.application'
 
 android {
+    signingConfigs {
+        debug {
+            storeFile file("F:\\Repository\\imc.keystore")
+            storePassword "ilovegt888"
+            keyAlias "麦块我的世界盒子"
+            keyPassword "gamegt888"
+        }
+    }
     compileSdkVersion 23
     buildToolsVersion '21.1.2'
-
     defaultConfig {
         applicationId "com.mckuai.imc"
         minSdkVersion 15
@@ -16,8 +23,11 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
+        debug {
+            signingConfig signingConfigs.debug
+            //proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
     }
-
     sourceSets {
         main {
             java.srcDirs = ['src/main/java', 'src/main/java-gen']
@@ -31,24 +41,19 @@ android {
         mckuai_xiaomi {
             manifestPlaceholders = [UMENG_CHANNEL_VALUE: "mckuai_xiaomi_V7", APP_NAME: "麦块我的世界盒子"]
         }
-
         mckuai_360 {
             manifestPlaceholders = [UMENG_CHANNEL_VALUE: "mckuai_360_V7", APP_NAME: "麦块"]
         }
-
         mckuai_wandoujia {
             manifestPlaceholders = [UMENG_CHANNEL_VALUE: "mckuai_wandoujia_V7", APP_NAME: "麦块我的世界盒子"]
         }
-
         mckuai_baidu {
             manifestPlaceholders = [UMENG_CHANNEL_VALUE: "mckuai_baidu_V7", APP_NAME: "麦块"]
         }
-
         mckuai_tencent {
             manifestPlaceholders = [UMENG_CHANNEL_VALUE: "mckuai_tencent_V7", APP_NAME: "麦块"]
         }
     }
-
     android.applicationVariants.all { variant ->
         variant.outputs.each {
             output ->
@@ -59,7 +64,6 @@ android {
                 }
         }
     }
-
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_7
         targetCompatibility JavaVersion.VERSION_1_7
