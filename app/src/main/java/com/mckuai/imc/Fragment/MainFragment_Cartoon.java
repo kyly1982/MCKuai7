@@ -50,6 +50,7 @@ public class MainFragment_Cartoon extends BaseFragment implements RadioGroup.OnC
     private boolean isRefreshNeed = false;
     private Cartoon commentCartoon;
     private Cartoon priseCartoon;
+    private int rewardCartoonId;
 
     private UltimateRecyclerView mCartoonListView;
     private View view;
@@ -119,8 +120,6 @@ public class MainFragment_Cartoon extends BaseFragment implements RadioGroup.OnC
         mCartoonListView.enableLoadmore();
         mCartoonListView.setDefaultOnRefreshListener(this);
         mCartoonListView.setOnLoadMoreListener(this);
-       /* mCartoonListView.setupMoreListener(this, 1);
-        mCartoonListView.setRefreshListener(this);*/
     }
 
     private void loadData() {
@@ -268,6 +267,31 @@ public class MainFragment_Cartoon extends BaseFragment implements RadioGroup.OnC
     public void onRewardCartoonSuccess() {
         Snackbar.make(mCartoonListView, "打赏成功!", Snackbar.LENGTH_LONG).show();
         updateDate(priseCartoon, true);
+        ArrayList<Cartoon> cartoons = null;
+        switch (typeIndex) {
+            case 0:
+                refreshData(mNewCartoon);
+                break;
+            case 1:
+                refreshData(mHotCartoon);
+                break;
+        }
+        mAdapter.notifyDataSetChanged();
+    }
+
+    private void refreshData(ArrayList<Cartoon> cartoons) {
+        for (Cartoon cartoon : cartoons) {
+            if (cartoon.getId() == rewardCartoonId) {
+                if (null == cartoon.getRewardList()) {
+                    ArrayList<User> users = new ArrayList<>(1);
+                    users.add(new User(mApplication.user));
+                    cartoon.setRewardList(users);
+                } else {
+                    cartoon.getRewardList().add(new User(mApplication.user));
+                }
+                break;
+            }
+        }
     }
 
     @Override
