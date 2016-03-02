@@ -136,10 +136,10 @@ public class MainFragment_Chat extends BaseFragment implements ConversationAdapt
         if (null != RongIM.getInstance() && null != RongIM.getInstance().getRongIMClient()) {
             if (RongIM.getInstance().getRongIMClient().getCurrentConnectionStatus() == RongIMClient.ConnectionStatusListener.ConnectionStatus.CONNECTED) {
                 ArrayList<io.rong.imlib.model.Conversation> list = (ArrayList<io.rong.imlib.model.Conversation>) RongIM.getInstance().getRongIMClient().getConversationList();
-                conversations = new ArrayList<>(list.size());
 
                 if (null != list) {
                     for (io.rong.imlib.model.Conversation imConversation : list) {
+                        conversations = new ArrayList<>(list.size());
                         Conversation conversation = new Conversation();
                         conversation.setConversation(imConversation);
                         //聊天对象信息
