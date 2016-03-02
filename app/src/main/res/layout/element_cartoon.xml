@@ -27,6 +27,7 @@
         android:layout_height="wrap_content"
         android:layout_alignTop="@id/cartoon_usercover"
         android:layout_toRightOf="@id/cartoon_usercover"
+        android:layout_toLeftOf="@id/cartoon_shar"
         android:singleLine="true"
         android:text="飞天小猪"
         android:textColor="@color/textColorPrimary"
