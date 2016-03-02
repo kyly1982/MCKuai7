@@ -194,7 +194,11 @@ public class MainFragment_Community extends BaseFragment
                 typeindex = 2;
                 break;
         }
-        page.setPage(0);
+        if (null != page) {
+            page.setPage(0);
+        } else {
+            page = new Page();
+        }
         loadPostList();
     }
 
