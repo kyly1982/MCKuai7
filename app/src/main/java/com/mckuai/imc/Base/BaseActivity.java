@@ -234,7 +234,7 @@ public class BaseActivity extends AppCompatActivity implements NavigationView.On
                 isSlidingMenuShow = true;
                 if (!mApplication.isLogin()) {
                     showUnLoginInfo();
-                } else if (null == userCover.getTag()) {
+                } else {
                     showUserInfo();
                 }
             }
@@ -289,7 +289,10 @@ public class BaseActivity extends AppCompatActivity implements NavigationView.On
     }
 
     private void showUserInfo() {
-        loader.displayImage(mApplication.user.getHeadImg(), userCover, mApplication.getCircleOptions());
+        String url = (String) userCover.getTag();
+        if (null == url || (null != url && !url.equals(mApplication.user.getHeadImg()))) {
+            loader.displayImage(mApplication.user.getHeadImg(), userCover, mApplication.getCircleOptions());
+        }
         userName.setText(mApplication.user.getNike());
         userLevel.setText(getString(R.string.usercenter_userlevel, mApplication.user.getLevel()));
         userCover.setTag(mApplication.user.getHeadImg());
