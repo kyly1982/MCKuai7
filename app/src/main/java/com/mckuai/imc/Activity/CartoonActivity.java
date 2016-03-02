@@ -27,6 +27,8 @@ public class CartoonActivity extends BaseActivity implements CartoonView.OnCarto
     private boolean isRefreshNeed = true;
     private boolean isReawrdSuccess = false;
     private boolean isCommentSuccess = false;
+    boolean isUpdateComment = false;
+    boolean isUpdateReawrd = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,14 +78,20 @@ public class CartoonActivity extends BaseActivity implements CartoonView.OnCarto
     }
 
     private void commentCartoon(){
-        String comtent = commentEditer.getText().toString();
-        if (null != comtent && !comtent.isEmpty()){
-            mApplication.netEngine.commentCartoon(this,cartoon.getId(),comtent,this);
+        if (!isUpdateComment) {
+            isUpdateComment = true;
+            String comtent = commentEditer.getText().toString();
+            if (null != comtent && !comtent.isEmpty()) {
+                mApplication.netEngine.commentCartoon(this, cartoon.getId(), comtent, this);
+            }
         }
     }
 
     private void rewardCartoon(){
-        mApplication.netEngine.rewardCartoon(this,true,cartoon.getId(),this);
+        if (!isUpdateReawrd) {
+            isUpdateReawrd = true;
+            mApplication.netEngine.rewardCartoon(this, true, cartoon.getId(), this);
+        }
     }
 
     private void showCommentLayout(){
@@ -119,7 +127,7 @@ public class CartoonActivity extends BaseActivity implements CartoonView.OnCarto
         //分享
         if (null != cartoon) {
             UMImage image = new UMImage(this, cartoon.getImage());
-            share("麦块漫画来了", "我刚在《麦块我的世界盒子》上发现一个在非常有意思的漫画，跟我来膜拜大神！", getString(R.string.shareCartoon) + cartoon.getId(), image);
+            share("麦块漫画", "我刚在《麦块我的世界盒子》上发现一个在非常有意思的漫画，跟我来膜拜大神！", getString(R.string.shareCartoon) + cartoon.getId(), image);
         }
     }
 
@@ -146,6 +154,7 @@ public class CartoonActivity extends BaseActivity implements CartoonView.OnCarto
 
     @Override
     public void onCommentCartoonSuccess() {
+        isUpdateComment = false;
         Snackbar.make(commentEditer,"评论成功",Snackbar.LENGTH_SHORT).show();
         cartoon.setReplyNum(cartoon.getReplyNum() + 1);
         Comment comment = new Comment(new User(mApplication.user), commentEditer.getText().toString());
@@ -162,11 +171,13 @@ public class CartoonActivity extends BaseActivity implements CartoonView.OnCarto
 
     @Override
     public void onCommentCartoonFailure(String msg) {
+        isUpdateComment = false;
         Snackbar.make(commentEditer,"评论失败，原因："+msg,Snackbar.LENGTH_SHORT).show();
     }
 
     @Override
     public void onRewardCartoonSuccess() {
+        isUpdateReawrd = false;
         Snackbar.make(commentEditer,"打赏成功！",Snackbar.LENGTH_SHORT).show();
         cartoon.setPrise(cartoon.getPrise() + 1);
         isReawrdSuccess = true;
@@ -175,6 +186,7 @@ public class CartoonActivity extends BaseActivity implements CartoonView.OnCarto
 
     @Override
     public void onRewardaCartoonFailure(String msg) {
+        isUpdateReawrd = false;
         Snackbar.make(commentEditer,"打赏失败，原因："+msg,Snackbar.LENGTH_SHORT).show();
     }
 
