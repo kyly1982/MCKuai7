@@ -96,6 +96,7 @@ public class PostActivity extends BaseActivity implements OnClickListener, TextW
 	private boolean isPicUpload = false;
 	private boolean isCollect = false;// 帖子是否被收藏
 	private boolean isReward = false;// 帽子是否被打赏
+	private boolean isPublish = false;
 
 	private AsyncHttpClient mClient;
 	//private com.umeng.socialize.controller.UMSocialService mShareService;
@@ -442,94 +443,94 @@ public class PostActivity extends BaseActivity implements OnClickListener, TextW
 			params.put("userId", mApplication.user.getId());
 			params.put("talkId", post.getId());
 			mClient.post(url, params, new JsonHttpResponseHandler() {
-                @Override
-                public void onStart() {
-                    // TODO Auto-generated method stub
-                    super.onStart();
-                   // popupLoadingToast("正在打赏楼主!");
-                }
+				@Override
+				public void onStart() {
+					// TODO Auto-generated method stub
+					super.onStart();
+					// popupLoadingToast("正在打赏楼主!");
+				}
 
-                /*
-                 * (non-Javadoc)
+				/*
+				 * (non-Javadoc)
                  *
                  * @see
                  * com.loopj.android.http.JsonHttpResponseHandler#onSuccess(int,
                  * org.apache.http.Header[], org.json.JSONObject)
                  */
-                @Override
-                public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-                    // TODO Auto-generated method stub
-                    super.onSuccess(statusCode, headers, response);
-                    try {
-                        if (response.has("state") && response.getString("state").equalsIgnoreCase("ok")) {
-                            //showNotification(1, "打赏成功！楼主获得了1个钻石", R.id.rl_post);
+				@Override
+				public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+					// TODO Auto-generated method stub
+					super.onSuccess(statusCode, headers, response);
+					try {
+						if (response.has("state") && response.getString("state").equalsIgnoreCase("ok")) {
+							//showNotification(1, "打赏成功！楼主获得了1个钻石", R.id.rl_post);
 //							Toast.makeText(PostActivity.this, "打赏成功！\n楼主获得了1个钻石", Toast.LENGTH_SHORT).show();
-                            //cancleLodingToast(true);
-                            isReward = true;
-                            setButtonFunction();
-                            return;
-                        } else {
-                            //showNotification(1, "打赏失败！", R.id.rl_post);
-                            //cancleLodingToast(false);
-                            showMessage("打赏失败！", "重试", new OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
-                                    rewardPost();
-                                    return;
-                                }
-                            });
-                            return;
-                        }
-                    } catch (Exception e) {
-                        // TODO: handle exception
-                        e.printStackTrace();
-                    }
-                    showMessage("打赏失败！", "重试", new OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            rewardPost();
-                            return;
-                        }
-                    });
-                    //showNotification(1, "打赏失败！", R.id.rl_post);
-                    //cancleLodingToast(false);
-                }
+							//cancleLodingToast(true);
+							isReward = true;
+							setButtonFunction();
+							return;
+						} else {
+							//showNotification(1, "打赏失败！", R.id.rl_post);
+							//cancleLodingToast(false);
+							showMessage("打赏失败！", "重试", new OnClickListener() {
+								@Override
+								public void onClick(View v) {
+									rewardPost();
+									return;
+								}
+							});
+							return;
+						}
+					} catch (Exception e) {
+						// TODO: handle exception
+						e.printStackTrace();
+					}
+					showMessage("打赏失败！", "重试", new OnClickListener() {
+						@Override
+						public void onClick(View v) {
+							rewardPost();
+							return;
+						}
+					});
+					//showNotification(1, "打赏失败！", R.id.rl_post);
+					//cancleLodingToast(false);
+				}
 
-                /*
-                 * (non-Javadoc)
+				/*
+				 * (non-Javadoc)
                  *
                  * @see
                  * com.loopj.android.http.JsonHttpResponseHandler#onFailure(int,
                  * org.apache.http.Header[], java.lang.String,
                  * java.lang.Throwable)
                  */
-                @Override
-                public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
-                    // TODO Auto-generated method stub
-                    super.onFailure(statusCode, headers, responseString, throwable);
-                    //showNotification(1, "操作失败！", R.id.rl_post);
-                    //cancleLodingToast(false);
-                    showMessage("打赏失败！原因：" + throwable.getLocalizedMessage(), "重试", new OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            rewardPost();
-                            return;
-                        }
-                    });
-                }
+				@Override
+				public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+					// TODO Auto-generated method stub
+					super.onFailure(statusCode, headers, responseString, throwable);
+					//showNotification(1, "操作失败！", R.id.rl_post);
+					//cancleLodingToast(false);
+					showMessage("打赏失败！原因：" + throwable.getLocalizedMessage(), "重试", new OnClickListener() {
+						@Override
+						public void onClick(View v) {
+							rewardPost();
+							return;
+						}
+					});
+				}
 
-                @Override
-                public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
-                    showMessage("打赏失败！原因：" + throwable.getLocalizedMessage(), "重试", new OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            rewardPost();
-                            return;
-                        }
-                    });
-                }
-            });
-        } else
+				@Override
+				public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+					showMessage("打赏失败！原因：" + throwable.getLocalizedMessage(), "重试", new OnClickListener() {
+						@Override
+						public void onClick(View v) {
+							rewardPost();
+							return;
+						}
+					});
+				}
+			});
+		} else
 		{
 			callLogin(REWARD_POST);
 		}
@@ -638,135 +639,122 @@ public class PostActivity extends BaseActivity implements OnClickListener, TextW
 
 	private void replyPost()
 	{
-		// 检查是否满足发布回复的条件
-		if (checkReplyInfo())
-		{
-			if (0 == ownerId)
-			{
-				getParams();
-				return;
-			}
-			ArrayList<String> picIds;
-			if (null != picsList && picsList.size() > 0 && !isPicUpload)
-			{
+		if (!isPublish) {
+			isPublish = true;
+			// 检查是否满足发布回复的条件
+			if (checkReplyInfo()) {
+				if (0 == ownerId) {
+					getParams();
+					return;
+				}
+				ArrayList<String> picIds;
+				if (null != picsList && picsList.size() > 0 && !isPicUpload) {
 //				MobclickAgent.onEvent(this, "picCount_Reply", picsList.size());
-				uploadPic();
-				return;
-			}
-			String url;
-			RequestParams params = new RequestParams();
-			if (isReplyPost)
-			{
-				url = getString(R.string.interface_domainName) + getString(R.string.interface_replypost);
-				params.put("operUserId", ownerId);
-				params.put("isNew", isNew);
-				params.put("forumId", forumId);
-				params.put("forumName", forumName);
-				params.put("talkId", postId);
-				params.put("talkTitle", postTitle);
-				if (null != picUrl && 0 < picUrl.length())
-				{
-					params.put("content", edt_content.getText().toString() + picUrl);
-				} else
-				{
-					params.put("content", edt_content.getText().toString());
+					uploadPic();
+					return;
 				}
-			} else
-			{
-				url = getString(R.string.interface_domainName) + getString(R.string.interface_replyfloor);
-				params.put("talkId", floorId);
-				params.put("replyId_id", postId);
-				params.put("replyContext", URLEncoder.encode(edt_content.getText().toString()));
-			}
-			params.put("isOver", "yes");
-			params.put("device", "andriod");
-			params.put("userId", mUserId);
-			// Log.e(TAG, url + "&" + params.toString());
-			mClient.post(url, params, new JsonHttpResponseHandler()
-			{
-				/*
-				 * (non-Javadoc)
-				 * 
-				 * @see
-				 * com.loopj.android.http.AsyncHttpResponseHandler#onStart()
-				 */
-				@Override
-				public void onStart()
-				{
-					// TODO Auto-generated method stub
-					super.onStart();
-					String msg;
-					if (isReplyPost)
-					{
-						msg = "正在发布回帖，请稍候";
-					} else
-					{
-						msg = "正在发布回复，请稍候";
+				String url;
+				RequestParams params = new RequestParams();
+				if (isReplyPost) {
+					url = getString(R.string.interface_domainName) + getString(R.string.interface_replypost);
+					params.put("operUserId", ownerId);
+					params.put("isNew", isNew);
+					params.put("forumId", forumId);
+					params.put("forumName", forumName);
+					params.put("talkId", postId);
+					params.put("talkTitle", postTitle);
+					if (null != picUrl && 0 < picUrl.length()) {
+						params.put("content", edt_content.getText().toString() + picUrl);
+					} else {
+						params.put("content", edt_content.getText().toString());
 					}
+				} else {
+					url = getString(R.string.interface_domainName) + getString(R.string.interface_replyfloor);
+					params.put("talkId", floorId);
+					params.put("replyId_id", postId);
+					params.put("replyContext", URLEncoder.encode(edt_content.getText().toString()));
+				}
+				params.put("isOver", "yes");
+				params.put("device", "andriod");
+				params.put("userId", mUserId);
+				// Log.e(TAG, url + "&" + params.toString());
+				mClient.post(url, params, new JsonHttpResponseHandler() {
+					/*
+					 * (non-Javadoc)
+                     *
+                     * @see
+                     * com.loopj.android.http.AsyncHttpResponseHandler#onStart()
+                     */
+					@Override
+					public void onStart() {
+						// TODO Auto-generated method stub
+						super.onStart();
+						String msg;
+						if (isReplyPost) {
+							msg = "正在发布回帖，请稍候";
+						} else {
+							msg = "正在发布回复，请稍候";
+						}
 //					popupLoadingToast(msg);
-				}
-
-				/*
-				 * (non-Javadoc)
-				 * 
-				 * @see
-				 * com.loopj.android.http.JsonHttpResponseHandler#onSuccess(int,
-				 * org.apache.http.Header[], org.json.JSONObject)
-				 */
-				@Override
-				public void onSuccess(int statusCode, Header[] headers, JSONObject response)
-				{
-					// TODO Auto-generated method stub
-					super.onSuccess(statusCode, headers, response);
-					if (response.has("state"))
-					{
-						try
-						{
-							if (response.getString("state").equalsIgnoreCase("ok"))
-							{
-								if (isReplyPost)
-								{
-									MobclickAgent.onEvent(PostActivity.this, "replyPost_Success");
-								} else
-								{
-									MobclickAgent.onEvent(PostActivity.this, "replyFoolr_Success");
-								}
-								// 恢复显示
-								resumeShowPost();
-								webView.loadUrl("javascript:addReplyHtml()");
-								// 将变量恢复
-								edt_content.setText("");
-								if (picsList != null)
-								{
-									picsList.clear();
-								}
-								isPicUpload = false;
-								picUrl = null;
-//								cancleLodingToast(true);
-								return;
-							}
-						} catch (Exception e)
-						{
-							// TODO: handle exception
-
-						}
 					}
-					showMessage("发送失败，是否重试？", "重发", new OnClickListener() {
-						@Override
-						public void onClick(View v) {
-							replyPost();
-						}
-					});
-				}
 
-				@Override
-				public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable)
-				{
-					// TODO Auto-generated method stub
-					super.onFailure(statusCode, headers, responseString, throwable);
-					showMessage("发送失败，原因：" + throwable.getLocalizedMessage(), null, null);
-				}
-			});
+					/*
+					 * (non-Javadoc)
+                     *
+                     * @see
+                     * com.loopj.android.http.JsonHttpResponseHandler#onSuccess(int,
+                     * org.apache.http.Header[], org.json.JSONObject)
+                     */
+					@Override
+					public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+						// TODO Auto-generated method stub
+						super.onSuccess(statusCode, headers, response);
+						if (response.has("state")) {
+							isPublish = false;
+							try {
+								if (response.getString("state").equalsIgnoreCase("ok")) {
+									if (isReplyPost) {
+										MobclickAgent.onEvent(PostActivity.this, "replyPost_Success");
+									} else {
+										MobclickAgent.onEvent(PostActivity.this, "replyFoolr_Success");
+									}
+									// 恢复显示
+									resumeShowPost();
+									webView.loadUrl("javascript:addReplyHtml()");
+									// 将变量恢复
+									edt_content.setText("");
+									if (picsList != null) {
+										picsList.clear();
+									}
+									isPicUpload = false;
+									picUrl = null;
+//								cancleLodingToast(true);
+									return;
+								}
+							} catch (Exception e) {
+								// TODO: handle exception
+
+							}
+						}
+						showMessage("发送失败，是否重试？", "重发", new OnClickListener() {
+							@Override
+							public void onClick(View v) {
+								replyPost();
+							}
+						});
+					}
+
+					@Override
+					public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+						// TODO Auto-generated method stub
+						super.onFailure(statusCode, headers, responseString, throwable);
+						isPublish = false;
+						showMessage("发送失败，原因：" + throwable.getLocalizedMessage(), null, null);
+					}
+				});
+			}
+		} else {
+			showMessage("正在发布，请稍候！", null, null);
 		}
 	}
 

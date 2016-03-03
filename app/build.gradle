@@ -1,31 +1,19 @@
 apply plugin: 'com.android.application'
 
 android {
-    signingConfigs {
-        debug {
-            storeFile file("F:\\Repository\\imc.keystore")
-            storePassword "ilovegt888"
-            keyAlias "麦块我的世界盒子"
-            keyPassword "gamegt888"
-        }
-    }
     compileSdkVersion 23
     buildToolsVersion '21.1.2'
     defaultConfig {
         applicationId "com.mckuai.imc"
         minSdkVersion 15
         targetSdkVersion 21
-        versionCode 33
-        versionName "7.0.2"
+        versionCode 34
+        versionName "7.0.3"
     }
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-        }
-        debug {
-            signingConfig signingConfigs.debug
-            //proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
     sourceSets {

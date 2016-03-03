@@ -20,6 +20,7 @@
         android:layout_below="@id/usercover_big"
         android:gravity="center"
         android:textColor="@color/textColorPrimary"
+        android:singleLine="true"
         android:text="大猩猩" />
 
 </RelativeLayout>

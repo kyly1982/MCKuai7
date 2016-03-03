@@ -11,12 +11,14 @@ import android.os.Handler;
 import android.os.Message;
 import android.provider.MediaStore;
 import android.support.v7.widget.AppCompatTextView;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnFocusChangeListener;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.EditText;
@@ -80,6 +82,7 @@ public class PublishPostActivity extends BaseActivity implements OnClickListener
     private String postTitle;
     private String postContent;
     private static boolean isUploading = false;
+    private boolean isPublish = false;
     private static final int LOGIN = 0;
     private static final int GETPIC = 1;
 
@@ -165,6 +168,17 @@ public class PublishPostActivity extends BaseActivity implements OnClickListener
         mTypeLayout.setOnClickListener(this);
         mTitle.setOnFocusChangeListener(this);
         mContent.setOnFocusChangeListener(this);
+        mContent.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if (actionId == EditorInfo.IME_ACTION_SEND) {
+                    mApplication.hideSoftKeyboard(mContent);
+                    publishPost();
+                    return true;
+                }
+                return false;
+            }
+        });
 
         // btn_publish.setVisibility(View.VISIBLE);
 		/*btn_publish.setText("发布");
@@ -207,21 +221,26 @@ public class PublishPostActivity extends BaseActivity implements OnClickListener
     }
 
     private void publishPost() {
-        if (checkPublishInfo()) {
-            forumId = ((ForumInfo) mSelectFroum.getTag()).getId();
-            // forumName = ((ForumInfo)mSelectFroum.getTag()).getName();
-            forumName = mSelectFroum.getText().toString();
-            typeId = ((PostType) mSelectType.getTag()).getSmallId();
-            typeName = mSelectType.getText().toString();
-            postTitle = mTitle.getText().toString();
-            postContent = mContent.getText().toString();
+        if (!isPublish) {
+            isPublish = true;
+            if (checkPublishInfo()) {
+                forumId = ((ForumInfo) mSelectFroum.getTag()).getId();
+                // forumName = ((ForumInfo)mSelectFroum.getTag()).getName();
+                forumName = mSelectFroum.getText().toString();
+                typeId = ((PostType) mSelectType.getTag()).getSmallId();
+                typeName = mSelectType.getText().toString();
+                postTitle = mTitle.getText().toString();
+                postContent = mContent.getText().toString();
 
-            if (null != picsList && !picsList.isEmpty()) {
-                MobclickAgent.onEvent(this, "picCount_Publish", picsList.size());
-                uploadPic();
-            } else {
-                uploadText();
+                if (null != picsList && !picsList.isEmpty()) {
+                    MobclickAgent.onEvent(this, "picCount_Publish", picsList.size());
+                    uploadPic();
+                } else {
+                    uploadText();
+                }
             }
+        } else {
+            showMessage("正在发布，请稍候！", null, null);
         }
     }
 
@@ -324,14 +343,13 @@ public class PublishPostActivity extends BaseActivity implements OnClickListener
                 // TODO Auto-generated method stub
                 super.onStart();
 //				popupLoadingToast("正在发布...");
-                isUploading = true;
             }
 
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                 // TODO Auto-generated method stub
                 super.onSuccess(statusCode, headers, response);
-                isUploading = false;
+                isPublish = false;
                 int id = 0;
                 if (response.has("state")) {
                     try {
@@ -363,7 +381,7 @@ public class PublishPostActivity extends BaseActivity implements OnClickListener
             public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
                 // TODO Auto-generated method stub
                 super.onFailure(statusCode, headers, responseString, throwable);
-                isUploading = false;
+                isPublish = false;
 //				showNotification(2,"发帖失败,原因" + throwable.getLocalizedMessage(), R.id.ll_top);
             }
 
@@ -371,7 +389,7 @@ public class PublishPostActivity extends BaseActivity implements OnClickListener
             public void onCancel() {
                 // TODO Auto-generated method stub
                 super.onCancel();
-                isUploading = false;
+                isPublish = false;
             }
         });
     }

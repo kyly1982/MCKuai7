@@ -362,7 +362,7 @@ public class MainFragment_Mine extends BaseFragment
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (Activity.RESULT_OK == resultCode) {
+        if (Activity.RESULT_OK == resultCode && mApplication.isLogin()) {
             showData();
         }
     }

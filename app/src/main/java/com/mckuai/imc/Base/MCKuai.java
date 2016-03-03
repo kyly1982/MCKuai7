@@ -6,6 +6,8 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.os.Environment;
+import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 
 import com.mckuai.imc.Bean.MCUser;
 import com.mckuai.imc.Bean.Token;
@@ -277,5 +279,12 @@ public class MCKuai extends Application {
     public void handleExit() {
         daoHelper.close();
         saveProfile();
+    }
+
+    public void hideSoftKeyboard(View view) {
+        if (null != view) {
+            InputMethodManager methodManager = (InputMethodManager) view.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+            methodManager.hideSoftInputFromWindow(view.getWindowToken(), 0);
+        }
     }
 }

@@ -5,8 +5,11 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v7.widget.AppCompatEditText;
+import android.view.KeyEvent;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.mckuai.imc.Base.BaseActivity;
 import com.mckuai.imc.Bean.Cartoon;
@@ -18,6 +21,12 @@ import com.mckuai.imc.Widget.CartoonView;
 import com.umeng.socialize.media.UMImage;
 
 import java.util.ArrayList;
+
+import io.rong.imkit.RongIM;
+import io.rong.imlib.RongIMClient;
+import io.rong.imlib.model.Conversation;
+import io.rong.imlib.model.Message;
+import io.rong.message.TextMessage;
 
 public class CartoonActivity extends BaseActivity implements CartoonView.OnCartoonElementClickListener, View.OnClickListener, MCNetEngine.OnRewardCartoonResponseListener, MCNetEngine.OnCommentCartoonResponseListener, MCNetEngine.OnLoadCartoonDetailResponseListener {
     private Cartoon cartoon;
@@ -74,12 +83,24 @@ public class CartoonActivity extends BaseActivity implements CartoonView.OnCarto
         commentLayout = (RelativeLayout) findViewById(R.id.comment_layout);
         findViewById(R.id.commentcartoon).setOnClickListener(this);
         cartoonView.setOnCartoonElementClickListener(this);
-
+        commentEditer.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if (actionId == EditorInfo.IME_ACTION_SEND) {
+                    if (0 < commentEditer.getText().length()) {
+                        commentCartoon();
+                        return true;
+                    }
+                }
+                return false;
+            }
+        });
     }
 
     private void commentCartoon(){
         if (!isUpdateComment) {
             isUpdateComment = true;
+            mApplication.hideSoftKeyboard(commentEditer);
             String comtent = commentEditer.getText().toString();
             if (null != comtent && !comtent.isEmpty()) {
                 mApplication.netEngine.commentCartoon(this, cartoon.getId(), comtent, this);
@@ -155,7 +176,7 @@ public class CartoonActivity extends BaseActivity implements CartoonView.OnCarto
     @Override
     public void onCommentCartoonSuccess() {
         isUpdateComment = false;
-        Snackbar.make(commentEditer,"评论成功",Snackbar.LENGTH_SHORT).show();
+        //Snackbar.make(commentEditer,"评论成功",Snackbar.LENGTH_SHORT).show();
         cartoon.setReplyNum(cartoon.getReplyNum() + 1);
         Comment comment = new Comment(new User(mApplication.user), commentEditer.getText().toString());
         if (null == cartoon.getComments()) {
@@ -164,8 +185,32 @@ public class CartoonActivity extends BaseActivity implements CartoonView.OnCarto
         }
         cartoon.getComments().add(comment);
         isCommentSuccess = true;
-        commentEditer.setText("");
         showData();
+        if (null != RongIM.getInstance() && null != RongIM.getInstance().getRongIMClient()) {
+            TextMessage message = TextMessage.obtain(commentEditer.getText().toString());
+            RongIM.getInstance().getRongIMClient().sendMessage(Conversation.ConversationType.PRIVATE, cartoon.getOwner().getName(), message, mApplication.user.getNike() + "评论了你的作品，快来看看吧！", "", new RongIMClient.SendMessageCallback() {
+                @Override
+                public void onError(Integer integer, RongIMClient.ErrorCode errorCode) {
+
+                }
+
+                @Override
+                public void onSuccess(Integer integer) {
+
+                }
+            }, new RongIMClient.ResultCallback<Message>() {
+                @Override
+                public void onSuccess(Message message) {
+
+                }
+
+                @Override
+                public void onError(RongIMClient.ErrorCode errorCode) {
+
+                }
+            });
+        }
+        commentEditer.setText("");
         hideCommentLayout();
     }
 
@@ -178,9 +223,33 @@ public class CartoonActivity extends BaseActivity implements CartoonView.OnCarto
     @Override
     public void onRewardCartoonSuccess() {
         isUpdateReawrd = false;
-        Snackbar.make(commentEditer,"打赏成功！",Snackbar.LENGTH_SHORT).show();
+        //Snackbar.make(commentEditer,"打赏成功！",Snackbar.LENGTH_SHORT).show();
         cartoon.setPrise(cartoon.getPrise() + 1);
         isReawrdSuccess = true;
+        if (null != RongIM.getInstance() && null != RongIM.getInstance().getRongIMClient()) {
+            TextMessage message = TextMessage.obtain("你的《" + cartoon.getContent() + "》真是太棒了，赞一个！");
+            RongIM.getInstance().getRongIMClient().sendMessage(Conversation.ConversationType.PRIVATE, cartoon.getOwner().getName(), message, mApplication.user.getNike() + "给你的漫画点了赞！", "", new RongIMClient.SendMessageCallback() {
+                @Override
+                public void onError(Integer integer, RongIMClient.ErrorCode errorCode) {
+
+                }
+
+                @Override
+                public void onSuccess(Integer integer) {
+
+                }
+            }, new RongIMClient.ResultCallback<Message>() {
+                @Override
+                public void onSuccess(Message message) {
+
+                }
+
+                @Override
+                public void onError(RongIMClient.ErrorCode errorCode) {
+
+                }
+            });
+        }
         showData();
     }
 

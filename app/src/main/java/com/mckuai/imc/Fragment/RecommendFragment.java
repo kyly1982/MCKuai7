@@ -67,7 +67,7 @@ public class RecommendFragment extends BaseFragment implements MessageAdapter.On
         if (resultCode == Activity.RESULT_OK) {
             switch (requestCode) {
                 case 1:
-                    MCKuai.instence.netEngine.addFriend(getActivity(), cartoon.getOwner().getId().intValue(), this);
+                    application.netEngine.addFriend(getActivity(), cartoon.getOwner().getId().intValue(), this);
                     break;
                 case 2:
                     RongIM.getInstance().startPrivateChat(getActivity(), cartoon.getOwner().getName(), cartoon.getOwner().getNickEx());
@@ -138,7 +138,7 @@ public class RecommendFragment extends BaseFragment implements MessageAdapter.On
 
     @Override
     public void onLoadMessageFailure(String msg) {
-        ((BaseActivity) getActivity()).showWarning(msg, null, null);
+        showMessage(msg, null, null);
     }
 
     @Override

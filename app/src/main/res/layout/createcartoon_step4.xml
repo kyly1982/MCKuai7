@@ -36,6 +36,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/createcartoon_talk"
         android:drawableRight="@drawable/umeng_socialize_qq_on"
+        android:imeOptions="actionSend"
         android:clickable="true"
         android:background="@null"
         android:textColor="@color/icons"

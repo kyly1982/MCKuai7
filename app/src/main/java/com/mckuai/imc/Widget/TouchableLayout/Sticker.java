@@ -122,4 +122,16 @@ public class Sticker {
     public void setLableContentView(AppCompatTextView lableContentView) {
         this.lableContentView = lableContentView;
     }
+
+    public void mirror(boolean isVertical) {
+        int width = bitmap.getWidth();
+        int height = bitmap.getHeight();
+        Matrix matrix = new Matrix();
+        if (isVertical) {
+            matrix.postScale(1, -1);
+        } else {
+            matrix.postScale(-1, 1);
+        }
+        bitmap = Bitmap.createBitmap(bitmap, 0, 0, width, height, matrix, true);
+    }
 }

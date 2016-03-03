@@ -56,7 +56,7 @@ import java.util.ArrayList;
 
 public class BaseActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
-    public MCKuai mApplication = MCKuai.instence;
+    public MCKuai mApplication;
     public FragmentManager mFragmentManager;
     public android.support.v4.app.FragmentManager mFragmentManager_V4;
     public Toolbar mToolbar;
@@ -76,6 +76,7 @@ public class BaseActivity extends AppCompatActivity implements NavigationView.On
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mApplication = MCKuai.instence;
         if (this instanceof CartoonActivity) {
             mTitleResId = R.string.activity_cartoondetial;
         } else if (this instanceof ConversationActivity) {

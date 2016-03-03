@@ -99,7 +99,7 @@ public class CreateCartoonActivity extends BaseActivity
             case R.id.menu_cartoonaction_publish:
                 MobclickAgent.onEvent(this, "createCartoon_publish");
                 if (mApplication.isLogin()) {
-                    createFragment.upload();
+                    createFragment.uploadCartoon(null);
                 } else {
                     callLogin(1);
                 }
@@ -117,7 +117,7 @@ public class CreateCartoonActivity extends BaseActivity
             switch (requestCode) {
                 //上传
                 case 1:
-                    createFragment.upload();
+                    createFragment.uploadCartoon(null);
                     break;
                 case 2:
                     break;

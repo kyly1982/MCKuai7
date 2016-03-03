@@ -46,7 +46,7 @@ public class MainFragment_Cartoon extends BaseFragment implements RadioGroup.OnC
     private int typeIndex = 0;
     private Page pageNew = new Page();
     private Page pageHot = new Page();
-    private MCKuai mApplication = MCKuai.instence;
+    private MCKuai mApplication;
     private boolean isRefreshNeed = false;
     private Cartoon commentCartoon;
     private Cartoon priseCartoon;
@@ -57,6 +57,7 @@ public class MainFragment_Cartoon extends BaseFragment implements RadioGroup.OnC
 
     public MainFragment_Cartoon() {
         mTitleResId = R.string.fragment_cartoon;
+        mApplication = MCKuai.instence;
     }
 
     public void setType(int type) {
@@ -86,17 +87,19 @@ public class MainFragment_Cartoon extends BaseFragment implements RadioGroup.OnC
                              Bundle savedInstanceState) {
         if (null == view) {
             view = inflater.inflate(R.layout.fragment_main_cartoon, container, false);
+            if (null != getActivity() && null == mCartoonListView) {
+                initView();
+            }
         }
         mCartoonType = getResources().getStringArray(R.array.cartoon_ordertype);
+
         return view;
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        if (null != getActivity() && null == mCartoonListView) {
-            initView();
-        }
+
     }
 
     @Override

@@ -5,10 +5,14 @@ import android.support.v7.widget.AppCompatEditText;
 import android.support.v7.widget.AppCompatTextView;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.KeyEvent;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.mckuai.imc.Base.MCKuai;
 import com.mckuai.imc.R;
 
 /**
@@ -20,6 +24,8 @@ public class StepView_4 extends RelativeLayout {
         void onShareButtonClicked();
 
         void onTitleChanged(String title);
+
+        void onSend();
     }
 
     public StepView_4(Context context,OnShareButtonClickedListener listener) {
@@ -32,7 +38,7 @@ public class StepView_4 extends RelativeLayout {
         inflate(context, R.layout.createcartoon_step4, this);
         AppCompatTextView sync = (AppCompatTextView) findViewById(R.id.createcartoon_sync);
         //inputLayout.setHint("给大作起个名");
-        AppCompatEditText editText = (AppCompatEditText) findViewById(R.id.createcartoon_talk);
+        final AppCompatEditText editText = (AppCompatEditText) findViewById(R.id.createcartoon_talk);
         sync.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -41,6 +47,20 @@ public class StepView_4 extends RelativeLayout {
                 }
             }
         });
+
+        editText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if (actionId == EditorInfo.IME_ACTION_SEND) {
+                    if (0 < editText.getText().toString().length() && null != listener) {
+                        listener.onSend();
+                        MCKuai.instence.hideSoftKeyboard(editText);
+                    }
+                }
+                return false;
+            }
+        });
+
         editText.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {

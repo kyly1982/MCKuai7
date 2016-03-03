@@ -12,7 +12,6 @@ import android.support.v7.widget.AppCompatTextView;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
 import com.mckuai.imc.Bean.Lable;
@@ -41,6 +40,7 @@ public class TouchableLayout extends FrameLayout {
 
     private Bitmap mControllerBitmap;//控制旋转缩放的图标
     private Bitmap mDeleteBitmap;//删除图标
+    private Bitmap mMirrorController;//镜像翻转控制图标
     /**
      * 背景图
      */
@@ -53,6 +53,10 @@ public class TouchableLayout extends FrameLayout {
      * 删除图标长和宽
      */
     private float mDeleteWidth, mDeleteHeight;//操作图标长和宽
+    /**
+     * 镜像翻转控制图标长宽
+     */
+    private float mMirrorControllerWidth, mMirrorControllerHeight;
     /**
      * 控制模式
      */
@@ -127,6 +131,9 @@ public class TouchableLayout extends FrameLayout {
         mDeleteWidth = mDeleteBitmap.getWidth();
         mDeleteHeight = mDeleteBitmap.getHeight();
 
+        mMirrorController = BitmapFactory.decodeResource(getResources(), R.mipmap.ic_sticker_mirror);
+        mMirrorControllerWidth = mMirrorController.getWidth();
+        mMirrorControllerHeight = mMirrorController.getHeight();
     }
 
     public void frozenWidget(boolean frozen) {
@@ -224,6 +231,7 @@ public class TouchableLayout extends FrameLayout {
                 if (!isImageFrozen) {
                     canvas.drawBitmap(mControllerBitmap, stickers.get(i).getMapPointsDst()[4] - mControllerWidth / 2, stickers.get(i).getMapPointsDst()[5] - mControllerHeight / 2, null);
                     canvas.drawBitmap(mDeleteBitmap, stickers.get(i).getMapPointsDst()[0] - mDeleteWidth / 2, stickers.get(i).getMapPointsDst()[1] - mDeleteHeight / 2, null);
+                    canvas.drawBitmap(mMirrorController, stickers.get(i).getMapPointsDst()[2] - mMirrorControllerWidth / 2, stickers.get(i).getMapPointsDst()[3] - mMirrorControllerHeight / 2, null);
                 }
             }
         }
@@ -248,6 +256,17 @@ public class TouchableLayout extends FrameLayout {
                 ry + mControllerHeight / 2);
         return rectF.contains(x, y);
 
+    }
+
+    private boolean isMirror(float x, float y) {
+        int position = 2;
+        float rx = stickers.get(focusStickerPosition).getMapPointsDst()[position];
+        float ry = stickers.get(focusStickerPosition).getMapPointsDst()[position + 1];
+        RectF rectF = new RectF(rx - mMirrorControllerWidth / 2,
+                ry - mMirrorControllerHeight / 2,
+                rx + mMirrorControllerWidth / 2,
+                ry + mMirrorControllerHeight / 2);
+        return rectF.contains(x, y);
     }
 
     /**
@@ -315,6 +334,12 @@ public class TouchableLayout extends FrameLayout {
                         break;
                     }
 
+                    if (isMirror(x, y)) {
+                        stickers.get(focusStickerPosition).mirror(false);
+                        invalidate();
+                        break;
+                    }
+
                     //检查是否在焦点卡片上
                     if (isFocusSticker(x, y)) {
                         mLastPointY = y;
@@ -341,15 +366,32 @@ public class TouchableLayout extends FrameLayout {
                 case MotionEvent.ACTION_MOVE:
                     //缩放旋转控制
                     if (mInController) {
-                        stickers.get(focusStickerPosition).getmMatrix().postRotate(rotation(event), stickers.get(focusStickerPosition).getMapPointsDst()[8], stickers.get(focusStickerPosition).getMapPointsDst()[9]);
-                        float nowLenght = caculateLength(stickers.get(focusStickerPosition).getMapPointsDst()[0], stickers.get(focusStickerPosition).getMapPointsDst()[1]);
+                        Sticker sticker = stickers.get(focusStickerPosition);
+                        sticker.getmMatrix().postRotate(rotation(event), sticker.getMapPointsDst()[8], sticker.getMapPointsDst()[9]);
+                        float nowLenght = caculateLength(sticker.getMapPointsDst()[0], sticker.getMapPointsDst()[1]);
                         float touchLenght = caculateLength(x, y) - deviation;
                         if (Math.sqrt((nowLenght - touchLenght) * (nowLenght - touchLenght)) > 0.0f) {
                             float scale = touchLenght / nowLenght;
-                            float nowsc = stickers.get(focusStickerPosition).getScaleSize() * scale;
+                            float nowsc = sticker.getScaleSize() * scale;
                             if (nowsc >= MIN_SCALE_SIZE && nowsc <= MAX_SCALE_SIZE) {
-                                stickers.get(focusStickerPosition).getmMatrix().postScale(scale, scale, stickers.get(focusStickerPosition).getMapPointsDst()[8], stickers.get(focusStickerPosition).getMapPointsDst()[9]);
-                                stickers.get(focusStickerPosition).setScaleSize(nowsc);
+                                sticker.getmMatrix().postScale(scale, scale, sticker.getMapPointsDst()[8], sticker.getMapPointsDst()[9]);
+                                sticker.setScaleSize(nowsc);
+                            }
+                            if (null != sticker.getLable()) {
+                                //sticker.getLable().getMatrix().postTranslate(cX, cY);
+                                int position = (int) sticker.getLable().getTag();
+                                Lable lable = labels.get(position);
+                                //lable.getCoordinate().offset((int) cX, (int) cY);
+                                int childWidth = sticker.getLable().getWidth();
+                                int childHeight = sticker.getLable().getHeight();
+                                // sticker.getLable().layout(lable.getCoordinate().x, lable.getCoordinate().y - childHeight, lable.getCoordinate().x + childWidth, lable.getCoordinate().y);
+
+
+                                float value[] = {0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f};
+                                sticker.getmMatrix().getValues(value);
+                                int left = (int) value[Matrix.MTRANS_X];
+                                int top = (int) value[Matrix.MTRANS_Y];
+                                sticker.getLable().layout(left, top - childHeight, left + childWidth, top);
                             }
                         }
 
@@ -376,7 +418,6 @@ public class TouchableLayout extends FrameLayout {
                                 int childWidth = sticker.getLable().getWidth();
                                 int childHeight = sticker.getLable().getHeight();
                                 // sticker.getLable().layout(lable.getCoordinate().x, lable.getCoordinate().y - childHeight, lable.getCoordinate().x + childWidth, lable.getCoordinate().y);
-
 
                                 float value[] = {0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f};
                                 sticker.getmMatrix().getValues(value);
@@ -498,22 +539,6 @@ public class TouchableLayout extends FrameLayout {
 
     }
 
-    public void saveBitmapToFile() {
-//        int bgWidth = bgBitmap.getWidth();
-//        int bgHeight = bgBitmap.getHeight();
-//        Bitmap newbmp = Bitmap.createBitmap(bgWidth, bgHeight, Bitmap.Config.ARGB_8888);
-//        Canvas cv = new Canvas(newbmp);
-//        cv.drawBitmap(bgBitmap, 0, 0, null);
-//        cv.drawBitmap(stickers.get(focusStickerPosition).getBitmap(), stickers.get(focusStickerPosition).getmMatrix(), null);
-//        cv.save(Canvas.ALL_SAVE_FLAG);
-//        cv.restore();
-//        bgBitmap = newbmp;
-
-        stickers.clear();
-        focusStickerPosition = -1;
-        invalidate();
-    }
-
     /**
      * 设置焦点贴纸
      *
@@ -615,21 +640,4 @@ public class TouchableLayout extends FrameLayout {
         }
     }
 
-    public static class LayoutParams extends ViewGroup.LayoutParams {
-
-
-        public LayoutParams(Context c, AttributeSet attrs) {
-            super(c, attrs);
-        }
-
-        public LayoutParams(ViewGroup.LayoutParams source) {
-            super(source);
-        }
-
-
-        public LayoutParams(int width, int height) {
-            super(width, height);
-        }
-
-    }
 }

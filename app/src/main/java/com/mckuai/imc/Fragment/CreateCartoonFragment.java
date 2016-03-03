@@ -49,6 +49,7 @@ public class CreateCartoonFragment extends BaseFragment implements StepView_4.On
     private String title;
     private String imagePath;
     private String fileName;
+    private boolean isUploading = false;
 
 
     private View view;
@@ -185,12 +186,6 @@ public class CreateCartoonFragment extends BaseFragment implements StepView_4.On
         sceneList.setLayoutManager(manager);
     }
 
-
-    public void upload() {
-        uploadCartoon(null);
-    }
-
-
     private void showScene(ArrayList<Object> scenes) {
         if (null != scenes && !scenes.isEmpty()) {
             if (null == adapter) {
@@ -310,6 +305,11 @@ public class CreateCartoonFragment extends BaseFragment implements StepView_4.On
     }
 
     @Override
+    public void onSend() {
+        uploadCartoon(null);
+    }
+
+    @Override
     public void onSceneSelected(Object scene) {
         MobclickAgent.onEvent(getActivity(), "createCartoon_checkdscene");
         if (null != scene) {
@@ -333,13 +333,16 @@ public class CreateCartoonFragment extends BaseFragment implements StepView_4.On
         }
     }
 
-    private void uploadCartoon(Cartoon cartoon) {
-        if (null == cartoon) {
-            uploadImage();
-            return;
+    public void uploadCartoon(Cartoon cartoon) {
+        if (!isUploading) {
+            if (null == cartoon) {
+                uploadImage();
+                return;
+            } else {
+                MCKuai.instence.netEngine.uploadCartoon(getActivity(), cartoon, this);
+            }
         } else {
-            MobclickAgent.onEvent(getActivity(), "");
-            MCKuai.instence.netEngine.uploadCartoon(getActivity(), cartoon, this);
+            showMessage("正在发布中，请稍候再试！", null, null);
         }
     }
 
@@ -364,15 +367,16 @@ public class CreateCartoonFragment extends BaseFragment implements StepView_4.On
 
     @Override
     public void onUploadCartoonFailure(String msg) {
+        isUploading = false;
         Snackbar.make(cartoonBuilder, msg, Snackbar.LENGTH_LONG).show();
         MobclickAgent.onEvent(getActivity(), "createCartoon_publish_F");
     }
 
     @Override
     public void onUploadCartoonSuccess(int cartoonId) {
+        isUploading = false;
         MobclickAgent.onEvent(getActivity(), "createCartoon_publish_S");
-        Cartoon cartoon = new Cartoon();
-        cartoon.setId(cartoonId);
+        Cartoon cartoon = new Cartoon(cartoonId);
         Intent intent = new Intent(getActivity(), CartoonActivity.class);
         Bundle bundle = new Bundle();
         bundle.putSerializable(getResources().getString(R.string.cartoondetail_tag_cartoon), cartoon);
@@ -392,7 +396,6 @@ public class CreateCartoonFragment extends BaseFragment implements StepView_4.On
 
     @Override
     public void onImageUploadFailure(String msg) {
-        //Snackbar.make(cartoonBuilder,msg,Snackbar.LENGTH_LONG).show();
         MobclickAgent.onEvent(getActivity(), "createCartoon_uploadpic_F");
         showMessage(msg, null, null);
     }

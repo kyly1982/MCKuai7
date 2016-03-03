@@ -24,6 +24,10 @@ public class Cartoon implements Serializable {
     public Cartoon() {
     }
 
+    public Cartoon(int id) {
+        this.id = id;
+    }
+
     public Cartoon(String image, int prise, String time) {
         this.image = image;
         this.prise = prise;
