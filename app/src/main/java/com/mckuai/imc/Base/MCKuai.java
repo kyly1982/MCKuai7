@@ -24,6 +24,7 @@ import com.nostra13.universalimageloader.core.assist.ImageScaleType;
 import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
 import com.nostra13.universalimageloader.core.display.CircleBitmapDisplayer;
 import com.nostra13.universalimageloader.core.download.BaseImageDownloader;
+import com.tencent.tauth.Tencent;
 import com.umeng.socialize.PlatformConfig;
 
 import java.io.File;
@@ -255,8 +256,18 @@ public class MCKuai extends Application {
 
 
     public void logout() {
-
-        user = null;
+        if (isLogin() && null != user.getLoginToken()) {
+            user.getLoginToken().setExpires(0);
+            saveProfile();
+            user = null;
+            Tencent tencent = Tencent.createInstance("101155101", getApplicationContext());
+            if (null != tencent && tencent.isSessionValid()) {
+                tencent.logout(getApplicationContext());
+            }
+            if (null != RongIM.getInstance() && null != RongIM.getInstance().getRongIMClient()) {
+                RongIM.getInstance().logout();
+            }
+        }
     }
 
     public static String getCurProcessName(Context context) {
