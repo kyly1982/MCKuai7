@@ -74,6 +74,8 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
         MobclickAgent.onEvent(this, "qqLogin");
         if (null == mTencent) {
             mTencent = Tencent.createInstance("101155101", getApplicationContext());
+        } else if (mTencent.isSessionValid()) {
+            mTencent.logout(getApplicationContext());
         }
         if (!mTencent.isSessionValid()) {
             mQQListener = new QQLoginListener(this, mTencent, this);
