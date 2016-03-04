@@ -416,9 +416,10 @@ public class BaseActivity extends AppCompatActivity implements NavigationView.On
                 MobclickAgent.onEvent(this, "clickSlidmenu_logout");
                 closeSlidmenu();
                 if (null != mApplication.user && null != mApplication.user.getLoginToken()) {
-                    mApplication.user.getLoginToken().setExpires(0);
+                    /*mApplication.user.getLoginToken().setExpires(0);
                     mApplication.saveProfile();
-                    mApplication.user = null;
+                    mApplication.user = null;*/
+                    mApplication.logout();
                     userCover.setImageResource(R.mipmap.ic_usercover_default);
                     userCover.setTag(null);
                     userName.setText("未登录");
