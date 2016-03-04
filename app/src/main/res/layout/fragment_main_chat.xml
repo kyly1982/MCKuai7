@@ -30,6 +30,7 @@
         app:layout_empty="@layout/emptyview"
         ></com.malinskiy.superrecyclerview.SuperRecyclerView>
 
+
     <android.support.v7.widget.AppCompatTextView
         android:id="@+id/unlogin"
         android:layout_width="wrap_content"

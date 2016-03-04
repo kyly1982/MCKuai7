@@ -4,6 +4,7 @@ package com.mckuai.imc.Fragment;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.AppCompatTextView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -75,12 +76,13 @@ public class MainFragment_Chat extends BaseFragment implements ConversationAdapt
     @Override
     public void onHiddenChanged(boolean hidden) {
         super.onHiddenChanged(hidden);
-        if (null != view) {
-            if (!hidden) {
-                showData();
-                getConversation();
-                showUser();
-            }
+        if (null != view && null == conversationList) {
+            initView();
+        }
+        if (!hidden) {
+            showData();
+            //getConversation();
+            showUser();
         }
     }
 
@@ -93,7 +95,12 @@ public class MainFragment_Chat extends BaseFragment implements ConversationAdapt
         conversationList.hideMoreProgress();
         RecyclerView.LayoutManager manager1 = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
         userList.setLayoutManager(manager1);
-
+        conversationList.setRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                getConversation();
+            }
+        });
 
         userList.hideMoreProgress();
         userList.hideProgress();
@@ -102,15 +109,16 @@ public class MainFragment_Chat extends BaseFragment implements ConversationAdapt
     private void showData() {
 
         if (MCKuai.instence.isLogin()) {
+            unloginHint.setVisibility(View.GONE);
+            conversationList.setVisibility(View.VISIBLE);
             if (null == adapter) {
-                adapter = new ConversationAdapter(getActivity(), this);
+                //adapter = new ConversationAdapter(getActivity(), this);
+                getConversation();
             } else {
                 adapter.setData(conversations);
                 conversationList.setAdapter(adapter);
                 conversationList.hideMoreProgress();
                 conversationList.hideProgress();
-                unloginHint.setVisibility(View.GONE);
-                conversationList.setVisibility(View.VISIBLE);
             }
         } else {
             unloginHint.setVisibility(View.VISIBLE);
@@ -138,8 +146,8 @@ public class MainFragment_Chat extends BaseFragment implements ConversationAdapt
                 ArrayList<io.rong.imlib.model.Conversation> list = (ArrayList<io.rong.imlib.model.Conversation>) RongIM.getInstance().getRongIMClient().getConversationList();
 
                 if (null != list) {
+                    conversations = new ArrayList<>(list.size());
                     for (io.rong.imlib.model.Conversation imConversation : list) {
-                        conversations = new ArrayList<>(list.size());
                         Conversation conversation = new Conversation();
                         conversation.setConversation(imConversation);
                         //聊天对象信息
@@ -170,6 +178,9 @@ public class MainFragment_Chat extends BaseFragment implements ConversationAdapt
                 } else {
                     conversations = new ArrayList<Conversation>(0);
                 }
+                if (null == adapter) {
+                    adapter = new ConversationAdapter(getActivity(), this);
+                }
                 showData();
             } else {
                 //聊天服务器未连接上
@@ -181,6 +192,7 @@ public class MainFragment_Chat extends BaseFragment implements ConversationAdapt
                             @Override
                             public void onClick(View v) {
                                 callLogin(2);
+                                return;
                             }
                         });
                     }
@@ -193,6 +205,7 @@ public class MainFragment_Chat extends BaseFragment implements ConversationAdapt
                     @Override
                     public void onError(RongIMClient.ErrorCode errorCode) {
                         showMessage("连接聊天服务器失败，原因：" + errorCode.getMessage(), null, null);
+                        return;
                     }
                 });
             }
