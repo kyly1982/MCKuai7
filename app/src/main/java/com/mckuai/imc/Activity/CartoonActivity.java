@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v7.widget.AppCompatEditText;
+import android.support.v7.widget.AppCompatTextView;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
@@ -33,6 +34,8 @@ public class CartoonActivity extends BaseActivity implements CartoonView.OnCarto
     private AppCompatEditText commentEditer;
     private RelativeLayout commentLayout;
     private CartoonView cartoonView;
+    private AppCompatTextView title;
+
     private boolean isRefreshNeed = true;
     private boolean isReawrdSuccess = false;
     private boolean isCommentSuccess = false;
@@ -82,6 +85,7 @@ public class CartoonActivity extends BaseActivity implements CartoonView.OnCarto
         commentEditer = (AppCompatEditText) findViewById(R.id.commentediter);
         commentLayout = (RelativeLayout) findViewById(R.id.comment_layout);
         findViewById(R.id.commentcartoon).setOnClickListener(this);
+        title = (AppCompatTextView) findViewById(R.id.actionbar_title);
         cartoonView.setOnCartoonElementClickListener(this);
         commentEditer.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
@@ -95,6 +99,7 @@ public class CartoonActivity extends BaseActivity implements CartoonView.OnCarto
                 return false;
             }
         });
+        title.setText("详情");
     }
 
     private void commentCartoon(){
@@ -185,7 +190,6 @@ public class CartoonActivity extends BaseActivity implements CartoonView.OnCarto
         }
         cartoon.getComments().add(comment);
         isCommentSuccess = true;
-        showData();
         if (null != RongIM.getInstance() && null != RongIM.getInstance().getRongIMClient()) {
             TextMessage message = TextMessage.obtain(commentEditer.getText().toString());
             RongIM.getInstance().getRongIMClient().sendMessage(Conversation.ConversationType.PRIVATE, cartoon.getOwner().getName(), message, mApplication.user.getNike() + "评论了你的作品，快来看看吧！", "", new RongIMClient.SendMessageCallback() {
@@ -210,6 +214,7 @@ public class CartoonActivity extends BaseActivity implements CartoonView.OnCarto
                 }
             });
         }
+        showData();
         commentEditer.setText("");
         hideCommentLayout();
     }
