@@ -47,4 +47,8 @@
     <color name="chat_waitlist">#EEEDED</color>
 
     <color name="background_cartoonlist">#403830</color>
+
+    <!--退出窗口-->
+    <color name="exitdialog_textcolor">#4D4D4D</color>
+    <color name="exitdialog_defaultcolor">#E3E3E3</color>
 </resources>

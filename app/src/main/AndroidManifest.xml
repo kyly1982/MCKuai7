@@ -80,6 +80,21 @@
             android:label="${APP_NAME}"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
+
+        <!--下载服务-->
+        <service android:name=".service.DLSerivce">
+            <intent-filter>
+                <action android:name="com.mckuai.imc.DownloadService" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </service>
+
+        <receiver
+            android:name=".service.DownloadReceiver"
+            android:enabled="true"
+            android:exported="true"></receiver>
+
         <!-- ********************************************各种开放平台的配置********************************** -->
         <!-- ********************************************配置腾讯的相关SDK******************************************** -->
         <activity

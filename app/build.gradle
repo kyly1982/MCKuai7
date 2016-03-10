@@ -2,7 +2,7 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 23
-    buildToolsVersion '21.1.2'
+    buildToolsVersion '23.0.2'
     defaultConfig {
         applicationId "com.mckuai.imc"
         minSdkVersion 15
@@ -56,6 +56,13 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_7
         targetCompatibility JavaVersion.VERSION_1_7
     }
+
+    lintOptions {
+        checkReleaseBuilds false
+        // Or, if you prefer, you can continue to check for errors in release builds,
+        // but continue the build even when errors are found:
+        abortOnError false
+    }
 }
 
 dependencies {
@@ -72,15 +79,16 @@ dependencies {
     compile 'com.android.support:support-v4:23.1.1'
     compile 'com.android.support:appcompat-v7:23.1.1'
     compile 'com.android.support:design:23.1.1'
-    compile 'com.malinskiy:superrecyclerview:+'
+    compile 'com.android.support:cardview-v7:23.1.1'
     compile 'com.google.code.gson:gson:+'
     compile 'com.umeng.analytics:analytics:latest.integration'
     compile 'com.nostra13.universalimageloader:universal-image-loader:+'
+    compile 'com.malinskiy:superrecyclerview:+'
     compile 'de.greenrobot:greendao:2.1.0'
-    compile 'com.android.support:cardview-v7:23.1.1'
     compile 'com.loopj.android:android-async-http:+'
     //compile 'com.github.florent37:hollyviewpager:1.0.1'
-    compile 'com.github.ksoichiro:android-observablescrollview:1.5.2'
-    compile 'com.yqritc:recyclerview-flexibledivider:1.2.8'
+    //compile 'com.github.ksoichiro:android-observablescrollview:1.5.2'
+    //compile 'com.yqritc:recyclerview-flexibledivider:1.2.8'
     compile 'com.marshalchen.ultimaterecyclerview:library:0.4.0'
+    compile 'cn.aigestudio.downloader:Downloader:+'
 }

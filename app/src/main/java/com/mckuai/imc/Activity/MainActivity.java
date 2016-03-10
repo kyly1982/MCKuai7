@@ -16,6 +16,7 @@ import android.widget.Toast;
 
 import com.mckuai.imc.Base.BaseActivity;
 import com.mckuai.imc.Base.BaseFragment;
+import com.mckuai.imc.Bean.Ad;
 import com.mckuai.imc.Bean.User;
 import com.mckuai.imc.Fragment.MainFragment_Cartoon;
 import com.mckuai.imc.Fragment.MainFragment_Chat;
@@ -23,6 +24,8 @@ import com.mckuai.imc.Fragment.MainFragment_Community;
 import com.mckuai.imc.Fragment.MainFragment_Mine;
 import com.mckuai.imc.R;
 import com.mckuai.imc.Util.MCNetEngine;
+import com.mckuai.imc.Util.NotificationUtil;
+import com.mckuai.imc.Widget.ExitDialog;
 import com.umeng.analytics.MobclickAgent;
 import com.umeng.message.PushAgent;
 
@@ -33,7 +36,7 @@ import io.rong.imkit.RongIM;
 import io.rong.imlib.RongIMClient;
 import io.rong.imlib.model.UserInfo;
 
-public class MainActivity extends BaseActivity implements View.OnClickListener, RadioGroup.OnCheckedChangeListener, BaseFragment.OnFragmentEventListener, MCNetEngine.OnLoadUserInfoResponseListener, RongIMClient.ConnectionStatusListener, RongIM.UserInfoProvider {
+public class MainActivity extends BaseActivity implements View.OnClickListener, RadioGroup.OnCheckedChangeListener, BaseFragment.OnFragmentEventListener, MCNetEngine.OnLoadUserInfoResponseListener, RongIMClient.ConnectionStatusListener, RongIM.UserInfoProvider,MCNetEngine.OnGetAdResponse {
     private RadioGroup nav;
     private RelativeLayout content;
     private AppCompatTextView title;
@@ -45,6 +48,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
     private boolean isIMListenerInit = false;
     private long lastBlckPressTime = 0;
     private boolean isRecommendPressed = false;
+    private Ad ad;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,6 +82,17 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         }
         if (!isIMListenerInit) {
             initIMListener();
+        }
+        if (null == ad){
+            mApplication.netEngine.getAd(this,this);
+        }
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        if (null != ad){
+            NotificationUtil.stopDownload(MainActivity.this, ad);
         }
     }
 
@@ -143,9 +158,33 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
     @Override
     public void onBackPressed() {
         if (!isSlidingMenuShow) {
-            if (System.currentTimeMillis() - lastBlckPressTime < 3000) {
+            if (null != ad) {
+                MobclickAgent.onEvent(this, "showExitDialog");
+                ExitDialog  exitDialog = new ExitDialog();
+                exitDialog.init(ad, new ExitDialog.OnClickListener() {
+                    @Override
+                    public void onCanclePressed() {
+                        MobclickAgent.onEvent(MainActivity.this, "ExitDialog_Cancle");
+                    }
+
+                    @Override
+                    public void onExitPressed() {
+                        MobclickAgent.onEvent(MainActivity.this, "ExitDialog_Exit");
+                        if (null != ad){
+                            NotificationUtil.stopDownload(MainActivity.this, ad);
+                        }
+                        System.exit(0);
+                    }
+
+                    @Override
+                    public void onDownloadPressed() {
+                        MobclickAgent.onEvent(MainActivity.this, "ExitDialog_Download");
+                        NotificationUtil.startDownload(MainActivity.this, ad);
+                    }
+                });
+                exitDialog.show(getFragmentManager(), "exit");
+            } else if (System.currentTimeMillis() - lastBlckPressTime < 3000) {
                 mApplication.handleExit();
-                //MobclickAgent.onKillProcess(MainActivity.this);
                 System.exit(0);
             } else {
                 lastBlckPressTime = System.currentTimeMillis();
@@ -237,7 +276,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
                 break;
         }
     }
-
 
 
     @Override
@@ -334,4 +372,13 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         }
     }
 
+    @Override
+    public void onGetAdFailure(String msg) {
+
+    }
+
+    @Override
+    public void onGetAdSuccess(Ad ad) {
+        this.ad = ad;
+    }
 }

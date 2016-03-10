@@ -744,12 +744,12 @@
         "source": "F:\\Repository\\MCKuai7\\IMKit\\build\\intermediates\\bundles\\debug\\res\\drawable-xhdpi-v4\\u1f3e1.png"
     },
     {
-        "merged": "F:\\Repository\\MCKuai7\\IMKit\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable-xhdpi-v4\\u1f60b.png",
-        "source": "F:\\Repository\\MCKuai7\\IMKit\\build\\intermediates\\bundles\\debug\\res\\drawable-xhdpi-v4\\u1f60b.png"
-    },
-    {
         "merged": "F:\\Repository\\MCKuai7\\IMKit\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable-xhdpi-v4\\rc_mebmer_delete.png",
         "source": "F:\\Repository\\MCKuai7\\IMKit\\build\\intermediates\\bundles\\debug\\res\\drawable-xhdpi-v4\\rc_mebmer_delete.png"
+    },
+    {
+        "merged": "F:\\Repository\\MCKuai7\\IMKit\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable-xhdpi-v4\\u1f60b.png",
+        "source": "F:\\Repository\\MCKuai7\\IMKit\\build\\intermediates\\bundles\\debug\\res\\drawable-xhdpi-v4\\u1f60b.png"
     },
     {
         "merged": "F:\\Repository\\MCKuai7\\IMKit\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable-xhdpi-v4\\rc_checkbox_pressed.png",

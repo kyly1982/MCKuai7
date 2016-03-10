@@ -10,6 +10,7 @@ import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 import com.mckuai.imc.Base.MCKuai;
+import com.mckuai.imc.Bean.Ad;
 import com.mckuai.imc.Bean.Cartoon;
 import com.mckuai.imc.Bean.CartoonMessage;
 import com.mckuai.imc.Bean.CartoonMessageList;
@@ -1084,6 +1085,40 @@ public class MCNetEngine {
             @Override
             public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
                 listener.onError(throwable.getLocalizedMessage());
+            }
+        });
+    }
+
+    /**获取退出广告*/
+    public interface OnGetAdResponse {
+        void onGetAdSuccess(Ad ad);
+
+        void onGetAdFailure(String msg);
+    }
+
+    public void getAd(final Context context, final OnGetAdResponse listener) {
+        String url = "http://api.mckuai.com/interface.do?act=adv";
+        httpClient.get(url, new JsonHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                ParseResponseResult result = new ParseResponseResult(context,response);
+                if (result.isSuccess) {
+                    Gson gson = new Gson();
+                    Ad ad = gson.fromJson(result.msg, Ad.class);
+                    if (null != ad) {
+                        listener.onGetAdSuccess(ad);
+                    } else {
+                        listener.onGetAdFailure("返回数据解析失败！");
+                    }
+                } else {
+                    listener.onGetAdFailure(result.msg);
+                }
+
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                listener.onGetAdFailure(throwable.getLocalizedMessage());
             }
         });
     }

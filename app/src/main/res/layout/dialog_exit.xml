@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/exitdialog"
+    android:layout_width="300dp"
+    android:layout_height="210dp"
+    android:clickable="true"
+    android:layout_gravity="center"
+    android:background="@drawable/dialog_background">
+
+    <android.support.v7.widget.AppCompatTextView
+        android:id="@+id/exitdialog_title"
+        android:layout_width="match_parent"
+        android:layout_height="35dp"
+        android:paddingLeft="10dp"
+        android:gravity="center_vertical"
+        android:singleLine="true"
+        android:textSize="18sp"
+        android:textColor="@color/textColorAccentr"
+        android:text="标题" />
+
+
+    <android.support.v7.widget.AppCompatImageView
+        android:id="@+id/exitdialog_content"
+        android:layout_width="match_parent"
+        android:layout_height="140dp"
+        android:layout_below="@id/exitdialog_title" />
+
+
+    <android.support.v7.widget.AppCompatButton
+        android:id="@+id/exitdialog_exit"
+        android:layout_width="150dp"
+        android:layout_height="35dp"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@id/exitdialog_content"
+        android:background="@null"
+        android:singleLine="true"
+        android:textColor="@color/textColorPrimary"
+        android:text="取消" />
+
+    <android.support.v7.widget.AppCompatButton
+        android:id="@+id/exitdialog_download"
+        android:layout_width="150dp"
+        android:layout_height="35dp"
+        android:layout_below="@id/exitdialog_content"
+        android:layout_alignParentRight="true"
+        android:singleLine="true"
+        android:textColor="@color/textColorPrimary"
+        android:text="MC哇"
+        android:background="@color/exitdialog_defaultcolor" />
+
+</RelativeLayout>
