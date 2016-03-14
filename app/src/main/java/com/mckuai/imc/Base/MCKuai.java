@@ -49,6 +49,19 @@ public class MCKuai extends Application {
 
     private String mCacheDir;
     public boolean isFirstBoot = true;
+    public boolean isIMInited = false;
+    private int imLoginTryCount = 0;
+    public boolean isIMLogined = false;
+
+    public interface IMLoginListener {
+        void onInitError();
+
+        void onTokenIncorrect();
+
+        void onLoginFailure(String msg);
+
+        void onLoginSuccess(String msg);
+    }
 
     @Override
     public void onCreate() {
@@ -56,10 +69,6 @@ public class MCKuai extends Application {
         instence = this;
     }
 
-    @Override
-    public void onTerminate() {
-        super.onTerminate();
-    }
 
     public void init() {
         readPreference();
@@ -68,34 +77,68 @@ public class MCKuai extends Application {
         initUMPlatform();
         initImageLoader();
         initRongIM();
-        if (null != user && user.isUserValid() && null != user.getToken() && 10 < user.getToken().length()) {
-            loginIM(new RongIMClient.ConnectCallback() {
-                @Override
-                public void onTokenIncorrect() {
-
-                }
-
-                @Override
-                public void onSuccess(String s) {
-
-                }
-
-                @Override
-                public void onError(RongIMClient.ErrorCode errorCode) {
-
-                }
-            });
+        if (isIMInited && null != user && user.isUserValid() && null != user.getToken() && 10 < user.getToken().length()) {
+            loginIM(null);
         }
     }
 
-    private void initRongIM(){
+    /**
+     * 阻塞初始化融云，如果三秒内还未完成初始化，则退出
+     */
+    public void initRongIM() {
         if (getApplicationInfo().packageName.equals(getCurProcessName(getApplicationContext())) ||
                 "io.rong.push".equals(getCurProcessName(getApplicationContext()))) {
-
-            /**
-             * IMKit SDK调用第一步 初始化
-             */
             RongIM.init(this);
+            long time = System.currentTimeMillis();
+            while (null == RongIM.getInstance()) {
+                //超过3秒仍未初始化则退出
+                if (System.currentTimeMillis() - time > 3000) {
+                    return;
+                }
+            }
+            isIMInited = true;
+        }
+    }
+
+    public void loginIM(final IMLoginListener listener) {
+        //未初始化， 尝试初始化再登录
+        if (!isIMInited) {
+            if (imLoginTryCount < 3) {
+                initRongIM();
+                loginIM(listener);
+                imLoginTryCount++;
+            } else {
+                if (null != listener) {
+                    listener.onInitError();
+                }
+            }
+        } else if (null != listener && null != user && null != user.getToken()) {
+            if (getApplicationInfo().packageName.equals(getCurProcessName(getApplicationContext()))) {
+                RongIM.connect(user.getToken(), new RongIMClient.ConnectCallback() {
+                    @Override
+                    public void onTokenIncorrect() {
+                        if (null != listener) {
+                            listener.onTokenIncorrect();
+                        }
+                    }
+
+                    @Override
+                    public void onSuccess(String s) {
+                        isIMLogined = true;
+                        if (null != listener) {
+                            listener.onLoginSuccess(s);
+                        }
+                    }
+
+                    @Override
+                    public void onError(RongIMClient.ErrorCode errorCode) {
+                        if (null != listener) {
+                            listener.onLoginFailure(errorCode.getMessage());
+                        }
+                    }
+                });
+                imLoginTryCount = 0;
+            }
         }
     }
 
@@ -106,33 +149,21 @@ public class MCKuai extends Application {
 
     private void initImageLoader() {
         ImageLoaderConfiguration configuration = new ImageLoaderConfiguration.Builder(getApplicationContext())
-                //.memoryCacheExtraOptions(1080, 1080) //不指定，其将默认为屏幕宽度
                 .threadPoolSize(IMAGE_POOL_SIZE)
                 .threadPriority(Thread.NORM_PRIORITY - 2)
                 .denyCacheImageMultipleSizesInMemory() // 对于同一url只缓存一个图
                 .memoryCache(new UsingFreqLimitedMemoryCache(MEM_CACHE_SIZE))
                 .memoryCacheSize(MEM_CACHE_SIZE)
-                        // .diskCache(new UnlimitedDiskCache(new File(getImageCacheDir())))
                 .diskCache(new UnlimitedDiskCache(new File(getImageCacheDir()), null, new HashCodeFileNameGenerator()))
-                        //.diskCacheFileNameGenerator(new Md5FileNameGenerator())
                 .diskCacheExtraOptions(1080, 1080, null)
                 .diskCacheSize(100 * 1024 * 1024)
                 .tasksProcessingOrder(QueueProcessingType.FIFO)
                 .defaultDisplayImageOptions(getNormalOptions())
                 .imageDownloader(new BaseImageDownloader(getApplicationContext(), CONNECT_TIME, TIME_OUT))
-                        //.writeDebugLogs()//上线前移除
                 .build();
         ImageLoader.getInstance().init(configuration);
     }
 
-
-    public void loginIM(RongIMClient.ConnectCallback listener) {
-        if (null != listener && null != user && null != user.getToken()) {
-            if (getApplicationInfo().packageName.equals(getCurProcessName(getApplicationContext()))) {
-                RongIM.connect(user.getToken(), listener);
-            }
-        }
-    }
 
     public MCUser readPreference() {
         SharedPreferences preferences = getSharedPreferences(getString(R.string.preferences_filename), 0);
@@ -156,7 +187,7 @@ public class MCKuai extends Application {
                 user.setScore(preferences.getInt(getString(R.string.preferences_score), 0));              //积分
                 user.setLevel(preferences.getInt(getString(R.string.preferences_level), 0));              //level
                 user.setAddr(preferences.getString(getString(R.string.preferences_addr), null));           //地址
-                user.setToken(preferences.getString(getString(R.string.preferences_token_rongcloud),null));//融云token
+                user.setToken(preferences.getString(getString(R.string.preferences_token_rongcloud), null));//融云token
             }
         }
         return user;
@@ -224,7 +255,7 @@ public class MCKuai extends Application {
     }
 
     public DisplayImageOptions getCircleOptions() {
-        if (null == circleOptions){
+        if (null == circleOptions) {
             circleOptions = new DisplayImageOptions.Builder()
                     // 加载过程中显示的图片
                     .showStubImage(R.mipmap.ic_usercover_default)
@@ -254,7 +285,6 @@ public class MCKuai extends Application {
     }
 
 
-
     public void logout() {
         if (isLogin() && null != user.getLoginToken()) {
             user.getLoginToken().setExpires(0);
@@ -265,7 +295,11 @@ public class MCKuai extends Application {
                 tencent.logout(getApplicationContext());
             }
             if (null != RongIM.getInstance() && null != RongIM.getInstance().getRongIMClient()) {
-                RongIM.getInstance().logout();
+                try {
+                    RongIM.getInstance().logout();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         }
     }
@@ -289,6 +323,9 @@ public class MCKuai extends Application {
 
     public void handleExit() {
         daoHelper.close();
+        if (isLogin() && isIMLogined) {
+            RongIM.getInstance().disconnect();
+        }
         saveProfile();
     }
 

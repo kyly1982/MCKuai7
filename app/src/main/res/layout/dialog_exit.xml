@@ -22,12 +22,13 @@
     <android.support.v7.widget.AppCompatImageView
         android:id="@+id/exitdialog_content"
         android:layout_width="match_parent"
+        android:clickable="true"
         android:layout_height="140dp"
         android:layout_below="@id/exitdialog_title" />
 
 
     <android.support.v7.widget.AppCompatButton
-        android:id="@+id/exitdialog_exit"
+        android:id="@+id/exitdialog_cancle"
         android:layout_width="150dp"
         android:layout_height="35dp"
         android:layout_alignParentLeft="true"

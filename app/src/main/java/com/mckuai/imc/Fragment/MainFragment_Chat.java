@@ -71,6 +71,9 @@ public class MainFragment_Chat extends BaseFragment implements ConversationAdapt
         if (null != view && null == conversationList) {
             initView();
         }
+        if (application.isLogin()){
+            showData();
+        }
     }
 
     @Override
@@ -80,8 +83,8 @@ public class MainFragment_Chat extends BaseFragment implements ConversationAdapt
             initView();
         }
         if (!hidden) {
+//            getConversation();
             showData();
-            //getConversation();
             showUser();
         }
     }
@@ -111,9 +114,10 @@ public class MainFragment_Chat extends BaseFragment implements ConversationAdapt
         if (MCKuai.instence.isLogin()) {
             unloginHint.setVisibility(View.GONE);
             conversationList.setVisibility(View.VISIBLE);
+            getConversation();
             if (null == adapter) {
                 //adapter = new ConversationAdapter(getActivity(), this);
-                getConversation();
+                adapter = new ConversationAdapter(getActivity(), this);
             } else {
                 adapter.setData(conversations);
                 conversationList.setAdapter(adapter);
@@ -178,10 +182,10 @@ public class MainFragment_Chat extends BaseFragment implements ConversationAdapt
                 } else {
                     conversations = new ArrayList<Conversation>(0);
                 }
-                if (null == adapter) {
+                /*if (null == adapter) {
                     adapter = new ConversationAdapter(getActivity(), this);
-                }
-                showData();
+                }*/
+                //showData();
             } else {
                 //聊天服务器未连接上
                 showMessage("正在连接聊天服务器,请稍后!", null, null);

@@ -185,7 +185,7 @@ public class PublishPostActivity extends BaseActivity implements OnClickListener
 		btn_publish.setOnClickListener(this);
 		btn_publish.setVisibility(View.VISIBLE);*/
         btn_pic.setOnClickListener(this);
-        //tv_Title.setText(getString(R.string.publishpost));
+        tv_Title.setText("发帖");
     }
 
 

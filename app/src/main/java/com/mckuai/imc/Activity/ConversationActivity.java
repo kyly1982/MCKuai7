@@ -15,11 +15,13 @@ import com.mckuai.imc.Util.MCNetEngine;
 import java.util.Locale;
 
 import io.rong.imkit.fragment.ConversationFragment;
+import io.rong.imlib.RongIMClient;
 import io.rong.imlib.model.Conversation;
 
-public class ConversationActivity extends BaseActivity implements MCNetEngine.OnLoadUserInfoResponseListener {
+public class ConversationActivity extends BaseActivity implements MCNetEngine.OnLoadUserInfoResponseListener{
     private MCDaoHelper daoHelper;
     private AppCompatTextView titleView;
+    private boolean isLoginCalled = false;
 
     /**
      * 目标 Id
@@ -53,9 +55,57 @@ public class ConversationActivity extends BaseActivity implements MCNetEngine.On
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         daoHelper = mApplication.daoHelper;
         Intent intent = getIntent();
-        getIntentDate(intent);
+        if (null != intent) {
+            getIntentDate(intent);
+        }
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (mApplication.isLogin()){
+            if (mApplication.isIMLogined){
+                showConversation(mConversationType,mTargetId);
+            } else {
+                mApplication.loginIM(new RongIMClient.ConnectCallback() {
+                    @Override
+                    public void onTokenIncorrect() {
+                        showMessage("令牌过期，需要重新登录", "重新登录", new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                mApplication.user = null;
+                                callLogin(5);
+                            }
+                        });
+                    }
+
+                    @Override
+                    public void onSuccess(String s) {
+                        showConversation(mConversationType,mTargetId);
+                    }
+
+                    @Override
+                    public void onError(RongIMClient.ErrorCode errorCode) {
+                        showMessage("登录失败，原因"+errorCode.getMessage(),null,null);
+                    }
+                });
+            }
+        } else {
+            //未登录，则进入登录
+            if (!isLoginCalled) {
+                callLogin(5);
+            }
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode != RESULT_OK){
+            showMessage("需要登录后才能进行聊天功能",null,null);
+            finish();
+        }
+    }
 
     /**
      * 展示如何从 Intent 中得到 融云会话页面传递的 Uri
@@ -63,12 +113,8 @@ public class ConversationActivity extends BaseActivity implements MCNetEngine.On
     private void getIntentDate(Intent intent) {
 
         mTargetId = intent.getData().getQueryParameter("targetId");
-        //mTargetIds = intent.getData().getQueryParameter("targetIds");
-        //intent.getData().getLastPathSegment();//获得当前会话类型
-        getUser();
         mConversationType = Conversation.ConversationType.valueOf(intent.getData().getLastPathSegment().toUpperCase(Locale.getDefault()));
-
-        enterFragment(mConversationType, mTargetId);
+        getUser();
     }
 
     private void getUser() {
@@ -78,14 +124,11 @@ public class ConversationActivity extends BaseActivity implements MCNetEngine.On
                 //从网络获取用户信息
                 mApplication.netEngine.loadUserInfo(this, mTargetId, this);
             } else {
-                showUser(user);
+                titleView.setText(user.getNickEx());
             }
         }
     }
 
-    private void showUser(User user) {
-        titleView.setText(user.getNickEx());
-    }
 
     /**
      * 加载会话页面 ConversationFragment
@@ -93,7 +136,7 @@ public class ConversationActivity extends BaseActivity implements MCNetEngine.On
      * @param mConversationType 会话类型
      * @param mTargetId         目标 Id
      */
-    private void enterFragment(Conversation.ConversationType mConversationType, String mTargetId) {
+    private void showConversation(Conversation.ConversationType mConversationType, String mTargetId) {
 
         ConversationFragment fragment = (ConversationFragment) getSupportFragmentManager().findFragmentById(R.id.conversation);
 
@@ -106,7 +149,7 @@ public class ConversationActivity extends BaseActivity implements MCNetEngine.On
 
     @Override
     public void onLoadUserInfoSuccess(User user) {
-        showUser(user);
+        titleView.setText(user.getNickEx());
     }
 
     @Override

@@ -7,8 +7,8 @@ android {
         applicationId "com.mckuai.imc"
         minSdkVersion 15
         targetSdkVersion 21
-        versionCode 37
-        versionName "7.0.5"
+        versionCode 39
+        versionName "7.0.7"
     }
     buildTypes {
         release {

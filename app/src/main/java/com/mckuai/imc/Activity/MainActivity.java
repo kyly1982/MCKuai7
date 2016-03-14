@@ -24,7 +24,6 @@ import com.mckuai.imc.Fragment.MainFragment_Community;
 import com.mckuai.imc.Fragment.MainFragment_Mine;
 import com.mckuai.imc.R;
 import com.mckuai.imc.Util.MCNetEngine;
-import com.mckuai.imc.Util.NotificationUtil;
 import com.mckuai.imc.Widget.ExitDialog;
 import com.umeng.analytics.MobclickAgent;
 import com.umeng.message.PushAgent;
@@ -36,7 +35,7 @@ import io.rong.imkit.RongIM;
 import io.rong.imlib.RongIMClient;
 import io.rong.imlib.model.UserInfo;
 
-public class MainActivity extends BaseActivity implements View.OnClickListener, RadioGroup.OnCheckedChangeListener, BaseFragment.OnFragmentEventListener, MCNetEngine.OnLoadUserInfoResponseListener, RongIMClient.ConnectionStatusListener, RongIM.UserInfoProvider,MCNetEngine.OnGetAdResponse {
+public class MainActivity extends BaseActivity implements View.OnClickListener, RadioGroup.OnCheckedChangeListener, BaseFragment.OnFragmentEventListener, MCNetEngine.OnLoadUserInfoResponseListener, RongIMClient.ConnectionStatusListener, RongIM.UserInfoProvider, MCNetEngine.OnGetAdResponse {
     private RadioGroup nav;
     private RelativeLayout content;
     private AppCompatTextView title;
@@ -46,9 +45,10 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
 
     private boolean isCheckUpgread = false;
     private boolean isIMListenerInit = false;
-    private long lastBlckPressTime = 0;
     private boolean isRecommendPressed = false;
     private Ad ad;
+    private boolean isDownloaded = false;
+    private boolean isRegReciver= false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,16 +83,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         if (!isIMListenerInit) {
             initIMListener();
         }
-        if (null == ad){
-            mApplication.netEngine.getAd(this,this);
-        }
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-        if (null != ad){
-            NotificationUtil.stopDownload(MainActivity.this, ad);
+        if (null == ad) {
+            mApplication.netEngine.getAd(this, this);
         }
     }
 
@@ -150,7 +142,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }
@@ -158,38 +149,39 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
     @Override
     public void onBackPressed() {
         if (!isSlidingMenuShow) {
-            if (null != ad) {
-                MobclickAgent.onEvent(this, "showExitDialog");
-                ExitDialog  exitDialog = new ExitDialog();
-                exitDialog.init(ad, new ExitDialog.OnClickListener() {
-                    @Override
-                    public void onCanclePressed() {
-                        MobclickAgent.onEvent(MainActivity.this, "ExitDialog_Cancle");
-                    }
+            ExitDialog exitDialog = new ExitDialog();
+            MobclickAgent.onEvent(this, "showExitDialog");
+            exitDialog.setData(isDownloaded == true ? null:ad, new ExitDialog.OnClickListener() {
+                @Override
+                public void onCanclePressed() {
+                    MobclickAgent.onEvent(MainActivity.this, "ExitDialog_Cancle");
+                }
 
-                    @Override
-                    public void onExitPressed() {
-                        MobclickAgent.onEvent(MainActivity.this, "ExitDialog_Exit");
-                        if (null != ad){
-                            NotificationUtil.stopDownload(MainActivity.this, ad);
-                        }
-                        System.exit(0);
-                    }
+                @Override
+                public void onExitPressed() {
+                    MobclickAgent.onEvent(MainActivity.this, "ExitDialog_Exit");
+                    MobclickAgent.onKillProcess(MainActivity.this);
+                    mApplication.handleExit();
+                    System.exit(0);
+                }
 
-                    @Override
-                    public void onDownloadPressed() {
-                        MobclickAgent.onEvent(MainActivity.this, "ExitDialog_Download");
-                        NotificationUtil.startDownload(MainActivity.this, ad);
-                    }
-                });
-                exitDialog.show(getFragmentManager(), "exit");
-            } else if (System.currentTimeMillis() - lastBlckPressTime < 3000) {
-                mApplication.handleExit();
-                System.exit(0);
-            } else {
-                lastBlckPressTime = System.currentTimeMillis();
-                showMessage("再次点击退出软件", null, null);
-            }
+                @Override
+                public void onDownloadPressed() {
+                    MobclickAgent.onEvent(MainActivity.this, "ExitDialog_Download");
+                    MobclickAgent.onKillProcess(MainActivity.this);
+                    isDownloaded = true;
+                    mApplication.handleExit();
+                    System.exit(0);
+                }
+
+                @Override
+                public void onPicturePressed() {
+                    isDownloaded = true;
+                    MobclickAgent.onEvent(MainActivity.this, "ExitDialog_Picture");
+                }
+            });
+
+            exitDialog.show(getFragmentManager(), "exit");
         } else {
             super.onBackPressed();
         }

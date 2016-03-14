@@ -1,6 +1,7 @@
 package com.mckuai.imc.Activity;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -14,9 +15,12 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.webkit.JavascriptInterface;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
@@ -107,6 +111,9 @@ public class PostActivity extends BaseActivity implements OnClickListener, TextW
 	private static final int REWARD_POST = 3;
 	private static final int REPLY_POST = 4;
 
+	private MenuItem showOwner;
+	private MenuItem send;
+
 	@Override
 	public void onCreate(Bundle savedInstanceState)
 	{
@@ -143,9 +150,15 @@ public class PostActivity extends BaseActivity implements OnClickListener, TextW
 		if (isShowPost)
 		{
 			showPost();
+			if (null != showOwner){
+				showOwner.setVisible(true);
+			}
 		} else
 		{
 			showReply();
+			if (null != send){
+				send.setVisible(true);
+			}
 		}
 		getPostMark();
 	}
@@ -184,6 +197,41 @@ public class PostActivity extends BaseActivity implements OnClickListener, TextW
 			webView.destroy();
 		}
 		super.finish();
+	}
+
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		getMenuInflater().inflate(R.menu.menu_postdetial,menu);
+		if (null != menu){
+			showOwner = menu.findItem(R.id.action_showOnwer);
+			send = menu.findItem(R.id.action_send);
+		}
+		return true;
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()){
+			case R.id.action_showOnwer:
+				if (isShowPost)
+				{
+					if (key.equals(type[0]))
+					{
+						key = type[1];
+						showOwner.setTitle("只看楼主");
+					} else
+					{
+						key = type[0];
+						showOwner.setTitle("完整帖子");
+					}
+					webView.loadUrl(url + "&admin=" + key);
+				}
+				break;
+			case R.id.action_send:
+				replyPost();
+				break;
+		}
+		return super.onOptionsItemSelected(item);
 	}
 
 	private void initView()
@@ -308,6 +356,8 @@ public class PostActivity extends BaseActivity implements OnClickListener, TextW
 		//btn_showOwner.setText("发 布");
 		//btn_showOwner.setVisibility(View.VISIBLE);
 		//showKeyboard(null);
+		send.setVisible(true);
+		showOwner.setVisible(false);
 		if (isReplyPost)
 		{
 			MobclickAgent.onEvent(this, "replyPost");
@@ -326,6 +376,8 @@ public class PostActivity extends BaseActivity implements OnClickListener, TextW
 	{
 		//hideKeyboard(edt_content);
 		isShowPost = true;
+		showOwner.setVisible(true);
+		send.setVisible(false);
 		//btn_showOwner.setText("只看楼主");
 		tv_title.setText("帖子详情");
 		post_layout.setVisibility(View.VISIBLE);
@@ -370,16 +422,6 @@ public class PostActivity extends BaseActivity implements OnClickListener, TextW
 		// TODO Auto-generated method stub
 		switch (v.getId())
 		{
-		/*case R.id.btn_left:
-			if (isShowPost)
-			{
-				this.finish();
-			} else
-			{
-				isShowPost = true;
-				resumeShowPost();
-			}
-			break;*/
 		case R.id.btn_collectPost:
 			// 关注帖子
 			if (isCollect)
@@ -400,24 +442,6 @@ public class PostActivity extends BaseActivity implements OnClickListener, TextW
 			isReplyPost = true;
 			showReply();
 			break;
-		/*case R.id.btn_showOwner:
-			if (isShowPost)
-			{
-				if (key.equals(type[0]))
-				{
-					key = type[1];
-					btn_showOwner.setText("只看楼主");
-				} else
-				{
-					key = type[0];
-					btn_showOwner.setText("完整帖子");
-				}
-				webView.loadUrl(url + "&admin=" + key);
-			} else
-			{
-				replyPost();
-			}
-			break;*/
 		case R.id.btn_addPic:
 			MobclickAgent.onEvent(this, "addPic_Reply");
 			Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
@@ -443,35 +467,17 @@ public class PostActivity extends BaseActivity implements OnClickListener, TextW
 			params.put("userId", mApplication.user.getId());
 			params.put("talkId", post.getId());
 			mClient.post(url, params, new JsonHttpResponseHandler() {
-				@Override
-				public void onStart() {
-					// TODO Auto-generated method stub
-					super.onStart();
-					// popupLoadingToast("正在打赏楼主!");
-				}
 
-				/*
-				 * (non-Javadoc)
-                 *
-                 * @see
-                 * com.loopj.android.http.JsonHttpResponseHandler#onSuccess(int,
-                 * org.apache.http.Header[], org.json.JSONObject)
-                 */
 				@Override
 				public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
 					// TODO Auto-generated method stub
 					super.onSuccess(statusCode, headers, response);
 					try {
 						if (response.has("state") && response.getString("state").equalsIgnoreCase("ok")) {
-							//showNotification(1, "打赏成功！楼主获得了1个钻石", R.id.rl_post);
-//							Toast.makeText(PostActivity.this, "打赏成功！\n楼主获得了1个钻石", Toast.LENGTH_SHORT).show();
-							//cancleLodingToast(true);
 							isReward = true;
 							setButtonFunction();
 							return;
 						} else {
-							//showNotification(1, "打赏失败！", R.id.rl_post);
-							//cancleLodingToast(false);
 							showMessage("打赏失败！", "重试", new OnClickListener() {
 								@Override
 								public void onClick(View v) {
@@ -484,32 +490,19 @@ public class PostActivity extends BaseActivity implements OnClickListener, TextW
 					} catch (Exception e) {
 						// TODO: handle exception
 						e.printStackTrace();
+						showMessage("打赏失败！", "重试", new OnClickListener() {
+							@Override
+							public void onClick(View v) {
+								rewardPost();
+								return;
+							}
+						});
 					}
-					showMessage("打赏失败！", "重试", new OnClickListener() {
-						@Override
-						public void onClick(View v) {
-							rewardPost();
-							return;
-						}
-					});
-					//showNotification(1, "打赏失败！", R.id.rl_post);
-					//cancleLodingToast(false);
 				}
 
-				/*
-				 * (non-Javadoc)
-                 *
-                 * @see
-                 * com.loopj.android.http.JsonHttpResponseHandler#onFailure(int,
-                 * org.apache.http.Header[], java.lang.String,
-                 * java.lang.Throwable)
-                 */
 				@Override
 				public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
 					// TODO Auto-generated method stub
-					super.onFailure(statusCode, headers, responseString, throwable);
-					//showNotification(1, "操作失败！", R.id.rl_post);
-					//cancleLodingToast(false);
 					showMessage("打赏失败！原因：" + throwable.getLocalizedMessage(), "重试", new OnClickListener() {
 						@Override
 						public void onClick(View v) {
@@ -602,9 +595,6 @@ public class PostActivity extends BaseActivity implements OnClickListener, TextW
 						{
 							// TODO Auto-generated catch block
 							e.printStackTrace();
-							//cancleLodingToast(false);
-							// showNotification("自动收获机器被熊孩子玩坏了!");
-                            //showNotification(1, "操作失败！", R.id.rl_post);
 						}
 					}
 				}
@@ -614,8 +604,6 @@ public class PostActivity extends BaseActivity implements OnClickListener, TextW
 				{
 					// TODO Auto-generated method stub
 					super.onFailure(statusCode, headers, responseString, throwable);
-					//cancleLodingToast(false);
-                    //showNotification(1, "收藏失败！", R.id.rl_post);
 				}
 
                 @Override
@@ -629,14 +617,6 @@ public class PostActivity extends BaseActivity implements OnClickListener, TextW
 		}
 	}
 
-/*	@overwite
-	protected void callLogin(int requestCode)
-	{
-		Intent intent = new Intent(PostActivity.this, LoginActivity.class);
-		intent.putExtra(getString(R.string.needLoginResult), true);// 只是调用，需要返回值
-		startActivityForResult(intent, requestCode);
-	}*/
-
 	private void replyPost()
 	{
 		if (!isPublish) {
@@ -647,6 +627,8 @@ public class PostActivity extends BaseActivity implements OnClickListener, TextW
 					getParams();
 					return;
 				}
+
+				hideSoftKeyboard(edt_content);
 				ArrayList<String> picIds;
 				if (null != picsList && picsList.size() > 0 && !isPicUpload) {
 //				MobclickAgent.onEvent(this, "picCount_Reply", picsList.size());
@@ -679,32 +661,6 @@ public class PostActivity extends BaseActivity implements OnClickListener, TextW
 				params.put("userId", mUserId);
 				// Log.e(TAG, url + "&" + params.toString());
 				mClient.post(url, params, new JsonHttpResponseHandler() {
-					/*
-					 * (non-Javadoc)
-                     *
-                     * @see
-                     * com.loopj.android.http.AsyncHttpResponseHandler#onStart()
-                     */
-					@Override
-					public void onStart() {
-						// TODO Auto-generated method stub
-						super.onStart();
-						String msg;
-						if (isReplyPost) {
-							msg = "正在发布回帖，请稍候";
-						} else {
-							msg = "正在发布回复，请稍候";
-						}
-//					popupLoadingToast(msg);
-					}
-
-					/*
-					 * (non-Javadoc)
-                     *
-                     * @see
-                     * com.loopj.android.http.JsonHttpResponseHandler#onSuccess(int,
-                     * org.apache.http.Header[], org.json.JSONObject)
-                     */
 					@Override
 					public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
 						// TODO Auto-generated method stub
@@ -728,7 +684,6 @@ public class PostActivity extends BaseActivity implements OnClickListener, TextW
 									}
 									isPicUpload = false;
 									picUrl = null;
-//								cancleLodingToast(true);
 									return;
 								}
 							} catch (Exception e) {
@@ -837,11 +792,6 @@ public class PostActivity extends BaseActivity implements OnClickListener, TextW
 		}
 		mClient.post(url, params, new JsonHttpResponseHandler()
 		{
-			/*
-			 * (non-Javadoc)
-			 * 
-			 * @see com.loopj.android.http.AsyncHttpResponseHandler#onStart()
-			 */
 			@Override
 			public void onStart()
 			{
@@ -850,13 +800,6 @@ public class PostActivity extends BaseActivity implements OnClickListener, TextW
 				showMessage("正在上传图片，请稍候...", null, null);
 			}
 
-			/*
-			 * (non-Javadoc)
-			 * 
-			 * @see
-			 * com.loopj.android.http.JsonHttpResponseHandler#onSuccess(int,
-			 * org.apache.http.Header[], org.json.JSONObject)
-			 */
 			@Override
 			public void onSuccess(int statusCode, Header[] headers, JSONObject response)
 			{
@@ -889,13 +832,6 @@ public class PostActivity extends BaseActivity implements OnClickListener, TextW
 				Toast.makeText(PostActivity.this, "上传图片失败！", Toast.LENGTH_SHORT).show();
 			}
 
-			/*
-			 * (non-Javadoc)
-			 * 
-			 * @see
-			 * com.loopj.android.http.JsonHttpResponseHandler#onFailure(int,
-			 * org.apache.http.Header[], java.lang.String, java.lang.Throwable)
-			 */
 			@Override
 			public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable)
 			{
@@ -1340,6 +1276,13 @@ public class PostActivity extends BaseActivity implements OnClickListener, TextW
         } else
 		{
 			btn_collect.setBackgroundResource(R.drawable.btn_post_collect);
+		}
+	}
+
+	public void hideSoftKeyboard(View view) {
+		if (null != view) {
+			InputMethodManager methodManager = (InputMethodManager) view.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+			methodManager.hideSoftInputFromWindow(view.getWindowToken(), 0);
 		}
 	}
 
