@@ -14,7 +14,6 @@ import android.widget.RadioGroup;
 
 import com.marshalchen.ultimaterecyclerview.UltimateRecyclerView;
 import com.mckuai.imc.Activity.CartoonActivity;
-import com.mckuai.imc.Activity.LoginActivity;
 import com.mckuai.imc.Activity.UserCenterActivity;
 import com.mckuai.imc.Adapter.CartoonAdapter;
 import com.mckuai.imc.Base.BaseActivity;
@@ -25,6 +24,7 @@ import com.mckuai.imc.Bean.Page;
 import com.mckuai.imc.Bean.User;
 import com.mckuai.imc.R;
 import com.mckuai.imc.Util.MCNetEngine;
+import com.nostra13.universalimageloader.core.ImageLoader;
 import com.umeng.socialize.media.UMImage;
 
 import java.util.ArrayList;
@@ -33,7 +33,6 @@ import java.util.ArrayList;
  * A placeholder fragment containing a simple view.
  */
 public class MainFragment_Cartoon extends BaseFragment implements RadioGroup.OnCheckedChangeListener
-        , View.OnClickListener
         , MCNetEngine.OnLoadCartoonListResponseListener
         , MCNetEngine.OnRewardCartoonResponseListener
         , SwipeRefreshLayout.OnRefreshListener
@@ -54,6 +53,7 @@ public class MainFragment_Cartoon extends BaseFragment implements RadioGroup.OnC
 
     private UltimateRecyclerView mCartoonListView;
     private View view;
+    private boolean isPaused = false;
 
     public MainFragment_Cartoon() {
         mTitleResId = R.string.fragment_cartoon;
@@ -116,12 +116,35 @@ public class MainFragment_Cartoon extends BaseFragment implements RadioGroup.OnC
     private void initView() {
 
         mCartoonListView = (UltimateRecyclerView) view.findViewById(R.id.cartoonlist);
+        mCartoonListView.setHasFixedSize(true);
         RecyclerView.LayoutManager manager = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
         mCartoonListView.setLayoutManager(manager);
         mCartoonListView.setEmptyView(R.layout.emptyview);
         mCartoonListView.enableLoadmore();
         mCartoonListView.setDefaultOnRefreshListener(this);
         mCartoonListView.setOnLoadMoreListener(this);
+        mCartoonListView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+            }
+
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+                if (1 == newState) {
+                    if (!isPaused) {
+                        ImageLoader.getInstance().pause();
+                        isPaused = true;
+                    }
+                } else {
+                    if (isPaused) {
+                        ImageLoader.getInstance().resume();
+                        isPaused = false;
+                    }
+                }
+            }
+        });
     }
 
     private void loadData() {
@@ -189,48 +212,6 @@ public class MainFragment_Cartoon extends BaseFragment implements RadioGroup.OnC
                 break;
         }
     }
-
-    /*点击item里的控件的回调*/
-    @Override
-    public void onClick(final View v) {
-        Intent intent;
-        Cartoon cartoon = (Cartoon) v.getTag();
-        switch (v.getId()) {
-            case R.id.cartoon_usercover://头像
-                //((BaseActivity) getActivity()).showMessage("跳转个人中心", null, null);
-                Long userId = cartoon.getOwner().getId();
-                if (userId > 0) {
-                    intent = new Intent(getActivity(), UserCenterActivity.class);
-                    intent.putExtra(getString(R.string.usercenter_tag_userid), userId.intValue());
-                    startActivity(intent);
-                }
-                break;
-            case R.id.cartoon_shar://分享
-                ((BaseActivity) getActivity()).share("标题", "内容", getString(R.string.appdownload_url), null);
-                break;
-            case R.id.cartoon_comment:
-                if (null != cartoon) {
-                    intent = new Intent(getActivity(), CartoonActivity.class);
-                    Bundle bundle = new Bundle();
-                    bundle.putSerializable(getString(R.string.cartoondetail_tag_cartoon), cartoon);
-                    intent.putExtras(bundle);
-                    startActivity(intent);
-                }
-                break;
-            case R.id.cartoon_prise:
-
-                if (mApplication.isLogin()) {
-                    if (null != cartoon) {
-                        rewardCartoon(cartoon);
-                    }
-                } else {
-                    intent = new Intent(getActivity(), LoginActivity.class);
-                    startActivityForResult(intent, 5);
-                }
-                break;
-        }
-    }
-
 
     private void rewardCartoon(Cartoon cartoon) {
         rewardCartoonId = cartoon.getId();
@@ -334,7 +315,6 @@ public class MainFragment_Cartoon extends BaseFragment implements RadioGroup.OnC
     }
 
 
-
     @Override
     public void loadMore(int itemsCount, int maxLastVisiblePosition) {
         switch (typeIndex) {
@@ -378,6 +358,7 @@ public class MainFragment_Cartoon extends BaseFragment implements RadioGroup.OnC
         Bundle bundle = new Bundle();
         commentCartoon = cartoon;
         bundle.putSerializable(getString(R.string.cartoondetail_tag_cartoon), cartoon);
+        intent.putExtra("COMMENTCAROON", true);
         intent.putExtras(bundle);
         startActivityForResult(intent, 99);
     }

@@ -12,7 +12,6 @@ import android.view.View;
 import android.view.ViewConfiguration;
 import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
-import android.widget.Toast;
 
 import com.mckuai.imc.Base.BaseActivity;
 import com.mckuai.imc.Base.BaseFragment;
@@ -32,10 +31,9 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 
 import io.rong.imkit.RongIM;
-import io.rong.imlib.RongIMClient;
 import io.rong.imlib.model.UserInfo;
 
-public class MainActivity extends BaseActivity implements View.OnClickListener, RadioGroup.OnCheckedChangeListener, BaseFragment.OnFragmentEventListener, MCNetEngine.OnLoadUserInfoResponseListener, RongIMClient.ConnectionStatusListener, RongIM.UserInfoProvider, MCNetEngine.OnGetAdResponse {
+public class MainActivity extends BaseActivity implements View.OnClickListener, RadioGroup.OnCheckedChangeListener, BaseFragment.OnFragmentEventListener, RongIM.UserInfoProvider, MCNetEngine.OnGetAdResponse {
     private RadioGroup nav;
     private RelativeLayout content;
     private AppCompatTextView title;
@@ -48,7 +46,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
     private boolean isRecommendPressed = false;
     private Ad ad;
     private boolean isDownloaded = false;
-    private boolean isRegReciver= false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -135,7 +132,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
     private void initIMListener() {
         if (RongIM.getInstance() != null && RongIM.getInstance().getRongIMClient() != null) {
             RongIM.setUserInfoProvider(this, true);
-            RongIM.getInstance().getRongIMClient().setConnectionStatusListener(this);
             isIMListenerInit = true;
         }
     }
@@ -307,36 +303,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
 
     }
 
-    @Override
-    public void onLoadUserInfoFailure(String msg) {
-        showMessage("获取用户信息失败，原因：" + msg, null, null);
-    }
-
-    @Override
-    public void onLoadUserInfoSuccess(User user) {
-        UserInfo userInfo = new UserInfo(user.getName(), user.getNickEx(), Uri.parse(user.getHeadImage()));
-    }
-
-    @Override
-    public void onChanged(ConnectionStatus connectionStatus) {
-        switch (connectionStatus) {
-            case CONNECTED:
-                //Toast.makeText(MainActivity.this, "已连接上聊天服务器！", Toast.LENGTH_SHORT).show();
-                break;
-            case DISCONNECTED:
-                Toast.makeText(MainActivity.this, "聊天服务器断开！", Toast.LENGTH_SHORT).show();
-                break;
-            case CONNECTING:
-                //Toast.makeText(MainActivity.this, "正在连接...", Toast.LENGTH_SHORT).show();
-                break;
-            case NETWORK_UNAVAILABLE:
-                Toast.makeText(MainActivity.this, "网络不可用！", Toast.LENGTH_SHORT).show();
-                break;
-            case KICKED_OFFLINE_BY_OTHER_CLIENT:
-                Toast.makeText(MainActivity.this, "账号在其它设备上登录！", Toast.LENGTH_SHORT).show();
-                break;
-        }
-    }
 
     @Override
     public UserInfo getUserInfo(String id) {
@@ -349,7 +315,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
             mApplication.netEngine.loadUserInfo(this, id, new MCNetEngine.OnLoadUserInfoResponseListener() {
                 @Override
                 public void onLoadUserInfoSuccess(User user) {
-                    UserInfo userInfo = new UserInfo(user.getName(), user.getNickEx(), Uri.parse(user.getHeadImage()));
                 }
 
                 @Override

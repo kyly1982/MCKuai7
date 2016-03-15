@@ -26,15 +26,14 @@ public class CreateCartoonActivity extends BaseActivity
     private MenuItem menu_publish;
     private int currentStep = 0;
     private boolean isBackgroundSet = false;
+    private boolean isWidgetSet = false;
     public AppCompatTextView title;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_normal);
         initToolbar(R.id.toolbar, 0, null);
-        //initDrawer();
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
@@ -81,13 +80,23 @@ public class CreateCartoonActivity extends BaseActivity
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if (!isBackgroundSet) {
-            showMessage("还未设置场景，创造场景后才能下一步", null, null);
-            return super.onOptionsItemSelected(item);
-        }
         switch (item.getItemId()) {
             case R.id.menu_cartoonaction_next:
                 MobclickAgent.onEvent(this, "createCartoon_next");
+                switch (currentStep){
+                    case 0:
+                        if (!isBackgroundSet){
+                            showMessage("还未设置场景，创造场景后才能进入下一步", null, null);
+                            return super.onOptionsItemSelected(item);
+                        }
+                        break;
+                    case 1:
+                        if (!isWidgetSet){
+                            showMessage("还未添加人物或工具，添加后才能进入下一步", null, null);
+                            return super.onOptionsItemSelected(item);
+                        }
+                        break;
+                }
                 currentStep++;
                 createFragment.showNextStep(currentStep);
                 if (3 == currentStep) {
@@ -150,5 +159,10 @@ public class CreateCartoonActivity extends BaseActivity
     @Override
     public void onBackgroundSet() {
         isBackgroundSet = true;
+    }
+
+    @Override
+    public void onWidgetset() {
+        isWidgetSet = true;
     }
 }

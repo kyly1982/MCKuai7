@@ -6,14 +6,13 @@ import android.support.v7.widget.AppCompatTextView;
 import android.view.View;
 
 import com.mckuai.imc.Base.BaseActivity;
+import com.mckuai.imc.Base.MCKuai;
 import com.mckuai.imc.Bean.MCUser;
 import com.mckuai.imc.R;
 import com.mckuai.imc.Util.MCNetEngine;
 import com.mckuai.imc.Util.QQLoginListener;
 import com.tencent.tauth.Tencent;
 import com.umeng.analytics.MobclickAgent;
-
-import io.rong.imlib.RongIMClient;
 
 
 /**
@@ -92,7 +91,13 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
     public void loginIM() {
         MobclickAgent.onEvent(this, "loginChatServer");
         loginMsg.setText("登录聊天服务器...");
-        mApplication.loginIM(new RongIMClient.ConnectCallback() {
+        mApplication.loginIM(new MCKuai.IMLoginListener() {
+            @Override
+            public void onInitError() {
+                MobclickAgent.onEvent(LoginActivity.this, "chatLogin_F");
+                loginMsg.setText("聊天模块功能异常，请重启软件！");
+            }
+
             @Override
             public void onTokenIncorrect() {
                 MobclickAgent.onEvent(LoginActivity.this, "chatLogin_F");
@@ -101,42 +106,25 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
                     @Override
                     public void onClick(View v) {
                         mApplication.logout();
+                        isFullLoginNeed = true;
                         onClick(findViewById(R.id.login_qqlogin));
                     }
                 });
-                isFullLoginNeed = true;
+        }
+
+            @Override
+            public void onLoginFailure(String msg) {
+                MobclickAgent.onEvent(LoginActivity.this, "chatLogin_F");
+                loginMsg.setText("登录聊天服务器失败，原因：" + msg);
             }
 
             @Override
-            public void onSuccess(String s) {
+            public void onLoginSuccess(String msg) {
                 handleResult(true);
                 MobclickAgent.onEvent(LoginActivity.this, "chatLogin_S");
             }
-
-            @Override
-            public void onError(RongIMClient.ErrorCode errorCode) {
-                MobclickAgent.onEvent(LoginActivity.this, "chatLogin_F");
-                loginMsg.setText("登录聊天服务器失败，原因：" + errorCode.getMessage());
-                //handleResult(false);
-            }
-
-            @Override
-            public void onFail(RongIMClient.ErrorCode errorCode) {
-                super.onFail(errorCode);
-                loginMsg.setText("登录聊天服务器失败，原因：" + errorCode.getMessage());
-            }
-
-            @Override
-            public void onFail(int errorCode) {
-                super.onFail(errorCode);
-                loginMsg.setText("登录聊天服务器失败，原因：" + errorCode);
-            }
-
-            @Override
-            public void onCallback(String s) {
-                super.onCallback(s);
-            }
         });
+
     }
     private void handleResult(Boolean result) {
         setResult(true == result ? RESULT_OK : RESULT_CANCELED);
@@ -172,7 +160,6 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
         mApplication.user.clone(user);
         mApplication.saveProfile();
         loginIM();
-        //handleResult(true);
     }
 
     @Override

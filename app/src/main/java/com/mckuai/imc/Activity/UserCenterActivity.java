@@ -24,6 +24,7 @@ import com.mckuai.imc.Adapter.CommunityMessageAdapter;
 import com.mckuai.imc.Adapter.FriendAdapter;
 import com.mckuai.imc.Adapter.PostAdapter;
 import com.mckuai.imc.Base.BaseActivity;
+import com.mckuai.imc.Base.MCKuai;
 import com.mckuai.imc.Bean.Cartoon;
 import com.mckuai.imc.Bean.CartoonMessage;
 import com.mckuai.imc.Bean.CommunityDynamic;
@@ -118,11 +119,6 @@ public class UserCenterActivity extends BaseActivity
     protected void onResume() {
         super.onResume();
         showData();
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
     }
 
     @Override
@@ -509,20 +505,31 @@ public class UserCenterActivity extends BaseActivity
             if (RongIM.getInstance().getRongIMClient().getCurrentConnectionStatus() == RongIMClient.ConnectionStatusListener.ConnectionStatus.CONNECTED) {
                 RongIM.getInstance().startPrivateChat(this, target.getName(), target.getNickEx());
             } else {
-                mApplication.loginIM(new RongIMClient.ConnectCallback() {
+                mApplication.loginIM(new MCKuai.IMLoginListener() {
+                    @Override
+                    public void onInitError() {
+                        showMessage("聊天模块功能异常，请重启软件！", null, null);
+                    }
+
                     @Override
                     public void onTokenIncorrect() {
-                        showMessage("令牌已过期，请重新登录", null, null);
+                        showMessage("令牌已过期，需要重新登录，是否重启登录？", "重新登录", new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                mApplication.logout();
+                                callLogin(2);
+                            }
+                        });
                     }
 
                     @Override
-                    public void onSuccess(String s) {
+                    public void onLoginFailure(String msg) {
+                        showMessage("登录聊天服务器失败，原因：" + msg, null, null);
+                    }
+
+                    @Override
+                    public void onLoginSuccess(String msg) {
                         RongIM.getInstance().startPrivateChat(UserCenterActivity.this, target.getName(), target.getNickEx());
-                    }
-
-                    @Override
-                    public void onError(RongIMClient.ErrorCode errorCode) {
-                        showMessage("登录聊天服务器失败，原因：" + errorCode.getMessage(), null, null);
                     }
                 });
             }

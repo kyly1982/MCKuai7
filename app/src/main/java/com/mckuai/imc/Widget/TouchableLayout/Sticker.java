@@ -4,6 +4,7 @@ import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.Paint;
+import android.graphics.Point;
 import android.support.v7.widget.AppCompatTextView;
 import android.view.View;
 
@@ -133,5 +134,34 @@ public class Sticker {
             matrix.postScale(-1, 1);
         }
         bitmap = Bitmap.createBitmap(bitmap, 0, 0, width, height, matrix, true);
+    }
+
+    public int getWidth(){
+        float left = mapPointsDst[0];
+        float right = mapPointsDst[0];
+
+        for (int i = 2;i < 8;i+=2){
+            if (left > mapPointsDst[i]){
+                left = mapPointsDst[i];
+            } else if (right < mapPointsDst[i]){
+                right = mapPointsDst[i];
+            }
+        }
+
+        return (int)(right - left);
+    }
+
+    public Point getLeftTopPoint(){
+        float left = mapPointsDst[0];
+        float top = mapPointsDst[1];
+        for (int i = 2;i < 7;i+=2){
+            if (left > mapPointsDst[i]){
+                left = mapPointsDst[i];
+            }
+            if (top > mapPointsDst[i+1]){
+                top = mapPointsDst[i+1];
+            }
+        }
+        return new Point((int)left,(int)top);
     }
 }

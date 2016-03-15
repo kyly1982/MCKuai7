@@ -41,6 +41,7 @@ public class CartoonActivity extends BaseActivity implements CartoonView.OnCarto
     private boolean isCommentSuccess = false;
     boolean isUpdateComment = false;
     boolean isUpdateReawrd = false;
+    boolean isCommentMode = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,7 +55,6 @@ public class CartoonActivity extends BaseActivity implements CartoonView.OnCarto
                 finish();
             }
         });
-        //initDrawer();
     }
 
     @Override
@@ -62,6 +62,7 @@ public class CartoonActivity extends BaseActivity implements CartoonView.OnCarto
         super.onResume();
         if (null == cartoon){
            cartoon = (Cartoon) getIntent().getExtras().getSerializable(getString(R.string.cartoondetail_tag_cartoon));
+            isCommentMode = getIntent().getBooleanExtra("COMMENTCAROON",false);
             initView();
         }
         if (isRefreshNeed) {
@@ -78,6 +79,9 @@ public class CartoonActivity extends BaseActivity implements CartoonView.OnCarto
             cartoonView.setData(cartoon, true);
         }
         isRefreshNeed = false;
+        if (isCommentMode){
+            showCommentLayout();
+        }
     }
 
     private void initView(){
@@ -122,6 +126,8 @@ public class CartoonActivity extends BaseActivity implements CartoonView.OnCarto
 
     private void showCommentLayout(){
         commentLayout.setVisibility(View.VISIBLE);
+        commentEditer.setFocusable(true);
+        commentEditer.setFocusableInTouchMode(true);
     }
 
     private void hideCommentLayout(){

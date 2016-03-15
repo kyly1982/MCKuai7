@@ -27,8 +27,9 @@ import java.util.ArrayList;
 
 import io.rong.imkit.RongIM;
 import io.rong.imlib.RongIMClient;
+import io.rong.imlib.model.Message;
 
-public class MainFragment_Chat extends BaseFragment implements ConversationAdapter.OnItemClickListener, MCNetEngine.OnLoadRecommendUserListener, WaitUserAdapter.OnItemClickListener {
+public class MainFragment_Chat extends BaseFragment implements ConversationAdapter.OnItemClickListener, MCNetEngine.OnLoadRecommendUserListener, WaitUserAdapter.OnItemClickListener,RongIMClient.OnReceiveMessageListener {
     private ArrayList<Conversation> conversations;
     // private ArrayList<User> users;
     private ArrayList<User> waitUsers;
@@ -40,9 +41,11 @@ public class MainFragment_Chat extends BaseFragment implements ConversationAdapt
     private WaitUserAdapter waitUserAdapter;
     private MCKuai application;
     private User user;
+    private boolean isRegReciver = false;
 
     public MainFragment_Chat() {
         mTitleResId = R.string.fragment_chat;
+        application = MCKuai.instence;
     }
 
     @Override
@@ -71,6 +74,11 @@ public class MainFragment_Chat extends BaseFragment implements ConversationAdapt
         if (null != view && null == conversationList) {
             initView();
         }
+        if (!isRegReciver && application.isIMLogined){
+            RongIM.setOnReceiveMessageListener(this);
+            isRegReciver = true;
+        }
+
         if (application.isLogin()){
             showData();
         }
@@ -83,7 +91,10 @@ public class MainFragment_Chat extends BaseFragment implements ConversationAdapt
             initView();
         }
         if (!hidden) {
-//            getConversation();
+            if (!isRegReciver && application.isIMLogined){
+                RongIM.setOnReceiveMessageListener(this);
+                isRegReciver = true;
+            }
             showData();
             showUser();
         }
@@ -92,6 +103,8 @@ public class MainFragment_Chat extends BaseFragment implements ConversationAdapt
     private void initView() {
         conversationList = (SuperRecyclerView) view.findViewById(R.id.conversationlist);
         userList = (SuperRecyclerView) view.findViewById(R.id.waituserlist);
+        conversationList.getRecyclerView().setHasFixedSize(true);
+        userList.getRecyclerView().setHasFixedSize(true);
         RecyclerView.LayoutManager manager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
         conversationList.setLayoutManager(manager);
         conversationList.hideProgress();
@@ -116,7 +129,6 @@ public class MainFragment_Chat extends BaseFragment implements ConversationAdapt
             conversationList.setVisibility(View.VISIBLE);
             getConversation();
             if (null == adapter) {
-                //adapter = new ConversationAdapter(getActivity(), this);
                 adapter = new ConversationAdapter(getActivity(), this);
             } else {
                 adapter.setData(conversations);
@@ -182,13 +194,9 @@ public class MainFragment_Chat extends BaseFragment implements ConversationAdapt
                 } else {
                     conversations = new ArrayList<Conversation>(0);
                 }
-                /*if (null == adapter) {
-                    adapter = new ConversationAdapter(getActivity(), this);
-                }*/
-                //showData();
             } else {
                 //聊天服务器未连接上
-                showMessage("正在连接聊天服务器,请稍后!", null, null);
+                //showMessage("正在连接聊天服务器,请稍后!", null, null);
                 RongIM.connect(MCKuai.instence.user.getToken(), new RongIMClient.ConnectCallback() {
                     @Override
                     public void onTokenIncorrect() {
@@ -283,5 +291,12 @@ public class MainFragment_Chat extends BaseFragment implements ConversationAdapt
                     break;
             }
         }
+    }
+
+    @Override
+    public boolean onReceived(Message message, int i) {
+        //getConversation();
+        showData();
+        return false;
     }
 }

@@ -96,7 +96,9 @@ public class MCKuai extends Application {
                     return;
                 }
             }
-            isIMInited = true;
+            if (null != RongIM.getInstance()) {
+                isIMInited = true;
+            }
         }
     }
 
@@ -112,7 +114,7 @@ public class MCKuai extends Application {
                     listener.onInitError();
                 }
             }
-        } else if (null != listener && null != user && null != user.getToken()) {
+        } else if (null != user && null != user.getToken()) {
             if (getApplicationInfo().packageName.equals(getCurProcessName(getApplicationContext()))) {
                 RongIM.connect(user.getToken(), new RongIMClient.ConnectCallback() {
                     @Override

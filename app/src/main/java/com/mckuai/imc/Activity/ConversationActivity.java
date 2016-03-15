@@ -7,6 +7,7 @@ import android.support.v7.widget.AppCompatTextView;
 import android.view.View;
 
 import com.mckuai.imc.Base.BaseActivity;
+import com.mckuai.imc.Base.MCKuai;
 import com.mckuai.imc.Bean.User;
 import com.mckuai.imc.R;
 import com.mckuai.imc.Util.MCDaoHelper;
@@ -15,7 +16,6 @@ import com.mckuai.imc.Util.MCNetEngine;
 import java.util.Locale;
 
 import io.rong.imkit.fragment.ConversationFragment;
-import io.rong.imlib.RongIMClient;
 import io.rong.imlib.model.Conversation;
 
 public class ConversationActivity extends BaseActivity implements MCNetEngine.OnLoadUserInfoResponseListener{
@@ -67,7 +67,7 @@ public class ConversationActivity extends BaseActivity implements MCNetEngine.On
             if (mApplication.isIMLogined){
                 showConversation(mConversationType,mTargetId);
             } else {
-                mApplication.loginIM(new RongIMClient.ConnectCallback() {
+                /*mApplication.loginIM(new RongIMClient.ConnectCallback() {
                     @Override
                     public void onTokenIncorrect() {
                         showMessage("令牌过期，需要重新登录", "重新登录", new View.OnClickListener() {
@@ -87,6 +87,33 @@ public class ConversationActivity extends BaseActivity implements MCNetEngine.On
                     @Override
                     public void onError(RongIMClient.ErrorCode errorCode) {
                         showMessage("登录失败，原因"+errorCode.getMessage(),null,null);
+                    }
+                });*/
+                mApplication.loginIM(new MCKuai.IMLoginListener() {
+                    @Override
+                    public void onInitError() {
+                        showMessage("聊天模块功能异常，请重启软件！",null,null);
+                    }
+
+                    @Override
+                    public void onTokenIncorrect() {
+                        showMessage("令牌过期，需要重新登录", "重新登录", new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                mApplication.user = null;
+                                callLogin(5);
+                            }
+                        });
+                    }
+
+                    @Override
+                    public void onLoginFailure(String msg) {
+                        showMessage("登录失败，原因"+msg,null,null);
+                    }
+
+                    @Override
+                    public void onLoginSuccess(String msg) {
+                        showConversation(mConversationType,mTargetId);
                     }
                 });
             }

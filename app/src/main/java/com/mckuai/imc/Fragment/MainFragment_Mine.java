@@ -113,6 +113,15 @@ public class MainFragment_Mine extends BaseFragment
     }
 
     @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (Activity.RESULT_OK == resultCode && mApplication.isLogin()) {
+            showData();
+        }
+    }
+
+    @Override
     public void onResume() {
         super.onResume();
         if (null == list) {
@@ -358,14 +367,7 @@ public class MainFragment_Mine extends BaseFragment
         work.hideMoreProgress();
     }
 
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
 
-        if (Activity.RESULT_OK == resultCode && mApplication.isLogin()) {
-            showData();
-        }
-    }
 
 
     private void showUserInfo() {
@@ -396,7 +398,7 @@ public class MainFragment_Mine extends BaseFragment
         if (RongIM.getInstance().getRongIMClient().getCurrentConnectionStatus() == RongIMClient.ConnectionStatusListener.ConnectionStatus.CONNECTED) {
             RongIM.getInstance().startPrivateChat(getActivity(), target.getName(), target.getNickEx());
         } else {
-            mApplication.loginIM(new RongIMClient.ConnectCallback() {
+            /*mApplication.loginIM(new RongIMClient.ConnectCallback() {
                 @Override
                 public void onTokenIncorrect() {
                     showMessage("令牌已过期，请重新登录", null, null);
@@ -410,6 +412,34 @@ public class MainFragment_Mine extends BaseFragment
                 @Override
                 public void onError(RongIMClient.ErrorCode errorCode) {
                     showMessage("登录聊天服务器失败，原因：" + errorCode.getMessage(), null, null);
+                }
+            });*/
+            mApplication.loginIM(new MCKuai.IMLoginListener() {
+                @Override
+                public void onInitError() {
+                    showMessage("聊天模块功能异常，请重启软件！", null, null);
+                }
+
+                @Override
+                public void onTokenIncorrect() {
+                    showMessage("令牌已过期，需要重新登录，是否重启登录？", "重新登录", new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            mApplication.logout();
+                            Intent intent = new Intent(getActivity(),LoginActivity.class);
+                            getActivity().startActivityForResult(intent,2);
+                        }
+                    });
+                }
+
+                @Override
+                public void onLoginFailure(String msg) {
+                    showMessage("登录聊天服务器失败，原因：" + msg, null, null);
+                }
+
+                @Override
+                public void onLoginSuccess(String msg) {
+                    RongIM.getInstance().startPrivateChat(getActivity(), target.getName(), target.getNickEx());
                 }
             });
         }

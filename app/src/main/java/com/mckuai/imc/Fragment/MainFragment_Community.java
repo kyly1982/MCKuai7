@@ -61,13 +61,9 @@ public class MainFragment_Community extends BaseFragment
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         if (null == view) {
             view = inflater.inflate(R.layout.fragment_main_community, container, false);
-//            container.removeView(view);
         }
-
-
         return view;
     }
 
@@ -96,7 +92,8 @@ public class MainFragment_Community extends BaseFragment
         mCreatePost = (FloatingActionButton) view.findViewById(R.id.community_createpost);
         postGroup = (RadioGroup) view.findViewById(R.id.posttype_indicator);
 
-
+        mForumList.getRecyclerView().setHasFixedSize(true);
+        mPostList.getRecyclerView().setHasFixedSize(true);
         LinearLayoutManager manager = new LinearLayoutManager(getActivity(),LinearLayoutManager.HORIZONTAL,false);
         mForumList.setLayoutManager(manager);
         LinearLayoutManager manager1  = new LinearLayoutManager(getActivity(),LinearLayoutManager.VERTICAL,false);

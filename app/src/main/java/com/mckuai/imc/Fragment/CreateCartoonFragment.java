@@ -58,9 +58,11 @@ public class CreateCartoonFragment extends BaseFragment implements StepView_4.On
     private SuperRecyclerView sceneList;
     private Point lastPoint;
     private OnBackgroundSetListener listener;
+    private int talkCount = 0;
 
     public interface OnBackgroundSetListener {
         void onBackgroundSet();
+        void onWidgetset();
     }
 
     public CreateCartoonFragment() {
@@ -167,7 +169,6 @@ public class CreateCartoonFragment extends BaseFragment implements StepView_4.On
                 lastPoint = point;
             }
         });
-        //cartoonBuilder.setBitmapBackground(R.mipmap.bg_builder_default);
         cartoonBuilder.setBackgroundResource(R.mipmap.bg_builder_default);
 
         StepView_1 step1 = new StepView_1(getActivity(), this);
@@ -290,6 +291,9 @@ public class CreateCartoonFragment extends BaseFragment implements StepView_4.On
             Bitmap bitmap = drawable.getBitmap();
             if (null != bitmap) {
                 cartoonBuilder.addBitMap(bitmap);
+                if (null != listener){
+                    listener.onWidgetset();
+                }
             }
         }
     }
@@ -325,8 +329,9 @@ public class CreateCartoonFragment extends BaseFragment implements StepView_4.On
     @Override
     public void onTalkAdded(String talk) {
         MobclickAgent.onEvent(getActivity(), "createCartoon_addtalk");
+        talkCount++;
         if (0 < cartoonBuilder.getWidgetCount()) {
-            Lable lable = new Lable(lastPoint, talk);
+            Lable lable = new Lable(talkCount,lastPoint, talk);
             cartoonBuilder.addLable(lable);
         } else {
             showMessage("你还未添加有人物或工具", null, null);

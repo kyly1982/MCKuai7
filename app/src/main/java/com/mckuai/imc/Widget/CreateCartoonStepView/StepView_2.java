@@ -53,6 +53,7 @@ public class StepView_2 extends RelativeLayout implements RadioGroup.OnCheckedCh
         widgetList = (SuperRecyclerView) view.findViewById(R.id.createcartoon_widget);
         ((RadioGroup)view.findViewById(R.id.createcartoon_widgets)).setOnCheckedChangeListener(this);
         RecyclerView.LayoutManager manager = new StaggeredGridLayoutManager(2,StaggeredGridLayoutManager.HORIZONTAL);
+        widgetList.getRecyclerView().setHasFixedSize(true);
         widgetList.setLayoutManager(manager);
 
         loadData();
