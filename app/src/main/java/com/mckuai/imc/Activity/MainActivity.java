@@ -20,6 +20,7 @@ import com.mckuai.imc.Bean.User;
 import com.mckuai.imc.Fragment.MainFragment_Cartoon;
 import com.mckuai.imc.Fragment.MainFragment_Chat;
 import com.mckuai.imc.Fragment.MainFragment_Community;
+import com.mckuai.imc.Fragment.MainFragment_Competition;
 import com.mckuai.imc.Fragment.MainFragment_Mine;
 import com.mckuai.imc.R;
 import com.mckuai.imc.Util.MCNetEngine;
@@ -104,11 +105,13 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
             MainFragment_Chat chatFragment = new MainFragment_Chat();
             MainFragment_Community communityFragment = new MainFragment_Community();
             MainFragment_Mine mineFragment = new MainFragment_Mine();
+            MainFragment_Competition competition = new MainFragment_Competition();
 
             cartoonFragment.setFragmentEventListener(this);
 
             fragments = new ArrayList<>(4);
-            fragments.add(cartoonFragment);
+            //fragments.add(cartoonFragment);
+            fragments.add(competition);
             fragments.add(chatFragment);
             fragments.add(communityFragment);
             fragments.add(mineFragment);

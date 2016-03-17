@@ -465,6 +465,7 @@ public class PostActivity extends BaseActivity implements OnClickListener, TextW
 			String url = getString(R.string.interface_domainName) + getString(R.string.interface_reward);
 			RequestParams params = new RequestParams();
 			params.put("userId", mApplication.user.getId());
+			params.put("userName",mApplication.user.getName());
 			params.put("talkId", post.getId());
 			mClient.post(url, params, new JsonHttpResponseHandler() {
 

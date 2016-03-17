@@ -7,6 +7,8 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.FrameLayout;
 
+import com.mckuai.imc.R;
+
 /**
  * Created by kyly on 2016/3/16.
  */
@@ -36,7 +38,33 @@ public class CompetitionLayout extends FrameLayout{
         mDragger = ViewDragHelper.create(this, 1.0f, new ViewDragHelper.Callback() {
             @Override
             public boolean tryCaptureView(View child, int pointerId) {
-                return false;
+                int id = child.getId();
+                if (id == R.id.diamond_middle_shandow || id == R.id.diamond_bottom || id == R.id.diamond_top){
+                    return false;
+                } else {
+                    return true;
+                }
+            }
+
+            @Override
+            public int clampViewPositionHorizontal(View child, int left, int dx) {
+                return left - dx;
+            }
+
+            @Override
+            public int clampViewPositionVertical(View child, int top, int dy) {
+                if (top < 0){
+                    return 0;
+                }
+                if (top >(getHeight()) - child.getHeight()){
+                    return  getHeight() - child.getHeight();
+                }
+                return top;
+            }
+
+            @Override
+            public void onViewReleased(View releasedChild, float xvel, float yvel) {
+                super.onViewReleased(releasedChild, xvel, yvel);
             }
         });
     }
