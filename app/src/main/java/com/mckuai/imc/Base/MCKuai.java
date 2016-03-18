@@ -328,6 +328,9 @@ public class MCKuai extends Application {
         if (isLogin() && isIMLogined) {
             RongIM.getInstance().disconnect();
         }
+        if (null != netEngine){
+            netEngine.exit();
+        }
         saveProfile();
     }
 
