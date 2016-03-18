@@ -3,7 +3,6 @@
  */
 package com.mckuai.imc.Util;
 
-import android.content.Context;
 import android.util.Log;
 import android.util.LruCache;
 
@@ -29,7 +28,6 @@ import java.util.Iterator;
  */
 public class JsonCache {
 
-    private Context mContext;
     private LruCache<String, String> mCache;
     private String mCacheFile;// 缓存文件
     private final int CACHE_SIZE = 512 * 1024;// 使用512K的内存来做为缓存
@@ -40,9 +38,8 @@ public class JsonCache {
      *
      */
 
-    public JsonCache(Context context) {
+    public JsonCache() {
         // TODO Auto-generated constructor stub
-        this.mContext = context;
         mCacheFile = MCKuai.instence.getJsonFile();
         mCache = new LruCache<String, String>(CACHE_SIZE);
         initFromFile();
