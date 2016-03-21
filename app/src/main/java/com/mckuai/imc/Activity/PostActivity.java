@@ -581,8 +581,6 @@ public class PostActivity extends BaseActivity implements OnClickListener, TextW
 								{
 									Toast.makeText(PostActivity.this, "帖子关注成功，可在背包中看到!", Toast.LENGTH_SHORT).show();
 								}
-								//cancleLodingToast(true);
-								// btn_collect.setEnabled(false);
 								isCollect = !isCollect;
 								setButtonFunction();
 								return;

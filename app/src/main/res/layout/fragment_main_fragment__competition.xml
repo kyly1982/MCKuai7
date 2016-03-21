@@ -5,6 +5,11 @@
     android:paddingLeft="15dp"
     android:paddingRight="15dp">
 
+    <View
+        android:id="@+id/competition_center"
+        android:layout_width=" 0dp"
+        android:layout_height="0dp"
+        android:layout_centerInParent="true"/>
 
 
 
@@ -12,31 +17,23 @@
         android:id="@+id/diamond_top"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@android:drawable/ic_menu_directions"/>
+        android:layout_centerHorizontal="true"
+        android:src="@android:drawable/ic_menu_share"/>
 
-
-    <android.support.v7.widget.AppCompatImageView
-        android:id="@+id/diamond_middle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@android:drawable/ic_menu_directions"/>
-
-    <android.support.v7.widget.AppCompatImageView
-        android:id="@+id/diamond_middle_shandow"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@android:drawable/ic_menu_directions"/>
 
     <android.support.v7.widget.AppCompatImageView
         android:id="@+id/diamond_bottom"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@android:drawable/ic_menu_directions"/>
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"
+        android:src="@android:drawable/ic_menu_share"/>
 
     <android.support.v7.widget.CardView
         android:id="@+id/cartoon_top"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_above="@id/competition_center"
         android:background="@color/colorYellow">
 
         <TextView
@@ -50,12 +47,30 @@
     <android.support.v7.widget.CardView
         android:id="@+id/cartoon_bottom"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_alignParentBottom="true"
+        android:layout_below="@id/competition_center"
         android:background="@color/colorYellow">
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="第二个card"/>
     </android.support.v7.widget.CardView>
+
+    <android.support.v7.widget.AppCompatImageView
+        android:id="@+id/diamond_middle_background"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:src="@android:drawable/ic_menu_directions"/>
+
+
+    <android.support.v7.widget.AppCompatImageView
+        android:id="@+id/diamond_middle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:src="@android:drawable/ic_menu_share"/>
+
 
 </com.mckuai.imc.Widget.CompetitionLayout>

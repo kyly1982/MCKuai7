@@ -103,8 +103,8 @@ public class ExitDialog extends DialogFragment implements View.OnClickListener {
     public void onClick(View v) {
             switch (v.getId()) {
                 case R.id.exitdialog:
-                    this.dismiss();
                     mListener.onCanclePressed();
+                    this.dismiss();
                     break;
                 case R.id.exitdialog_download:
                     if (null != ad) {

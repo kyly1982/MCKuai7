@@ -6,18 +6,18 @@ import android.support.v7.widget.CardView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewTreeObserver;
 import android.widget.FrameLayout;
 
 import com.mckuai.imc.Base.BaseFragment;
 import com.mckuai.imc.Bean.Cartoon;
 import com.mckuai.imc.R;
+import com.mckuai.imc.Widget.CompetitionLayout;
 
 import java.util.ArrayList;
 
 
 public class MainFragment_Competition extends BaseFragment {
-    private View view;
+    private CompetitionLayout view;
     private CardView cartoon_top;
     private CardView cartoon_bottom;
     private AppCompatImageView diamond;
@@ -26,7 +26,7 @@ public class MainFragment_Competition extends BaseFragment {
     private AppCompatImageView diamon_bottom;
 
     private ArrayList<Cartoon> cartoons;
-    private int margin;
+    private int margin_H,margin_V;
     private int width;
 
 
@@ -41,7 +41,7 @@ public class MainFragment_Competition extends BaseFragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         if (null == view) {
-            view =  inflater.inflate(R.layout.fragment_main_fragment__competition, container, false);
+            view = (CompetitionLayout) inflater.inflate(R.layout.fragment_main_fragment__competition, container, false);
             initView();
         }
         return view;
@@ -51,32 +51,47 @@ public class MainFragment_Competition extends BaseFragment {
         cartoon_top = (CardView) view.findViewById(R.id.cartoon_top);
         cartoon_bottom = (CardView) view.findViewById(R.id.cartoon_bottom);
         diamond = (AppCompatImageView) view.findViewById(R.id.diamond_middle);
-        diamond_shandow = (AppCompatImageView) view.findViewById(R.id.diamond_middle_shandow);
+        diamond_shandow = (AppCompatImageView) view.findViewById(R.id.diamond_middle_background);
         diamon_top = (AppCompatImageView) view.findViewById(R.id.diamond_top);
         diamon_bottom = (AppCompatImageView) view.findViewById(R.id.diamond_bottom);
+        view.setView(diamond,diamond_shandow,cartoon_top,cartoon_bottom);
 
-        view.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+      /*  view.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
             @Override
             public void onGlobalLayout() {
-                width = view.getHeight() / 2;
-                margin = (view.getWidth() - width) / 2;
+                if (view.getHeight() > view.getWidth() * 2){
+                    width = view.getWidth();
+                    margin_H = (view.getHeight() - 2* view.getWidth()) / 2;
+                    margin_V = 0;
+                } else {
+                    width = view.getHeight() / 2;
+                    margin_H = 0;
+                    margin_V = (view.getWidth() - width) / 2;
+                }
                 view.getViewTreeObserver().removeGlobalOnLayoutListener(this);
                 reSizeView();
             }
-        });
+        });*/
     }
 
     private void reSizeView(){
-        calculationLayoutParams(cartoon_top);
-        calculationLayoutParams(cartoon_bottom);
+        calculationLayoutParams(cartoon_top,0);
+        calculationLayoutParams(cartoon_bottom,1);
     }
 
-    private void calculationLayoutParams(View view){
+    private void calculationLayoutParams(View view,int i){
         if (view instanceof CardView) {
             FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) view.getLayoutParams();
             params.width = width;
             params.height = width;
-            params.setMargins(margin, 0, margin, 0);
+            switch (i){
+                case 0:
+                    params.setMargins(margin_H, margin_V, margin_H, margin_V + width);
+                    break;
+                case 1:
+                    params.setMargins(margin_H, width + margin_V, margin_H, 0);
+                    break;
+            }
             view.setLayoutParams(params);
         }
     }
