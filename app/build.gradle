@@ -90,5 +90,7 @@ dependencies {
     compile 'de.greenrobot:greendao:2.1.0'
     compile 'com.loopj.android:android-async-http:+'
     compile 'com.marshalchen.ultimaterecyclerview:library:0.4.0'
-    compile 'cn.aigestudio.downloader:Downloader:+'
+    //compile 'cn.aigestudio.downloader:Downloader:+'
+    compile 'com.squareup.okhttp3:okhttp:+'
+    compile 'com.liulishuo.filedownloader:library:+'
 }
