@@ -16,20 +16,7 @@ public class DownloadReceiver extends BroadcastReceiver {
         // an Intent broadcast.
         //throw new UnsupportedOperationException("Not yet implemented");
         if (null != intent) {
-            /*int type = intent.getIntExtra("operationType", -1);
-            switch (type) {
-                case 0:
-                    //开始下载
-                    break;
-                case 1:
-                    onCancle();
-                    //取消下载
-                    break;
-                case 2:
-                    //安装
-                    onInstall();
-                    break;
-            }*/
+
             switch (intent.getAction()){
                 case DownloadManager.ACTION_DOWNLOAD_COMPLETE:
                     long taskId = intent.getLongExtra(DownloadManager.EXTRA_DOWNLOAD_ID,0);
@@ -45,12 +32,6 @@ public class DownloadReceiver extends BroadcastReceiver {
         }
     }
 
- /*   public void onCancle(){
-
-    }
-    public void onInstall(){
-
-    }*/
 
     public void onCompleted(long id){
 

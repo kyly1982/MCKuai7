@@ -3,6 +3,7 @@ package com.mckuai.imc.Widget;
 import android.app.DialogFragment;
 import android.app.DownloadManager;
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -108,8 +109,9 @@ public class ExitDialog extends DialogFragment implements View.OnClickListener {
                     break;
                 case R.id.exitdialog_download:
                     if (null != ad) {
-                        download(getActivity());
+                        //download(getActivity());
                         mListener.onDownloadPressed();
+                        startDownloadService();
                     } else {
                         mListener.onExitPressed();
                     }
@@ -126,11 +128,20 @@ public class ExitDialog extends DialogFragment implements View.OnClickListener {
                 case R.id.exitdialog_content:
                     mListener.onPicturePressed();
                     if (null!= ad) {
-                        download(getActivity());
+                        //download(getActivity());
+                        startDownloadService();
                     }
                     this.dismiss();
                     break;
             }
+    }
+
+    private void startDownloadService(){
+        Intent intent = new Intent();
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("AD",ad);
+        intent.putExtras(bundle);
+        getActivity().startService(intent);
     }
 
     private void download(Context context){

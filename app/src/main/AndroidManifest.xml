@@ -82,11 +82,8 @@
 
         <!-- 下载服务 -->
         <service
-            android:name=".service.MCDownloadService"
-            android:exported="false"></service>
-        <!--
-        <service
             android:name=".service.DownloadService"
+            android:process="mcdownload"
             android:enabled="true"
             android:exported="true"></service>
         <receiver
@@ -99,7 +96,6 @@
                 <action android:name="android.intent.action.DOWNLOAD_NOTIFICATION_CLICKED" />
             </intent-filter>
         </receiver>
-        -->
 
 
         <!-- ********************************************各种开放平台的配置********************************** -->

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:id="@+id/download_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <ImageView
+        android:id="@+id/download_cover"
+        android:layout_width="300px"
+        android:layout_height="70px"
+        android:layout_below="@id/download_title"/>
+
+
+    <ImageButton
+        android:id="@+id/download_opration"
+        android:layout_width="match_parent"
+        android:layout_height="70px"
+        android:layout_toRightOf="@id/download_cover"
+        android:layout_below="@id/download_title"
+        android:background="@null"
+        android:src="@android:drawable/ic_media_pause"/>
+
+    <ProgressBar
+        android:id="@+id/download_progress"
+        android:layout_width="match_parent"
+        android:layout_height="20px"
+        android:layout_below="@id/download_cover"
+        />
+
+
+</RelativeLayout>

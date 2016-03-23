@@ -1,29 +1,49 @@
 package com.mckuai.imc.service;
 
-import android.app.DownloadManager;
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.app.Service;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Environment;
 import android.os.IBinder;
+import android.support.v7.app.NotificationCompat;
 import android.webkit.MimeTypeMap;
+import android.widget.RemoteViews;
 
+import com.liulishuo.filedownloader.BaseDownloadTask;
+import com.liulishuo.filedownloader.FileDownloadListener;
+import com.liulishuo.filedownloader.FileDownloader;
+import com.liulishuo.filedownloader.model.FileDownloadStatus;
 import com.mckuai.imc.Bean.Ad;
+import com.mckuai.imc.R;
+import com.umeng.analytics.MobclickAgent;
 
 import java.io.File;
 
 public class DownloadService extends Service {
 
     private Ad ad;
-    private long downloadTaskId = 0;
-    private DownloadReceiver receiver;
+    private MCDownloadReciver receiver;
     private String filePath;
     private File apkFile;
     private String fileName;
     private String extension;
-    private DownloadManager downloadManager;
-    private boolean isCompleted = false;
+    private FileDownloader downloadManager;
+    private BaseDownloadTask downloadTask;
+    private NotificationManager notificationManager;
+    private Notification notification;
+    private NotificationCompat.Builder builder;
+
+    private final String action_download_start = "ACTION_MCDOWNLOAD_START";
+    private final String action_download_pause = "ACTION_MCDOWNLOAD_PAUSE";
+    private final String action_download_cancle = "ACTION_MCDOWNLOAD_CANCLE";
+    private final int id = 57361;
 
     public DownloadService() {
     }
@@ -36,14 +56,13 @@ public class DownloadService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        if (ad == null){
+        if (ad == null) {
             ad = (Ad) intent.getSerializableExtra("AD");
-            if (null != ad){
-                //registerReceiver();
+            if (null != ad) {
+                registerReceiver();
+                initNotification();
                 setFileInfo(ad);
                 download(ad);
-            } else {
-                stopSelf();
             }
         }
         return super.onStartCommand(intent, flags, startId);
@@ -55,82 +74,240 @@ public class DownloadService extends Service {
         super.onDestroy();
     }
 
-    private void registerReceiver(){
-        if (null == receiver){
-            receiver = new DownloadReceiver(){
-                @Override
-                public void onClicked(long[] tasksId) {
-                    if (0 < tasksId.length){
-                        for (long id:tasksId){
-                            if (id == downloadTaskId){
-                                stopDownload();
-                            }
-                        }
-                    }
-                }
-
-                @Override
-                public void onCompleted(long id) {
-                    if (id == downloadTaskId){
-                        isCompleted = true;
-                        installApk();
-                        stopSelf();
-                    }
-                    super.onCompleted(id);
-                }
-            };
+    private void registerReceiver() {
+        if (null == receiver) {
+            receiver = new MCDownloadReciver();
         }
+        registerReceiver(receiver, new IntentFilter(""));
     }
 
-    private void unRegisterReceiver(){
-        if (null != receiver){
+    private void unRegisterReceiver() {
+        if (null != receiver) {
             unregisterReceiver(receiver);
             receiver = null;
         }
     }
 
-    private void setFileInfo(Ad ad){
-        File file =Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
-        if (!file.exists()){
+    private void initNotification() {
+        if (Build.VERSION.SDK_INT > 15) {
+            notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+            RemoteViews contentView = new RemoteViews(getPackageName(), R.layout.notification_download_big);
+            contentView.setImageViewUri(R.id.download_cover, Uri.parse(ad.getImageUrl()));
+            contentView.setTextViewText(R.id.download_title, ad.getDownName());
+            contentView.setProgressBar(R.id.download_progress, 100, 0, false);
+            contentView.setOnClickPendingIntent(R.id.download_opration,getDefaultIntent());
+            notification = new Notification();
+            notification.bigContentView = contentView;
+            notification.deleteIntent =getStopIntent();
+            //notification.contentIntent = getDefaultIntent();
+        } else {
+            builder = new NotificationCompat.Builder(getApplicationContext());
+            builder.setProgress(100, 0, false)
+                    .setSmallIcon(android.R.drawable.stat_sys_download)
+                    .setDeleteIntent(getStopIntent())
+                    .setContentIntent(getDefaultIntent())
+                    .setContentTitle(ad.getDownName())
+                    .setContentText("正在下载，请稍候...");
+            notification = builder.build();
+        }
+        notificationManager.notify(id,builder.build());
+    }
+
+    private void updateNotificationProgress(int progress) {
+        if (Build.VERSION.SDK_INT > 15) {
+            notification.bigContentView.setProgressBar(R.id.download_progress, 100, progress, false);
+        } else {
+            builder.setProgress(100, progress, false);
+            notificationManager.notify(id,builder.build());
+        }
+    }
+
+    private void updateNotificationState(){
+        if (Build.VERSION.SDK_INT > 15){
+            switch (downloadTask.getStatus()){
+                case FileDownloadStatus.completed:
+                    //完成
+                    notification.bigContentView.setProgressBar(R.id.download_progress, 100, 100, false);
+                    notification.bigContentView.setTextViewText(R.id.download_title, ad.getDownName() + "下载完成，点击安装！");
+                    notification.bigContentView.setImageViewResource(R.id.download_opration,android.R.drawable.stat_sys_download_done);
+                    break;
+                case FileDownloadStatus.paused:
+                    //暂停
+                    notification.bigContentView.setImageViewResource(R.id.download_opration,android.R.drawable.ic_media_play);
+                    break;
+                case FileDownloadStatus.error:
+                    //出错
+                    notification.bigContentView.setImageViewResource(R.id.download_opration,android.R.drawable.ic_media_play);
+                    notification.bigContentView.setTextViewText(R.id.download_title, ad.getDownName() + "下载失败，点击重试！");
+                    break;
+                default:
+                    if (downloadTask.getStatus() >= FileDownloadStatus.pending && downloadTask.getStatus() <= FileDownloadStatus.retry){
+                        //正常下载
+                        notification.bigContentView.setTextViewText(R.id.download_title, ad.getDownName());
+                        notification.bigContentView.setImageViewResource(R.id.download_opration, android.R.drawable.ic_media_pause);
+                    }
+            }
+        } else {
+            switch (downloadTask.getStatus()){
+                case FileDownloadStatus.completed:
+                    //完成
+                    builder.setProgress(100,100,false);
+                    builder.setContentText("下载完成，点击安装！");
+                    break;
+                case FileDownloadStatus.paused:
+                    //暂停
+                    builder.setContentText("已暂停，点击继续下载！");
+                    break;
+                case FileDownloadStatus.error:
+                    //出错
+                    builder.setContentText("下载失败，点击重试！");
+                    break;
+                default:
+                    if (downloadTask.getStatus() >= FileDownloadStatus.pending && downloadTask.getStatus() <= FileDownloadStatus.retry){
+                        //正常下载
+                        builder.setContentText("正在下载，请稍候...");
+                    }
+            }
+            notification = builder.build();
+        }
+        notificationManager.notify(id,notification);
+    }
+
+
+    private void setFileInfo(Ad ad) {
+        File file = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
+        if (!file.exists()) {
             file.mkdirs();
         }
-        filePath = file.getPath() +"/";
+        filePath = file.getPath() + "/";
         fileName = ad.getDownUrl().substring(ad.getDownUrl().lastIndexOf("/"));
         extension = MimeTypeMap.getFileExtensionFromUrl(ad.getDownUrl());
-        apkFile = new File(filePath,fileName);
+        apkFile = new File(filePath, fileName);
     }
 
 
-    private void download(Ad ad){
-        Uri uri = Uri.parse(ad.getDownUrl());
-        downloadManager = (DownloadManager)getApplicationContext().getSystemService(Context.DOWNLOAD_SERVICE);
-
-        DownloadManager.Request request = new DownloadManager.Request(uri);
-        request.setAllowedNetworkTypes(DownloadManager.Request.NETWORK_WIFI | DownloadManager.Request.NETWORK_MOBILE);
-        request.setAllowedOverRoaming(false);
-        request.setDescription("正在下载" + ad.getDownName() + ",请稍候...");
-        request.setTitle("下载" + ad.getDownName());
-        request.setMimeType("application/vnd.android.package-archive");
-        request.setDestinationInExternalPublicDir("Download", fileName);
-        request.allowScanningByMediaScanner();
-        request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE | DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
-        request.setVisibleInDownloadsUi(false);
-
-        downloadTaskId = downloadManager.enqueue(request);
-    }
-
-    private void stopDownload(){
-        if (0 != downloadTaskId){
-            downloadManager.remove(downloadTaskId);
+    private void download(Ad ad) {
+        if (null == downloadManager) {
+            FileDownloader.init(getApplication());
+            downloadManager = FileDownloader.getImpl();
+            downloadManager.setGlobalPost2UIInterval(1000);//每隔1秒处理一次listener回调
+            downloadManager.setGlobalHandleSubPackageSize(2);
         }
+        if (null == downloadTask) {
+            downloadTask = downloadManager.create(ad.getDownUrl()).setPath(filePath).setListener(new FileDownloadListener() {
+                @Override
+                protected void pending(BaseDownloadTask task, int soFarBytes, int totalBytes) {
+
+                }
+
+                @Override
+                protected void progress(BaseDownloadTask task, int soFarBytes, int totalBytes) {
+                    updateNotificationProgress(100 * soFarBytes / totalBytes);
+                }
+
+                @Override
+                protected void blockComplete(BaseDownloadTask task) {
+
+                }
+
+                @Override
+                protected void completed(BaseDownloadTask task) {
+                    notificationManager.cancel(id);
+                    updateNotificationState();
+                    MobclickAgent.onEvent(getApplicationContext(),"MCAD_Downloaded");
+                    installApk();
+                }
+
+                @Override
+                protected void paused(BaseDownloadTask task, int soFarBytes, int totalBytes) {
+                    updateNotificationState();
+                }
+
+                @Override
+                protected void error(BaseDownloadTask task, Throwable e) {
+                    updateNotificationState();
+                }
+
+                @Override
+                protected void warn(BaseDownloadTask task) {
+
+                }
+            });
+        }
+    }
+
+
+
+    private void stopDownload() {
+        if (null != downloadManager){
+            downloadManager.unBindService();
+        }
+        MobclickAgent.onEvent(getApplicationContext(),"MCAD_CancleDownload");
+        notificationManager.cancel(id);
         stopSelf();
     }
 
-    private void installApk(){
+    private void installApk() {
         Intent intent = new Intent();
         intent.setAction(Intent.ACTION_VIEW);
         intent.setDataAndType(Uri.fromFile(apkFile), "application/vnd.android.package-archive");
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
     }
+
+
+    private PendingIntent getDefaultIntent(){
+        Intent intent = new Intent();
+        if (null != downloadTask){
+            switch (downloadTask.getStatus()){
+                case FileDownloadStatus.error:
+                    intent.setAction(action_download_start);
+                    break;
+                case FileDownloadStatus.paused:
+                    intent.setAction(action_download_start);
+                    break;
+                default:
+                    break;
+            }
+        }
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(getApplicationContext(),0,intent,0);
+        return pendingIntent;
+    }
+
+    private PendingIntent getStopIntent(){
+        Intent intent = new Intent(action_download_cancle);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(getApplicationContext(),0,intent,0);
+        return pendingIntent;
+    }
+
+
+    public class MCDownloadReciver extends BroadcastReceiver {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            switch (intent.getAction()){
+                case action_download_pause:
+                    if (null != downloadTask){
+                        downloadTask.pause();
+                        updateNotificationState();
+                    }
+
+                    break;
+                case action_download_start:
+                    if (null != downloadTask){
+                        downloadTask.start();
+                        updateNotificationState();
+                    }
+                    break;
+                case action_download_cancle:
+                    stopDownload();
+                    break;
+                case Intent.ACTION_PACKAGE_ADDED:
+                    MobclickAgent.onEvent(getApplicationContext(),"MCAD_Installed");
+                    notificationManager.cancel(id);
+                    stopSelf();
+                    break;
+            }
+        }
+    }
+
 }
