@@ -26,11 +26,14 @@ import com.nostra13.universalimageloader.core.display.CircleBitmapDisplayer;
 import com.nostra13.universalimageloader.core.download.BaseImageDownloader;
 import com.tencent.tauth.Tencent;
 import com.umeng.socialize.PlatformConfig;
+import com.zhy.http.okhttp.OkHttpUtils;
 
 import java.io.File;
+import java.util.concurrent.TimeUnit;
 
 import io.rong.imkit.RongIM;
 import io.rong.imlib.RongIMClient;
+import okhttp3.OkHttpClient;
 
 /**
  * Created by kyly on 2016/1/18.
@@ -80,6 +83,10 @@ public class MCKuai extends Application {
         if (isIMInited && null != user && user.isUserValid() && null != user.getToken() && 10 < user.getToken().length()) {
             loginIM(null);
         }
+        OkHttpClient.Builder builder = new OkHttpClient.Builder();
+        builder.connectTimeout(TIME_OUT, TimeUnit.MILLISECONDS)
+                .retryOnConnectionFailure(true);
+        OkHttpUtils.getInstance(builder.build());
     }
 
     /**

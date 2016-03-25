@@ -83,7 +83,7 @@ public class JsonCache {
                             Log.e(TAG, "\"" + key + "\"的值为空");
                         }
                     }
-                    Log.e(TAG, "解析文件用时" + (System.nanoTime() - startTime));
+                    //Log.e(TAG, "解析文件用时" + (System.nanoTime() - startTime));
                     reader.close();
                     inputStreamReader.close();
                 } else {
@@ -167,8 +167,8 @@ public class JsonCache {
             bw.write(strData.toString());
             bw.close();
             streamWriter.close();
-            Log.e(TAG, "保存用时：" + (System.nanoTime() - startTime));
-            Log.e(TAG, "文件大小：" + file.length());
+           // Log.e(TAG, "保存用时：" + (System.nanoTime() - startTime));
+           // Log.e(TAG, "文件大小：" + file.length());
         } catch (UnsupportedEncodingException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();

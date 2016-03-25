@@ -4,6 +4,7 @@ import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.v7.widget.AppCompatRadioButton;
 import android.support.v7.widget.AppCompatTextView;
 import android.view.Menu;
@@ -13,6 +14,9 @@ import android.view.ViewConfiguration;
 import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 
+import com.liulishuo.filedownloader.BaseDownloadTask;
+import com.liulishuo.filedownloader.FileDownloadListener;
+import com.liulishuo.filedownloader.FileDownloader;
 import com.mckuai.imc.Base.BaseActivity;
 import com.mckuai.imc.Base.BaseFragment;
 import com.mckuai.imc.Bean.Ad;
@@ -27,7 +31,9 @@ import com.mckuai.imc.Util.MCNetEngine;
 import com.mckuai.imc.Widget.ExitDialog;
 import com.umeng.analytics.MobclickAgent;
 import com.umeng.message.PushAgent;
+import com.umeng.socialize.utils.Log;
 
+import java.io.File;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 
@@ -168,6 +174,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
                 public void onDownloadPressed() {
                     MobclickAgent.onEvent(MainActivity.this, "ExitDialog_Download");
                     MobclickAgent.onKillProcess(MainActivity.this);
+                    //download(ad);
                     isDownloaded = true;
                     mApplication.handleExit();
                     System.exit(0);
@@ -176,6 +183,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
                 @Override
                 public void onPicturePressed() {
                     isDownloaded = true;
+                    //download(ad);
                     MobclickAgent.onEvent(MainActivity.this, "ExitDialog_Picture");
                 }
             });
@@ -186,9 +194,72 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         }
     }
 
+    private String getDownloadPath(){
+        File file = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
+        if (!file.exists()) {
+            file.mkdirs();
+        }
+        return file.getPath();
+    }
+
+    private void download(Ad ad){
+        //notificationHelper = new FileDownloadNotificationHelper<>();
+        FileDownloader.getImpl().create("http://softdown.mckuai.com:8081/mckuai.apk").setPath(getDownloadPath()).setListener(new FileDownloadListener() {
+            @Override
+            protected void pending(BaseDownloadTask task, int soFarBytes, int totalBytes) {
+                if (null != task) {
+
+                }
+            }
+
+            @Override
+            protected void progress(BaseDownloadTask task, int soFarBytes, int totalBytes) {
+                if (null != task) {
+
+                }
+            }
+
+            @Override
+            protected void blockComplete(BaseDownloadTask task) {
+                if (null != task){
+
+                }
+            }
+
+            @Override
+            protected void completed(BaseDownloadTask task) {
+                if (null != task){
+
+                }
+            }
+
+            @Override
+            protected void paused(BaseDownloadTask task, int soFarBytes, int totalBytes) {
+                if (null != task){
+
+                }
+            }
+
+            @Override
+            protected void error(BaseDownloadTask task, Throwable e) {
+                if (null != task){
+
+                }
+            }
+
+            @Override
+            protected void warn(BaseDownloadTask task) {
+                if (null != task){
+
+                }
+            }
+        }).start();
+    }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
+        onBackPressed();
+        /*int id = item.getItemId();
         if (id == R.id.action_recommend) {
             if (!isRecommendPressed) {
                 item.setIcon(R.drawable.ic_menu_recommend);
@@ -197,7 +268,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
             Intent intent = new Intent(this, RecommendActivity.class);
             startActivity(intent);
             return true;
-        }
+        }*/
 
         return super.onOptionsItemSelected(item);
     }
@@ -334,7 +405,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
 
     @Override
     public void onGetAdFailure(String msg) {
-
+        Log.e(msg);
     }
 
     @Override

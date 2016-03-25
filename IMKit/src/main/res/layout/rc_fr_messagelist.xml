@@ -14,7 +14,7 @@
         android:cacheColorHint="@android:color/transparent"
         android:divider="@android:color/transparent"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"/>
 
     <Button
         android:visibility="gone"
@@ -35,8 +35,8 @@
         android:layout_height="wrap_content"
         android:layout_marginRight="10dp"
         android:layout_marginBottom="4dp"
-        android:layout_gravity="bottom|right">
-
+        android:layout_gravity="bottom|right"
+        >
         <ImageButton
             android:visibility="gone"
             android:gravity="center"
@@ -58,7 +58,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="12dp"
-            android:textColor="#fff" />
+            android:textColor="#fff"
+            />
 
     </RelativeLayout>
 

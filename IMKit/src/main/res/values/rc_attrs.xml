@@ -2,8 +2,8 @@
 <resources>
     <declare-styleable name="AsyncImageView">
 
-        <attr name="RCMinShortSideSize" format="dimension" />
-        <attr name="RCCornerRadius" format="dimension" />
+        <attr name="RCMinShortSideSize" format="dimension"/>
+        <attr name="RCCornerRadius" format="dimension"/>
 
         <attr name="RCShape">
             <flag name="square" value="0" />

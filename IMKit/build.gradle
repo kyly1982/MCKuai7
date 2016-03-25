@@ -2,12 +2,12 @@ apply plugin: 'com.android.library'
 
 android {
     compileSdkVersion 23
-    buildToolsVersion '21.1.2'
+    buildToolsVersion '23.0.3'
     defaultConfig {
         minSdkVersion 15
         targetSdkVersion 21
-        versionCode 2016011122
-        versionName "2.4.4 Stable"
+       	versionCode 2016022222
+        versionName "2.4.8 Stable"
     }
     buildTypes {
         release {
@@ -15,6 +15,7 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+
     sourceSets {
         main {
             res.srcDirs = ['src/main/res']
@@ -23,8 +24,6 @@ android {
             jni.srcDirs = []
             jniLibs.srcDirs = ['src/main/libs']
         }
-    }
-    productFlavors {
     }
 }
 

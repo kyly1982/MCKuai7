@@ -83,17 +83,17 @@
         <!-- 下载服务 -->
         <service
             android:name=".service.DownloadService"
-            android:process="mcdownload"
             android:enabled="true"
             android:exported="true"></service>
         <receiver
-            android:name=".service.DownloadReceiver"
+            android:name=".service.DownloadService$MCDownloadReciver"
             android:enabled="true"
             android:exported="true">
 
             <intent-filter>
-                <action android:name="android.intent.action.DOWNLOAD_COMPLETE" />
-                <action android:name="android.intent.action.DOWNLOAD_NOTIFICATION_CLICKED" />
+                <action android:name="ACTION_MCDOWNLOAD_START" />
+                <action android:name="ACTION_MCDOWNLOAD_PAUSE" />
+                <action android:name="ACTION_MCDOWNLOAD_CANCLE" />
             </intent-filter>
         </receiver>
 

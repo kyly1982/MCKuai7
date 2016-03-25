@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="fill_parent"
-    android:layout_height="64dp"
-    android:minHeight="45dp"
-    android:padding="10dp"
-    android:background="@android:color/transparent"
-    android:orientation="horizontal"
-    android:gravity="center_vertical">
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              android:layout_width="fill_parent"
+              android:layout_height="64dp"
+              android:minHeight="45dp"
+              android:padding="10dp"
+              android:background="@android:color/transparent"
+              android:orientation="horizontal"
+              android:gravity="center_vertical">
 
 
     <io.rong.imkit.widget.AsyncImageView
@@ -16,7 +16,8 @@
         android:layout_height="45dp"
         android:scaleType="fitXY"
         android:layout_gravity="center_vertical"
-        app:RCDefDrawable="@drawable/rc_ic_def_msg_portrait" />
+        app:RCDefDrawable="@drawable/rc_ic_def_msg_portrait"
+        />
 
     <LinearLayout
         android:orientation="vertical"
@@ -28,7 +29,8 @@
             android:id="@+id/name"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="15dp" />
+            android:layout_marginLeft="15dp"
+            />
 
         <TextView
             style="@style/RCTheme.Message.RichContent.TextView"
@@ -36,7 +38,8 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="3dp"
-            android:layout_marginLeft="15dp" />
+            android:layout_marginLeft="15dp"
+            />
 
     </LinearLayout>
 </LinearLayout>

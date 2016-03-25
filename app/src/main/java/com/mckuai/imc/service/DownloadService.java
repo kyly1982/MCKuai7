@@ -20,6 +20,7 @@ import com.liulishuo.filedownloader.BaseDownloadTask;
 import com.liulishuo.filedownloader.FileDownloadListener;
 import com.liulishuo.filedownloader.FileDownloader;
 import com.liulishuo.filedownloader.model.FileDownloadStatus;
+import com.liulishuo.filedownloader.util.FileDownloadUtils;
 import com.mckuai.imc.Bean.Ad;
 import com.mckuai.imc.R;
 import com.umeng.analytics.MobclickAgent;
@@ -34,8 +35,8 @@ public class DownloadService extends Service {
     private File apkFile;
     private String fileName;
     private String extension;
-    private FileDownloader downloadManager;
-    private BaseDownloadTask downloadTask;
+    //private FileDownloader downloadManager;
+    //private BaseDownloadTask downloadTask;
     private NotificationManager notificationManager;
     private Notification notification;
     private NotificationCompat.Builder builder;
@@ -56,6 +57,7 @@ public class DownloadService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
+        android.os.Debug.waitForDebugger();
         if (ad == null) {
             ad = (Ad) intent.getSerializableExtra("AD");
             if (null != ad) {
@@ -89,16 +91,21 @@ public class DownloadService extends Service {
     }
 
     private void initNotification() {
+        android.os.Debug.waitForDebugger();
         if (Build.VERSION.SDK_INT > 15) {
-            notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
             RemoteViews contentView = new RemoteViews(getPackageName(), R.layout.notification_download_big);
             contentView.setImageViewUri(R.id.download_cover, Uri.parse(ad.getImageUrl()));
             contentView.setTextViewText(R.id.download_title, ad.getDownName());
             contentView.setProgressBar(R.id.download_progress, 100, 0, false);
-            contentView.setOnClickPendingIntent(R.id.download_opration,getDefaultIntent());
-            notification = new Notification();
+            contentView.setOnClickPendingIntent(R.id.download_opration, getDefaultIntent());
+            builder = new NotificationCompat.Builder(getApplicationContext());
+            builder.setSmallIcon(android.R.drawable.stat_sys_download)
+                    .setDeleteIntent(getStopIntent())
+                    .setContentTitle(ad.getDownName())
+                    .setContentText("正在下载，请稍候...");
+            notification = builder.build();
             notification.bigContentView = contentView;
-            notification.deleteIntent =getStopIntent();
+
             //notification.contentIntent = getDefaultIntent();
         } else {
             builder = new NotificationCompat.Builder(getApplicationContext());
@@ -110,7 +117,8 @@ public class DownloadService extends Service {
                     .setContentText("正在下载，请稍候...");
             notification = builder.build();
         }
-        notificationManager.notify(id,builder.build());
+        notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        notificationManager.notify(id,notification);
     }
 
     private void updateNotificationProgress(int progress) {
@@ -123,8 +131,9 @@ public class DownloadService extends Service {
     }
 
     private void updateNotificationState(){
+        android.os.Debug.waitForDebugger();
         if (Build.VERSION.SDK_INT > 15){
-            switch (downloadTask.getStatus()){
+            /*switch (downloadTask.getStatus()){
                 case FileDownloadStatus.completed:
                     //完成
                     notification.bigContentView.setProgressBar(R.id.download_progress, 100, 100, false);
@@ -146,9 +155,9 @@ public class DownloadService extends Service {
                         notification.bigContentView.setTextViewText(R.id.download_title, ad.getDownName());
                         notification.bigContentView.setImageViewResource(R.id.download_opration, android.R.drawable.ic_media_pause);
                     }
-            }
+            }*/
         } else {
-            switch (downloadTask.getStatus()){
+            /*switch (downloadTask.getStatus()){
                 case FileDownloadStatus.completed:
                     //完成
                     builder.setProgress(100,100,false);
@@ -167,7 +176,7 @@ public class DownloadService extends Service {
                         //正常下载
                         builder.setContentText("正在下载，请稍候...");
                     }
-            }
+            }*/
             notification = builder.build();
         }
         notificationManager.notify(id,notification);
@@ -175,6 +184,7 @@ public class DownloadService extends Service {
 
 
     private void setFileInfo(Ad ad) {
+        android.os.Debug.waitForDebugger();
         File file = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
         if (!file.exists()) {
             file.mkdirs();
@@ -187,17 +197,21 @@ public class DownloadService extends Service {
 
 
     private void download(Ad ad) {
-        if (null == downloadManager) {
-            FileDownloader.init(getApplication());
+        android.os.Debug.waitForDebugger();
+        /*if (null == downloadManager) {
+
             downloadManager = FileDownloader.getImpl();
-            downloadManager.setGlobalPost2UIInterval(1000);//每隔1秒处理一次listener回调
-            downloadManager.setGlobalHandleSubPackageSize(2);
+            FileDownloadUtils.setDefaultSaveRootPath(filePath);
+            //downloadManager.setGlobalPost2UIInterval(1000);//每隔1秒处理一次listener回调
+            //downloadManager.setGlobalHandleSubPackageSize(2);
         }
         if (null == downloadTask) {
             downloadTask = downloadManager.create(ad.getDownUrl()).setPath(filePath).setListener(new FileDownloadListener() {
                 @Override
                 protected void pending(BaseDownloadTask task, int soFarBytes, int totalBytes) {
+                    if (null != task){
 
+                    }
                 }
 
                 @Override
@@ -207,7 +221,9 @@ public class DownloadService extends Service {
 
                 @Override
                 protected void blockComplete(BaseDownloadTask task) {
+                    if (null != task){
 
+                    }
                 }
 
                 @Override
@@ -230,15 +246,19 @@ public class DownloadService extends Service {
 
                 @Override
                 protected void warn(BaseDownloadTask task) {
+                    if (null != task){
 
+                    }
                 }
             });
-        }
+            downloadTask.start();
+        }*/
     }
 
 
 
     private void stopDownload() {
+        android.os.Debug.waitForDebugger();
         if (null != downloadManager){
             downloadManager.unBindService();
         }
@@ -248,6 +268,7 @@ public class DownloadService extends Service {
     }
 
     private void installApk() {
+        android.os.Debug.waitForDebugger();
         Intent intent = new Intent();
         intent.setAction(Intent.ACTION_VIEW);
         intent.setDataAndType(Uri.fromFile(apkFile), "application/vnd.android.package-archive");
@@ -257,6 +278,7 @@ public class DownloadService extends Service {
 
 
     private PendingIntent getDefaultIntent(){
+        android.os.Debug.waitForDebugger();
         Intent intent = new Intent();
         if (null != downloadTask){
             switch (downloadTask.getStatus()){
@@ -275,6 +297,7 @@ public class DownloadService extends Service {
     }
 
     private PendingIntent getStopIntent(){
+        android.os.Debug.waitForDebugger();
         Intent intent = new Intent(action_download_cancle);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(getApplicationContext(),0,intent,0);
         return pendingIntent;
@@ -284,6 +307,7 @@ public class DownloadService extends Service {
     public class MCDownloadReciver extends BroadcastReceiver {
         @Override
         public void onReceive(Context context, Intent intent) {
+            android.os.Debug.waitForDebugger();
             switch (intent.getAction()){
                 case action_download_pause:
                     if (null != downloadTask){

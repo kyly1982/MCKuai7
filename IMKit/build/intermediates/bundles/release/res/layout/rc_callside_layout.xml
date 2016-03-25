@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/container"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="#141414"
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/container"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="#141414"
 
     >
 
@@ -19,14 +19,15 @@
         android:background="@drawable/rc_btn_over_selector"
         android:onClick="doFinishChat"
         android:text="结束"
-        android:textColor="@android:color/white" />
+        android:textColor="@android:color/white"/>
 
 
     <FrameLayout
         android:id="@+id/user_photo_container"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true">
+        android:layout_centerHorizontal="true"
+        >
 
         <io.rong.imkit.widget.AsyncImageView
             android:id="@+id/user_photo"
@@ -36,7 +37,8 @@
             android:background="@android:color/transparent"
             android:src="@drawable/rc_ic_portrait_voip"
             app:RCDefDrawable="@drawable/rc_ic_portrait_voip"
-            android:layout_marginTop="71dp" />
+            android:layout_marginTop="71dp"
+            />
     </FrameLayout>
 
     <TextView
@@ -48,7 +50,7 @@
         android:layout_below="@id/user_photo_container"
         android:layout_marginTop="24dp"
         android:text="融云客服"
-        android:textSize="20sp" />
+        android:textSize="20sp"/>
 
     <TextView
         android:id="@+id/calling_state"
@@ -59,7 +61,7 @@
         android:text="正在呼叫中...."
         android:textColor="@android:color/white"
         android:layout_marginTop="21dp"
-        android:textSize="14dp" />
+        android:textSize="14dp"/>
 
     <RelativeLayout
         android:layout_above="@id/button1"
@@ -72,13 +74,14 @@
             android:id="@+id/sound_off_container_id"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="28dp">
+            android:layout_marginBottom="28dp"
+            >
 
             <ImageView
                 android:id="@+id/sound_off_id"
                 android:layout_width="80dp"
                 android:layout_height="80dp"
-                android:src="@drawable/rc_btn_sound_off_selector" />
+                android:src="@drawable/rc_btn_sound_off_selector"/>
 
             <TextView
                 android:layout_width="wrap_content"
@@ -88,21 +91,22 @@
                 android:text="静音"
                 android:textSize="16sp"
                 android:textColor="#ffffff"
-                android:paddingTop="14dp" />
+                android:paddingTop="14dp"/>
         </RelativeLayout>
 
         <RelativeLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="63dp"
-            android:layout_toRightOf="@id/sound_off_container_id">
+            android:layout_toRightOf="@id/sound_off_container_id"
+            >
 
             <ImageView
                 android:id="@+id/hands_off_id"
                 android:layout_width="80dp"
                 android:layout_height="80dp"
                 android:background="@android:color/transparent"
-                android:src="@drawable/rc_btn_hands_free_selector" />
+                android:src="@drawable/rc_btn_hands_free_selector"/>
 
             <TextView
                 android:layout_width="wrap_content"
@@ -112,7 +116,7 @@
                 android:text="免提"
                 android:textSize="16sp"
                 android:textColor="#ffffff"
-                android:paddingTop="14dp" />
+                android:paddingTop="14dp"/>
         </RelativeLayout>
     </RelativeLayout>
 
@@ -122,6 +126,6 @@
         android:layout_height="match_parent"
         android:background="#80000000"
         android:clickable="true"
-        android:visibility="gone" />
+        android:visibility="gone"/>
 
 </RelativeLayout>

@@ -71,6 +71,7 @@
     <string name="rc_plugins_camera">Camera</string>
 
 
+
     <string name="rc_pub_service_info_description">Features</string>
     <string name="rc_pub_service_info_enter">Enter Official Account</string>
     <string name="rc_pub_service_info_follow">Follow</string>
@@ -118,9 +119,10 @@
 
     <string name="rc_voip_cpu_error">Sorry  Function temporarily does not support your models</string>
     <string name="rc_notification_ticker_text">You have a new message</string>
-
+    
     <string name="rc_notification_new_msg">%1$s&#160;sent&#160;%2$d&#160;messages</string>
     <string name="rc_notification_new_plural_msg">%1$d&#160;contacts&#160;sent&#160;%2$d&#160;messages</string>
+    
 
 
 </resources>

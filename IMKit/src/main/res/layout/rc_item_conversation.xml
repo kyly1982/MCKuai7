@@ -30,13 +30,11 @@
             android:layout_height="wrap_content"
             android:paddingTop="4dp"
             android:layout_gravity="right|top">
-
             <ImageView
                 android:id="@+id/rc_unread_message_icon"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center" />
-
+                android:layout_gravity="center"/>
             <TextView
                 android:id="@+id/rc_unread_message"
                 android:layout_width="wrap_content"
@@ -77,7 +75,6 @@
             android:layout_height="wrap_content"
             android:paddingTop="4dp"
             android:layout_gravity="right|top">
-
             <ImageView
                 android:id="@+id/rc_unread_message_icon_right"
                 android:layout_width="wrap_content"

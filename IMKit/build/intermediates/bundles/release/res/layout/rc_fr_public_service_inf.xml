@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@android:color/white"
-    android:orientation="vertical">
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:background="@android:color/white"
+              android:orientation="vertical">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -26,7 +26,8 @@
                     android:layout_width="64dp"
                     android:layout_height="64dp"
                     android:background="@drawable/rc_default_portrait"
-                    android:layout_centerVertical="true" />
+                    android:layout_centerVertical="true"
+                    />
 
                 <TextView
                     android:id="@+id/name"
@@ -36,7 +37,7 @@
                     android:layout_marginLeft="12dp"
                     android:layout_marginTop="10dp"
                     android:layout_toRightOf="@+id/portrait"
-                    android:singleLine="true" />
+                    android:singleLine="true"/>
 
                 <TextView
                     android:id="@+id/account"
@@ -46,7 +47,7 @@
                     android:layout_marginTop="3dp"
                     android:layout_below="@+id/name"
                     android:layout_marginLeft="12dp"
-                    android:layout_toRightOf="@id/portrait" />
+                    android:layout_toRightOf="@id/portrait"/>
             </RelativeLayout>
 
             <LinearLayout
@@ -64,7 +65,7 @@
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="24dp"
                     android:id="@+id/func"
-                    android:text="@string/rc_pub_service_info_description" />
+                    android:text="@string/rc_pub_service_info_description"/>
 
                 <TextView
                     android:id="@+id/description"
@@ -73,7 +74,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="18dp"
                     android:layout_centerVertical="true"
-                    android:layout_marginRight="32dp" />
+                    android:layout_marginRight="32dp"
+                    />
             </LinearLayout>
 
 
@@ -82,7 +84,7 @@
                 android:layout_height="1dp"
                 android:layout_marginRight="16dp"
                 android:layout_marginLeft="16dp"
-                android:background="#e4e4e4" />
+                android:background="#e4e4e4"/>
 
             <FrameLayout
                 android:id="@id/rc_layout"
@@ -100,7 +102,7 @@
                 android:textSize="16sp"
                 android:background="@drawable/rc_btn_public_service_enter_selector"
                 android:text="@string/rc_pub_service_info_enter"
-                android:textColor="@color/rc_text_color_primary_inverse" />
+                android:textColor="@color/rc_text_color_primary_inverse"/>
 
             <Button
                 android:id="@+id/follow"
@@ -112,7 +114,7 @@
                 android:textSize="16sp"
                 android:background="@drawable/rc_btn_public_service_enter_selector"
                 android:text="@string/rc_pub_service_info_follow"
-                android:textColor="@color/rc_text_color_primary_inverse" />
+                android:textColor="@color/rc_text_color_primary_inverse"/>
 
             <Button
                 android:id="@+id/unfollow"
@@ -124,7 +126,7 @@
                 android:textSize="16sp"
                 android:background="@drawable/rc_btn_public_service_unfollow_selector"
                 android:text="@string/rc_pub_service_info_unfollow"
-                android:textColor="@color/rc_text_color_primary_inverse" />
+                android:textColor="@color/rc_text_color_primary_inverse"/>
 
         </LinearLayout>
 
