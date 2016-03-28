@@ -14,9 +14,6 @@ import android.view.ViewConfiguration;
 import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 
-import com.liulishuo.filedownloader.BaseDownloadTask;
-import com.liulishuo.filedownloader.FileDownloadListener;
-import com.liulishuo.filedownloader.FileDownloader;
 import com.mckuai.imc.Base.BaseActivity;
 import com.mckuai.imc.Base.BaseFragment;
 import com.mckuai.imc.Bean.Ad;
@@ -202,59 +199,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         return file.getPath();
     }
 
-    private void download(Ad ad){
-        //notificationHelper = new FileDownloadNotificationHelper<>();
-        FileDownloader.getImpl().create("http://softdown.mckuai.com:8081/mckuai.apk").setPath(getDownloadPath()).setListener(new FileDownloadListener() {
-            @Override
-            protected void pending(BaseDownloadTask task, int soFarBytes, int totalBytes) {
-                if (null != task) {
 
-                }
-            }
-
-            @Override
-            protected void progress(BaseDownloadTask task, int soFarBytes, int totalBytes) {
-                if (null != task) {
-
-                }
-            }
-
-            @Override
-            protected void blockComplete(BaseDownloadTask task) {
-                if (null != task){
-
-                }
-            }
-
-            @Override
-            protected void completed(BaseDownloadTask task) {
-                if (null != task){
-
-                }
-            }
-
-            @Override
-            protected void paused(BaseDownloadTask task, int soFarBytes, int totalBytes) {
-                if (null != task){
-
-                }
-            }
-
-            @Override
-            protected void error(BaseDownloadTask task, Throwable e) {
-                if (null != task){
-
-                }
-            }
-
-            @Override
-            protected void warn(BaseDownloadTask task) {
-                if (null != task){
-
-                }
-            }
-        }).start();
-    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {

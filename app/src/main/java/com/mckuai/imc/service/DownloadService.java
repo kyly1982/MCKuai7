@@ -16,16 +16,13 @@ import android.support.v7.app.NotificationCompat;
 import android.webkit.MimeTypeMap;
 import android.widget.RemoteViews;
 
-import com.liulishuo.filedownloader.BaseDownloadTask;
-import com.liulishuo.filedownloader.FileDownloadListener;
-import com.liulishuo.filedownloader.FileDownloader;
-import com.liulishuo.filedownloader.model.FileDownloadStatus;
-import com.liulishuo.filedownloader.util.FileDownloadUtils;
 import com.mckuai.imc.Bean.Ad;
 import com.mckuai.imc.R;
 import com.umeng.analytics.MobclickAgent;
 
 import java.io.File;
+
+import okhttp3.OkHttpClient;
 
 public class DownloadService extends Service {
 
@@ -35,11 +32,10 @@ public class DownloadService extends Service {
     private File apkFile;
     private String fileName;
     private String extension;
-    //private FileDownloader downloadManager;
-    //private BaseDownloadTask downloadTask;
     private NotificationManager notificationManager;
     private Notification notification;
     private NotificationCompat.Builder builder;
+    private OkHttpClient client;
 
     private final String action_download_start = "ACTION_MCDOWNLOAD_START";
     private final String action_download_pause = "ACTION_MCDOWNLOAD_PAUSE";
@@ -259,9 +255,7 @@ public class DownloadService extends Service {
 
     private void stopDownload() {
         android.os.Debug.waitForDebugger();
-        if (null != downloadManager){
-            downloadManager.unBindService();
-        }
+
         MobclickAgent.onEvent(getApplicationContext(),"MCAD_CancleDownload");
         notificationManager.cancel(id);
         stopSelf();
@@ -280,7 +274,7 @@ public class DownloadService extends Service {
     private PendingIntent getDefaultIntent(){
         android.os.Debug.waitForDebugger();
         Intent intent = new Intent();
-        if (null != downloadTask){
+        /*if (null != downloadTask){
             switch (downloadTask.getStatus()){
                 case FileDownloadStatus.error:
                     intent.setAction(action_download_start);
@@ -291,7 +285,7 @@ public class DownloadService extends Service {
                 default:
                     break;
             }
-        }
+        }*/
         PendingIntent pendingIntent = PendingIntent.getBroadcast(getApplicationContext(),0,intent,0);
         return pendingIntent;
     }
@@ -308,7 +302,7 @@ public class DownloadService extends Service {
         @Override
         public void onReceive(Context context, Intent intent) {
             android.os.Debug.waitForDebugger();
-            switch (intent.getAction()){
+            /*switch (intent.getAction()){
                 case action_download_pause:
                     if (null != downloadTask){
                         downloadTask.pause();
@@ -330,7 +324,7 @@ public class DownloadService extends Service {
                     notificationManager.cancel(id);
                     stopSelf();
                     break;
-            }
+            }*/
         }
     }
 

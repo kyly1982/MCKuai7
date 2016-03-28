@@ -119,8 +119,8 @@ public class MainFragment_Cartoon extends BaseFragment implements RadioGroup.OnC
         mCartoonListView.setHasFixedSize(true);
         RecyclerView.LayoutManager manager = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
         mCartoonListView.setLayoutManager(manager);
-        mCartoonListView.setEmptyView(R.layout.emptyview);
-        mCartoonListView.enableLoadmore();
+        //mCartoonListView.setEmptyView(R.layout.emptyview);
+        //mCartoonListView.enableLoadmore();
         mCartoonListView.setDefaultOnRefreshListener(this);
         mCartoonListView.setOnLoadMoreListener(this);
         mCartoonListView.addOnScrollListener(new RecyclerView.OnScrollListener() {

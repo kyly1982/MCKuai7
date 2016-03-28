@@ -1,0 +1,42 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context="com.mckuai.imc.Fragment.ThemeFragment">
+
+   <android.support.v7.widget.AppCompatImageView
+       android:id="@+id/cartoon_hintimage"
+       android:layout_width="match_parent"
+       android:layout_height="135dp" />
+    <android.support.v7.widget.AppCompatTextView
+        android:id="@+id/hint"
+        android:layout_width="wrap_content"
+        android:layout_height="32dp"
+        android:layout_below="@id/cartoon_hintimage"
+        android:layout_centerHorizontal="true"
+        android:gravity="center"
+        android:text="Step 1 选择一个主题来PK"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:layout_below="@id/hint"
+        android:background="@color/colorBlack"
+        />
+
+
+    <com.malinskiy.superrecyclerview.SuperRecyclerView
+        android:id="@+id/themelist"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_alignParentBottom="true"
+        android:layout_below="@id/hint"
+        android:layout_marginTop="1px"
+        android:paddingTop="10dp"
+        app:layout_empty="@layout/emptyview"
+        >
+
+    </com.malinskiy.superrecyclerview.SuperRecyclerView>
+
+</RelativeLayout>

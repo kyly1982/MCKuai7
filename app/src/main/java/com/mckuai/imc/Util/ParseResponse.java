@@ -6,11 +6,14 @@ import com.mckuai.imc.R;
 
 import org.json.JSONObject;
 
+import okhttp3.Response;
+import okhttp3.ResponseBody;
+
 /**
  * Created by kyly on 2016/1/28.
  * 对接口返回的结果进行预处理
  */
-public class ParseResponseResult {
+public class ParseResponse {
     public static boolean isSuccess = false;
     public String pageBean = null;
     public static String msg = null;
@@ -19,20 +22,29 @@ public class ParseResponseResult {
      * 将JSONObject类型的返回数据解析成预处理后的类
      * 会检查JSONObject的长度
      * 如果长度低于10个字符，则认为是失败
+     *
      * @param context
      * @param response
      */
-    public ParseResponseResult(Context context,JSONObject response){
-        this(context,response,false);
+    public ParseResponse(Context context, JSONObject response) {
+        this(context, response, false);
+    }
+
+
+    public ParseResponse(Response response, boolean ignoreLength) {
+        if (checkState(response, ignoreLength)) {
+
+        }
     }
 
     /**
      * 将JSONObject类型的返回数据解析成预处理后的类
+     *
      * @param context
-     * @param response 返回的JSONObject
+     * @param response     返回的JSONObject
      * @param ignoreLength 是否检查返回的长度
      */
-    public ParseResponseResult(Context context,JSONObject response,boolean ignoreLength) {
+    public ParseResponse(Context context, JSONObject response, boolean ignoreLength) {
 
 
         if (ignoreLength) {
@@ -49,6 +61,7 @@ public class ParseResponseResult {
 
     }
 
+    @Deprecated
     public static boolean checkLength(Context context, JSONObject response, boolean ignoreLength) {
         if ((null == response && response.length() == 0) || (!ignoreLength && response.toString().length() < 10)) {
             isSuccess = false;
@@ -59,16 +72,41 @@ public class ParseResponseResult {
         }
     }
 
+    public static boolean checkState(Response response, boolean ignoreLength) {
+        if (null != response) {
+            if (response.isSuccessful()) {
+                if (null != response.body()) {
+                    if (ignoreLength) {
+                        return true;
+                    } else {
+                        if (response.body().contentLength() > 10) {
+                            return true;
+                        } else {
+                            msg = "返回数据长度不足！";
+                        }
+                    }
+                } else {
+                    msg = "返回数据为空！";
+                    return false;
+                }
+            }
+        } else {
+            msg ="返回数据为空!";
+        }
+        return false;
+    }
+
+
     public static boolean checkState(Context context, JSONObject response) {
-        if (response.has("state")){
+        if (response.has("state")) {
             try {
-                if (response.getString("state").equals("ok")){
+                if (response.getString("state").equals("ok")) {
                     isSuccess = true;
                     return true;
                 } else {
                     isSuccess = false;
                 }
-            } catch (Exception e){
+            } catch (Exception e) {
                 e.printStackTrace();
                 isSuccess = false;
                 msg = context.getString(R.string.error_serverreturn_unkonw);
@@ -78,7 +116,7 @@ public class ParseResponseResult {
         if (response.has("msg")) {
             try {
                 msg = response.getString("msg");
-            } catch (Exception e){
+            } catch (Exception e) {
                 e.printStackTrace();
                 msg = context.getString(R.string.error_serverfalse);
             }
@@ -89,20 +127,24 @@ public class ParseResponseResult {
         return false;
     }
 
-    private boolean setData(Context context,JSONObject response){
-        if (response.has("dataObject")){
+    private boolean setData(ResponseBody body) {
+        return true;
+    }
+
+    private boolean setData(Context context, JSONObject response) {
+        if (response.has("dataObject")) {
             try {
                 msg = response.getString("dataObject");
                 return true;
-            } catch (Exception e){
+            } catch (Exception e) {
                 e.printStackTrace();
             }
 
-        } else if (response.has("msg")){
+        } else if (response.has("msg")) {
             try {
                 msg = response.getString("msg");
                 return true;
-            }catch (Exception e){
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         }
@@ -110,12 +152,12 @@ public class ParseResponseResult {
     }
 
 
-    private boolean setPage(Context context,JSONObject response){
-        if (response.has("pageBean")){
+    private boolean setPage(Context context, JSONObject response) {
+        if (response.has("pageBean")) {
             try {
                 pageBean = response.getString("pageBean");
                 return true;
-            } catch (Exception e){
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         }

@@ -1,5 +1,6 @@
 package com.mckuai.imc.Util;
 
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.support.annotation.NonNull;
@@ -27,23 +28,33 @@ import com.mckuai.imc.Bean.MCUser;
 import com.mckuai.imc.Bean.Page;
 import com.mckuai.imc.Bean.Post;
 import com.mckuai.imc.Bean.PostListBean;
+import com.mckuai.imc.Bean.Theme;
 import com.mckuai.imc.Bean.User;
 import com.mckuai.imc.R;
+import com.umeng.socialize.utils.Log;
 
 import org.apache.http.Header;
 import org.json.JSONObject;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 
 /**
  * Created by kyly on 2016/1/22.
  */
 public class MCNetEngine {
     private AsyncHttpClient httpClient;
+    private OkHttpClient client;
     private Gson gson;
     private JsonCache cache;
     private String domainName = "http://api.mckuai.com/";
@@ -51,6 +62,7 @@ public class MCNetEngine {
     private MCKuai application;
 
     public MCNetEngine() {
+        client = new OkHttpClient();
         httpClient = new AsyncHttpClient();
         httpClient.setTimeout(10);
         cache = new JsonCache();
@@ -94,7 +106,7 @@ public class MCNetEngine {
         httpClient.get(url, params, new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-                ParseResponseResult result = new ParseResponseResult(context, response);
+                ParseResponse result = new ParseResponse(context, response);
                 if (result.isSuccess) {
                     MCUser userinfo = gson.fromJson(result.msg, MCUser.class);
                     if (null != userinfo && userinfo.getName().equals(user.getName())) {
@@ -141,7 +153,7 @@ public class MCNetEngine {
 
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-                ParseResponseResult result = new ParseResponseResult(context, response);
+                ParseResponse result = new ParseResponse(context, response);
                 if (result.isSuccess) {
                     ArrayList<ForumInfo> forums = gson.fromJson(result.msg, new TypeToken<ArrayList<ForumInfo>>() {
                     }.getType());
@@ -191,7 +203,7 @@ public class MCNetEngine {
 
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-                ParseResponseResult result = new ParseResponseResult(context, response);
+                ParseResponse result = new ParseResponse(context, response);
                 if (result.isSuccess) {
                     PostListBean bean = gson.fromJson(result.msg, PostListBean.class);
                     Page page = new Page(bean.getAllCount(), bean.getPage(), bean.getPageSize());
@@ -265,7 +277,7 @@ public class MCNetEngine {
         httpClient.post(url, params, new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-                ParseResponseResult result = new ParseResponseResult(context, response);
+                ParseResponse result = new ParseResponse(context, response);
                 if (result.isSuccess) {
                     listener.onImageUploadSuccess(result.msg);
                 } else {
@@ -300,7 +312,7 @@ public class MCNetEngine {
         httpClient.post(context, url, params, new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-                ParseResponseResult result = new ParseResponseResult(context, response);
+                ParseResponse result = new ParseResponse(context, response);
                 if (result.isSuccess) {
                     int id = Integer.valueOf(result.msg);
                     if (0 != id) {
@@ -349,7 +361,7 @@ public class MCNetEngine {
         httpClient.post(url, params, new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-                ParseResponseResult result = new ParseResponseResult(context, response);
+                ParseResponse result = new ParseResponse(context, response);
                 if (result.isSuccess) {
                     listener.onRewardCartoonSuccess();
                 } else {
@@ -383,7 +395,7 @@ public class MCNetEngine {
         httpClient.post(url, params, new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-                ParseResponseResult result = new ParseResponseResult(context, response);
+                ParseResponse result = new ParseResponse(context, response);
                 if (result.isSuccess) {
                     listener.onCommentCartoonSuccess();
                 } else {
@@ -417,7 +429,7 @@ public class MCNetEngine {
         httpClient.post(url, params, new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-                ParseResponseResult result = new ParseResponseResult(context, response);
+                ParseResponse result = new ParseResponse(context, response);
                 if (result.isSuccess) {
                     ArrayList<Cartoon> cartoons = gson.fromJson(result.msg, new TypeToken<ArrayList<Cartoon>>() {
                     }.getType());
@@ -452,7 +464,7 @@ public class MCNetEngine {
         httpClient.get(context, url, params, new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-                ParseResponseResult result = new ParseResponseResult(context, response);
+                ParseResponse result = new ParseResponse(context, response);
                 if (result.isSuccess) {
                     try {
                         Type type = new TypeToken<ArrayList<Cartoon>>() {
@@ -504,7 +516,7 @@ public class MCNetEngine {
 
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-                ParseResponseResult result = new ParseResponseResult(context, response);
+                ParseResponse result = new ParseResponse(context, response);
                 if (result.isSuccess) {
                     CartoonMessageList bean = gson.fromJson(result.msg, CartoonMessageList.class);
                     Page page = gson.fromJson(result.pageBean, Page.class);
@@ -555,7 +567,7 @@ public class MCNetEngine {
 
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-                ParseResponseResult result = new ParseResponseResult(context, response);
+                ParseResponse result = new ParseResponse(context, response);
                 if (result.isSuccess) {
                     CartoonMessageList bean = gson.fromJson(result.msg, CartoonMessageList.class);
                     Page page = gson.fromJson(result.pageBean, Page.class);
@@ -603,7 +615,7 @@ public class MCNetEngine {
 
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-                ParseResponseResult result = new ParseResponseResult(context, response);
+                ParseResponse result = new ParseResponse(context, response);
                 if (result.isSuccess) {
                     CartoonWorkList bean = gson.fromJson(result.msg, CartoonWorkList.class);
                     Page page = gson.fromJson(result.pageBean, Page.class);
@@ -655,7 +667,7 @@ public class MCNetEngine {
 
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-                ParseResponseResult result = new ParseResponseResult(context, response);
+                ParseResponse result = new ParseResponse(context, response);
                 if (result.isSuccess) {
                     CommunityMessageBean bean = gson.fromJson(result.msg, CommunityMessageBean.class);
                     if (null != bean && null != bean.getList() && null != bean.getUser()) {
@@ -707,7 +719,7 @@ public class MCNetEngine {
 
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-                ParseResponseResult result = new ParseResponseResult(context, response);
+                ParseResponse result = new ParseResponse(context, response);
                 if (result.isSuccess) {
                     CommunityDynamicBean bean = gson.fromJson(result.msg, CommunityDynamicBean.class);
                     if (null != bean && null != bean.getList() && null != bean.getUser()) {
@@ -761,7 +773,7 @@ public class MCNetEngine {
 
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-                ParseResponseResult result = new ParseResponseResult(context, response);
+                ParseResponse result = new ParseResponse(context, response);
                 if (result.isSuccess) {
                     CommunityWorkBean bean = gson.fromJson(result.msg, CommunityWorkBean.class);
                     if (null != bean && null != bean.getList() && null != bean.getUser()) {
@@ -802,7 +814,7 @@ public class MCNetEngine {
         httpClient.get(url, params, new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-                ParseResponseResult result = new ParseResponseResult(context, response);
+                ParseResponse result = new ParseResponse(context, response);
                 if (result.isSuccess) {
                     listener.onAddFriendSuccess();
                 } else {
@@ -844,7 +856,7 @@ public class MCNetEngine {
 
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-                ParseResponseResult result = new ParseResponseResult(context, response);
+                ParseResponse result = new ParseResponse(context, response);
                 if (result.isSuccess) {
                     FriendBean bean = gson.fromJson(result.msg, FriendBean.class);
                     if (null != bean) {
@@ -893,7 +905,7 @@ public class MCNetEngine {
         httpClient.post(url, params, new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-                ParseResponseResult result = new ParseResponseResult(context, response);
+                ParseResponse result = new ParseResponse(context, response);
                 if (result.isSuccess) {
                     listener.onUploadCoverSuccess(result.msg);
                 } else {
@@ -927,7 +939,7 @@ public class MCNetEngine {
         httpClient.post(url, params, new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-                ParseResponseResult result = new ParseResponseResult(context, response);
+                ParseResponse result = new ParseResponse(context, response);
                 if (result.isSuccess) {
                     listener.onUpdateUserCoverSuccess();
                 } else {
@@ -961,7 +973,7 @@ public class MCNetEngine {
         httpClient.post(url, params, new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-                ParseResponseResult result = new ParseResponseResult(context, response);
+                ParseResponse result = new ParseResponse(context, response);
                 if (result.isSuccess) {
                     listener.onUpdateUserNickSuccess();
                 } else {
@@ -994,7 +1006,7 @@ public class MCNetEngine {
         httpClient.post(url, params, new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-                ParseResponseResult result = new ParseResponseResult(context, response);
+                ParseResponse result = new ParseResponse(context, response);
                 if (result.isSuccess) {
                     listener.onUpdateAddressSuccess();
                 } else {
@@ -1046,7 +1058,7 @@ public class MCNetEngine {
 
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-                ParseResponseResult result = new ParseResponseResult(context, response);
+                ParseResponse result = new ParseResponse(context, response);
                 if (result.isSuccess) {
                     ArrayList<Cartoon> cartoons = gson.fromJson(result.msg, new TypeToken<ArrayList<Cartoon>>() {
                     }.getType());
@@ -1093,7 +1105,7 @@ public class MCNetEngine {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                 //super.onSuccess(statusCode, headers, response);
-                ParseResponseResult result = new ParseResponseResult(context, response);
+                ParseResponse result = new ParseResponse(context, response);
                 if (result.isSuccess) {
                     ArrayList<User> users = gson.fromJson(result.msg, new TypeToken<ArrayList<User>>() {
                     }.getType());
@@ -1131,7 +1143,7 @@ public class MCNetEngine {
         httpClient.get(url, params, new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-                ParseResponseResult result = new ParseResponseResult(context, response);
+                ParseResponse result = new ParseResponse(context, response);
                 if (result.isSuccess) {
                     Cartoon cartoon = gson.fromJson(result.msg, Cartoon.class);
                     if (null != cartoon && null != listener) {
@@ -1174,7 +1186,7 @@ public class MCNetEngine {
 
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-                ParseResponseResult result = new ParseResponseResult(context, response);
+                ParseResponse result = new ParseResponse(context, response);
                 if (result.isSuccess) {
                     MCUser user = gson.fromJson(result.msg, MCUser.class);
                     if (null != user) {
@@ -1212,7 +1224,7 @@ public class MCNetEngine {
         httpClient.get(url, params, new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-                ParseResponseResult result = new ParseResponseResult(context, response);
+                ParseResponse result = new ParseResponse(context, response);
                 if (result.isSuccess) {
                     listener.onIsFriendShip();
                 } else {
@@ -1241,7 +1253,7 @@ public class MCNetEngine {
         httpClient.get(url, new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-                ParseResponseResult result = new ParseResponseResult(context, response);
+                ParseResponse result = new ParseResponse(context, response);
                 if (result.isSuccess) {
                     Gson gson = new Gson();
                     Ad ad = gson.fromJson(result.msg, Ad.class);
@@ -1265,8 +1277,52 @@ public class MCNetEngine {
 
 
     /***************************************************************************
-     * 取漫画详细信息
+     * 获取主题列表
      ***************************************************************************/
+
+    public interface OnGetThemeListListener{
+        void onGetThemeListSuccess(ArrayList<Theme> themes);
+        void onGetThemeListFailure(String msg);
+    }
+
+    public void getThemeList(final Activity context,@NonNull final OnGetThemeListListener listener){
+        String url = "http://api.mckuai.com/interface.do?act=adv";
+        Request.Builder builder = new Request.Builder();
+        builder.url(url);
+        client.newCall(builder.build()).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                if (null != response) {
+                    final ParseResponse parseResponse = new ParseResponse(response, false);
+                    if (parseResponse.isSuccess) {
+                        String result = response.body().string();
+                        Log.d(result);
+                        context.runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                listener.onGetThemeListSuccess(new ArrayList<Theme>(0));
+                            }
+                        });
+
+                    } else {
+                        context.runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                listener.onGetThemeListFailure(parseResponse.msg);
+                            }
+                        });
+                    }
+                }
+            }
+        });
+
+
+    }
 
 
     private static InputStream Bitmap2IS(Bitmap bm) {

@@ -88,11 +88,11 @@ public class CreateCartoonFragment extends BaseFragment implements StepView_4.On
                 MobclickAgent.onEvent(getActivity(), "createCartoon_step3");
                 builderHint.setText(R.string.createcartoon_hint_step3);
                 break;
-            case 3:
+          /*  case 3:
                 MobclickAgent.onEvent(getActivity(), "createCartoon_step4");
                 cartoonBuilder.frozenBuilder(true);
                 builderHint.setText(R.string.createcartoon_hint_step4);
-                break;
+                break;*/
         }
     }
 
@@ -363,7 +363,7 @@ public class CreateCartoonFragment extends BaseFragment implements StepView_4.On
         }
     }
 
-    private Bitmap getCartoonBitmap() {
+    public Bitmap getCartoonBitmap() {
         cartoonBuilder.setDrawingCacheEnabled(true);
         cartoonBuilder.buildDrawingCache();
         return cartoonBuilder.getDrawingCache();

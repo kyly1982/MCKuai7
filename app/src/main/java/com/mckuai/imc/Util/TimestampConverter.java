@@ -12,6 +12,12 @@ public class TimestampConverter {
         return getTime(time);
     }
 
+    public static String getTime(Long time){
+        Date date = new Date(time);
+        SimpleDateFormat timeFormat = new SimpleDateFormat("yyyyMMdd_HHmmss");
+        return timeFormat.format(date);
+    }
+
     public static String toString(String timestamp) {
         SimpleDateFormat timeFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
         Date insertTime = null;
