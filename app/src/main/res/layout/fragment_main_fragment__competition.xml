@@ -76,7 +76,8 @@
             android:layout_above="@id/competition_center"
             android:layout_marginRight="41dp"
             android:layout_toRightOf="@id/theme"
-            android:padding="2dp">
+            android:padding="2dp"
+            android:background="@drawable/bg_competition">
 
             <android.support.v7.widget.AppCompatImageView
                 android:id="@+id/cartoon_top"
@@ -94,7 +95,8 @@
             android:layout_below="@id/competition_center"
             android:layout_marginRight="41dp"
             android:layout_toRightOf="@id/theme"
-            android:padding="2dp">
+            android:padding="2dp"
+            android:background="@drawable/bg_competition">
 
             <android.support.v7.widget.AppCompatImageView
                 android:id="@+id/cartoon_bottom"
