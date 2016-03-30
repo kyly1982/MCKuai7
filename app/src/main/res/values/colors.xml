@@ -52,4 +52,7 @@
     <!--退出窗口-->
     <color name="exitdialog_textcolor">#4D4D4D</color>
     <color name="exitdialog_defaultcolor">#E3E3E3</color>
+
+    <!--PK-->
+    <color name="competitionbackground">#6B5D4C</color>
 </resources>

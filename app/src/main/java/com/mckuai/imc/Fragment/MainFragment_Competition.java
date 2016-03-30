@@ -15,7 +15,7 @@ import com.mckuai.imc.R;
 import java.util.ArrayList;
 
 
-public class MainFragment_Competition extends BaseFragment implements View.OnClickListener {
+public class MainFragment_Competition extends BaseFragment {
     private View view;
     private AppCompatImageView cartoon_top,cartoon_bottom;
     private AppCompatImageView diamond,diamond_shandow;
@@ -46,7 +46,7 @@ public class MainFragment_Competition extends BaseFragment implements View.OnCli
     }
 
     private void initView(){
-        cartoon_top = (AppCompatImageView) view.findViewById(R.id.cartoon_top);
+/*        cartoon_top = (AppCompatImageView) view.findViewById(R.id.cartoon_top);
         cartoon_bottom = (AppCompatImageView) view.findViewById(R.id.cartoon_bottom);
         diamond = (AppCompatImageView) view.findViewById(R.id.diamond_middle);
         diamond_shandow = (AppCompatImageView) view.findViewById(R.id.diamond_middle_background);
@@ -58,7 +58,7 @@ public class MainFragment_Competition extends BaseFragment implements View.OnCli
         vote_bottom = (AppCompatImageButton) view.findViewById(R.id.vote_bottom);
 
         vote_top.setOnClickListener(this);
-        vote_bottom.setOnClickListener(this);
+        vote_bottom.setOnClickListener(this);*/
 
 
         //view.setView(diamond,diamond_shandow,cartoon_top,cartoon_bottom);
@@ -74,8 +74,4 @@ public class MainFragment_Competition extends BaseFragment implements View.OnCli
 
     }
 
-    @Override
-    public void onClick(View v) {
-
-    }
 }

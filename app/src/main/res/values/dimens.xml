@@ -59,4 +59,7 @@
 
     <!--标签-->
     <dimen name="createcartoon_lable_padding">5dp</dimen>
+
+    <!--PK-->
+    <dimen name="sidlewidth_competition">41dp</dimen>
 </resources>
