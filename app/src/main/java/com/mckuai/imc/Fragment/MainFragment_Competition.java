@@ -1,31 +1,29 @@
 package com.mckuai.imc.Fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.widget.AppCompatImageButton;
-import android.support.v7.widget.AppCompatImageView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 
+import com.mckuai.imc.Activity.UserCenterActivity;
 import com.mckuai.imc.Base.BaseFragment;
+import com.mckuai.imc.Base.MCKuai;
 import com.mckuai.imc.Bean.Cartoon;
+import com.mckuai.imc.Bean.Page;
+import com.mckuai.imc.Bean.User;
 import com.mckuai.imc.R;
+import com.mckuai.imc.Util.MCNetEngine;
+import com.mckuai.imc.Widget.CompetitionLayout;
 
 import java.util.ArrayList;
 
 
-public class MainFragment_Competition extends BaseFragment {
+public class MainFragment_Competition extends BaseFragment implements CompetitionLayout.OnActionListener,MCNetEngine.OnLoadCartoonListResponseListener {
     private View view;
-    private AppCompatImageView cartoon_top,cartoon_bottom;
-    private AppCompatImageView diamond,diamond_shandow;
-    private AppCompatImageView diamon_top,diamon_bottom;
-    private LinearLayout root_top,root_bottom;
-    private AppCompatImageButton vote_top,vote_bottom;
+    private CompetitionLayout competitionLayout;
 
-    private ArrayList<Cartoon> cartoons;
-    private int margin_H,margin_V;
-    private int width;
+    private Page page;
 
 
     public MainFragment_Competition() {
@@ -45,33 +43,60 @@ public class MainFragment_Competition extends BaseFragment {
         return view;
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (null == page){
+            loadData();
+        }
+    }
+
     private void initView(){
-/*        cartoon_top = (AppCompatImageView) view.findViewById(R.id.cartoon_top);
-        cartoon_bottom = (AppCompatImageView) view.findViewById(R.id.cartoon_bottom);
-        diamond = (AppCompatImageView) view.findViewById(R.id.diamond_middle);
-        diamond_shandow = (AppCompatImageView) view.findViewById(R.id.diamond_middle_background);
-        diamon_top = (AppCompatImageView) view.findViewById(R.id.diamond_top);
-        diamon_bottom = (AppCompatImageView) view.findViewById(R.id.diamond_bottom);
-        root_top = (LinearLayout) view.findViewById(R.id.root_top);
-        root_bottom = (LinearLayout) view.findViewById(R.id.root_bottom);
-        vote_top = (AppCompatImageButton) view.findViewById(R.id.vote_top);
-        vote_bottom = (AppCompatImageButton) view.findViewById(R.id.vote_bottom);
-
-        vote_top.setOnClickListener(this);
-        vote_bottom.setOnClickListener(this);*/
-
-
-        //view.setView(diamond,diamond_shandow,cartoon_top,cartoon_bottom);
-
+        competitionLayout = (CompetitionLayout) view.findViewById(R.id.competition);
+        competitionLayout.setActionListener(this);
     }
 
 
     private void loadData(){
+        if (null == page){
+            page= new Page();
+        }
+        MCKuai.instence.netEngine.loadCartoonList(getActivity(),"",page,this);
+    }
+
+
+    @Override
+    public void EOF() {
+        loadData();
+    }
+
+    @Override
+    public void onShowDetile(Cartoon cartoon) {
 
     }
 
-    private void showData(){
+    @Override
+    public void onVote(Cartoon cartoon) {
+        showMessage("投票"+cartoon.getContent(),null,null);
+    }
+
+    @Override
+    public void onShowUser(User user) {
+        Intent intent = new Intent(getActivity(), UserCenterActivity.class);
+        Bundle bundle = new Bundle();
+        bundle.putSerializable(getString(R.string.cartoondetail_tag_cartoon),user);
+        intent.putExtras(bundle);
+        getActivity().startActivity(intent);
+    }
+
+    @Override
+    public void onLoadCartoonListFailure(String msg) {
 
     }
 
+    @Override
+    public void onLoadCartoonListSuccess(ArrayList<Cartoon> cartoons, Page page) {
+        this.page = page;
+        competitionLayout.setData(cartoons);
+    }
 }
