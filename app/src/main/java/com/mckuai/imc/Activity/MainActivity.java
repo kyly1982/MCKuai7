@@ -16,6 +16,7 @@ import android.widget.RelativeLayout;
 
 import com.mckuai.imc.Base.BaseActivity;
 import com.mckuai.imc.Base.BaseFragment;
+import com.mckuai.imc.Base.MCKuai;
 import com.mckuai.imc.Bean.Ad;
 import com.mckuai.imc.Bean.User;
 import com.mckuai.imc.Fragment.MainFragment_Cartoon;
@@ -26,6 +27,7 @@ import com.mckuai.imc.Fragment.MainFragment_Mine;
 import com.mckuai.imc.R;
 import com.mckuai.imc.Util.MCNetEngine;
 import com.mckuai.imc.Widget.ExitDialog;
+import com.mckuai.imc.Widget.LeaderDialog;
 import com.umeng.analytics.MobclickAgent;
 import com.umeng.message.PushAgent;
 import com.umeng.socialize.utils.Log;
@@ -77,6 +79,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
     protected void onResume() {
         super.onResume();
         mFragmentManager.beginTransaction().show(fragments.get(currentFragmentIndex)).commit();
+
         if (!isCheckUpgread) {
             checkUpgrade(true);
             isCheckUpgread = true;
@@ -86,6 +89,11 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         }
         if (null == ad) {
             mApplication.netEngine.getAd(this, this);
+        }
+
+        if ((MCKuai.instence.leadTag & 1) == 0){
+            LeaderDialog dialog = new LeaderDialog();
+            dialog.show(getFragmentManager(), "DIALOG");
         }
     }
 

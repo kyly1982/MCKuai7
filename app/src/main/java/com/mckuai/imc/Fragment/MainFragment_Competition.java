@@ -46,6 +46,7 @@ public class MainFragment_Competition extends BaseFragment implements Competitio
     @Override
     public void onResume() {
         super.onResume();
+
         if (null == page){
             loadData();
         }

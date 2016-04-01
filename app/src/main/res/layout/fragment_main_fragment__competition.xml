@@ -92,10 +92,10 @@
 
                 <android.support.v7.widget.AppCompatImageView
                     android:id="@+id/cartoon_top"
-                    android:clickable="true"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:src="@android:drawable/ic_menu_share"  />
+                    android:scaleType="fitXY"
+                    android:clickable="true"  />
 
             </LinearLayout>
 
@@ -113,10 +113,10 @@
 
                 <android.support.v7.widget.AppCompatImageView
                     android:id="@+id/cartoon_bottom"
-                    android:clickable="true"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:src="@android:drawable/ic_menu_share" >
+                    android:clickable="true"
+                    android:scaleType="fitXY">
 
                 </android.support.v7.widget.AppCompatImageView>
             </LinearLayout>

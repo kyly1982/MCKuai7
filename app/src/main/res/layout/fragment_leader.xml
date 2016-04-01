@@ -1,6 +1,90 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@mipmap/bg_leadlayout"
+    android:clickable="true">
 
-</FrameLayout>
+
+    <View
+        android:id="@+id/center"
+        android:layout_width="@dimen/competition_centerdivier_width_big"
+        android:layout_height="@dimen/competition_centerdivier_width_big"
+        android:layout_centerInParent="true" />
+
+    <android.support.v7.widget.AppCompatImageView
+        android:id="@+id/lead_top"
+        android:layout_width="@dimen/competition_imagewidth_middle"
+        android:layout_height="@dimen/competition_imagewidth_middle"
+        android:scaleType="fitXY"
+        android:layout_centerHorizontal="true"
+        android:layout_above="@id/center"
+        android:src="@mipmap/newbird_white"/>
+
+    <android.support.v7.widget.AppCompatImageView
+        android:id="@+id/lead_bottom"
+        android:layout_width="@dimen/competition_imagewidth_middle"
+        android:layout_height="@dimen/competition_imagewidth_middle"
+        android:scaleType="fitXY"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/center"
+        android:src="@mipmap/newbird_white"/>
+    
+    <android.support.v7.widget.AppCompatImageView
+        android:layout_width="@dimen/sidlewidth_competition"
+        android:layout_height="@dimen/sidlewidth_competition"
+        android:layout_centerInParent="true"
+        android:background="@mipmap/ic_diamond_big_normal"/>
+
+    <android.support.v7.widget.AppCompatImageView
+        android:id="@+id/lead_center"
+        android:layout_width="@dimen/sidlewidth_competition"
+        android:layout_height="@dimen/sidlewidth_competition"
+        android:layout_centerInParent="true"
+        android:background="@mipmap/ic_diamond_big_activited" />
+
+    <android.support.v7.widget.AppCompatImageView
+        android:id="@+id/lead_finger"
+        android:layout_width="135dp"
+        android:layout_height="185dp"
+        android:layout_centerInParent="true"
+        android:background="@mipmap/flip_up"
+        android:visibility="gone"/>
+
+
+    <android.support.v7.widget.AppCompatTextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="20dp"
+        android:gravity="center"
+        android:layout_centerHorizontal="true"
+        android:textColor="@color/textColorPrimary_Light"
+        android:textSize="@dimen/font_title"
+        android:text="新手引导"/>
+
+    <android.support.v7.widget.AppCompatTextView
+        android:id="@+id/lead_hint_bottom"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="20dp"
+        android:visibility="invisible"
+        android:textColor="@color/textColorPrimary"
+        android:layout_centerHorizontal="true"
+        android:text="(或点击该作品旁边的红石按钮)"
+        />
+
+    <android.support.v7.widget.AppCompatTextView
+        android:id="@+id/lead_hint_top"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="20dp"
+        android:layout_centerHorizontal="true"
+        android:layout_above="@id/lead_hint_bottom"
+        android:textColor="@color/textColorPrimary_Light"
+        android:textSize="@dimen/font_accent"
+        android:text="上下两个作品PK"
+        />
+
+</RelativeLayout>

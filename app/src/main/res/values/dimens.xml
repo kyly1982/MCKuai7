@@ -63,5 +63,7 @@
     <!--PK-->
     <dimen name="sidlewidth_competition">41dp</dimen>
     <dimen name="competition_imagewidth">240dp</dimen>
+    <dimen name="competition_imagewidth_middle">157dp</dimen>
     <dimen name="competition_centerdivier_width">4dp</dimen>
+    <dimen name="competition_centerdivier_width_big">10dp</dimen>
 </resources>

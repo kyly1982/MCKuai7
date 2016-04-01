@@ -57,6 +57,7 @@
     <string name="preferences_wa_uploadcount">WA_UPLOADCOUNT</string>
     <string name="preferences_wa_scorerank">WA_SCORERANK</string>
     <string name="preferences_wa_ranking">WA_RANKING</string>
+    <string name="preferences_leadtag">LEAD_TAG</string>
 
     <!--错误提示-->
     <string name="error_pretreatmentres_ponsefalse">预解析失败，原因:%1$s</string>

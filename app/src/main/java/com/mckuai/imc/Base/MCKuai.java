@@ -55,6 +55,7 @@ public class MCKuai extends Application {
     public boolean isIMInited = false;
     private int imLoginTryCount = 0;
     public boolean isIMLogined = false;
+    public long leadTag;
 
     public interface IMLoginListener {
         void onInitError();
@@ -177,6 +178,7 @@ public class MCKuai extends Application {
     public MCUser readPreference() {
         SharedPreferences preferences = getSharedPreferences(getString(R.string.preferences_filename), 0);
         isFirstBoot = preferences.getBoolean(getString(R.string.preferences_isFirstBoot), true);
+        leadTag = preferences.getLong(getString(R.string.preferences_leadtag),0);
         if (!isFirstBoot) {
             Token token = new Token();
             token.setBirthday(preferences.getLong(getString(R.string.preferences_tokentime), 0));
@@ -346,5 +348,9 @@ public class MCKuai extends Application {
             InputMethodManager methodManager = (InputMethodManager) view.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
             methodManager.hideSoftInputFromWindow(view.getWindowToken(), 0);
         }
+    }
+
+    public void setLeadTag(long tag){
+        leadTag = leadTag | tag;
     }
 }

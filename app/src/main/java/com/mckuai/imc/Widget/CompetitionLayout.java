@@ -3,18 +3,15 @@ package com.mckuai.imc.Widget;
 import android.content.Context;
 import android.graphics.Point;
 import android.support.v4.widget.ViewDragHelper;
-import android.support.v7.widget.AppCompatImageButton;
 import android.support.v7.widget.AppCompatImageView;
 import android.support.v7.widget.AppCompatTextView;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
-import com.mckuai.imc.Base.MCKuai;
 import com.mckuai.imc.Bean.Cartoon;
 import com.mckuai.imc.Bean.User;
 import com.mckuai.imc.R;
@@ -308,7 +305,7 @@ public class CompetitionLayout extends RelativeLayout implements View.OnClickLis
     }
 
     private void showVoteUser(LinearLayout root,ArrayList<User> users){
-        if (null != root && null != users && !users.isEmpty()){
+       /* if (null != root && null != users && !users.isEmpty()){
             if (null == loader){
                 loader = ImageLoader.getInstance();
             }
@@ -339,7 +336,7 @@ public class CompetitionLayout extends RelativeLayout implements View.OnClickLis
                 loader.displayImage(user.getHeadImage(),imageView, MCKuai.instence.getCircleOptions());
                 root.addView(imageView, 0);
             }
-        }
+        }*/
     }
 
     private LinearLayout.LayoutParams getImageLayoutParsms(){
@@ -395,9 +392,9 @@ public class CompetitionLayout extends RelativeLayout implements View.OnClickLis
 
     private int getViewAlpha(){
         if (distanceY < offset){
-            return (int) (255* distanceY / offset);
+            return 255* distanceY / offset;
         }
-        return (int)255;
+        return 255;
     }
 
     private String getThemeName(String name){
