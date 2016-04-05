@@ -19,7 +19,6 @@ import com.mckuai.imc.Base.BaseFragment;
 import com.mckuai.imc.Base.MCKuai;
 import com.mckuai.imc.Bean.Ad;
 import com.mckuai.imc.Bean.User;
-import com.mckuai.imc.Fragment.MainFragment_Cartoon;
 import com.mckuai.imc.Fragment.MainFragment_Chat;
 import com.mckuai.imc.Fragment.MainFragment_Community;
 import com.mckuai.imc.Fragment.MainFragment_Competition;
@@ -28,6 +27,7 @@ import com.mckuai.imc.R;
 import com.mckuai.imc.Util.MCNetEngine;
 import com.mckuai.imc.Widget.ExitDialog;
 import com.mckuai.imc.Widget.LeaderDialog;
+import com.readystatesoftware.viewbadger.BadgeView;
 import com.umeng.analytics.MobclickAgent;
 import com.umeng.message.PushAgent;
 import com.umeng.socialize.utils.Log;
@@ -37,14 +37,23 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 
 import io.rong.imkit.RongIM;
+import io.rong.imlib.RongIMClient;
+import io.rong.imlib.model.Message;
 import io.rong.imlib.model.UserInfo;
 
-public class MainActivity extends BaseActivity implements View.OnClickListener, RadioGroup.OnCheckedChangeListener, BaseFragment.OnFragmentEventListener, RongIM.UserInfoProvider, MCNetEngine.OnGetAdResponse {
+public class MainActivity extends BaseActivity implements View.OnClickListener
+        , RadioGroup.OnCheckedChangeListener
+        , BaseFragment.OnFragmentEventListener
+        , RongIM.UserInfoProvider
+        , MCNetEngine.OnGetAdResponse
+        , RongIMClient.OnReceiveMessageListener {
     private RadioGroup nav;
     private RelativeLayout content;
     private AppCompatTextView title;
-    private RadioGroup cartoonType;
-    private AppCompatRadioButton mNewType;
+    private BadgeView badgeView; //脚标
+    //private RadioGroup cartoonType;
+    //private AppCompatRadioButton mNewType;
+    private AppCompatRadioButton chat;
 
 
     private boolean isCheckUpgread = false;
@@ -91,34 +100,33 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
             mApplication.netEngine.getAd(this, this);
         }
 
-        if ((MCKuai.instence.leadTag & 1) == 0){
+        if ((MCKuai.instence.leadTag & 1) == 0) {
             LeaderDialog dialog = new LeaderDialog();
             dialog.show(getFragmentManager(), "DIALOG");
         }
+
     }
 
     private void initView() {
         nav = (RadioGroup) findViewById(R.id.nav);
         title = (AppCompatTextView) findViewById(R.id.actionbar_title);
-        cartoonType = (RadioGroup) findViewById(R.id.actionbar_cartoon_rg);
-        mNewType = (AppCompatRadioButton) findViewById(R.id.cartoon_type_new);
+        chat = (AppCompatRadioButton) findViewById(R.id.nav_chat);
+        nav.setVisibility(View.VISIBLE);
 
         findViewById(R.id.nav_create).setOnClickListener(this);
-        cartoonType.setVisibility(View.VISIBLE);
-        nav.setVisibility(View.VISIBLE);
         nav.setOnCheckedChangeListener(this);
-        cartoonType.setOnCheckedChangeListener(this);
+        title.setText("暴力PK");
     }
 
     private void initFragment() {
         if (null == fragments) {
-            MainFragment_Cartoon cartoonFragment = new MainFragment_Cartoon();
+            //MainFragment_Cartoon cartoonFragment = new MainFragment_Cartoon();
             MainFragment_Chat chatFragment = new MainFragment_Chat();
             MainFragment_Community communityFragment = new MainFragment_Community();
             MainFragment_Mine mineFragment = new MainFragment_Mine();
             MainFragment_Competition competition = new MainFragment_Competition();
 
-            cartoonFragment.setFragmentEventListener(this);
+            //cartoonFragment.setFragmentEventListener(this);
 
             fragments = new ArrayList<>(4);
             //fragments.add(cartoonFragment);
@@ -146,9 +154,30 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
     private void initIMListener() {
         if (RongIM.getInstance() != null && RongIM.getInstance().getRongIMClient() != null) {
             RongIM.setUserInfoProvider(this, true);
+            RongIM.setOnReceiveMessageListener(this);
             isIMListenerInit = true;
         }
     }
+
+    private void checkUnReadMsg() {
+        if (RongIM.getInstance() != null && RongIM.getInstance().getRongIMClient() != null && RongIM.getInstance().getRongIMClient().getCurrentConnectionStatus() == RongIMClient.ConnectionStatusListener.ConnectionStatus.CONNECTED) {
+            switch (RongIM.getInstance().getRongIMClient().getTotalUnreadCount()) {
+                case 0:
+                    if (null != badgeView) {
+                        badgeView.hide();
+                    }
+                    break;
+                default:
+                    if (null == badgeView) {
+                        badgeView = new BadgeView(this, chat);
+                    }
+                    badgeView.setText(RongIM.getInstance().getRongIMClient().getTotalUnreadCount() + "");
+                    badgeView.show();
+                    break;
+            }
+        }
+    }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -161,7 +190,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         if (!isSlidingMenuShow) {
             ExitDialog exitDialog = new ExitDialog();
             MobclickAgent.onEvent(this, "showExitDialog");
-            exitDialog.setData(isDownloaded == true ? null:ad, new ExitDialog.OnClickListener() {
+            exitDialog.setData(isDownloaded == true ? null : ad, new ExitDialog.OnClickListener() {
                 @Override
                 public void onCanclePressed() {
                     MobclickAgent.onEvent(MainActivity.this, "ExitDialog_Cancle");
@@ -179,7 +208,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
                 public void onDownloadPressed() {
                     MobclickAgent.onEvent(MainActivity.this, "ExitDialog_Download");
                     MobclickAgent.onKillProcess(MainActivity.this);
-                    //download(ad);
                     isDownloaded = true;
                     mApplication.handleExit();
                     System.exit(0);
@@ -188,7 +216,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
                 @Override
                 public void onPicturePressed() {
                     isDownloaded = true;
-                    //download(ad);
                     MobclickAgent.onEvent(MainActivity.this, "ExitDialog_Picture");
                 }
             });
@@ -199,14 +226,13 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         }
     }
 
-    private String getDownloadPath(){
+    private String getDownloadPath() {
         File file = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
         if (!file.exists()) {
             file.mkdirs();
         }
         return file.getPath();
     }
-
 
 
     @Override
@@ -239,56 +265,38 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
 
     @Override
     public void onCheckedChanged(RadioGroup group, int checkedId) {
-        switch (checkedId) {
 
-            case R.id.cartoon_type_hot:
-                if (null != fragments) {
-                    ((MainFragment_Cartoon) fragments.get(0)).setType(1);
-                }
-                break;
-            case R.id.cartoon_type_new:
-                if (null != fragments) {
-                    ((MainFragment_Cartoon) fragments.get(0)).setType(0);
-                }
-                break;
-            default:
-                if (null != fragments && !fragments.isEmpty()) {
-                    FragmentTransaction transaction = mFragmentManager.beginTransaction();
-                    if (0 <= currentFragmentIndex) {
-                        transaction.hide(fragments.get(currentFragmentIndex));
-                    }
-                    switch (checkedId) {
-                        case R.id.nav_cartoon:
-                            MobclickAgent.onEvent(this, "clickCartoon");
-                            cartoonType.setVisibility(View.VISIBLE);
-                            title.setVisibility(View.GONE);
-                            currentFragmentIndex = 0;
-                            break;
-                        case R.id.nav_chat:
-                            MobclickAgent.onEvent(this, "clickChat");
-                            cartoonType.setVisibility(View.GONE);
-                            title.setVisibility(View.VISIBLE);
-                            title.setText("聊天");
-                            currentFragmentIndex = 1;
-                            break;
-                        case R.id.nav_community:
-                            MobclickAgent.onEvent(this, "clickForum");
-                            cartoonType.setVisibility(View.GONE);
-                            title.setVisibility(View.VISIBLE);
-                            title.setText("社区");
-                            currentFragmentIndex = 2;
-                            break;
-                        case R.id.nav_mine:
-                            MobclickAgent.onEvent(this, "clickMine");
-                            cartoonType.setVisibility(View.GONE);
-                            title.setVisibility(View.VISIBLE);
-                            title.setText("我的");
-                            currentFragmentIndex = 3;
-                            break;
-                    }
-                    transaction.show(fragments.get(currentFragmentIndex)).commit();
-                }
-                break;
+        if (null != fragments && !fragments.isEmpty()) {
+            FragmentTransaction transaction = mFragmentManager.beginTransaction();
+            if (0 <= currentFragmentIndex) {
+                transaction.hide(fragments.get(currentFragmentIndex));
+            }
+            switch (checkedId) {
+                case R.id.nav_cartoon:
+                    MobclickAgent.onEvent(this, "clickCartoon");
+                    title.setVisibility(View.GONE);
+                    currentFragmentIndex = 0;
+                    break;
+                case R.id.nav_chat:
+                    MobclickAgent.onEvent(this, "clickChat");
+                    title.setVisibility(View.VISIBLE);
+                    title.setText("聊天");
+                    currentFragmentIndex = 1;
+                    break;
+                case R.id.nav_community:
+                    MobclickAgent.onEvent(this, "clickForum");
+                    title.setVisibility(View.VISIBLE);
+                    title.setText("社区");
+                    currentFragmentIndex = 2;
+                    break;
+                case R.id.nav_mine:
+                    MobclickAgent.onEvent(this, "clickMine");
+                    title.setVisibility(View.VISIBLE);
+                    title.setText("我的");
+                    currentFragmentIndex = 3;
+                    break;
+            }
+            transaction.show(fragments.get(currentFragmentIndex)).commit();
         }
     }
 
@@ -300,7 +308,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         }*/
         switch (titleResId) {
             case R.string.fragment_cartoon:
-                mNewType.setChecked(true);
+                //mNewType.setChecked(true);
                 break;
             case R.string.fragment_chat:
                 break;
@@ -323,6 +331,12 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
             case R.string.fragment_mine:
                 break;
         }
+    }
+
+    @Override
+    public boolean onReceived(Message message, int i) {
+        checkUnReadMsg();
+        return false;
     }
 
     @Override

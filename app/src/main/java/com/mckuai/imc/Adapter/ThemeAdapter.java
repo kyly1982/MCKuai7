@@ -7,7 +7,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.mckuai.imc.Bean.Theme;
 import com.mckuai.imc.R;
 
 import java.util.ArrayList;
@@ -17,7 +16,7 @@ import java.util.ArrayList;
  */
 public class ThemeAdapter extends RecyclerView.Adapter<ThemeAdapter.ViewHolder>{
     private Context context;
-    private ArrayList<Theme> themes;
+    private ArrayList<String> themes;
     private OnItemClickListener listener;
 
     public ThemeAdapter(Context context, OnItemClickListener listener) {
@@ -26,10 +25,10 @@ public class ThemeAdapter extends RecyclerView.Adapter<ThemeAdapter.ViewHolder>{
     }
 
     public interface OnItemClickListener{
-        void onItemClicked(Theme theme);
+        void onItemClicked(String theme);
     }
 
-    public void setData(ArrayList<Theme> themes,boolean isRefresh){
+    public void setData(ArrayList<String> themes,boolean isRefresh){
         if (isRefresh){
             this.themes = themes;
             notifyDataSetChanged();
@@ -54,8 +53,8 @@ public class ThemeAdapter extends RecyclerView.Adapter<ThemeAdapter.ViewHolder>{
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         if (null != themes && -1 < position && position < themes.size()){
-            final Theme theme = themes.get(position);
-            holder.name.setText(theme.getName());
+            final String theme = themes.get(position);
+            holder.name.setText(theme);
             if (null != listener) {
                 holder.itemView.setOnClickListener(new View.OnClickListener() {
                     @Override

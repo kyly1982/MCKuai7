@@ -95,4 +95,5 @@ dependencies {
     //compile 'com.marshalchen.ultimaterecyclerview:library:0.4.0'
     compile 'com.hkm.slidingmenulib:libmenu:0.4.8'
     compile 'com.zhy:okhttputils:2.3.8'
+    compile files('libs/android-viewbadger.jar')
 }

@@ -2,6 +2,7 @@ package com.mckuai.imc.Adapter;
 
 import android.content.Context;
 import android.support.v7.widget.AppCompatImageView;
+import android.support.v7.widget.AppCompatTextView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -78,6 +79,11 @@ public class CartoonWorkAdapter extends RecyclerView.Adapter<CartoonWorkAdapter.
             final Cartoon cartoon = cartoons.get(position);
             if (null != cartoon && null != cartoon.getImage()) {
                 loader.displayImage(cartoon.getImage(), holder.cover);
+                if (cartoon.getWinPk() > 0){
+                    holder.pkcount.setText(cartoon.getWinPk()+"");
+                } else {
+                    holder.pkcount.setText("还没有PK过");
+                }
             }
             if (null != listener) {
                 holder.cover.setOnClickListener(new View.OnClickListener() {
@@ -98,10 +104,14 @@ public class CartoonWorkAdapter extends RecyclerView.Adapter<CartoonWorkAdapter.
 
     public static class ViewHolder extends RecyclerView.ViewHolder{
         public AppCompatImageView cover;
+        public AppCompatTextView pkcount;
+
+
 
         public ViewHolder(View itemView) {
             super(itemView);
             cover = (AppCompatImageView) itemView.findViewById(R.id.cartooncover);
+            pkcount = (AppCompatTextView) itemView.findViewById(R.id.pkcount);
         }
     }
 }

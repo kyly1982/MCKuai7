@@ -13,7 +13,6 @@ import android.view.Window;
 
 import com.mckuai.imc.Base.BaseActivity;
 import com.mckuai.imc.Base.BaseFragment;
-import com.mckuai.imc.Bean.Theme;
 import com.mckuai.imc.Fragment.CreateCartoonFragment;
 import com.mckuai.imc.Fragment.ThemeFragment;
 import com.mckuai.imc.R;
@@ -37,6 +36,7 @@ public class CreateCartoonActivity extends BaseActivity
     private boolean isBackgroundSet = false;
     private boolean isWidgetSet = false;
     public AppCompatTextView title;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -209,7 +209,8 @@ public class CreateCartoonActivity extends BaseActivity
     }
 
     @Override
-    public void onThemeSelected(Theme theme) {
+    public void onThemeSelected(String theme) {
+        createFragment.setTheme(theme);
         setContentFragment(R.id.context, createFragment);
     }
 }

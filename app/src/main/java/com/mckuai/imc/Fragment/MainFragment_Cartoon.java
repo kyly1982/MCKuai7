@@ -148,14 +148,7 @@ public class MainFragment_Cartoon extends BaseFragment implements RadioGroup.OnC
     }
 
     private void loadData() {
-        switch (typeIndex) {
-            case 0:
-                mApplication.netEngine.loadCartoonList(getActivity(), mCartoonType[typeIndex], pageNew, this);
-                break;
-            case 1:
-                mApplication.netEngine.loadCartoonList(getActivity(), mCartoonType[typeIndex], pageHot, this);
-                break;
-        }
+        mApplication.netEngine.loadCartoonList(getActivity(), pageNew, this);
     }
 
     private void showData() {

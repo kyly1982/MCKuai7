@@ -12,5 +12,23 @@
         android:scaleType="fitXY"
         android:clickable="true"
         />
+    <RelativeLayout
+        android:id="@+id/pkroot"
+        android:layout_width="match_parent"
+        android:layout_height="25dp"
+        android:layout_alignParentBottom="true"
+        android:background="@color/colorBlack_1">
+        <android.support.v7.widget.AppCompatTextView
+            android:id="@+id/pkcount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_centerInParent="true"
+            android:drawableLeft="@mipmap/ic_diamond_small_activityed"
+            android:textColor="@color/textColorPrimary_Light"
+            android:text="123456"
+            />
+    </RelativeLayout>
+
 
 </RelativeLayout>

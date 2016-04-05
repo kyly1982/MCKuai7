@@ -62,7 +62,7 @@ public class MainFragment_Competition extends BaseFragment implements Competitio
         if (null == page){
             page= new Page();
         }
-        MCKuai.instence.netEngine.loadCartoonList(getActivity(),"",page,this);
+        MCKuai.instence.netEngine.loadCartoonList(getActivity(),page,this);
     }
 
 

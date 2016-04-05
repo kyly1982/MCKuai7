@@ -57,7 +57,8 @@ public class MCNetEngine {
     private OkHttpClient client;
     private Gson gson;
     private JsonCache cache;
-    private String domainName = "http://api.mckuai.com/";
+    private final String domainName = "http://api.mckuai.com/";
+    private final String domainName_Test = "http://192.168.10.66/";
     private MCDaoHelper daoHelper;
     private MCKuai application;
 
@@ -304,11 +305,13 @@ public class MCNetEngine {
     }
 
     public void uploadCartoon(final Context context, Cartoon cartoon, final OnUploadCartoonResponseListener listener) {
-        String url = domainName + context.getString(R.string.interface_uploadcartoon);
+        String url = domainName_Test + context.getString(R.string.interface_uploadcartoon_withtheme);
         RequestParams params = new RequestParams();
         params.put("userId", cartoon.getOwner().getId());
-        params.put("title", cartoon.getContent());
+        //params.put("title", cartoon.getContent());
         params.put("imageUrl", cartoon.getImage());
+        //添加主题
+        params.put("kinds",cartoon.getKindsEx());
         httpClient.post(context, url, params, new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
@@ -346,15 +349,18 @@ public class MCNetEngine {
      * 打赏
      *
      * @param context
-     * @param isCartoon 如果是打赏动漫，则设置为true,否则设置为false
+     * @param isCartoon 如果是打赏漫画，则设置为true,否则设置为false
      * @param targetId  要打赏的目标的id
      * @param listener  打赏响应监听
      */
     public void rewardCartoon(final Context context, boolean isCartoon, int targetId, final OnRewardCartoonResponseListener listener) {
-        String url = domainName + context.getString(R.string.interface_reward);
+        String url;
         RequestParams params = new RequestParams();
         if (isCartoon) {
             params.put("type", "cartoon");
+            url = domainName + context.getString(R.string.interface_reward_new);
+        } else {
+            url = domainName + context.getString(R.string.interface_reward);
         }
         params.put("userId", MCKuai.instence.user.getId());
         params.put("talkId", targetId);
@@ -456,11 +462,10 @@ public class MCNetEngine {
         void onLoadCartoonListFailure(String msg);
     }
 
-    public void loadCartoonList(final Context context, String cartoonType, Page page, final OnLoadCartoonListResponseListener listener) {
-        String url = domainName + context.getString(R.string.interface_loadcartoonlist);
+    public void loadCartoonList(final Context context, Page page, final OnLoadCartoonListResponseListener listener) {
+        String url = domainName_Test + context.getString(R.string.interface_loadcartoonlist_new);
         RequestParams params = new RequestParams();
         params.put("page", page.getNextPage());
-        params.put("type", cartoonType);
         httpClient.get(context, url, params, new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {

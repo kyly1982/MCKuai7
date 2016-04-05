@@ -99,6 +99,7 @@
     <string name="interface_showPost">interface.do?act=talkOne</string>
     <!-- 打赏 -->
     <string name="interface_reward">interface.do?act=daShang</string>
+    <string name="interface_reward_new">interface.do?act=like</string>
     <!-- 收藏帖子interface.do?act=toCollect&userId=&talkId= // -->
     <string name="interface_collectpost">interface.do?act=toCollect</string>
     <!-- 收藏的帖子接口，参数：id=userid,page=页数 -->
@@ -139,10 +140,12 @@
     <string name="interface_quickreply">interface.do?act=addReplyByCenter</string>
     <!--上传动漫-->
     <string name="interface_uploadcartoon">interface.do?act=uploadCartoon</string>
+    <string name="interface_uploadcartoon_withtheme">interface.do?act=uploadCartoonNew</string>
     <!--消息推荐-->
     <string name="interface_pushcartoon">interface.do?act=cartoonRec</string>
     <!--首页动漫列表-->
     <string name="interface_loadcartoonlist">interface.do?act=cartoonList</string>
+    <string name="interface_loadcartoonlist_new">interface.do?act=cartoonListNew</string>
     <!--我的动漫作品-->
     <string name="interface_uploadcartoonlist">interface.do?act=cartoonWork</string>
     <!--动漫消息-->

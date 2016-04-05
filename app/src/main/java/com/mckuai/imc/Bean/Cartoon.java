@@ -12,7 +12,10 @@ public class Cartoon implements Serializable {
     private int id;                         //id
     private int prise;                      //赞
     private int replyNum;                   //评论数
+    private int allPk;                      //总pk数
+    private int winPk;                      //pk胜数
     private String content;                 //内容
+    private String kinds;                   //主题
     private String insertTime;              //创建时间
     private String image;                   //图片url
     private User owner;                     //所有者
@@ -190,5 +193,35 @@ public class Cartoon implements Serializable {
         return null == comments ? "0":comments.size() +"";
     }
 
+    public String getKinds() {
+        return kinds;
+    }
 
+    public void setKinds(String kinds) {
+        this.kinds = kinds;
+    }
+
+    public String getKindsEx(){
+        if (null != kinds){
+            return kinds;
+        } else {
+            return content;
+        }
+    }
+
+    public int getAllPk() {
+        return allPk;
+    }
+
+    public void setAllPk(int allPk) {
+        this.allPk = allPk;
+    }
+
+    public int getWinPk() {
+        return winPk;
+    }
+
+    public void setWinPk(int winPk) {
+        this.winPk = winPk;
+    }
 }

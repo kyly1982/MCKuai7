@@ -50,6 +50,7 @@ public class CreateCartoonFragment extends BaseFragment implements StepView_4.On
     private String imagePath;
     private String fileName;
     private boolean isUploading = false;
+    private String theme;
 
 
     private View view;
@@ -70,6 +71,10 @@ public class CreateCartoonFragment extends BaseFragment implements StepView_4.On
 
     public void setOnBackgroundSetListener(OnBackgroundSetListener listener) {
         this.listener = listener;
+    }
+
+    public void setTheme(String theme){
+        this.theme = theme;
     }
 
 
@@ -396,6 +401,7 @@ public class CreateCartoonFragment extends BaseFragment implements StepView_4.On
     public void onImageUploadSuccess(String url) {
         MobclickAgent.onEvent(getActivity(), "createCartoon_uploadpic_S");
         Cartoon cartoon = new Cartoon(title, url, MCKuai.instence.user, null);
+        cartoon.setKinds(theme);
         uploadCartoon(cartoon);
     }
 

@@ -8,7 +8,11 @@
    <android.support.v7.widget.AppCompatImageView
        android:id="@+id/cartoon_hintimage"
        android:layout_width="match_parent"
-       android:layout_height="135dp" />
+       android:layout_height="135dp"
+       android:clickable="true"
+       android:scaleType="fitXY"
+       android:background="@mipmap/bg_lead_createcartoon"
+       />
     <android.support.v7.widget.AppCompatTextView
         android:id="@+id/hint"
         android:layout_width="wrap_content"
