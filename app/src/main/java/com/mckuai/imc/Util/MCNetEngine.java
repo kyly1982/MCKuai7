@@ -57,8 +57,8 @@ public class MCNetEngine {
     private OkHttpClient client;
     private Gson gson;
     private JsonCache cache;
-    private final String domainName = "http://api.mckuai.com/";
-    private final String domainName_Test = "http://192.168.10.66/";
+//    private final String domainName = "http://api.mckuai.com/";
+    private final String domainName = "http://221.237.152.39:8081/";
     private MCDaoHelper daoHelper;
     private MCKuai application;
 
@@ -305,7 +305,7 @@ public class MCNetEngine {
     }
 
     public void uploadCartoon(final Context context, Cartoon cartoon, final OnUploadCartoonResponseListener listener) {
-        String url = domainName_Test + context.getString(R.string.interface_uploadcartoon_withtheme);
+        String url = domainName + context.getString(R.string.interface_uploadcartoon_withtheme);
         RequestParams params = new RequestParams();
         params.put("userId", cartoon.getOwner().getId());
         //params.put("title", cartoon.getContent());
@@ -463,7 +463,7 @@ public class MCNetEngine {
     }
 
     public void loadCartoonList(final Context context, Page page, final OnLoadCartoonListResponseListener listener) {
-        String url = domainName_Test + context.getString(R.string.interface_loadcartoonlist_new);
+        String url = domainName + context.getString(R.string.interface_loadcartoonlist_new);
         RequestParams params = new RequestParams();
         params.put("page", page.getNextPage());
         httpClient.get(context, url, params, new JsonHttpResponseHandler() {
@@ -1326,6 +1326,12 @@ public class MCNetEngine {
             }
         });
 
+
+    }
+
+
+
+    public void rewardCartoon(){
 
     }
 

@@ -13,10 +13,12 @@ import android.view.Window;
 
 import com.mckuai.imc.Base.BaseActivity;
 import com.mckuai.imc.Base.BaseFragment;
+import com.mckuai.imc.Bean.Cartoon;
 import com.mckuai.imc.Fragment.CreateCartoonFragment;
 import com.mckuai.imc.Fragment.ThemeFragment;
 import com.mckuai.imc.R;
 import com.mckuai.imc.Util.TimestampConverter;
+import com.mckuai.imc.Widget.ShareCartoonDialog;
 import com.umeng.analytics.MobclickAgent;
 
 import java.io.File;
@@ -26,7 +28,7 @@ import java.util.ArrayList;
 public class CreateCartoonActivity extends BaseActivity
         implements NavigationView.OnNavigationItemSelectedListener
         , BaseFragment.OnFragmentEventListener
-        , CreateCartoonFragment.OnBackgroundSetListener
+        , CreateCartoonFragment.OnActionListener
         ,ThemeFragment.OnThemeSelectedListener{
     private CreateCartoonFragment createFragment;
     private ThemeFragment themeFragment;
@@ -206,6 +208,18 @@ public class CreateCartoonActivity extends BaseActivity
     @Override
     public void onWidgetset() {
         isWidgetSet = true;
+    }
+
+    @Override
+    public void onPublishSuccess(Cartoon cartoon) {
+        ShareCartoonDialog shareCartoonDialog = new ShareCartoonDialog();
+        shareCartoonDialog.setData(cartoon, new ShareCartoonDialog.OnDismiss() {
+            @Override
+            public void onDismissed() {
+                finish();
+            }
+        });
+        shareCartoonDialog.show(getFragmentManager(),"SHARE");
     }
 
     @Override

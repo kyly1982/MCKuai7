@@ -26,8 +26,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignTop="@id/cartoon_usercover"
-        android:layout_toRightOf="@id/cartoon_usercover"
         android:layout_toLeftOf="@id/cartoon_shar"
+        android:layout_toRightOf="@id/cartoon_usercover"
         android:singleLine="true"
         android:text="飞天小猪"
         android:textColor="@color/textColorPrimary"
@@ -69,9 +69,107 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/cartoon_image"
                 android:layout_margin="@dimen/margin_cartoon_content"
-                android:text="1111"
+                android:text="主题"
                 android:textColor="@color/textColorPrimary"
-                android:visibility="gone" />
+                android:visibility="visible" />
+
+            <RelativeLayout
+                android:id="@+id/pk"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_alignLeft="@id/cartoon_name"
+                android:layout_alignRight="@id/cartoon_name"
+                android:layout_below="@id/cartoon_name"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:orientation="horizontal">
+
+                    <android.support.v7.widget.AppCompatTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:singleLine="true"
+                        android:text="PK"
+                        android:textColor="@color/textColorSecondary" />
+
+                    <android.support.v7.widget.AppCompatTextView
+                        android:id="@+id/pkcount"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:singleLine="true"
+                        android:text="PK"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginRight="5dp"
+                        android:textColor="@color/textColorHighLight" />
+
+                    <android.support.v7.widget.AppCompatTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:singleLine="true"
+                        android:text="次"
+                        android:textColor="@color/textColorSecondary" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:orientation="horizontal">
+
+                    <android.support.v7.widget.AppCompatTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:singleLine="true"
+                        android:text="胜率"
+                        android:textColor="@color/textColorSecondary" />
+
+                    <android.support.v7.widget.AppCompatTextView
+                        android:id="@+id/pkrate"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:singleLine="true"
+                        android:layout_marginLeft="5dp"
+                        android:text="50%"
+                        android:textColor="@color/textColorHighLight" />
+
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:orientation="horizontal">
+
+                    <android.support.v7.widget.AppCompatTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:singleLine="true"
+                        android:text="胜"
+                        android:textColor="@color/textColorSecondary" />
+
+                    <android.support.v7.widget.AppCompatTextView
+                        android:id="@+id/wincount"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:singleLine="true"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginRight="5dp"
+                        android:text="500"
+                        android:textColor="@color/textColorHighLight" />
+
+                    <android.support.v7.widget.AppCompatTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:singleLine="true"
+                        android:text="次"
+                        android:textColor="@color/textColorSecondary" />
+                </LinearLayout>
+            </RelativeLayout>
+
 
             <View
                 android:id="@+id/cartoon_center"
@@ -84,7 +182,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/cartoondetial_operationbutton_height"
                 android:layout_alignParentLeft="true"
-                android:layout_below="@id/cartoon_name"
+                android:layout_below="@id/pk"
                 android:layout_margin="@dimen/margin_cartoon_content"
                 android:layout_toLeftOf="@id/cartoon_center"
                 android:background="@drawable/btn_cartoon_comment"
@@ -96,11 +194,11 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerInParent="true"
-                    android:drawableLeft="@mipmap/ic_cartoon_comment"
-                    android:text="11"
-                    android:gravity="center"
-                    android:drawablePadding="5dp"
                     android:background="@null"
+                    android:drawableLeft="@mipmap/ic_cartoon_comment"
+                    android:drawablePadding="5dp"
+                    android:gravity="center"
+                    android:text="11"
                     android:textColor="@color/textColorSecondary" />
             </RelativeLayout>
 
@@ -109,7 +207,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/cartoondetial_operationbutton_height"
                 android:layout_alignParentRight="true"
-                android:layout_below="@id/cartoon_name"
+                android:layout_below="@id/pk"
                 android:layout_margin="@dimen/margin_cartoon_content"
                 android:layout_toRightOf="@id/cartoon_center"
                 android:background="@drawable/btn_cartoon_prise"
@@ -120,11 +218,11 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerInParent="true"
-                    android:drawableLeft="@mipmap/ic_cartoon_prise"
-                    android:text="11"
-                    android:gravity="center"
-                    android:drawablePadding="5dp"
                     android:background="@null"
+                    android:drawableLeft="@mipmap/ic_cartoon_prise"
+                    android:drawablePadding="5dp"
+                    android:gravity="center"
+                    android:text="11"
                     android:textColor="@color/textColorPrimary_Light" />
             </RelativeLayout>
 

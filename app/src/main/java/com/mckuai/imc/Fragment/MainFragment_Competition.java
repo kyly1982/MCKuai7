@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.mckuai.imc.Activity.CartoonActivity;
 import com.mckuai.imc.Activity.UserCenterActivity;
 import com.mckuai.imc.Base.BaseFragment;
 import com.mckuai.imc.Base.MCKuai;
@@ -19,7 +20,7 @@ import com.mckuai.imc.Widget.CompetitionLayout;
 import java.util.ArrayList;
 
 
-public class MainFragment_Competition extends BaseFragment implements CompetitionLayout.OnActionListener,MCNetEngine.OnLoadCartoonListResponseListener {
+public class MainFragment_Competition extends BaseFragment implements CompetitionLayout.OnActionListener,MCNetEngine.OnLoadCartoonListResponseListener,MCNetEngine.OnRewardCartoonResponseListener {
     private View view;
     private CompetitionLayout competitionLayout;
 
@@ -73,12 +74,19 @@ public class MainFragment_Competition extends BaseFragment implements Competitio
 
     @Override
     public void onShowDetile(Cartoon cartoon) {
-
+        Intent intent = new Intent(getActivity(), CartoonActivity.class);
+        Bundle bundle = new Bundle();
+        bundle.putSerializable(getString(R.string.cartoondetail_tag_cartoon),cartoon);
+        intent.putExtras(bundle);
+        getActivity().startActivity(intent);
     }
 
     @Override
     public void onVote(Cartoon cartoon) {
-        showMessage("投票"+cartoon.getContent(),null,null);
+        if (null != cartoon) {
+            showMessage("投票" + cartoon.getContent(), null, null);
+            MCKuai.instence.netEngine.rewardCartoon(getActivity(),true,cartoon.getId(),this);
+        }
     }
 
     @Override
@@ -99,5 +107,15 @@ public class MainFragment_Competition extends BaseFragment implements Competitio
     public void onLoadCartoonListSuccess(ArrayList<Cartoon> cartoons, Page page) {
         this.page = page;
         competitionLayout.setData(cartoons);
+    }
+
+    @Override
+    public void onRewardaCartoonFailure(String msg) {
+
+    }
+
+    @Override
+    public void onRewardCartoonSuccess() {
+
     }
 }

@@ -103,6 +103,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener
         if ((MCKuai.instence.leadTag & 1) == 0) {
             LeaderDialog dialog = new LeaderDialog();
             dialog.show(getFragmentManager(), "DIALOG");
+            mApplication.setLeadTag(1);
         }
 
     }

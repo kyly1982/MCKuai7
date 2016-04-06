@@ -37,6 +37,9 @@ public class CartoonView extends FrameLayout implements View.OnClickListener {
     private LinearLayout rewardList;
     private AppCompatTextView commentCount;
     private AppCompatTextView priseCount;
+    private AppCompatTextView pkCount;
+    private AppCompatTextView pkWinCount;
+    private AppCompatTextView pkRate;
 
     private ImageLoader loader;
     private OnCartoonElementClickListener listener;
@@ -102,6 +105,9 @@ public class CartoonView extends FrameLayout implements View.OnClickListener {
 
         commentCount = (AppCompatTextView) findViewById(R.id.commentCount);
         priseCount = (AppCompatTextView) findViewById(R.id.priseCount);
+        pkCount = (AppCompatTextView) findViewById(R.id.pkcount);
+        pkWinCount = (AppCompatTextView) findViewById(R.id.wincount);
+        pkRate = (AppCompatTextView) findViewById(R.id.pkrate);
 
 
         ViewTreeObserver viewTreeObserver = getViewTreeObserver();
@@ -141,6 +147,10 @@ public class CartoonView extends FrameLayout implements View.OnClickListener {
         } else {
             priseCount.setText("");
         }
+
+        pkCount.setText(cartoon.getAllPk()+"");
+        pkWinCount.setText(cartoon.getWinPk()+"");
+        pkRate.setText((int)(100 * cartoon.getWinPk() /cartoon.getAllPk()) +"%");
 
         if (isDetailed) {
             name = (AppCompatTextView) findViewById(R.id.cartoon_name);

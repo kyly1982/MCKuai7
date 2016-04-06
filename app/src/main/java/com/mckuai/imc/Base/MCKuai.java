@@ -208,6 +208,7 @@ public class MCKuai extends Application {
         SharedPreferences preferences = getSharedPreferences(getString(R.string.preferences_filename), 0);
         SharedPreferences.Editor editor = preferences.edit();
         editor.putBoolean(getString(R.string.preferences_isFirstBoot), false);
+        editor.putLong(getString(R.string.preferences_leadtag),leadTag);
         if (null != user && null != user.getLoginToken()) {
             editor.putInt(getString(R.string.preferences_tokentype), user.getLoginToken().getType());
             editor.putLong(getString(R.string.preferences_tokentime), user.getLoginToken().getBirthday());

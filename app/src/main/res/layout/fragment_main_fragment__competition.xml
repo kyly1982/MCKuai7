@@ -5,19 +5,21 @@
     android:background="@null">
 
     <android.support.v7.widget.CardView
+        android:id="@+id/card"
         android:layout_width="320dp"
         android:layout_height="495dp"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         app:cardBackgroundColor="@color/competitionbackground"
         android:elevation="8dp"
         app:cardCornerRadius="5dp"
+        app:contentPaddingBottom="5dp"
+        app:contentPaddingTop="5dp"
         android:layout_centerInParent="true">
 
         <com.mckuai.imc.Widget.CompetitionLayout
             android:id="@+id/competition"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:elevation="8dp">
+            android:layout_height="match_parent">
 
             <android.support.v7.widget.AppCompatTextView
                 android:id="@+id/theme"
@@ -64,23 +66,7 @@
             </LinearLayout>
 
 
-            <android.support.v7.widget.AppCompatImageView
-                android:id="@+id/diamond_top"
-                android:layout_width="67dp"
-                android:layout_height="67dp"
-                android:layout_centerHorizontal="true"
-                android:background="@mipmap/ic_diamond_big_normal" />
-
-
-            <android.support.v7.widget.AppCompatImageView
-                android:id="@+id/diamond_bottom"
-                android:layout_width="67dp"
-                android:layout_height="67dp"
-                android:layout_alignParentBottom="true"
-                android:layout_centerHorizontal="true"
-                android:background="@mipmap/ic_diamond_big_normal"  />
-
-            <LinearLayout
+            <RelativeLayout
                 android:id="@+id/layout_top"
                 android:layout_width="@dimen/competition_imagewidth"
                 android:layout_height="@dimen/competition_imagewidth"
@@ -97,10 +83,17 @@
                     android:scaleType="fitXY"
                     android:clickable="true"  />
 
-            </LinearLayout>
+                <android.support.v7.widget.AppCompatImageView
+                    android:id="@+id/diamond_top"
+                    android:layout_width="67dp"
+                    android:layout_height="67dp"
+                    android:layout_centerInParent="true"
+                    android:src="@mipmap/ic_diamond_big_normal" />
+
+            </RelativeLayout>
 
 
-            <LinearLayout
+            <RelativeLayout
                 android:id="@+id/layout_bottom"
                 android:layout_width="@dimen/competition_imagewidth"
                 android:layout_height="@dimen/competition_imagewidth"
@@ -119,7 +112,14 @@
                     android:scaleType="fitXY">
 
                 </android.support.v7.widget.AppCompatImageView>
-            </LinearLayout>
+
+                <android.support.v7.widget.AppCompatImageView
+                    android:id="@+id/diamond_bottom"
+                    android:layout_width="67dp"
+                    android:layout_height="67dp"
+                    android:layout_centerInParent="true"
+                    android:src="@mipmap/ic_diamond_big_normal"  />
+            </RelativeLayout>
 
 
             <android.support.v7.widget.AppCompatImageView
@@ -127,7 +127,7 @@
                 android:layout_width="67dp"
                 android:layout_height="67dp"
                 android:layout_centerInParent="true"
-                android:background="@mipmap/ic_diamond_big_normal"  />
+                android:src="@mipmap/ic_diamond_big_normal"  />
 
 
             <android.support.v7.widget.AppCompatImageView
@@ -135,7 +135,7 @@
                 android:layout_width="67dp"
                 android:layout_height="67dp"
                 android:layout_centerInParent="true"
-                android:background="@mipmap/ic_diamond_big_activited"  />
+                android:src="@mipmap/ic_diamond_big_activited"  />
 
         </com.mckuai.imc.Widget.CompetitionLayout>
 

@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/shareroot"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:id="@+id/layout"
+        android:layout_width="248dp"
+        android:layout_height="377dp"
+        android:layout_centerInParent="true"
+        android:background="@color/icons">
+
+        <android.support.v7.widget.AppCompatImageView
+            android:id="@+id/cartoonimage"
+            android:layout_width="237dp"
+            android:layout_height="237dp"
+            android:layout_margin="5dp" />
+
+        <android.support.v7.widget.AppCompatTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/cartoonimage"
+            android:layout_centerHorizontal="true"
+            android:text="发布成功，PK暴走中……"
+            android:textColor="@color/textColorHighLight"
+            android:textSize="@dimen/font_title" />
+
+        <LinearLayout
+            android:id="@+id/sharelayout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="10dp"
+            android:orientation="horizontal">
+
+            <android.support.v7.widget.AppCompatImageButton
+                android:id="@+id/share_qqzone"
+                android:layout_width="62dp"
+                android:layout_height="62dp"
+                android:background="@drawable/umeng_socialize_qzone_on"/>
+
+            <android.support.v7.widget.AppCompatImageButton
+                android:id="@+id/share_qq"
+                android:layout_width="62dp"
+                android:layout_height="62dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:background="@drawable/umeng_socialize_qq_on"/>
+
+            <android.support.v7.widget.AppCompatImageButton
+                android:id="@+id/share_wx"
+                android:layout_width="62dp"
+                android:layout_height="62dp"
+                android:background="@drawable/umeng_socialize_wxcircle"/>
+        </LinearLayout>
+
+        <android.support.v7.widget.AppCompatTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@id/sharelayout"
+            android:layout_centerHorizontal="true"
+            android:layout_margin="10dp"
+            android:textColor="@color/textColorSecondary"
+            android:textSize="@dimen/font_title"
+            android:text="召集好友来观战"
+            />
+    </RelativeLayout>
+
+    <android.support.v7.widget.AppCompatImageButton
+        android:id="@+id/close"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        android:layout_alignTop="@id/layout"
+        android:layout_toRightOf="@id/layout"
+        android:background="@color/colorError"
+        android:src="@android:drawable/ic_menu_close_clear_cancel"/>
+
+
+</RelativeLayout>

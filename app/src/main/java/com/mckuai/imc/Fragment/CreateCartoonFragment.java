@@ -19,7 +19,6 @@ import android.view.ViewGroup;
 import android.widget.ViewFlipper;
 
 import com.malinskiy.superrecyclerview.SuperRecyclerView;
-import com.mckuai.imc.Activity.CartoonActivity;
 import com.mckuai.imc.Adapter.CartoonSceneAdapter;
 import com.mckuai.imc.Base.BaseFragment;
 import com.mckuai.imc.Base.MCKuai;
@@ -52,24 +51,24 @@ public class CreateCartoonFragment extends BaseFragment implements StepView_4.On
     private boolean isUploading = false;
     private String theme;
 
-
     private View view;
     private TouchableLayout cartoonBuilder;
     private AppCompatTextView builderHint;
     private SuperRecyclerView sceneList;
     private Point lastPoint;
-    private OnBackgroundSetListener listener;
+    private OnActionListener listener;
     private int talkCount = 0;
 
-    public interface OnBackgroundSetListener {
+    public interface OnActionListener {
         void onBackgroundSet();
         void onWidgetset();
+        void onPublishSuccess(Cartoon cartoon);
     }
 
     public CreateCartoonFragment() {
     }
 
-    public void setOnBackgroundSetListener(OnBackgroundSetListener listener) {
+    public void setOnBackgroundSetListener(OnActionListener listener) {
         this.listener = listener;
     }
 
@@ -386,21 +385,27 @@ public class CreateCartoonFragment extends BaseFragment implements StepView_4.On
     public void onUploadCartoonSuccess(int cartoonId) {
         isUploading = false;
         MobclickAgent.onEvent(getActivity(), "createCartoon_publish_S");
-        Cartoon cartoon = new Cartoon(cartoonId);
-        Intent intent = new Intent(getActivity(), CartoonActivity.class);
+        if (null != listener){
+            Cartoon cartoon = new Cartoon(cartoonId);
+            cartoon.setImage(imagePath);
+            listener.onPublishSuccess(cartoon);
+        }
+
+        /*Intent intent = new Intent(getActivity(), CartoonActivity.class);
         Bundle bundle = new Bundle();
         bundle.putSerializable(getResources().getString(R.string.cartoondetail_tag_cartoon), cartoon);
         intent.putExtras(bundle);
         getActivity().startActivity(intent);
         if (null != mOnFragmentEventListener) {
             mOnFragmentEventListener.onFragmentAction(null);
-        }
+        }*/
     }
 
     @Override
     public void onImageUploadSuccess(String url) {
         MobclickAgent.onEvent(getActivity(), "createCartoon_uploadpic_S");
         Cartoon cartoon = new Cartoon(title, url, MCKuai.instence.user, null);
+        this.imagePath = url;
         cartoon.setKinds(theme);
         uploadCartoon(cartoon);
     }

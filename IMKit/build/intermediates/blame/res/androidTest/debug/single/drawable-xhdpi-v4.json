@@ -748,12 +748,12 @@
         "source": "F:\\Repository\\MCKuai7\\IMKit\\build\\intermediates\\bundles\\debug\\res\\drawable-xhdpi-v4\\u1f3e1.png"
     },
     {
-        "merged": "F:\\Repository\\MCKuai7\\IMKit\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable-xhdpi-v4\\u1f60b.png",
-        "source": "F:\\Repository\\MCKuai7\\IMKit\\build\\intermediates\\bundles\\debug\\res\\drawable-xhdpi-v4\\u1f60b.png"
-    },
-    {
         "merged": "F:\\Repository\\MCKuai7\\IMKit\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable-xhdpi-v4\\rc_mebmer_delete.png",
         "source": "F:\\Repository\\MCKuai7\\IMKit\\build\\intermediates\\bundles\\debug\\res\\drawable-xhdpi-v4\\rc_mebmer_delete.png"
+    },
+    {
+        "merged": "F:\\Repository\\MCKuai7\\IMKit\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable-xhdpi-v4\\u1f60b.png",
+        "source": "F:\\Repository\\MCKuai7\\IMKit\\build\\intermediates\\bundles\\debug\\res\\drawable-xhdpi-v4\\u1f60b.png"
     },
     {
         "merged": "F:\\Repository\\MCKuai7\\IMKit\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable-xhdpi-v4\\rc_checkbox_pressed.png",
@@ -824,12 +824,12 @@
         "source": "F:\\Repository\\MCKuai7\\IMKit\\build\\intermediates\\bundles\\debug\\res\\drawable-xhdpi-v4\\u1f634.png"
     },
     {
-        "merged": "F:\\Repository\\MCKuai7\\IMKit\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable-xhdpi-v4\\u1f434.png",
-        "source": "F:\\Repository\\MCKuai7\\IMKit\\build\\intermediates\\bundles\\debug\\res\\drawable-xhdpi-v4\\u1f434.png"
-    },
-    {
         "merged": "F:\\Repository\\MCKuai7\\IMKit\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable-xhdpi-v4\\rc_voice_unread.png",
         "source": "F:\\Repository\\MCKuai7\\IMKit\\build\\intermediates\\bundles\\debug\\res\\drawable-xhdpi-v4\\rc_voice_unread.png"
+    },
+    {
+        "merged": "F:\\Repository\\MCKuai7\\IMKit\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable-xhdpi-v4\\u1f434.png",
+        "source": "F:\\Repository\\MCKuai7\\IMKit\\build\\intermediates\\bundles\\debug\\res\\drawable-xhdpi-v4\\u1f434.png"
     },
     {
         "merged": "F:\\Repository\\MCKuai7\\IMKit\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable-xhdpi-v4\\rc_ic_albums_checked.png",
