@@ -1,6 +1,7 @@
 package com.mckuai.imc.Widget;
 
 import android.app.DialogFragment;
+import android.app.FragmentManager;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.AppCompatImageButton;
@@ -12,6 +13,7 @@ import android.view.ViewGroup;
 import com.mckuai.imc.Bean.Cartoon;
 import com.mckuai.imc.R;
 import com.nostra13.universalimageloader.core.ImageLoader;
+import com.umeng.analytics.MobclickAgent;
 import com.umeng.socialize.ShareAction;
 import com.umeng.socialize.UMShareListener;
 import com.umeng.socialize.bean.SHARE_MEDIA;
@@ -99,38 +101,47 @@ public class ShareCartoonDialog extends DialogFragment implements View.OnClickLi
     }
 
     @Override
+    public void show(FragmentManager manager, String tag) {
+        super.show(manager, tag);
+        MobclickAgent.onEvent(getActivity(),"createCartoon_showShare");
+    }
+
+    @Override
     public void onClick(View v) {
 
         switch (v.getId()) {
             case R.id.share_qq:
+                MobclickAgent.onEvent(getActivity(),"createCartoon_share_QQ");
                 new ShareAction(getActivity())
                         .setPlatform(SHARE_MEDIA.QQ)
                         .setCallback(this)
-                        .withText("")
-                        .withTitle("")
-                        .withTargetUrl("")
+                        .withText("我刚刚创建了一个漫画，咱们来PK一下！")
+                        .withTitle("麦块漫画PK")
+                        .withTargetUrl("getString(R.string.shareCartoon"+cartoon.getId())
                         .withMedia(new UMImage(getActivity(),cartoon.getImage()))
                         .share();
                 dismiss();
                 break;
             case R.id.share_qqzone:
+                MobclickAgent.onEvent(getActivity(),"createCartoon_share_QQZone");
                 new ShareAction(getActivity())
                         .setPlatform(SHARE_MEDIA.QZONE)
                         .setCallback(this)
-                        .withText("")
-                        .withTitle("")
-                        .withTargetUrl("")
+                        .withText("我刚刚创建了一个漫画，咱们来PK一下！")
+                        .withTitle("麦块漫画PK")
+                        .withTargetUrl("getString(R.string.shareCartoon"+cartoon.getId())
                         .withMedia(new UMImage(getActivity(),cartoon.getImage()))
                         .share();
                 dismiss();
                 break;
             case R.id.share_wx:
+                MobclickAgent.onEvent(getActivity(),"createCartoon_share_WXCircle");
                 new ShareAction(getActivity())
                         .setPlatform(SHARE_MEDIA.WEIXIN_CIRCLE)
                         .setCallback(this)
-                        .withTitle("")
-                        .withTargetUrl("")
-                        .withText("")
+                        .withText("我刚刚创建了一个漫画，咱们来PK一下！")
+                        .withTitle("麦块漫画PK")
+                        .withTargetUrl("getString(R.string.shareCartoon"+cartoon.getId())
                         .withMedia(new UMImage(getActivity(),cartoon.getImage()))
                         .share();
                 dismiss();

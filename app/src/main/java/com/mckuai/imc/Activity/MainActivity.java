@@ -238,8 +238,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        onBackPressed();
-        /*int id = item.getItemId();
+        //onBackPressed();
+        int id = item.getItemId();
         if (id == R.id.action_recommend) {
             if (!isRecommendPressed) {
                 item.setIcon(R.drawable.ic_menu_recommend);
@@ -248,7 +248,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener
             Intent intent = new Intent(this, RecommendActivity.class);
             startActivity(intent);
             return true;
-        }*/
+        }
 
         return super.onOptionsItemSelected(item);
     }
