@@ -70,6 +70,40 @@ public class CartoonActivity extends BaseActivity implements CartoonView.OnCarto
         }
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK){
+            switch (requestCode){
+                case 1:
+                    commentCartoon();
+                    break;
+                case 2:
+                    rewardCartoon();
+                    break;
+            }
+        } else {
+            switch (requestCode) {
+                case 1:
+                    showMessage("未登录不能评论！", "登录", new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            callLogin(1);
+                        }
+                    });
+                    break;
+                case 2:
+                    showMessage("未登录不能赞！", "登录", new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            callLogin(2);
+                        }
+                    });
+                    break;
+            }
+        }
+    }
+
     private void showData() {
         if (null != cartoon) {
             if (null == cartoon.getOwner()) {
@@ -112,15 +146,23 @@ public class CartoonActivity extends BaseActivity implements CartoonView.OnCarto
             mApplication.hideSoftKeyboard(commentEditer);
             String comtent = commentEditer.getText().toString();
             if (null != comtent && !comtent.isEmpty()) {
-                mApplication.netEngine.commentCartoon(this, cartoon.getId(), comtent, this);
+                if (mApplication.isLogin()) {
+                    mApplication.netEngine.commentCartoon(this,mApplication.user.getId() ,cartoon.getId(), comtent, this);
+                } else {
+                    callLogin(1);
+                }
             }
         }
     }
 
     private void rewardCartoon(){
         if (!isUpdateReawrd) {
-            isUpdateReawrd = true;
-            mApplication.netEngine.rewardCartoon(this, true, cartoon.getId(), this);
+            if (mApplication.isLogin()) {
+                isUpdateReawrd = true;
+                mApplication.netEngine.rewardCartoon(this,mApplication.user.getId(), cartoon, this);
+            } else {
+                callLogin(2);
+            }
         }
     }
 

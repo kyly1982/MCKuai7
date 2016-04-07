@@ -19,6 +19,7 @@ import com.mckuai.imc.Bean.Theme;
 import com.mckuai.imc.R;
 import com.mckuai.imc.Util.MCNetEngine;
 import com.mckuai.imc.Widget.LeaderDialog;
+import com.umeng.analytics.MobclickAgent;
 
 import java.util.ArrayList;
 
@@ -94,7 +95,7 @@ public class ThemeFragment extends BaseFragment implements OnMoreListener,SwipeR
                 @Override
                 public void onClick(View v) {
                     LeaderDialog dialog = new LeaderDialog();
-                    dialog.show(getChildFragmentManager(),"LEAD");
+                    dialog.show(getFragmentManager(),"LEAD");
                 }
             });
 
@@ -118,6 +119,7 @@ public class ThemeFragment extends BaseFragment implements OnMoreListener,SwipeR
             if (null == adapter) {
                 adapter = new ThemeAdapter(getActivity(), this);
                 list.setAdapter(adapter);
+                MobclickAgent.onEvent(getActivity(), "createCartoon_step1");
             }
             adapter.setData(themes, true);
         }

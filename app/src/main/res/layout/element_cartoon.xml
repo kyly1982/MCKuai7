@@ -219,7 +219,7 @@
                     android:layout_height="wrap_content"
                     android:layout_centerInParent="true"
                     android:background="@null"
-                    android:drawableLeft="@mipmap/ic_cartoon_prise"
+                    android:drawableLeft="@mipmap/ic_cartoon_like"
                     android:drawablePadding="5dp"
                     android:gravity="center"
                     android:text="11"

@@ -14,6 +14,7 @@ import android.widget.RadioGroup;
 
 import com.marshalchen.ultimaterecyclerview.UltimateRecyclerView;
 import com.mckuai.imc.Activity.CartoonActivity;
+import com.mckuai.imc.Activity.MainActivity;
 import com.mckuai.imc.Activity.UserCenterActivity;
 import com.mckuai.imc.Adapter.CartoonAdapter;
 import com.mckuai.imc.Base.BaseActivity;
@@ -113,6 +114,7 @@ public class MainFragment_Cartoon extends BaseFragment implements RadioGroup.OnC
         }
     }
 
+
     private void initView() {
 
         mCartoonListView = (UltimateRecyclerView) view.findViewById(R.id.cartoonlist);
@@ -208,7 +210,11 @@ public class MainFragment_Cartoon extends BaseFragment implements RadioGroup.OnC
 
     private void rewardCartoon(Cartoon cartoon) {
         rewardCartoonId = cartoon.getId();
-        mApplication.netEngine.rewardCartoon(getActivity(), true, cartoon.getId(), this);
+        if (mApplication.isLogin()) {
+            mApplication.netEngine.rewardCartoon(getActivity(),mApplication.user.getId(), cartoon, this);
+        } else {
+            ((MainActivity)getActivity()).callLogin(2);
+        }
     }
 
     @Override

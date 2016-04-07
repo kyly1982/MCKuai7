@@ -31,6 +31,8 @@ import com.zhy.http.okhttp.OkHttpUtils;
 import java.io.File;
 import java.util.concurrent.TimeUnit;
 
+import cn.finalteam.okhttpfinal.OkHttpFinal;
+import cn.finalteam.okhttpfinal.OkHttpFinalConfiguration;
 import io.rong.imkit.RongIM;
 import io.rong.imlib.RongIMClient;
 import okhttp3.OkHttpClient;
@@ -88,6 +90,8 @@ public class MCKuai extends Application {
         builder.connectTimeout(TIME_OUT, TimeUnit.MILLISECONDS)
                 .retryOnConnectionFailure(true);
         OkHttpUtils.getInstance(builder.build());
+        OkHttpFinalConfiguration.Builder builder1 = new OkHttpFinalConfiguration.Builder().setRetryOnConnectionFailure(false);
+        OkHttpFinal.getInstance().init(builder1.build());
     }
 
     /**

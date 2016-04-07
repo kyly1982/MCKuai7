@@ -10,6 +10,7 @@ import java.util.Date;
  */
 public class Cartoon implements Serializable {
     private int id;                         //id
+    private int groupId;                    //组id，供pk时使用
     private int prise;                      //赞
     private int replyNum;                   //评论数
     private int allPk;                      //总pk数
@@ -223,5 +224,13 @@ public class Cartoon implements Serializable {
 
     public void setWinPk(int winPk) {
         this.winPk = winPk;
+    }
+
+    public int getGroupId() {
+        return groupId;
+    }
+
+    public void setGroupId(int groupId) {
+        this.groupId = groupId;
     }
 }

@@ -12,6 +12,7 @@ import com.mckuai.imc.Fragment.MainFragment_Chat;
 import com.mckuai.imc.Fragment.MainFragment_Community;
 import com.mckuai.imc.Fragment.ProfileEditerFragment;
 import com.mckuai.imc.Fragment.RecommendFragment;
+import com.mckuai.imc.Fragment.ThemeFragment;
 import com.mckuai.imc.R;
 import com.umeng.analytics.MobclickAgent;
 
@@ -35,6 +36,8 @@ public class BaseFragment extends Fragment {
             mTitleResId = R.string.fragment_mine;
         } else if (this instanceof ProfileEditerFragment) {
             mTitleResId = R.string.fragment_profile;
+        } else if (this instanceof ThemeFragment){
+            mTitleResId = R.string.fragment_theme;
         }
     }
 

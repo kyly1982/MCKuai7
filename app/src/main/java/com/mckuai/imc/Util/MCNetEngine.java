@@ -57,8 +57,9 @@ public class MCNetEngine {
     private OkHttpClient client;
     private Gson gson;
     private JsonCache cache;
-//    private final String domainName = "http://api.mckuai.com/";
-    private final String domainName = "http://221.237.152.39:8081/";
+    private final String domainName = "http://api.mckuai.com/";
+//    private final String domainName = "http://221.237.152.39:8081/";
+//    private final String domainName = "http://192.168.10.66/";
     private MCDaoHelper daoHelper;
     private MCKuai application;
 
@@ -349,21 +350,16 @@ public class MCNetEngine {
      * 打赏
      *
      * @param context
-     * @param isCartoon 如果是打赏漫画，则设置为true,否则设置为false
-     * @param targetId  要打赏的目标的id
+     * @param cartoon 胜利的漫画
      * @param listener  打赏响应监听
      */
-    public void rewardCartoon(final Context context, boolean isCartoon, int targetId, final OnRewardCartoonResponseListener listener) {
-        String url;
+    public void rewardCartoon(final Context context,int userId ,Cartoon cartoon, final OnRewardCartoonResponseListener listener) {
+        String url = domainName + context.getString(R.string.interface_reward_new);
         RequestParams params = new RequestParams();
-        if (isCartoon) {
             params.put("type", "cartoon");
-            url = domainName + context.getString(R.string.interface_reward_new);
-        } else {
-            url = domainName + context.getString(R.string.interface_reward);
-        }
-        params.put("userId", MCKuai.instence.user.getId());
-        params.put("talkId", targetId);
+        params.put("userId", userId);
+            params.put("groupId",cartoon.getGroupId());
+        params.put("winId", cartoon.getId());
         httpClient.post(url, params, new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
@@ -392,11 +388,11 @@ public class MCNetEngine {
         void onCommentCartoonFailure(String msg);
     }
 
-    public void commentCartoon(final Context context, int cartoonId, String content, final OnCommentCartoonResponseListener listener) {
+    public void commentCartoon(final Context context,int userId, int cartoonId, String content, final OnCommentCartoonResponseListener listener) {
         String url = domainName + context.getString(R.string.interface_commentcartoon);
         RequestParams params = new RequestParams();
         params.put("id", cartoonId);
-        params.put("userId", MCKuai.instence.user.getId());
+        params.put("userId", userId);
         params.put("content", content);
         httpClient.post(url, params, new JsonHttpResponseHandler() {
             @Override

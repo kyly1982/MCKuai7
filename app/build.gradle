@@ -67,7 +67,6 @@ android {
 
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
-    //compile project(':downloader')
     compile project(':IMKit')
     compile project(':PushSDK')
     compile files('libs/umeng_social_sdk.jar')
@@ -77,10 +76,6 @@ dependencies {
     compile files('libs/open_sdk_r5509.jar')
     compile files('libs/SocialSDK_WeiXin_1.jar')
     compile files('libs/BaiduLBS_Android.jar')
-    //compile 'com.github.florent37:hollyviewpager:1.0.1'
-    //compile 'com.github.ksoichiro:android-observablescrollview:1.5.2'
-    //compile 'com.yqritc:recyclerview-flexibledivider:1.2.8'
-    //compile 'com.liulishuo.filedownloader:library:+'
     compile 'com.squareup.okhttp3:okhttp:+'
     compile 'com.android.support:support-v4:23.2.1'
     compile 'com.android.support:appcompat-v7:23.2.1'
@@ -95,5 +90,6 @@ dependencies {
     //compile 'com.marshalchen.ultimaterecyclerview:library:0.4.0'
     compile 'com.hkm.slidingmenulib:libmenu:0.4.8'
     compile 'com.zhy:okhttputils:2.3.8'
+    compile 'cn.finalteam:okhttpfinal:+'
     compile files('libs/android-viewbadger.jar')
 }

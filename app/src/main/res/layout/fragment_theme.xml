@@ -20,6 +20,7 @@
         android:layout_below="@id/cartoon_hintimage"
         android:layout_centerHorizontal="true"
         android:gravity="center"
+        android:textColor="@color/textColorSecondary"
         android:text="Step 1 选择一个主题来PK"/>
 
     <View

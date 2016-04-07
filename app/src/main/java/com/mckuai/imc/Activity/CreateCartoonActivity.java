@@ -224,6 +224,7 @@ public class CreateCartoonActivity extends BaseActivity
 
     @Override
     public void onThemeSelected(String theme) {
+        MobclickAgent.onEvent(this,"createCartoon_selectedTheme");
         createFragment.setTheme(theme);
         setContentFragment(R.id.context, createFragment);
     }

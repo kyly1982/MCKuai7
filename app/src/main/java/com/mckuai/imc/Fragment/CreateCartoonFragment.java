@@ -81,22 +81,17 @@ public class CreateCartoonFragment extends BaseFragment implements StepView_4.On
         flipper.showNext();
         switch (currentStep) {
             case 0:
-                MobclickAgent.onEvent(getActivity(), "createCartoon_step1");
+                MobclickAgent.onEvent(getActivity(), "createCartoon_step2");
                 builderHint.setText(R.string.createcartoon_hint_step1);
                 break;
             case 1:
-                MobclickAgent.onEvent(getActivity(), "createCartoon_step2");
+                MobclickAgent.onEvent(getActivity(), "createCartoon_step3");
                 builderHint.setText(R.string.createcartoon_hint_step2);
                 break;
             case 2:
-                MobclickAgent.onEvent(getActivity(), "createCartoon_step3");
+                MobclickAgent.onEvent(getActivity(), "createCartoon_step4");
                 builderHint.setText(R.string.createcartoon_hint_step3);
                 break;
-          /*  case 3:
-                MobclickAgent.onEvent(getActivity(), "createCartoon_step4");
-                cartoonBuilder.frozenBuilder(true);
-                builderHint.setText(R.string.createcartoon_hint_step4);
-                break;*/
         }
     }
 
@@ -368,6 +363,7 @@ public class CreateCartoonFragment extends BaseFragment implements StepView_4.On
     }
 
     public Bitmap getCartoonBitmap() {
+        cartoonBuilder.frozenBuilder(true);//冻结编辑器，取消边框
         cartoonBuilder.setDrawingCacheEnabled(true);
         cartoonBuilder.buildDrawingCache();
         return cartoonBuilder.getDrawingCache();

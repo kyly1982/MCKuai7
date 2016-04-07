@@ -1,5 +1,6 @@
 package com.mckuai.imc.Fragment;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -7,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.mckuai.imc.Activity.CartoonActivity;
+import com.mckuai.imc.Activity.MainActivity;
 import com.mckuai.imc.Activity.UserCenterActivity;
 import com.mckuai.imc.Base.BaseFragment;
 import com.mckuai.imc.Base.MCKuai;
@@ -16,6 +18,7 @@ import com.mckuai.imc.Bean.User;
 import com.mckuai.imc.R;
 import com.mckuai.imc.Util.MCNetEngine;
 import com.mckuai.imc.Widget.CompetitionLayout;
+import com.umeng.analytics.MobclickAgent;
 
 import java.util.ArrayList;
 
@@ -23,12 +26,15 @@ import java.util.ArrayList;
 public class MainFragment_Competition extends BaseFragment implements CompetitionLayout.OnActionListener,MCNetEngine.OnLoadCartoonListResponseListener,MCNetEngine.OnRewardCartoonResponseListener {
     private View view;
     private CompetitionLayout competitionLayout;
-
     private Page page;
+    private Cartoon voteCartoon;
+
+    private MCKuai application;
 
 
     public MainFragment_Competition() {
         // Required empty public constructor
+        application = MCKuai.instence;
     }
 
 
@@ -38,7 +44,7 @@ public class MainFragment_Competition extends BaseFragment implements Competitio
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         if (null == view) {
-            view = inflater.inflate(R.layout.fragment_main_fragment__competition, container, false);
+            view = inflater.inflate(R.layout.fragment_main_fragment_competition, container, false);
             initView();
         }
         return view;
@@ -53,6 +59,14 @@ public class MainFragment_Competition extends BaseFragment implements Competitio
         }
     }
 
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 2 && resultCode == Activity.RESULT_OK){
+            onVote(voteCartoon);
+        }
+    }
+
     private void initView(){
         competitionLayout = (CompetitionLayout) view.findViewById(R.id.competition);
         competitionLayout.setActionListener(this);
@@ -63,7 +77,7 @@ public class MainFragment_Competition extends BaseFragment implements Competitio
         if (null == page){
             page= new Page();
         }
-        MCKuai.instence.netEngine.loadCartoonList(getActivity(),page,this);
+        application.netEngine.loadCartoonList(getActivity(), page, this);
     }
 
 
@@ -83,9 +97,14 @@ public class MainFragment_Competition extends BaseFragment implements Competitio
 
     @Override
     public void onVote(Cartoon cartoon) {
+        MobclickAgent.onEvent(getActivity(),"competitionCartoon");
         if (null != cartoon) {
-            showMessage("投票" + cartoon.getContent(), null, null);
-            MCKuai.instence.netEngine.rewardCartoon(getActivity(),true,cartoon.getId(),this);
+            if (application.isLogin()) {
+                MCKuai.instence.netEngine.rewardCartoon(getActivity(),application.user.getId(), cartoon, this);
+            } else {
+                voteCartoon = cartoon;
+                ((MainActivity)getActivity()).callLogin(2);
+            }
         }
     }
 
@@ -100,7 +119,12 @@ public class MainFragment_Competition extends BaseFragment implements Competitio
 
     @Override
     public void onLoadCartoonListFailure(String msg) {
-
+        showMessage(msg, "重试", new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                loadData();
+            }
+        });
     }
 
     @Override
@@ -111,11 +135,12 @@ public class MainFragment_Competition extends BaseFragment implements Competitio
 
     @Override
     public void onRewardaCartoonFailure(String msg) {
-
+        showMessage(msg,null,null);
+        MobclickAgent.onEvent(getActivity(), "competitionCartoon_F");
     }
 
     @Override
     public void onRewardCartoonSuccess() {
-
+        MobclickAgent.onEvent(getActivity(),"competitionCartoon_S");
     }
 }

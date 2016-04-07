@@ -47,9 +47,10 @@
         android:id="@+id/lead_finger"
         android:layout_width="135dp"
         android:layout_height="185dp"
+        android:paddingLeft="50dp"
         android:layout_centerInParent="true"
-        android:background="@mipmap/flip_up"
-        android:visibility="gone"/>
+        android:src="@mipmap/flip_up"
+        android:visibility="visible"/>
 
 
     <android.support.v7.widget.AppCompatTextView

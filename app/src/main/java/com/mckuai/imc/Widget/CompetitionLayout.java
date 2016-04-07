@@ -19,7 +19,6 @@ import com.mckuai.imc.Bean.Cartoon;
 import com.mckuai.imc.Bean.User;
 import com.mckuai.imc.R;
 import com.nostra13.universalimageloader.core.ImageLoader;
-import com.umeng.socialize.utils.Log;
 
 import java.util.ArrayList;
 
@@ -89,8 +88,8 @@ public class CompetitionLayout extends RelativeLayout implements View.OnClickLis
                 }
 
                 title.setText(getThemeName(cartoons.get(0).getContent()));
-                loader.displayImage(cartoons.get(0).getImage(), cartoon_top);
-                loader.displayImage(cartoons.get(1).getImage(), cartoon_bottom);
+                loader.displayImage(cartoons.get(0).getImage(), cartoon_top,MCKuai.instence.getNormalOptions());
+                loader.displayImage(cartoons.get(1).getImage(), cartoon_bottom,MCKuai.instence.getNormalOptions());
                 cartoon_top.setTag(cartoons.get(0));
                 cartoon_bottom.setTag(cartoons.get(1));
 
@@ -172,14 +171,14 @@ public class CompetitionLayout extends RelativeLayout implements View.OnClickLis
                             //向下
                             if (!isVoted && null != listener && Math.abs(distanceY) >= offset) {
                                 isVoted = true;
-                                Log.e("喜欢下");
+                                //Log.e("喜欢下");
                                 listener.onVote((Cartoon) cartoon_bottom.getTag());
                             }
                         } else {
                             //向上
                             if (!isVoted && null != listener && Math.abs(distanceY) >= offset){
                                 isVoted = true;
-                                Log.e("喜欢上");
+                                //Log.e("喜欢上");
                                 listener.onVote((Cartoon) cartoon_top.getTag());
                             }
                         }

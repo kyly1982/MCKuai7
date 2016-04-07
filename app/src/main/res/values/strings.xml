@@ -33,6 +33,7 @@
     <string name="fragment_createcartoon">创建漫画</string>
     <string name="fragment_profile">设置</string>
     <string name="fragment_recommend">私你</string>
+    <string name="fragment_theme">选择主题</string>
 
 
     <!--配置-->
@@ -181,9 +182,9 @@
     <string name="community_postlable_top">推荐</string>
 
     <!--创作-->
-    <string name="createcartoon_hint_step1">第一步 创建一个背景</string>
-    <string name="createcartoon_hint_step2">第二步 添加人物和工具</string>
-    <string name="createcartoon_hint_step3">第三步 添加人物对话</string>
+    <string name="createcartoon_hint_step1">第二步 创建一个背景</string>
+    <string name="createcartoon_hint_step2">第三步 添加人物和工具</string>
+    <string name="createcartoon_hint_step3">第四步 添加人物对话</string>
     <string name="createcartoon_hint_step3_1">选择一个人物，为他添加对话</string>
     <string name="createcartoon_hint_step3_2">输入人物对话</string>
     <string name="createcartoon_hint_step4">第四步 发布你的大作</string>

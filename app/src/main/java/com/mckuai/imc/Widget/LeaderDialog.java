@@ -19,15 +19,16 @@ import com.mckuai.imc.R;
 /**
  * Created by kyly on 2016/3/29.
  */
-public class LeaderDialog extends DialogFragment implements View.OnClickListener {
+public class LeaderDialog extends DialogFragment implements View.OnClickListener,Animation.AnimationListener {
     private View view;
     private Point screenSize;
     private AppCompatImageView top, middle, bottom, finger;
     private AppCompatTextView hint_top, hint_bottom;
     private int step = 0;
     private float distanceY;
-    private long time = 1500;
+    private long time = 1000;
     private Animation flipup, flipdown;
+    private boolean isAnimationPlaying = false;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -74,13 +75,13 @@ public class LeaderDialog extends DialogFragment implements View.OnClickListener
                 hint_top.setText("向上滑动红石，支持上面作品");
                 hint_bottom.setVisibility(View.VISIBLE);
                 middle.startAnimation(getAnimation(true));
-                finger.startAnimation(getAnimation(true));
+                //finger.startAnimation(getAnimation(true));
                 break;
             case 1:
                 hint_top.setText("向下滑动红石，支持下面作品");
                 middle.startAnimation(getAnimation(false));
-                finger.setBackgroundResource(R.mipmap.flip_down);
-                finger.startAnimation(getAnimation(false));
+                finger.setImageResource(R.mipmap.flip_down);
+                //finger.startAnimation(getAnimation(false));
                 break;
             case 2:
                 this.dismiss();
@@ -91,7 +92,9 @@ public class LeaderDialog extends DialogFragment implements View.OnClickListener
 
     @Override
     public void onClick(View v) {
-        showNext();
+        if (!isAnimationPlaying) {
+            showNext();
+        }
     }
 
     public Animation getAnimation(boolean isUp) {
@@ -102,6 +105,9 @@ public class LeaderDialog extends DialogFragment implements View.OnClickListener
                 }
                 flipup = new TranslateAnimation(0, 0, 0, -distanceY);
                 flipup.setDuration(time);
+                flipup.setAnimationListener(this);
+                flipup.setFillAfter(true);
+                flipup.setInterpolator(getActivity(),android.R.anim.decelerate_interpolator);
             }
             return flipup;
         } else {
@@ -111,6 +117,9 @@ public class LeaderDialog extends DialogFragment implements View.OnClickListener
                 }
                 flipdown = new TranslateAnimation(0,0,0, distanceY);
                 flipdown.setDuration(time);
+                flipdown.setAnimationListener(this);
+                flipdown.setFillAfter(true);
+                flipdown.setInterpolator(getActivity(),android.R.anim.decelerate_interpolator);
             }
             return flipdown;
 
@@ -121,4 +130,28 @@ public class LeaderDialog extends DialogFragment implements View.OnClickListener
         distanceY = (getResources().getDimensionPixelOffset(R.dimen.competition_imagewidth_middle) + getResources().getDimensionPixelOffset(R.dimen.competition_centerdivier_width_big)) / 2;
     }
 
+
+    @Override
+    public void onAnimationEnd(Animation animation) {
+        isAnimationPlaying = false;
+        if (animation == flipup){
+            top.setImageResource(R.mipmap.newbird_red);
+            bottom.setImageResource(R.mipmap.newbird_gray);
+        } else {
+            top.setImageResource(R.mipmap.newbird_gray);
+            bottom.setImageResource(R.mipmap.newbird_red);
+        }
+    }
+
+    @Override
+    public void onAnimationStart(Animation animation) {
+        isAnimationPlaying = true;
+        top.setImageResource(R.mipmap.newbird_white);
+        bottom.setImageResource(R.mipmap.newbird_white);
+    }
+
+    @Override
+    public void onAnimationRepeat(Animation animation) {
+
+    }
 }
