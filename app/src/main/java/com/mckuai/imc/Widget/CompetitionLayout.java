@@ -27,8 +27,9 @@ import java.util.ArrayList;
  */
 public class CompetitionLayout extends RelativeLayout implements View.OnClickListener {
     private ViewDragHelper mDragger;
-    private AppCompatImageView middleView, cartoon_top, cartoon_bottom, bg_top, bg_bottom, bg_middle;
+    private AppCompatImageView middleView, cartoon_top, cartoon_bottom, bg_top, bg_bottom;
     private AppCompatTextView title;
+    private AppCompatImageButton voteTop,voteBottom;
     private LinearLayout root_top, root_bottom;
 //    private CardView root;
     //private RelativeLayout cartoonlayout_top, cartoonlayout_bottom;
@@ -87,11 +88,13 @@ public class CompetitionLayout extends RelativeLayout implements View.OnClickLis
                     loader = ImageLoader.getInstance();
                 }
 
-                title.setText(getThemeName(cartoons.get(0).getContent()));
+                title.setText(getThemeName(cartoons.get(0).getKindsEx()));
                 loader.displayImage(cartoons.get(0).getImage(), cartoon_top,MCKuai.instence.getNormalOptions());
                 loader.displayImage(cartoons.get(1).getImage(), cartoon_bottom,MCKuai.instence.getNormalOptions());
                 cartoon_top.setTag(cartoons.get(0));
                 cartoon_bottom.setTag(cartoons.get(1));
+                voteTop.setTag(cartoons.get(0));
+                voteBottom.setTag(cartoons.get(1));
 
                 showVoteUser(root_top, cartoons.get(0).getRewardList());
                 showVoteUser(root_bottom, cartoons.get(1).getRewardList());
@@ -102,7 +105,7 @@ public class CompetitionLayout extends RelativeLayout implements View.OnClickLis
                     }
                 } else {
                     cartoons.remove(0);
-                    cartoons.remove(1);
+                    cartoons.remove(0);
                 }
             }
         }
@@ -240,21 +243,21 @@ public class CompetitionLayout extends RelativeLayout implements View.OnClickLis
         title = (AppCompatTextView) findViewById(R.id.theme);
         root_top = (LinearLayout) findViewById(R.id.root_top);
         root_bottom = (LinearLayout) findViewById(R.id.root_bottom);
-        //cartoonlayout_top = (RelativeLayout) findViewById(R.id.layout_top);
-        //cartoonlayout_bottom = (RelativeLayout) findViewById(R.id.layout_bottom);
         cartoon_top = (AppCompatImageView) findViewById(R.id.cartoon_top);
-        cartoon_bottom = (AppCompatImageView) findViewById(R.id.cartoon_top);
+        cartoon_bottom = (AppCompatImageView) findViewById(R.id.cartoon_bottom);
+        voteTop = (AppCompatImageButton) findViewById(R.id.vote_top);
+        voteBottom = (AppCompatImageButton) findViewById(R.id.vote_bottom);
 
         bg_top = (AppCompatImageView) findViewById(R.id.diamond_top);
         bg_bottom = (AppCompatImageView) findViewById(R.id.diamond_bottom);
-        bg_middle = (AppCompatImageView) findViewById(R.id.diamond_middle_background);
+        //bg_middle = (AppCompatImageView) findViewById(R.id.diamond_middle_background);
         middleView = (AppCompatImageView) findViewById(R.id.diamond_middle);
 
         bg_top.setAlpha(0);
         bg_bottom.setAlpha(0);
 
-        root_top.getChildAt(0).setOnClickListener(this);
-        root_bottom.getChildAt(0).setOnClickListener(this);
+        voteTop.setOnClickListener(this);
+        voteBottom.setOnClickListener(this);
         cartoon_top.setOnClickListener(this);
         cartoon_bottom.setOnClickListener(this);
     }
@@ -323,18 +326,10 @@ public class CompetitionLayout extends RelativeLayout implements View.OnClickLis
             if (null == loader){
                 loader = ImageLoader.getInstance();
             }
-            if (root.getChildCount() > 1){
-                for (int i = 0; getChildCount() > 1;i++){
-                    if (getChildAt(0) instanceof ImageView){
-                        root.removeViewAt(0);
-                    } else {
-                        break;
-                    }
-                }
+            if (root.getChildCount() > 0){
+                root.removeAllViews();
             }
-            if (null != root.getChildAt(0) && getChildAt(0) instanceof AppCompatImageButton){
 
-            }
             for (User user:users){
                 final User temp = user;
                 ImageView imageView = new ImageView(getContext());
@@ -355,6 +350,7 @@ public class CompetitionLayout extends RelativeLayout implements View.OnClickLis
 
     private LinearLayout.LayoutParams getImageLayoutParsms() {
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(imageWidth, imageWidth);
+        params.setMargins(0,10,10,0);
         return params;
     }
 

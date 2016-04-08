@@ -150,7 +150,11 @@ public class CartoonView extends FrameLayout implements View.OnClickListener {
 
         pkCount.setText(cartoon.getAllPk()+"");
         pkWinCount.setText(cartoon.getWinPk()+"");
-        pkRate.setText((int)(100 * cartoon.getWinPk() /cartoon.getAllPk()) +"%");
+        if (0 == cartoon.getAllPk() || 0 == cartoon.getWinPk()){
+            pkRate.setText("0");
+        } else {
+            pkRate.setText((int) (100 * cartoon.getWinPk() / cartoon.getAllPk()) + "%");
+        }
 
         if (isDetailed) {
             name = (AppCompatTextView) findViewById(R.id.cartoon_name);

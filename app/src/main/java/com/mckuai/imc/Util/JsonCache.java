@@ -128,7 +128,8 @@ public class JsonCache {
         if (null != params){
             url += "&"+params.toString();
         }
-        return mCache.get(url);
+        String result = mCache.get(url);
+        return null == result ? "":result;
     }
 
     /**

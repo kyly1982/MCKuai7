@@ -460,6 +460,10 @@ public class PostActivity extends BaseActivity implements OnClickListener, TextW
 
 	private void rewardPost()
 	{
+		if (isReward){
+			showMessage("已经打赏过了",null,null);
+			return;
+		}
 		if (mApplication.isLogin())
 		{
 			String url = getString(R.string.interface_domainName) + getString(R.string.interface_reward);
@@ -1263,7 +1267,7 @@ public class PostActivity extends BaseActivity implements OnClickListener, TextW
 		if (isReward)
 		{
 			btn_reward.setEnabled(false);
-			btn_reward.setBackgroundResource(R.drawable.btn_post_reward);
+			btn_reward.setBackgroundResource(R.mipmap.btn_post_reward_pressed);
 		} else
 		{
 			btn_reward.setBackgroundResource(R.drawable.btn_post_reward);

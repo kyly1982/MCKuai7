@@ -1,20 +1,20 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:gravity="center"
-    android:background="@null">
+    android:background="@null"
+    android:gravity="center">
 
     <android.support.v7.widget.CardView
+        xmlns:app="http://schemas.android.com/apk/res-auto"
         android:id="@+id/card"
         android:layout_width="320dp"
         android:layout_height="495dp"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        app:cardBackgroundColor="@color/competitionbackground"
+        android:layout_centerInParent="true"
         android:elevation="8dp"
+        app:cardBackgroundColor="@color/competitionbackground"
         app:cardCornerRadius="5dp"
         app:contentPaddingBottom="5dp"
-        app:contentPaddingTop="5dp"
-        android:layout_centerInParent="true">
+        app:contentPaddingTop="5dp">
 
         <com.mckuai.imc.Widget.CompetitionLayout
             android:id="@+id/competition"
@@ -36,34 +36,65 @@
                 android:layout_height="@dimen/competition_centerdivier_width"
                 android:layout_centerInParent="true" />
 
-            <LinearLayout
-                android:id="@+id/root_top"
+            <RelativeLayout
                 android:layout_width="@dimen/sidlewidth_competition"
                 android:layout_height="wrap_content"
                 android:layout_above="@id/competition_center"
-                android:layout_alignParentRight="true"
-                android:orientation="vertical">
+                android:layout_alignParentRight="true">
 
                 <android.support.v7.widget.AppCompatImageButton
                     android:id="@+id/vote_top"
                     android:layout_width="@dimen/sidlewidth_competition"
                     android:layout_height="@dimen/sidlewidth_competition"
+                    android:layout_alignParentBottom="true"
                     android:background="@mipmap/ic_diamond_small_normal" />
-            </LinearLayout>
 
-            <LinearLayout
-                android:id="@+id/root_bottom"
+                <ScrollView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_above="@id/vote_top"
+                    android:layout_marginBottom="5dp">
+
+                    <LinearLayout
+                        android:id="@+id/root_top"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                    </LinearLayout>
+                </ScrollView>
+
+            </RelativeLayout>
+
+            <RelativeLayout
                 android:layout_width="@dimen/sidlewidth_competition"
                 android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
                 android:layout_alignParentRight="true"
-                android:layout_alignParentBottom="true">
+                android:layout_below="@id/competition_center">
 
                 <android.support.v7.widget.AppCompatImageButton
                     android:id="@+id/vote_bottom"
                     android:layout_width="@dimen/sidlewidth_competition"
                     android:layout_height="@dimen/sidlewidth_competition"
-                    android:background="@mipmap/ic_diamond_small_normal"/>
-            </LinearLayout>
+                    android:layout_alignParentBottom="true"
+                    android:background="@mipmap/ic_diamond_small_normal" />
+
+                <ScrollView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_above="@id/vote_bottom"
+                    android:layout_marginBottom="5dp">
+
+                    <LinearLayout
+                        android:id="@+id/root_bottom"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"></LinearLayout>
+                </ScrollView>
+
+
+            </RelativeLayout>
 
 
             <RelativeLayout
@@ -80,8 +111,8 @@
                     android:id="@+id/cartoon_top"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:scaleType="fitXY"
-                    android:clickable="true"  />
+                    android:clickable="true"
+                    android:scaleType="fitXY" />
 
                 <android.support.v7.widget.AppCompatImageView
                     android:id="@+id/diamond_top"
@@ -118,7 +149,7 @@
                     android:layout_width="67dp"
                     android:layout_height="67dp"
                     android:layout_centerInParent="true"
-                    android:src="@mipmap/ic_diamond_big_normal"  />
+                    android:src="@mipmap/ic_diamond_big_normal" />
             </RelativeLayout>
 
 
@@ -127,7 +158,7 @@
                 android:layout_width="67dp"
                 android:layout_height="67dp"
                 android:layout_centerInParent="true"
-                android:src="@mipmap/ic_diamond_big_normal"  />
+                android:src="@mipmap/ic_diamond_big_normal" />
 
 
             <android.support.v7.widget.AppCompatImageView
@@ -135,7 +166,7 @@
                 android:layout_width="67dp"
                 android:layout_height="67dp"
                 android:layout_centerInParent="true"
-                android:src="@mipmap/ic_diamond_big_activited"  />
+                android:src="@mipmap/ic_diamond_big_activited" />
 
         </com.mckuai.imc.Widget.CompetitionLayout>
 
