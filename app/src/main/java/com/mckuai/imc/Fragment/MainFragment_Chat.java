@@ -27,9 +27,8 @@ import java.util.ArrayList;
 
 import io.rong.imkit.RongIM;
 import io.rong.imlib.RongIMClient;
-import io.rong.imlib.model.Message;
 
-public class MainFragment_Chat extends BaseFragment implements ConversationAdapter.OnItemClickListener, MCNetEngine.OnLoadRecommendUserListener, WaitUserAdapter.OnItemClickListener,RongIMClient.OnReceiveMessageListener {
+public class MainFragment_Chat extends BaseFragment implements ConversationAdapter.OnItemClickListener, MCNetEngine.OnLoadRecommendUserListener, WaitUserAdapter.OnItemClickListener{
     private ArrayList<Conversation> conversations;
     // private ArrayList<User> users;
     private ArrayList<User> waitUsers;
@@ -41,7 +40,7 @@ public class MainFragment_Chat extends BaseFragment implements ConversationAdapt
     private WaitUserAdapter waitUserAdapter;
     private MCKuai application;
     private User user;
-    private boolean isRegReciver = false;
+    //private boolean isRegReciver = false;
 
     public MainFragment_Chat() {
         mTitleResId = R.string.fragment_chat;
@@ -74,10 +73,10 @@ public class MainFragment_Chat extends BaseFragment implements ConversationAdapt
         if (null != view && null == conversationList) {
             initView();
         }
-        if (!isRegReciver && application.isIMLogined){
+       /* if (!isRegReciver && application.isIMLogined){
             RongIM.setOnReceiveMessageListener(this);
             isRegReciver = true;
-        }
+        }*/
 
         if (application.isLogin()){
             showData();
@@ -91,10 +90,7 @@ public class MainFragment_Chat extends BaseFragment implements ConversationAdapt
             initView();
         }
         if (!hidden) {
-            if (!isRegReciver && application.isIMLogined){
-                RongIM.setOnReceiveMessageListener(this);
-                isRegReciver = true;
-            }
+
             showData();
             showUser();
         }
@@ -293,10 +289,14 @@ public class MainFragment_Chat extends BaseFragment implements ConversationAdapt
         }
     }
 
-    @Override
-    public boolean onReceived(Message message, int i) {
-        //getConversation();
-        showData();
-        return false;
+    public void onNewMsgRecived(){
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                showData();
+            }
+        });
     }
+
+
 }

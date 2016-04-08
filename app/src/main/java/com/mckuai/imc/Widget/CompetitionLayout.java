@@ -31,8 +31,6 @@ public class CompetitionLayout extends RelativeLayout implements View.OnClickLis
     private AppCompatTextView title;
     private AppCompatImageButton voteTop,voteBottom;
     private LinearLayout root_top, root_bottom;
-//    private CardView root;
-    //private RelativeLayout cartoonlayout_top, cartoonlayout_bottom;
     private Point middle;
     private OnActionListener listener;
     private ImageLoader loader;
@@ -45,17 +43,13 @@ public class CompetitionLayout extends RelativeLayout implements View.OnClickLis
     private boolean isVoted = false;
     private int drageState = 0;
     private int distanceY;
-    //private int drageDirection;
-    private final int DRAGE_STOP = 0;
-    private final int DRAGE_UP = 1;
-    private final int DRAGE_DOWN = 2;
 
     private int topOffset,bottomOffset;
 
     public interface OnActionListener {
         void onShowDetile(Cartoon cartoon);
 
-        void onVote(Cartoon cartoon);
+        void onVote(Cartoon win,Cartoon fail);
 
         void onShowUser(User user);
 
@@ -89,8 +83,8 @@ public class CompetitionLayout extends RelativeLayout implements View.OnClickLis
                 }
 
                 title.setText(getThemeName(cartoons.get(0).getKindsEx()));
-                loader.displayImage(cartoons.get(0).getImage(), cartoon_top,MCKuai.instence.getNormalOptions());
-                loader.displayImage(cartoons.get(1).getImage(), cartoon_bottom,MCKuai.instence.getNormalOptions());
+                loader.displayImage(cartoons.get(0).getImage(), cartoon_top, MCKuai.instence.getNormalOptions());
+                loader.displayImage(cartoons.get(1).getImage(), cartoon_bottom, MCKuai.instence.getNormalOptions());
                 cartoon_top.setTag(cartoons.get(0));
                 cartoon_bottom.setTag(cartoons.get(1));
                 voteTop.setTag(cartoons.get(0));
@@ -175,14 +169,14 @@ public class CompetitionLayout extends RelativeLayout implements View.OnClickLis
                             if (!isVoted && null != listener && Math.abs(distanceY) >= offset) {
                                 isVoted = true;
                                 //Log.e("喜欢下");
-                                listener.onVote((Cartoon) cartoon_bottom.getTag());
+                                listener.onVote((Cartoon) cartoon_bottom.getTag(), (Cartoon) cartoon_top.getTag());
                             }
                         } else {
                             //向上
                             if (!isVoted && null != listener && Math.abs(distanceY) >= offset){
                                 isVoted = true;
                                 //Log.e("喜欢上");
-                                listener.onVote((Cartoon) cartoon_top.getTag());
+                                listener.onVote((Cartoon) cartoon_top.getTag(), (Cartoon) cartoon_bottom.getTag());
                             }
                         }
 
@@ -308,13 +302,13 @@ public class CompetitionLayout extends RelativeLayout implements View.OnClickLis
                 break;
             case R.id.vote_top:
                 if (null != listener) {
-                    listener.onVote((Cartoon) v.getTag());
+                    listener.onVote((Cartoon) v.getTag(), (Cartoon) cartoon_bottom.getTag());
                     showData();
                 }
                 break;
             case R.id.vote_bottom:
                 if (null != listener) {
-                    listener.onVote((Cartoon) v.getTag());
+                    listener.onVote((Cartoon) v.getTag(), (Cartoon) cartoon_top.getTag());
                     showData();
                 }
                 break;
@@ -331,14 +325,14 @@ public class CompetitionLayout extends RelativeLayout implements View.OnClickLis
             }
 
             for (User user:users){
-                final User temp = user;
                 ImageView imageView = new ImageView(getContext());
                 imageView.setLayoutParams(getImageLayoutParsms());
+                imageView.setTag(user);
                 imageView.setOnClickListener(new OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         if (null != listener) {
-                            listener.onShowUser(temp);
+                            listener.onShowUser((User) v.getTag());
                         }
                     }
                 });

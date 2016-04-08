@@ -91,5 +91,4 @@ dependencies {
     compile 'com.hkm.slidingmenulib:libmenu:0.4.8'
     compile 'com.zhy:okhttputils:2.3.8'
     compile 'cn.finalteam:okhttpfinal:+'
-    compile files('libs/android-viewbadger.jar')
 }

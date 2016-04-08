@@ -105,6 +105,13 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_above="@id/nav"></RelativeLayout>
+
+            <View
+                android:id="@+id/msgIndicator"
+                android:layout_width="10dp"
+                android:layout_height="10dp"
+                android:background="@drawable/ic_circle_red"
+                android:layout_alignTop="@id/nav"/>
         </RelativeLayout>
 
         <include layout="@layout/slidingview_layout" />

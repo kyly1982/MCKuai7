@@ -11,6 +11,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewConfiguration;
+import android.view.ViewTreeObserver;
 import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 
@@ -27,7 +28,6 @@ import com.mckuai.imc.R;
 import com.mckuai.imc.Util.MCNetEngine;
 import com.mckuai.imc.Widget.ExitDialog;
 import com.mckuai.imc.Widget.LeaderDialog;
-import com.readystatesoftware.viewbadger.BadgeView;
 import com.umeng.analytics.MobclickAgent;
 import com.umeng.message.PushAgent;
 import com.umeng.socialize.utils.Log;
@@ -38,6 +38,7 @@ import java.util.ArrayList;
 
 import io.rong.imkit.RongIM;
 import io.rong.imlib.RongIMClient;
+import io.rong.imlib.model.Conversation;
 import io.rong.imlib.model.Message;
 import io.rong.imlib.model.UserInfo;
 
@@ -46,13 +47,14 @@ public class MainActivity extends BaseActivity implements View.OnClickListener
         , BaseFragment.OnFragmentEventListener
         , RongIM.UserInfoProvider
         , MCNetEngine.OnGetAdResponse
-        , RongIMClient.OnReceiveMessageListener {
+        , RongIMClient.OnReceiveMessageListener
+        , RongIM.OnReceiveUnreadCountChangedListener {
     private RadioGroup nav;
     private RelativeLayout content;
     private AppCompatTextView title;
-    private BadgeView badgeView; //脚标
-    //private RadioGroup cartoonType;
-    //private AppCompatRadioButton mNewType;
+    private View msgIndicator; //脚标
+    private boolean isMsgIndicatorInit = false;
+    //private RelativeLayout.LayoutParams layoutParams;
     private AppCompatRadioButton chat;
 
 
@@ -108,15 +110,38 @@ public class MainActivity extends BaseActivity implements View.OnClickListener
 
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+    }
+
     private void initView() {
+        msgIndicator = findViewById(R.id.msgIndicator);
         nav = (RadioGroup) findViewById(R.id.nav);
         title = (AppCompatTextView) findViewById(R.id.actionbar_title);
         chat = (AppCompatRadioButton) findViewById(R.id.nav_chat);
         nav.setVisibility(View.VISIBLE);
 
+        ViewTreeObserver vto = chat.getViewTreeObserver();
+        vto.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+                int right = chat.getRight();
+                int top = chat.getTop();
+                RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) msgIndicator.getLayoutParams();
+                layoutParams.leftMargin = right - msgIndicator.getWidth() - 50;
+                msgIndicator.setLayoutParams(layoutParams);
+                msgIndicator.postInvalidate();
+                isMsgIndicatorInit = true;
+                checkUnReadMsg();
+                chat.getViewTreeObserver().removeGlobalOnLayoutListener(this);
+            }
+        });
+
         findViewById(R.id.nav_create).setOnClickListener(this);
         nav.setOnCheckedChangeListener(this);
         title.setText("暴力PK");
+        //msgIndicator.setVisibility(View.GONE);
     }
 
     private void initFragment() {
@@ -156,6 +181,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener
         if (RongIM.getInstance() != null && RongIM.getInstance().getRongIMClient() != null) {
             RongIM.setUserInfoProvider(this, true);
             RongIM.setOnReceiveMessageListener(this);
+            RongIM.getInstance().setOnReceiveUnreadCountChangedListener(this, Conversation.ConversationType.PRIVATE);
             isIMListenerInit = true;
         }
     }
@@ -164,16 +190,15 @@ public class MainActivity extends BaseActivity implements View.OnClickListener
         if (RongIM.getInstance() != null && RongIM.getInstance().getRongIMClient() != null && RongIM.getInstance().getRongIMClient().getCurrentConnectionStatus() == RongIMClient.ConnectionStatusListener.ConnectionStatus.CONNECTED) {
             switch (RongIM.getInstance().getRongIMClient().getTotalUnreadCount()) {
                 case 0:
-                    if (null != badgeView) {
-                        badgeView.hide();
+                    if (null != msgIndicator) {
+                        msgIndicator.setVisibility(View.GONE);
                     }
                     break;
                 default:
-                    if (null == badgeView) {
-                        badgeView = new BadgeView(this, chat);
+                    if (isMsgIndicatorInit) {
+                        msgIndicator.setVisibility(View.VISIBLE);
+                        msgIndicator.postInvalidate();
                     }
-                    badgeView.setText(RongIM.getInstance().getRongIMClient().getTotalUnreadCount() + "");
-                    badgeView.show();
                     break;
             }
         }
@@ -336,8 +361,27 @@ public class MainActivity extends BaseActivity implements View.OnClickListener
 
     @Override
     public boolean onReceived(Message message, int i) {
-        checkUnReadMsg();
+        if (null != message)
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    checkUnReadMsg();
+                    ((MainFragment_Chat)fragments.get(1)).onNewMsgRecived();
+                }
+
+            });
+
         return false;
+    }
+
+    @Override
+    public void onMessageIncreased(int i) {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+               checkUnReadMsg();
+            }
+        });
     }
 
     @Override

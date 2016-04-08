@@ -22,12 +22,19 @@ import com.umeng.analytics.MobclickAgent;
 
 import java.util.ArrayList;
 
+import io.rong.imkit.RongIM;
+import io.rong.imlib.RongIMClient;
+import io.rong.imlib.model.Conversation;
+import io.rong.imlib.model.Message;
+import io.rong.message.TextMessage;
+
 
 public class MainFragment_Competition extends BaseFragment implements CompetitionLayout.OnActionListener,MCNetEngine.OnLoadCartoonListResponseListener,MCNetEngine.OnRewardCartoonResponseListener {
     private View view;
     private CompetitionLayout competitionLayout;
     private Page page;
     private Cartoon voteCartoon;
+    private Cartoon failCartoon;
 
     private MCKuai application;
 
@@ -63,7 +70,7 @@ public class MainFragment_Competition extends BaseFragment implements Competitio
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == 2 && resultCode == Activity.RESULT_OK){
-            onVote(voteCartoon);
+            onVote(voteCartoon,failCartoon);
         }
     }
 
@@ -96,13 +103,38 @@ public class MainFragment_Competition extends BaseFragment implements Competitio
     }
 
     @Override
-    public void onVote(Cartoon cartoon) {
+    public void onVote(Cartoon win,Cartoon fail) {
         MobclickAgent.onEvent(getActivity(),"competitionCartoon");
-        if (null != cartoon) {
+        if (null != win && null != fail) {
             if (application.isLogin()) {
-                MCKuai.instence.netEngine.rewardCartoon(getActivity(),application.user.getId(), cartoon, this);
+                MCKuai.instence.netEngine.rewardCartoon(getActivity(),application.user.getId(), win, this);
+                if (null != RongIM.getInstance() && null != RongIM.getInstance().getRongIMClient()) {
+                    TextMessage message = TextMessage.obtain("恭喜你，你的漫画在与"+fail.getOwner().getName()+"的漫画的PK中取得了胜利。");
+                    RongIM.getInstance().getRongIMClient().sendMessage(Conversation.ConversationType.PRIVATE, win.getOwner().getName(), message, application.user.getNike() + "你的漫画在PK中取得了胜利！", "", new RongIMClient.SendMessageCallback() {
+                        @Override
+                        public void onError(Integer integer, RongIMClient.ErrorCode errorCode) {
+
+                        }
+
+                        @Override
+                        public void onSuccess(Integer integer) {
+
+                        }
+                    }, new RongIMClient.ResultCallback<Message>() {
+                        @Override
+                        public void onSuccess(Message message) {
+
+                        }
+
+                        @Override
+                        public void onError(RongIMClient.ErrorCode errorCode) {
+
+                        }
+                    });
+                }
             } else {
-                voteCartoon = cartoon;
+                voteCartoon = win;
+                failCartoon = fail;
                 ((MainActivity)getActivity()).callLogin(2);
             }
         }
@@ -111,9 +143,7 @@ public class MainFragment_Competition extends BaseFragment implements Competitio
     @Override
     public void onShowUser(User user) {
         Intent intent = new Intent(getActivity(), UserCenterActivity.class);
-        Bundle bundle = new Bundle();
-        bundle.putSerializable(getString(R.string.cartoondetail_tag_cartoon),user);
-        intent.putExtras(bundle);
+        intent.putExtra(getString(R.string.usercenter_tag_userid),user.getId().intValue());
         getActivity().startActivity(intent);
     }
 
