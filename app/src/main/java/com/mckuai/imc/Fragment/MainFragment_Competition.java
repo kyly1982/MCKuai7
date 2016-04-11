@@ -32,6 +32,7 @@ import io.rong.message.TextMessage;
 public class MainFragment_Competition extends BaseFragment implements CompetitionLayout.OnActionListener,MCNetEngine.OnLoadCartoonListResponseListener,MCNetEngine.OnRewardCartoonResponseListener {
     private View view;
     private CompetitionLayout competitionLayout;
+    private ArrayList<Cartoon> cartoons;
     private Page page;
     private Cartoon voteCartoon;
     private Cartoon failCartoon;
@@ -40,7 +41,6 @@ public class MainFragment_Competition extends BaseFragment implements Competitio
 
 
     public MainFragment_Competition() {
-        // Required empty public constructor
         application = MCKuai.instence;
     }
 
@@ -49,7 +49,6 @@ public class MainFragment_Competition extends BaseFragment implements Competitio
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         if (null == view) {
             view = inflater.inflate(R.layout.fragment_main_fragment_competition, container, false);
             initView();
@@ -63,6 +62,16 @@ public class MainFragment_Competition extends BaseFragment implements Competitio
 
         if (null == page){
             loadData();
+        }
+    }
+
+
+
+    @Override
+    public void onHiddenChanged(boolean hidden) {
+        super.onHiddenChanged(hidden);
+        if (!hidden){
+            showData();
         }
     }
 
@@ -87,6 +96,16 @@ public class MainFragment_Competition extends BaseFragment implements Competitio
         application.netEngine.loadCartoonList(getActivity(), page, this);
     }
 
+    private void showData(){
+        if (null == page){
+            loadData();
+        } else {
+            if (null != cartoons) {
+                competitionLayout.setData(cartoons);
+            }
+        }
+    }
+
 
     @Override
     public void EOF() {
@@ -109,7 +128,7 @@ public class MainFragment_Competition extends BaseFragment implements Competitio
             if (application.isLogin()) {
                 MCKuai.instence.netEngine.rewardCartoon(getActivity(),application.user.getId(), win, this);
                 if (null != RongIM.getInstance() && null != RongIM.getInstance().getRongIMClient()) {
-                    TextMessage message = TextMessage.obtain("恭喜你，你的漫画在与"+fail.getOwner().getName()+"的漫画的PK中取得了胜利。");
+                    TextMessage message = TextMessage.obtain("恭喜你，你的漫画在与 "+fail.getOwner().getNickEx()+" 的漫画的PK中取得了胜利。");
                     RongIM.getInstance().getRongIMClient().sendMessage(Conversation.ConversationType.PRIVATE, win.getOwner().getName(), message, application.user.getNike() + "你的漫画在PK中取得了胜利！", "", new RongIMClient.SendMessageCallback() {
                         @Override
                         public void onError(Integer integer, RongIMClient.ErrorCode errorCode) {
@@ -158,13 +177,17 @@ public class MainFragment_Competition extends BaseFragment implements Competitio
     }
 
     @Override
-    public void onLoadCartoonListSuccess(ArrayList<Cartoon> cartoons, Page page) {
-        this.page = page;
+    public void onLoadCartoonListSuccess(ArrayList<Cartoon> cartoons) {
+        page.setPage(page.getNextPage());
         competitionLayout.setData(cartoons);
     }
 
     @Override
     public void onRewardaCartoonFailure(String msg) {
+        if (msg.equals("已赞")){
+            MobclickAgent.onEvent(getActivity(),"competitionCartoon_FR");
+            return;
+        }
         showMessage(msg,null,null);
         MobclickAgent.onEvent(getActivity(), "competitionCartoon_F");
     }

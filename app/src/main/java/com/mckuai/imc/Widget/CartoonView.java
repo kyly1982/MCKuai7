@@ -158,7 +158,7 @@ public class CartoonView extends FrameLayout implements View.OnClickListener {
 
         if (isDetailed) {
             name = (AppCompatTextView) findViewById(R.id.cartoon_name);
-            name.setText(cartoon.getContent() + "");
+            name.setText(cartoon.getKindsEx() + "");
             name.setVisibility(VISIBLE);
             //
             if (null != cartoon.getRewardList() && !cartoon.getRewardList().isEmpty()) {

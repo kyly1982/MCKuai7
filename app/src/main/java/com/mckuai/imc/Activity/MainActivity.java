@@ -104,8 +104,18 @@ public class MainActivity extends BaseActivity implements View.OnClickListener
 
         if ((MCKuai.instence.leadTag & 1) == 0) {
             LeaderDialog dialog = new LeaderDialog();
+            dialog.setOnDismissListener(new LeaderDialog.OnDismissListener() {
+                @Override
+                public void onDismiss() {
+                    //FragmentTransaction transaction = mFragmentManager.beginTransaction();
+                    if (null != fragments && null != fragments.get(currentFragmentIndex)) {
+                        //transaction.show(fragments.get(currentFragmentIndex)).commit();
+                        mApplication.setLeadTag(1);
+                        mApplication.saveProfile();
+                    }
+                }
+            });
             dialog.show(getFragmentManager(), "DIALOG");
-            mApplication.setLeadTag(1);
         }
 
     }

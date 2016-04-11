@@ -223,11 +223,11 @@ public class MainFragment_Cartoon extends BaseFragment implements RadioGroup.OnC
     }
 
     @Override
-    public void onLoadCartoonListSuccess(ArrayList<Cartoon> cartoons, Page page) {
+    public void onLoadCartoonListSuccess(ArrayList<Cartoon> cartoons) {
 
         switch (typeIndex) {
             case 0:
-                pageNew = page;
+                //pageNew = page;
                 if (null == mNewCartoon) {
                     mNewCartoon = cartoons;
                 } else {
@@ -235,7 +235,7 @@ public class MainFragment_Cartoon extends BaseFragment implements RadioGroup.OnC
                 }
                 break;
             case 1:
-                pageHot = page;
+                //pageHot = page;
                 if (null == mHotCartoon) {
                     mHotCartoon = cartoons;
                 } else {

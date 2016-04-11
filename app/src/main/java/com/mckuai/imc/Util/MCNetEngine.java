@@ -453,7 +453,7 @@ public class MCNetEngine {
      ***************************************************************************/
 
     public interface OnLoadCartoonListResponseListener {
-        void onLoadCartoonListSuccess(ArrayList<Cartoon> cartoons, Page page);
+        void onLoadCartoonListSuccess(ArrayList<Cartoon> cartoons);
 
         void onLoadCartoonListFailure(String msg);
     }
@@ -471,8 +471,9 @@ public class MCNetEngine {
                         Type type = new TypeToken<ArrayList<Cartoon>>() {
                         }.getType();
                         ArrayList<Cartoon> cartoons = gson.fromJson(result.msg, type);
-                        Page page1 = gson.fromJson(result.pageBean, Page.class);
-                        listener.onLoadCartoonListSuccess(cartoons, page1);
+                        //Page page1 = gson.fromJson(result.pageBean, Page.class);
+                        listener.onLoadCartoonListSuccess(cartoons);
+                        return;
                     } catch (Exception e) {
                         e.printStackTrace();
                         listener.onLoadCartoonListFailure(e.getLocalizedMessage());

@@ -4,7 +4,6 @@ import android.content.Context;
 import android.graphics.Point;
 import android.support.v4.widget.ViewDragHelper;
 import android.support.v7.widget.AppCompatImageButton;
-import android.support.v7.widget.AppCompatImageView;
 import android.support.v7.widget.AppCompatTextView;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
@@ -27,7 +26,7 @@ import java.util.ArrayList;
  */
 public class CompetitionLayout extends RelativeLayout implements View.OnClickListener {
     private ViewDragHelper mDragger;
-    private AppCompatImageView middleView, cartoon_top, cartoon_bottom, bg_top, bg_bottom;
+    private ImageView middleView, cartoon_top, cartoon_bottom, bg_top, bg_bottom;
     private AppCompatTextView title;
     private AppCompatImageButton voteTop,voteBottom;
     private LinearLayout root_top, root_bottom;
@@ -39,6 +38,8 @@ public class CompetitionLayout extends RelativeLayout implements View.OnClickLis
     private boolean isLoadingData = false;
 
     private int imageWidth;
+    private int userCoverWidth = 0;
+    private int coverDivier=0;
     private int offset = 0;
     private boolean isVoted = false;
     private int drageState = 0;
@@ -237,15 +238,15 @@ public class CompetitionLayout extends RelativeLayout implements View.OnClickLis
         title = (AppCompatTextView) findViewById(R.id.theme);
         root_top = (LinearLayout) findViewById(R.id.root_top);
         root_bottom = (LinearLayout) findViewById(R.id.root_bottom);
-        cartoon_top = (AppCompatImageView) findViewById(R.id.cartoon_top);
-        cartoon_bottom = (AppCompatImageView) findViewById(R.id.cartoon_bottom);
+        cartoon_top = (ImageView) findViewById(R.id.cartoon_top);
+        cartoon_bottom = (ImageView) findViewById(R.id.cartoon_bottom);
         voteTop = (AppCompatImageButton) findViewById(R.id.vote_top);
         voteBottom = (AppCompatImageButton) findViewById(R.id.vote_bottom);
 
-        bg_top = (AppCompatImageView) findViewById(R.id.diamond_top);
-        bg_bottom = (AppCompatImageView) findViewById(R.id.diamond_bottom);
+        bg_top = (ImageView) findViewById(R.id.diamond_top);
+        bg_bottom = (ImageView) findViewById(R.id.diamond_bottom);
         //bg_middle = (AppCompatImageView) findViewById(R.id.diamond_middle_background);
-        middleView = (AppCompatImageView) findViewById(R.id.diamond_middle);
+        middleView = (ImageView) findViewById(R.id.diamond_middle);
 
         bg_top.setAlpha(0);
         bg_bottom.setAlpha(0);
@@ -262,6 +263,8 @@ public class CompetitionLayout extends RelativeLayout implements View.OnClickLis
         //if (null == middle) {
             middle = new Point(middleView.getLeft(), middleView.getTop());
             imageWidth = getResources().getDimensionPixelSize(R.dimen.sidlewidth_competition);
+            userCoverWidth = getResources().getDimensionPixelSize(R.dimen.competition_voteuser_coverwidth);
+            coverDivier = getResources().getDimensionPixelSize(R.dimen.competition_usercover_divier);
             offset = (getResources().getDimensionPixelSize(R.dimen.competition_centerdivier_width) + getResources().getDimensionPixelSize(R.dimen.competition_imagewidth)) / 2;
             RelativeLayout.LayoutParams params = (LayoutParams) bg_top.getLayoutParams();
             params.setMargins(bg_top.getLeft(), (cartoon_top.getBottom() - bg_top.getBottom() - cartoon_top.getTop() + bg_top.getTop()) / 2, 0, 0);
@@ -323,11 +326,11 @@ public class CompetitionLayout extends RelativeLayout implements View.OnClickLis
             if (root.getChildCount() > 0){
                 root.removeAllViews();
             }
-
-            for (User user:users){
+            int count = (3 > users.size() ? users.size() : 3);
+            for (int i = 0;i < count;i++){
                 ImageView imageView = new ImageView(getContext());
                 imageView.setLayoutParams(getImageLayoutParsms());
-                imageView.setTag(user);
+                imageView.setTag(users.get(i));
                 imageView.setOnClickListener(new OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -336,15 +339,15 @@ public class CompetitionLayout extends RelativeLayout implements View.OnClickLis
                         }
                     }
                 });
-                loader.displayImage(user.getHeadImage(),imageView, MCKuai.instence.getCircleOptions());
+                loader.displayImage(users.get(i).getHeadImage(),imageView, MCKuai.instence.getCircleOptions());
                 root.addView(imageView, 0);
             }
         }
     }
 
     private LinearLayout.LayoutParams getImageLayoutParsms() {
-        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(imageWidth, imageWidth);
-        params.setMargins(0,10,10,0);
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(userCoverWidth, userCoverWidth);
+        params.setMargins(0,0,0,coverDivier);
         return params;
     }
 

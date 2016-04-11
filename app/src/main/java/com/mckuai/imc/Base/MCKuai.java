@@ -230,8 +230,8 @@ public class MCKuai extends Application {
             editor.putInt(getString(R.string.preferences_level), user.getLevel());          //level
             editor.putString(getString(R.string.preferences_addr), user.getAddr());         //地址
             editor.putString(getString(R.string.preferences_token_rongcloud), user.getToken());//融云token
-            editor.commit();
         }
+        editor.commit();
     }
 
     public String getImageCacheDir() {

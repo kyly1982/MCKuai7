@@ -38,6 +38,20 @@
     <dimen name="createcartoon_builder_width">325dp</dimen>
     <dimen name="createcartoon_widget_height">200dp</dimen>
     <dimen name="createcartoon_widget_itemheight">100dp</dimen>
+
+
+    <!--个人中心-->
+    <dimen name="usercenter_header_height">100dp</dimen>
+    <dimen name="usercneter_usercover_width">64dp</dimen>
+    <dimen name="usercenter_chatbutton_height">40dp</dimen>
+    <dimen name="usercenter_item_cartoon_height">81dp</dimen>
+    <dimen name="usercenter_item_layoutpadding">5dp</dimen>
+    <dimen name="usercenter_item_catoon_imagewidth">50dp</dimen>
+    <dimen name="usercenter_item_cartoon_usercover_width">32dp</dimen>
+    <dimen name="usercneter_item_cartoon_workmargin">3dp</dimen>
+    <dimen name="usercenter_item_community_height">87dp</dimen>
+    <dimen name="usercenter_item_friend_height">68dp</dimen>
+    <dimen name="usercenter_item_friend_padding">9dp</dimen>
     
     <!--首页-->
     <dimen name="cartoon_main_cardwidth">225dp</dimen>
@@ -47,4 +61,24 @@
     <dimen name="cartoondetial_imagewidth">360dp</dimen>
     <dimen name="cartoondetial_imageheight">360dp</dimen>
     <dimen name="cartoondetial_operationbutton_height">30dp</dimen>
+
+    <!--主界面-->
+    <dimen name="actionbar_menu_buttonwidth">50dp</dimen>
+
+    <!--step1-->
+    <dimen name="createcartoon_step1_buttonwidth">60dp</dimen>
+    <dimen name="createcartoon_step1_buttonpadding">35dp</dimen>
+
+    <!--标签-->
+    <dimen name="createcartoon_lable_padding">5dp</dimen>
+
+    <!--PK-->
+    <dimen name="sidlewidth_competition">41dp</dimen>
+    <dimen name="competition_imagewidth">220dp</dimen>
+    <dimen name="competition_voteuser_coverwidth">27dp</dimen>
+    <dimen name="competition_imagewidth_middle">157dp</dimen>
+    <dimen name="competition_centerdivier_width">4dp</dimen>
+    <dimen name="competition_centerdivier_width_big">10dp</dimen>
+    <dimen name="competition_usercover_divier">15dp</dimen>
+
 </resources>

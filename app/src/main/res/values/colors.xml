@@ -55,4 +55,6 @@
 
     <!--PK-->
     <color name="competitionbackground">#6B5D4C</color>
+    <!--leadey-->
+    <color name="color_lead_gray">#4C4946</color>
 </resources>

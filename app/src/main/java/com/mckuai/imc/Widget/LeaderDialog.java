@@ -2,6 +2,7 @@ package com.mckuai.imc.Widget;
 
 import android.app.DialogFragment;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.graphics.Point;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -13,6 +14,7 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.TranslateAnimation;
+import android.widget.ImageView;
 
 import com.mckuai.imc.R;
 
@@ -29,6 +31,16 @@ public class LeaderDialog extends DialogFragment implements View.OnClickListener
     private long time = 1000;
     private Animation flipup, flipdown;
     private boolean isAnimationPlaying = false;
+    private ImageView step1,step2,step3;
+    private OnDismissListener listener;
+
+    public interface OnDismissListener{
+        void onDismiss();
+    }
+
+    public void setOnDismissListener(OnDismissListener listener){
+        this.listener = listener;
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -56,6 +68,14 @@ public class LeaderDialog extends DialogFragment implements View.OnClickListener
         initView();
     }
 
+    @Override
+    public void onDismiss(DialogInterface dialog) {
+        if (null != listener){
+            listener.onDismiss();
+        }
+        super.onDismiss(dialog);
+    }
+
     private void initView() {
         if (null == top) {
             top = (AppCompatImageView) view.findViewById(R.id.lead_top);
@@ -64,6 +84,9 @@ public class LeaderDialog extends DialogFragment implements View.OnClickListener
             finger = (AppCompatImageView) view.findViewById(R.id.lead_finger);
             hint_top = (AppCompatTextView) view.findViewById(R.id.lead_hint_top);
             hint_bottom = (AppCompatTextView) view.findViewById(R.id.lead_hint_bottom);
+            step1 = (ImageView) view.findViewById(R.id.index_step1);
+            step2 = (ImageView) view.findViewById(R.id.index_step2);
+            step3 = (ImageView) view.findViewById(R.id.index_step3);
             view.setOnClickListener(this);
         }
     }
@@ -75,12 +98,16 @@ public class LeaderDialog extends DialogFragment implements View.OnClickListener
                 hint_top.setText("向上滑动红石，支持上面作品");
                 hint_bottom.setVisibility(View.VISIBLE);
                 middle.startAnimation(getAnimation(true));
+                step1.setBackgroundResource(R.drawable.ic_circle_gray);
+                step2.setBackgroundResource(R.drawable.ic_circle_white);
                 //finger.startAnimation(getAnimation(true));
                 break;
             case 1:
                 hint_top.setText("向下滑动红石，支持下面作品");
                 middle.startAnimation(getAnimation(false));
                 finger.setImageResource(R.mipmap.flip_down);
+                step2.setBackgroundResource(R.drawable.ic_circle_gray);
+                step3.setBackgroundResource(R.drawable.ic_circle_white);
                 //finger.startAnimation(getAnimation(false));
                 break;
             case 2:

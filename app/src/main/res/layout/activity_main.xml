@@ -110,6 +110,7 @@
                 android:id="@+id/msgIndicator"
                 android:layout_width="10dp"
                 android:layout_height="10dp"
+                android:visibility="invisible"
                 android:background="@drawable/ic_circle_red"
                 android:layout_alignTop="@id/nav"/>
         </RelativeLayout>
