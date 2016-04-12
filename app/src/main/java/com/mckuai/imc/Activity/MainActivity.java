@@ -89,7 +89,9 @@ public class MainActivity extends BaseActivity implements View.OnClickListener
     @Override
     protected void onResume() {
         super.onResume();
-        mFragmentManager.beginTransaction().show(fragments.get(currentFragmentIndex)).commit();
+        if (null != mFragmentManager && null != fragments) {
+            mFragmentManager.beginTransaction().show(fragments.get(currentFragmentIndex)).commit();
+        }
 
         if (!isCheckUpgread) {
             checkUpgrade(true);
@@ -107,9 +109,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener
             dialog.setOnDismissListener(new LeaderDialog.OnDismissListener() {
                 @Override
                 public void onDismiss() {
-                    //FragmentTransaction transaction = mFragmentManager.beginTransaction();
                     if (null != fragments && null != fragments.get(currentFragmentIndex)) {
-                        //transaction.show(fragments.get(currentFragmentIndex)).commit();
                         mApplication.setLeadTag(1);
                         mApplication.saveProfile();
                     }

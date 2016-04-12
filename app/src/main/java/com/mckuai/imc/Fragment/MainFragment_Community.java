@@ -127,6 +127,9 @@ public class MainFragment_Community extends BaseFragment
     }
 
     private void loadForumList(){
+        if (null == mNetEngine){
+            MCKuai.instence.init();
+        }
         mNetEngine.loadFroumList(getActivity(), this);
     }
 

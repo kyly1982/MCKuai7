@@ -73,6 +73,8 @@
     <dimen name="createcartoon_lable_padding">5dp</dimen>
 
     <!--PK-->
+    <dimen name="competition_cardwidth">320dp</dimen>
+    <dimen name="competition_cardheight">495dp</dimen>
     <dimen name="sidlewidth_competition">41dp</dimen>
     <dimen name="competition_imagewidth">220dp</dimen>
     <dimen name="competition_voteuser_coverwidth">27dp</dimen>
@@ -80,5 +82,6 @@
     <dimen name="competition_centerdivier_width">4dp</dimen>
     <dimen name="competition_centerdivier_width_big">10dp</dimen>
     <dimen name="competition_usercover_divier">15dp</dimen>
+    <dimen name="competition_votebutton_width">67dp</dimen>
 
 </resources>

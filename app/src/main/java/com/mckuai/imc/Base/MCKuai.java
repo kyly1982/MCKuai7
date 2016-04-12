@@ -25,10 +25,12 @@ import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
 import com.nostra13.universalimageloader.core.display.CircleBitmapDisplayer;
 import com.nostra13.universalimageloader.core.download.BaseImageDownloader;
 import com.tencent.tauth.Tencent;
+import com.umeng.socialize.Config;
 import com.umeng.socialize.PlatformConfig;
 import com.zhy.http.okhttp.OkHttpUtils;
 
 import java.io.File;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 
 import cn.finalteam.okhttpfinal.OkHttpFinal;
@@ -159,6 +161,12 @@ public class MCKuai extends Application {
     private void initUMPlatform() {
         PlatformConfig.setWeixin("wx49ba2c7147d2368d", "85aa75ddb9b37d47698f24417a373134");
         PlatformConfig.setQQZone("101155101", "78b7e42e255512d6492dfd135037c91c");
+        try {
+            Config.isloadUrl = true;
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+
     }
 
     private void initImageLoader() {

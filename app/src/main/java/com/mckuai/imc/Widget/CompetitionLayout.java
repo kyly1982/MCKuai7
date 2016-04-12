@@ -155,7 +155,6 @@ public class CompetitionLayout extends RelativeLayout implements View.OnClickLis
             public void onViewPositionChanged(View changedView, int left, int top, int dx, int dy) {
 
                 distanceY += dy;
-                //Log.e("top="+top+",\tdy="+dy + ",\tdistanceY="+distanceY +",\tisVoted="+isVoted);
                 if (distanceY > 0) {
                     //向下
                     bg_bottom.setAlpha(getViewAlpha());
@@ -319,12 +318,12 @@ public class CompetitionLayout extends RelativeLayout implements View.OnClickLis
     }
 
     private void showVoteUser(LinearLayout root, ArrayList<User> users) {
+        if (null != root && 0 < root.getChildCount()){
+            root.removeAllViews();
+        }
         if (null != root && null != users && !users.isEmpty()){
             if (null == loader){
                 loader = ImageLoader.getInstance();
-            }
-            if (root.getChildCount() > 0){
-                root.removeAllViews();
             }
             int count = (3 > users.size() ? users.size() : 3);
             for (int i = 0;i < count;i++){

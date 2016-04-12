@@ -1,9 +1,12 @@
 package com.mckuai.imc.Activity;
 
+import android.content.ContentValues;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import android.provider.MediaStore;
 import android.support.design.widget.NavigationView;
 import android.support.v7.widget.AppCompatTextView;
 import android.view.Menu;
@@ -140,6 +143,7 @@ public class CreateCartoonActivity extends BaseActivity
 
     private void saveCartoon(){
         Bitmap cartoon = createFragment.getCartoonBitmap();
+        boolean isSuccess = false;
         if (null != cartoon){
             String path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES) + "/MCKuai/";
             String filename = "麦块漫画"+ TimestampConverter.getTime(System.currentTimeMillis())+".png";
@@ -155,11 +159,29 @@ public class CreateCartoonActivity extends BaseActivity
                 try {
                     outputStream.flush();
                     outputStream.close();
+                    isSuccess = true;
+                } catch (Exception e){
+                    e.printStackTrace();
+                }
+            }
+            if (isSuccess){
+                ContentValues values = new ContentValues();
+                values.put(MediaStore.Images.ImageColumns.TITLE,"麦块漫画");
+                values.put(MediaStore.Images.ImageColumns.DISPLAY_NAME,filename);
+                values.put(MediaStore.Images.ImageColumns.DATE_TAKEN,System.currentTimeMillis());
+                values.put(MediaStore.Images.ImageColumns.MIME_TYPE, "image/jpeg");
+                values.put(MediaStore.Images.ImageColumns.ORIENTATION, 0);
+                values.put(MediaStore.Images.ImageColumns.DATA, path+filename);
+                values.put(MediaStore.Images.ImageColumns.WIDTH, cartoon.getWidth());
+                values.put(MediaStore.Images.ImageColumns.HEIGHT, cartoon.getHeight());
+                try {
+                    Uri uri = getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
                 } catch (Exception e){
                     e.printStackTrace();
                 }
             }
         }
+
     }
 
 
