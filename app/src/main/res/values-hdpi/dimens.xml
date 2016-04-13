@@ -35,9 +35,9 @@
     <dimen name="createcartoon_margin_builder">12dp</dimen>
     <dimen name="createcartoon_margin_step1_button">38dp</dimen>
     <dimen name="createcartoon_button_addtalk_height">30dp</dimen>
-    <dimen name="createcartoon_builder_width">284dp</dimen>
+    <dimen name="createcartoon_builder_width">260dp</dimen>
     <dimen name="createcartoon_widget_height">160dp</dimen>
-    <dimen name="createcartoon_widget_itemheight">80dp</dimen>
+    <dimen name="createcartoon_widget_itemheight">60dp</dimen>
     <dimen name="createcartoon_lable_height">40dp</dimen>
 
     <!--首页-->

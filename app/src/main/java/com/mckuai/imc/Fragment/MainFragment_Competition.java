@@ -128,7 +128,7 @@ public class MainFragment_Competition extends BaseFragment implements Competitio
             if (application.isLogin()) {
                 MCKuai.instence.netEngine.rewardCartoon(getActivity(),application.user.getId(), win, this);
                 if (null != RongIM.getInstance() && null != RongIM.getInstance().getRongIMClient()) {
-                    TextMessage message = TextMessage.obtain("恭喜你，你的漫画在与 "+fail.getOwner().getNickEx()+" 的漫画的PK中取得了胜利。");
+                    TextMessage message = TextMessage.obtain("恭喜你，你的漫画在与 \""+fail.getOwner().getNickEx()+"\" 的漫画的PK中取得了胜利。");
                     RongIM.getInstance().getRongIMClient().sendMessage(Conversation.ConversationType.PRIVATE, win.getOwner().getName(), message, application.user.getNike() + "你的漫画在PK中取得了胜利！", "", new RongIMClient.SendMessageCallback() {
                         @Override
                         public void onError(Integer integer, RongIMClient.ErrorCode errorCode) {

@@ -9,6 +9,9 @@
     <dimen name="margin_content">9dp</dimen>
     <dimen name="padding_content">4.5dp</dimen>
 
+    <!--个人中心-->
+    <dimen name="usercenter_item_cartoon_height">95dp</dimen>
+
     <!--字体-->
     <dimen name="font_title">16sp</dimen>
     <dimen name="font_accent">14sp</dimen>
