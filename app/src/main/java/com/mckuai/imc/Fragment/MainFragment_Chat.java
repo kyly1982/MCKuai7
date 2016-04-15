@@ -185,7 +185,14 @@ public class MainFragment_Chat extends BaseFragment implements ConversationAdapt
                         } else {
                             conversation.setTarget(tempUser);
                         }
-                        conversations.add(conversation);
+                        if (conversation.getConversation().getUnreadMessageCount() > 0){
+                            conversations.add(0,conversation);
+                        } else {
+                            conversations.add(0 == conversations.size() ? 0:conversations.size() - 1,conversation);
+                        }
+                    }
+                    if (null != conversationList) {
+                        conversationList.hideProgress();
                     }
                 } else {
                     conversations = new ArrayList<Conversation>(0);

@@ -111,7 +111,7 @@
                     android:layout_height="@dimen/competition_voteuser_coverwidth"
                     android:layout_alignParentBottom="true"
                     android:layout_centerHorizontal="true"
-                    android:background="@mipmap/ic_diamond_small_normal" />
+                    android:background="@drawable/ic_vote_small" />
 
                 <LinearLayout
                     android:id="@+id/root_top"
@@ -139,7 +139,7 @@
                     android:layout_height="@dimen/competition_voteuser_coverwidth"
                     android:layout_alignParentBottom="true"
                     android:layout_centerHorizontal="true"
-                    android:background="@mipmap/ic_diamond_small_normal" />
+                    android:background="@drawable/ic_vote_small" />
 
 
                 <LinearLayout

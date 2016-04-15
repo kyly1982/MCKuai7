@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Handler;
 import android.support.v7.widget.AppCompatRadioButton;
 import android.support.v7.widget.AppCompatTextView;
 import android.view.Menu;
@@ -53,8 +54,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener
     private RelativeLayout content;
     private AppCompatTextView title;
     private View msgIndicator; //脚标
-    private boolean isMsgIndicatorInit = false;
-    //private RelativeLayout.LayoutParams layoutParams;
     private AppCompatRadioButton chat;
 
 
@@ -69,9 +68,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         initToolbar(R.id.toolbar, 0, null);
-        initFragment();
-        initDrawer();
-        initView();
         //友盟推送
         PushAgent mPushAgent = PushAgent.getInstance(this);
         mPushAgent.enable();
@@ -89,6 +85,11 @@ public class MainActivity extends BaseActivity implements View.OnClickListener
     @Override
     protected void onResume() {
         super.onResume();
+        if (null == fragments){
+            initFragment();
+            initDrawer();
+            initView();
+        }
         if (null != mFragmentManager && null != fragments) {
             mFragmentManager.beginTransaction().show(fragments.get(currentFragmentIndex)).commit();
         }
@@ -117,7 +118,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener
             });
             dialog.show(getFragmentManager(), "DIALOG");
         }
-
+        //checkUnReadMsg();
+        handler.sendMessageDelayed(handler.obtainMessage(1),1500);
     }
 
     @Override
@@ -137,13 +139,13 @@ public class MainActivity extends BaseActivity implements View.OnClickListener
             @Override
             public void onGlobalLayout() {
                 int right = chat.getRight();
-                int top = chat.getTop();
+                int width = chat.getWidth();
                 RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) msgIndicator.getLayoutParams();
-                layoutParams.leftMargin = right - msgIndicator.getWidth() - 50;
+                layoutParams.leftMargin = right - msgIndicator.getWidth() - width/5;
                 msgIndicator.setLayoutParams(layoutParams);
                 msgIndicator.postInvalidate();
-                isMsgIndicatorInit = true;
-                checkUnReadMsg();
+                //isMsgIndicatorInit = true;
+                //checkUnReadMsg();
                 chat.getViewTreeObserver().removeGlobalOnLayoutListener(this);
             }
         });
@@ -151,7 +153,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener
         findViewById(R.id.nav_create).setOnClickListener(this);
         nav.setOnCheckedChangeListener(this);
         title.setText("暴力PK");
-        //msgIndicator.setVisibility(View.GONE);
     }
 
     private void initFragment() {
@@ -205,7 +206,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener
                     }
                     break;
                 default:
-                    if (isMsgIndicatorInit) {
+                    if (null != msgIndicator) {
                         msgIndicator.setVisibility(View.VISIBLE);
                         msgIndicator.postInvalidate();
                     }
@@ -310,24 +311,25 @@ public class MainActivity extends BaseActivity implements View.OnClickListener
             switch (checkedId) {
                 case R.id.nav_cartoon:
                     MobclickAgent.onEvent(this, "clickCartoon");
-                    title.setVisibility(View.GONE);
+                    title.setText("暴力PK");
+                    //title.setVisibility(View.GONE);
                     currentFragmentIndex = 0;
                     break;
                 case R.id.nav_chat:
                     MobclickAgent.onEvent(this, "clickChat");
-                    title.setVisibility(View.VISIBLE);
+                    //title.setVisibility(View.VISIBLE);
                     title.setText("聊天");
                     currentFragmentIndex = 1;
                     break;
                 case R.id.nav_community:
                     MobclickAgent.onEvent(this, "clickForum");
-                    title.setVisibility(View.VISIBLE);
+                    //title.setVisibility(View.VISIBLE);
                     title.setText("社区");
                     currentFragmentIndex = 2;
                     break;
                 case R.id.nav_mine:
                     MobclickAgent.onEvent(this, "clickMine");
-                    title.setVisibility(View.VISIBLE);
+                    //title.setVisibility(View.VISIBLE);
                     title.setText("我的");
                     currentFragmentIndex = 3;
                     break;
@@ -434,4 +436,18 @@ public class MainActivity extends BaseActivity implements View.OnClickListener
     public void onGetAdSuccess(Ad ad) {
         this.ad = ad;
     }
+
+    Handler handler = new Handler(){
+        @Override
+        public void handleMessage(android.os.Message msg) {
+            switch (msg.what){
+                case 1:
+                    checkUnReadMsg();
+                    break;
+                default:
+                    super.handleMessage(msg);
+                    break;
+            }
+        }
+    };
 }

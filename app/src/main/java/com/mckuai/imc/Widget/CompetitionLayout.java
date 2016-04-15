@@ -1,6 +1,7 @@
 package com.mckuai.imc.Widget;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.graphics.Point;
 import android.support.v4.widget.ViewDragHelper;
 import android.support.v7.widget.AppCompatImageButton;
@@ -17,14 +18,16 @@ import com.mckuai.imc.Base.MCKuai;
 import com.mckuai.imc.Bean.Cartoon;
 import com.mckuai.imc.Bean.User;
 import com.mckuai.imc.R;
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.assist.ImageScaleType;
 
 import java.util.ArrayList;
 
 /**
  * Created by kyly on 2016/3/16.
  */
-public class CompetitionLayout extends RelativeLayout implements View.OnClickListener {
+public class CompetitionLayout extends RelativeLayout implements View.OnClickListener{
     private ViewDragHelper mDragger;
     private ImageView middleView, cartoon_top, cartoon_bottom, bg_top, bg_bottom;
     private AppCompatTextView title;
@@ -36,6 +39,7 @@ public class CompetitionLayout extends RelativeLayout implements View.OnClickLis
     private ArrayList<Cartoon> cartoons;
     private boolean isFirstSetData = true;
     private boolean isLoadingData = false;
+    private DisplayImageOptions options;
 
     private int imageWidth;
     private int userCoverWidth = 0;
@@ -84,8 +88,8 @@ public class CompetitionLayout extends RelativeLayout implements View.OnClickLis
                 }
 
                 title.setText(getThemeName(cartoons.get(0).getKindsEx()));
-                loader.displayImage(cartoons.get(0).getImage(), cartoon_top, MCKuai.instence.getNormalOptions());
-                loader.displayImage(cartoons.get(1).getImage(), cartoon_bottom, MCKuai.instence.getNormalOptions());
+                loader.displayImage(cartoons.get(0).getImage(), cartoon_top, getDisplayImageOptions());
+                loader.displayImage(cartoons.get(1).getImage(), cartoon_bottom,getDisplayImageOptions());
                 cartoon_top.setTag(cartoons.get(0));
                 cartoon_bottom.setTag(cartoons.get(1));
                 voteTop.setTag(cartoons.get(0));
@@ -204,7 +208,6 @@ public class CompetitionLayout extends RelativeLayout implements View.OnClickLis
 
             @Override
             public void onViewReleased(View releasedChild, float xvel, float yvel) {
-                //super.onViewReleased(releasedChild, xvel, yvel);
                 switch (releasedChild.getId()) {
                     case R.id.diamond_middle:
                         mDragger.settleCapturedViewAt(middle.x, middle.y);
@@ -317,6 +320,7 @@ public class CompetitionLayout extends RelativeLayout implements View.OnClickLis
         }
     }
 
+
     private void showVoteUser(LinearLayout root, ArrayList<User> users) {
         if (null != root && 0 < root.getChildCount()){
             root.removeAllViews();
@@ -371,4 +375,21 @@ public class CompetitionLayout extends RelativeLayout implements View.OnClickLis
         }
         return title;
     }
+
+    private DisplayImageOptions getDisplayImageOptions() {
+        if (null == options) {
+            options = new DisplayImageOptions
+                    .Builder()
+                    .cacheOnDisk(true)
+                    .cacheInMemory(true)
+                    .showImageOnLoading(R.mipmap.image_default)
+                    .imageScaleType(ImageScaleType.EXACTLY)
+                    .bitmapConfig(Bitmap.Config.RGB_565)
+                    .delayBeforeLoading(150)
+                    .build();
+        }
+        return options;
+    }
+
+
 }

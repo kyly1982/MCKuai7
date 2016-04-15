@@ -461,7 +461,7 @@ public class MCNetEngine {
     public void loadCartoonList(final Context context, Page page, final OnLoadCartoonListResponseListener listener) {
         String url = domainName + context.getString(R.string.interface_loadcartoonlist_new);
         RequestParams params = new RequestParams();
-        params.put("page", page.getNextPage());
+        params.put("page", page.getPage()+1);
         httpClient.get(context, url, params, new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
@@ -471,7 +471,6 @@ public class MCNetEngine {
                         Type type = new TypeToken<ArrayList<Cartoon>>() {
                         }.getType();
                         ArrayList<Cartoon> cartoons = gson.fromJson(result.msg, type);
-                        //Page page1 = gson.fromJson(result.pageBean, Page.class);
                         listener.onLoadCartoonListSuccess(cartoons);
                         return;
                     } catch (Exception e) {

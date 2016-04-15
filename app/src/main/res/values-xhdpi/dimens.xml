@@ -84,4 +84,7 @@
     <dimen name="competition_usercover_divier">15dp</dimen>
     <dimen name="competition_votebutton_width">67dp</dimen>
 
+    <!--聊天-->
+    <dimen name="conversation_item_height">65dp</dimen>
+
 </resources>

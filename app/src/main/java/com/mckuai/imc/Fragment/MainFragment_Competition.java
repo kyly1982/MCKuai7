@@ -178,7 +178,7 @@ public class MainFragment_Competition extends BaseFragment implements Competitio
 
     @Override
     public void onLoadCartoonListSuccess(ArrayList<Cartoon> cartoons) {
-        page.setPage(page.getNextPage());
+        page.setPage(page.getPage()+1);
         competitionLayout.setData(cartoons);
     }
 

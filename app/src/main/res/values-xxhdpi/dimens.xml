@@ -39,4 +39,8 @@
     <dimen name="createcartoon_margin_step1_button">38dp</dimen>
     <dimen name="createcartoon_button_addtalk_height">30dp</dimen>
     <dimen name="createcartoon_builder_width">325dp</dimen>
+
+
+    <!--聊天-->
+    <dimen name="conversation_item_height">80dp</dimen>
 </resources>
