@@ -65,8 +65,6 @@ public class MainFragment_Competition extends BaseFragment implements Competitio
         }
     }
 
-
-
     @Override
     public void onHiddenChanged(boolean hidden) {
         super.onHiddenChanged(hidden);

@@ -79,8 +79,12 @@ public class CartoonWorkAdapter extends RecyclerView.Adapter<CartoonWorkAdapter.
             final Cartoon cartoon = cartoons.get(position);
             if (null != cartoon && null != cartoon.getImage()) {
                 loader.displayImage(cartoon.getImage(), holder.cover);
-                if (cartoon.getWinPk() > 0){
-                    holder.pkcount.setText(cartoon.getWinPk()+"");
+                if (cartoon.getAllPk() > 0){
+                    if (cartoon.getWinPk() == 0){
+                        holder.pkcount.setText("还没有胜过:(");
+                    } else {
+                        holder.pkcount.setText(cartoon.getWinPk() + "");
+                    }
                 } else {
                     holder.pkcount.setText("还没有PK过");
                 }

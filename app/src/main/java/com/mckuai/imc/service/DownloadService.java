@@ -125,7 +125,6 @@ public class DownloadService extends Service {
 
 
     private void download() {
-        android.os.Debug.waitForDebugger();
         HttpRequest.download(ad.getDownUrl(), getSaveFile(), new FileDownloadCallback() {
             @Override
             public void onStart() {

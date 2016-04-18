@@ -105,6 +105,19 @@ public class MCNetEngine {
         params.put("nickName", user.getNike());
         params.put("gender", user.getGender());
         params.put("headImg", user.getHeadImg());
+    /*    Request.Builder builder = new Request.Builder();
+        builder.url(url);
+        client.newCall(builder.build()).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                listener.onLoginFailure(e.getLocalizedMessage());
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+
+            }
+        });*/
         httpClient.get(url, params, new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {

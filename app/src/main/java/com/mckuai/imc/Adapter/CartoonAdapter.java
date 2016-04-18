@@ -11,8 +11,6 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
-import com.marshalchen.ultimaterecyclerview.UltimateRecyclerviewViewHolder;
-import com.marshalchen.ultimaterecyclerview.UltimateViewAdapter;
 import com.mckuai.imc.Base.MCKuai;
 import com.mckuai.imc.Bean.Cartoon;
 import com.mckuai.imc.Bean.Comment;
@@ -26,7 +24,7 @@ import java.util.ArrayList;
 /**
  * Created by kyly on 2016/1/22.
  */
-public class CartoonAdapter extends UltimateViewAdapter<CartoonAdapter.ViewHolder> implements View.OnClickListener {
+public class CartoonAdapter extends RecyclerView.Adapter<CartoonAdapter.ViewHolder> implements View.OnClickListener {
     private Context mContext;
     private ArrayList<Cartoon> mCartoons;
 
@@ -68,24 +66,14 @@ public class CartoonAdapter extends UltimateViewAdapter<CartoonAdapter.ViewHolde
         notifyDataSetChanged();
     }
 
-
-    /**
-     * ========================================================================
-     *
-     * @param position
-     * @return
-     */
-
     @Override
-    public long generateHeaderId(int position) {
-        return 0;
+    public int getItemCount() {
+        return null == mCartoons ? 0:mCartoons.size();
     }
 
-    @Override
-    public ViewHolder getViewHolder(View view) {
-        return null;
-    }
 
+
+/*
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent) {
         View view = inflater.inflate(R.layout.item_cartoon, parent, false);
@@ -101,13 +89,8 @@ public class CartoonAdapter extends UltimateViewAdapter<CartoonAdapter.ViewHolde
         params.height = width;
         holder.image.setLayoutParams(params);
         return holder;
-    }
+    }*/
 
-
-    @Override
-    public int getAdapterItemCount() {
-        return null == mCartoons ? 0 : mCartoons.size();
-    }
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
@@ -117,15 +100,6 @@ public class CartoonAdapter extends UltimateViewAdapter<CartoonAdapter.ViewHolde
         }
     }
 
-    @Override
-    public RecyclerView.ViewHolder onCreateHeaderViewHolder(ViewGroup parent) {
-        return null;
-    }
-
-    @Override
-    public void onBindHeaderViewHolder(RecyclerView.ViewHolder holder, int position) {
-
-    }
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, final int viewType) {
@@ -144,7 +118,7 @@ public class CartoonAdapter extends UltimateViewAdapter<CartoonAdapter.ViewHolde
         return holder;
     }
 
-    public static class ViewHolder extends UltimateRecyclerviewViewHolder{
+    public static class ViewHolder extends RecyclerView.ViewHolder{
         public AppCompatImageView userCover;
         public AppCompatImageButton share;
         public RelativeLayout comment;
@@ -155,18 +129,6 @@ public class CartoonAdapter extends UltimateViewAdapter<CartoonAdapter.ViewHolde
         public LinearLayout commentList;
         public AppCompatTextView commentCount;
         public AppCompatTextView priseCount;
-
-
-        @Override
-        public void onItemClear() {
-            super.onItemClear();
-        }
-
-        @Override
-        public void onItemSelected() {
-            super.onItemSelected();
-        }
-
 
         public ViewHolder(View itemView) {
             super(itemView);

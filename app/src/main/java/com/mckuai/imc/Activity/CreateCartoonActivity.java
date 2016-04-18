@@ -108,7 +108,7 @@ public class CreateCartoonActivity extends BaseActivity
                 switch (currentStep){
                     case 0:
                         if (!isBackgroundSet){
-                            showMessage("还未设置场景，创造场景后才能进入下一步", null, null);
+                            showMessage("还未选择主题，选择主题后才能进入下一步", null, null);
                             return super.onOptionsItemSelected(item);
                         }
                         break;

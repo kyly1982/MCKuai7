@@ -12,7 +12,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RadioGroup;
 
-import com.marshalchen.ultimaterecyclerview.UltimateRecyclerView;
+import com.malinskiy.superrecyclerview.OnMoreListener;
+import com.malinskiy.superrecyclerview.SuperRecyclerView;
 import com.mckuai.imc.Activity.CartoonActivity;
 import com.mckuai.imc.Activity.MainActivity;
 import com.mckuai.imc.Activity.UserCenterActivity;
@@ -37,7 +38,7 @@ public class MainFragment_Cartoon extends BaseFragment implements RadioGroup.OnC
         , MCNetEngine.OnLoadCartoonListResponseListener
         , MCNetEngine.OnRewardCartoonResponseListener
         , SwipeRefreshLayout.OnRefreshListener
-        , UltimateRecyclerView.OnLoadMoreListener
+        ,OnMoreListener
         , CartoonAdapter.OnItemClickListener {
     private String[] mCartoonType;
     private ArrayList<Cartoon> mHotCartoon;
@@ -52,7 +53,7 @@ public class MainFragment_Cartoon extends BaseFragment implements RadioGroup.OnC
     private Cartoon priseCartoon;
     private int rewardCartoonId;
 
-    private UltimateRecyclerView mCartoonListView;
+    private SuperRecyclerView mCartoonListView;
     private View view;
     private boolean isPaused = false;
 
@@ -117,15 +118,15 @@ public class MainFragment_Cartoon extends BaseFragment implements RadioGroup.OnC
 
     private void initView() {
 
-        mCartoonListView = (UltimateRecyclerView) view.findViewById(R.id.cartoonlist);
-        mCartoonListView.setHasFixedSize(true);
+        mCartoonListView = (SuperRecyclerView) view.findViewById(R.id.cartoonlist);
+        mCartoonListView.getRecyclerView().setHasFixedSize(true);
         RecyclerView.LayoutManager manager = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
         mCartoonListView.setLayoutManager(manager);
         //mCartoonListView.setEmptyView(R.layout.emptyview);
         //mCartoonListView.enableLoadmore();
-        mCartoonListView.setDefaultOnRefreshListener(this);
-        mCartoonListView.setOnLoadMoreListener(this);
-        mCartoonListView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+        mCartoonListView.setupMoreListener(this,1);
+        mCartoonListView.setRefreshListener(this);
+        mCartoonListView.getRecyclerView().addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
@@ -313,9 +314,8 @@ public class MainFragment_Cartoon extends BaseFragment implements RadioGroup.OnC
         }
     }
 
-
     @Override
-    public void loadMore(int itemsCount, int maxLastVisiblePosition) {
+    public void onMoreAsked(int overallItemsCount, int itemsBeforeMore, int maxLastVisiblePosition) {
         switch (typeIndex) {
             case 0:
                 if (pageNew.getPageCount() > pageNew.getPage()) {
