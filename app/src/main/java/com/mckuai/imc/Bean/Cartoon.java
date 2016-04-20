@@ -14,7 +14,8 @@ public class Cartoon implements Serializable {
     private int prise;                      //赞
     private int replyNum;                   //评论数
     private int allPk;                      //总pk数
-    private int winPk;                      //pk胜数
+    private int winPk;                      //pk胜数(组)
+    private int allprise;                   //pk胜数(个)
     private String content;                 //内容
     private String kinds;                   //主题
     private String insertTime;              //创建时间
@@ -232,5 +233,13 @@ public class Cartoon implements Serializable {
 
     public void setGroupId(int groupId) {
         this.groupId = groupId;
+    }
+
+    public int getAllprise() {
+        return allprise;
+    }
+
+    public void setAllprise(int allprise) {
+        this.allprise = allprise;
     }
 }

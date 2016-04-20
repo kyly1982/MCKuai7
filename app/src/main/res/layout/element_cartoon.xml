@@ -29,7 +29,7 @@
         android:layout_toLeftOf="@id/cartoon_shar"
         android:layout_toRightOf="@id/cartoon_usercover"
         android:singleLine="true"
-        android:text="飞天小猪"
+        android:text="用户名"
         android:textColor="@color/textColorPrimary"
         android:textSize="@dimen/font_accent" />
 
@@ -40,7 +40,7 @@
         android:layout_alignBottom="@id/cartoon_usercover"
         android:layout_toRightOf="@id/cartoon_usercover"
         android:singleLine="true"
-        android:text="01月15日"
+        android:text="发布时间"
         android:textColor="@color/textColorSecondary"
         android:textSize="@dimen/font_hint" />
 
@@ -69,7 +69,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/cartoon_image"
                 android:layout_margin="@dimen/margin_cartoon_content"
-                android:text="主题"
+                android:text="主题名"
                 android:textColor="@color/textColorPrimary"
                 android:visibility="visible" />
 
@@ -100,7 +100,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:singleLine="true"
-                        android:text="PK"
+                        android:maxLength="4"
+                        android:text="0"
                         android:layout_marginLeft="5dp"
                         android:layout_marginRight="5dp"
                         android:textColor="@color/textColorHighLight" />
@@ -131,8 +132,9 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:singleLine="true"
+                        android:maxLength="2"
                         android:layout_marginLeft="5dp"
-                        android:text="50%"
+                        android:text="0"
                         android:textColor="@color/textColorHighLight" />
 
 
@@ -156,9 +158,10 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:singleLine="true"
+                        android:maxLength="4"
                         android:layout_marginLeft="5dp"
                         android:layout_marginRight="5dp"
-                        android:text="500"
+                        android:text="0"
                         android:textColor="@color/textColorHighLight" />
 
                     <android.support.v7.widget.AppCompatTextView
@@ -198,7 +201,6 @@
                     android:drawableLeft="@mipmap/ic_cartoon_comment"
                     android:drawablePadding="5dp"
                     android:gravity="center"
-                    android:text="11"
                     android:textColor="@color/textColorSecondary" />
             </RelativeLayout>
 
@@ -222,7 +224,6 @@
                     android:drawableLeft="@mipmap/ic_cartoon_like"
                     android:drawablePadding="5dp"
                     android:gravity="center"
-                    android:text="11"
                     android:textColor="@color/textColorPrimary_Light" />
             </RelativeLayout>
 
@@ -240,7 +241,7 @@
                     android:layout_width="@dimen/usercover_width_small"
                     android:layout_height="@dimen/usercover_width_small"
                     android:layout_margin="5dp"
-                    android:src="@mipmap/ic_diamond_yellow" />
+                    android:src="@mipmap/ic_diamond_small_activityed" />
             </LinearLayout>
 
             <LinearLayout

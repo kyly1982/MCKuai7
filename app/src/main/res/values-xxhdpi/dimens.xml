@@ -10,7 +10,7 @@
     <dimen name="padding_content">4.5dp</dimen>
 
     <!--个人中心-->
-    <dimen name="usercenter_item_cartoon_height">95dp</dimen>
+    <dimen name="usercenter_item_cartoon_height">80dp</dimen>
 
     <!--字体-->
     <dimen name="font_title">16sp</dimen>

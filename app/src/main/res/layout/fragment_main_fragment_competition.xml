@@ -160,7 +160,6 @@
                 android:layout_alignParentLeft="true"
                 android:layout_toLeftOf="@id/layout_top"
                 android:gravity="center|top"
-                android:text="这\n是\n主\n题"
                 android:textColor="@color/textColorPrimary_Light" />
 
         </com.mckuai.imc.Widget.CompetitionLayout>

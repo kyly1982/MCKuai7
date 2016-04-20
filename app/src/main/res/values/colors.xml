@@ -26,6 +26,9 @@
     <color name="colorDivider">#727272</color>
     <color name="colorBlack">#181511</color>
 
+    <color name="color_forum_normal">#302B26</color>
+    <color name="color_forum_selected">#31B765</color>
+
     <color name="colorWarning">#FFFF00</color>
     <color name="colorError">#FF0000</color>
     <color name="colorYellow">#FFFF00</color>

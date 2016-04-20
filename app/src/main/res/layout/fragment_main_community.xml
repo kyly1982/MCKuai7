@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:clickable="true"
-    android:background="@color/icons">
+    android:background="@null">
 
     <com.malinskiy.superrecyclerview.SuperRecyclerView
         android:id="@+id/community_forumlist"
@@ -61,10 +61,18 @@
             android:textColor="@color/community_postlable_type_textclolr" />
     </RadioGroup>
 
+    <View
+        android:id="@+id/divier"
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:layout_below="@id/posttype_indicator"
+        android:background="@color/divierColor_Dark"/>
+
     <com.malinskiy.superrecyclerview.SuperRecyclerView
         android:id="@+id/community_postlist"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_marginTop="1px"
         android:layout_below="@id/posttype_indicator"
         android:layout_alignParentBottom="true"
         app:layout_empty="@layout/emptyview"
