@@ -31,7 +31,7 @@
         android:layout_toLeftOf="@id/cartooncover"
         android:layout_toRightOf="@id/dynamictype"
         android:gravity="right"
-        android:text="炒鸡大狒狒"
+        android:text="用户名"
         android:textColor="@color/textGreen"
         android:textSize="@dimen/font_normal" />
 
@@ -45,7 +45,6 @@
         android:layout_below="@id/cartoon_ownername"
         android:layout_toLeftOf="@id/cartooncover"
         android:lines="2"
-        android:text="炒鸡大狒狒炒鸡大狒狒炒鸡大狒狒炒鸡大狒狒炒鸡大狒狒炒鸡大狒狒炒鸡大狒狒炒鸡大狒狒炒鸡大狒狒"
         android:textColor="@color/textColorPrimary"
         android:textSize="@dimen/font_accent" />
 

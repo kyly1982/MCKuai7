@@ -21,6 +21,6 @@
         android:gravity="center"
         android:textColor="@color/textColorPrimary"
         android:singleLine="true"
-        android:text="大猩猩" />
+        android:text="用户名" />
 
 </RelativeLayout>

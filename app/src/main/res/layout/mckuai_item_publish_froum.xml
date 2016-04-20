@@ -9,7 +9,6 @@
     android:clickable="true"
     android:gravity="center"
     android:singleLine="true"
-    android:text="版块名称"
     android:textColor="@color/checkable_text_color_selector">
 
 </RadioButton>

@@ -15,8 +15,7 @@
         android:gravity="center_vertical"
         android:singleLine="true"
         android:textSize="18sp"
-        android:textColor="@color/textColorAccentr"
-        android:text="标题" />
+        android:textColor="@color/textColorAccentr" />
 
 
     <android.support.v7.widget.AppCompatImageView
@@ -46,7 +45,6 @@
         android:layout_alignParentRight="true"
         android:singleLine="true"
         android:textColor="@color/textColorPrimary"
-        android:text="MC哇"
         android:background="@color/exitdialog_defaultcolor" />
 
 </RelativeLayout>

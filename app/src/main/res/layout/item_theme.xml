@@ -13,8 +13,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="center"
-        android:textColor="@color/textColorPrimary_Light"
-        android:text="教室大轰炸"/>
+        android:textColor="@color/textColorPrimary_Light"/>
 
 
 </RelativeLayout>

@@ -21,7 +21,6 @@
         android:layout_marginRight="@dimen/usercenter_item_layoutpadding"
         android:gravity="center_vertical"
         android:textColor="@color/textHint"
-        android:text="2222"
         android:textSize="@dimen/font_normal"/>
 
     <android.support.v7.widget.AppCompatTextView
@@ -38,7 +37,7 @@
         android:maxWidth="100dp"
         android:singleLine="true"
         android:textColor="@color/textHint"
-        android:text="2222"
+        android:text="用户名"
         android:textSize="@dimen/font_normal"/>
 
     <android.support.v7.widget.AppCompatTextView

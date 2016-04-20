@@ -23,7 +23,7 @@
         android:gravity="center_vertical"
         android:ellipsize="end"
         android:textColor="@color/textColorAccentr"
-        android:text="大猩猩大猩猩大猩猩大猩猩大猩猩大猩猩大猩猩"/>
+        android:text="用户名"/>
 
     <android.support.v7.widget.AppCompatTextView
         android:id="@+id/comment_time"
@@ -35,20 +35,20 @@
         android:layout_alignBottom="@id/comment_username"
         android:gravity="center_vertical"
         android:textColor="@color/textColorSecondary"
-        android:text="2分钟前"/>
+        android:text="发布时间"/>
 
     <android.support.v7.widget.AppCompatTextView
         android:id="@+id/comment_content"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginRight="@dimen/margin_cartoon_content"
+        android:layout_marginBottom="@dimen/margin_cartoon_content"
         android:layout_toRightOf="@id/comment_usercover"
         android:layout_below="@id/comment_usercover"
         android:maxLines="3"
         android:gravity="center_vertical"
         android:ellipsize="end"
         android:textColor="@color/textColorPrimary"
-        android:text="哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈"
         />
 
 </RelativeLayout>

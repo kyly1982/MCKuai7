@@ -19,7 +19,7 @@
         android:singleLine="true"
         android:textColor="@color/textColorPrimary"
         android:layout_toRightOf="@id/usercover"
-        android:text="22341"/>
+        android:text="用户名"/>
 
     <android.support.v7.widget.AppCompatTextView
         android:id="@+id/time"
@@ -41,8 +41,7 @@
         android:layout_below="@id/username"
         android:layout_above="@id/time"
         android:singleLine="true"
-        android:textColor="@color/textColorSecondary"
-        android:text="dasafweqrweprq;ewrlweqr"/>
+        android:textColor="@color/textColorSecondary"/>
 
     <View
         android:layout_width="match_parent"

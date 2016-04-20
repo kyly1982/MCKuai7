@@ -26,7 +26,7 @@
         android:layout_toRightOf="@id/usercover"
         android:layout_toLeftOf="@id/chat"
         android:textColor="@color/textColorPrimary"
-        android:text="小猪涉猎"/>
+        android:text="用户名"/>
 
     <android.support.v7.widget.AppCompatTextView
         android:id="@+id/level"
@@ -38,7 +38,7 @@
         android:layout_marginBottom="@dimen/usercenter_item_friend_padding"
         android:background="@drawable/bg_usercenter_level"
         android:textColor="@color/textAccent"
-        android:text="LV 12"/>
+        android:text="LV 0"/>
 
     <View
         android:layout_width="match_parent"

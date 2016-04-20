@@ -32,7 +32,7 @@
             android:paddingLeft="10dp"
             android:paddingRight="10dp"
             android:paddingTop="2dp"
-            android:text="lv 12"
+            android:text="lv   "
             android:textColor="@color/icons" />
     </RelativeLayout>
 

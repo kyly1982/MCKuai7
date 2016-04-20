@@ -38,7 +38,7 @@
         android:layout_toLeftOf="@id/cartoon_messagetype"
         android:layout_toRightOf="@id/usercover"
         android:singleLine="true"
-        android:text="dddsafaf"
+        android:text="用户名"
         android:textColor="@color/textGreen"
         android:textSize="@dimen/font_normal" />
 
@@ -51,7 +51,6 @@
         android:layout_toLeftOf="@id/cartooncover"
         android:layout_toRightOf="@id/usercover"
         android:lines="2"
-        android:text="2222233332222333322223333222233332222333322223333222233333"
         android:textColor="@color/textColorPrimary"
         android:textSize="@dimen/font_accent" />
 
