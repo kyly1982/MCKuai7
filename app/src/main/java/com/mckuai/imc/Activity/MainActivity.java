@@ -4,7 +4,6 @@ import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
 import android.os.Handler;
 import android.support.v7.widget.AppCompatRadioButton;
 import android.support.v7.widget.AppCompatTextView;
@@ -33,7 +32,6 @@ import com.umeng.analytics.MobclickAgent;
 import com.umeng.message.PushAgent;
 import com.umeng.socialize.utils.Log;
 
-import java.io.File;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 
@@ -62,6 +60,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener
     private boolean isRecommendPressed = false;
     private Ad ad;
     private boolean isDownloaded = false;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -263,19 +263,12 @@ public class MainActivity extends BaseActivity implements View.OnClickListener
         }
     }
 
-    private String getDownloadPath() {
-        File file = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
-        if (!file.exists()) {
-            file.mkdirs();
-        }
-        return file.getPath();
-    }
 
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        //onBackPressed();
-        int id = item.getItemId();
+        onBackPressed();
+        /*int id = item.getItemId();
         if (id == R.id.action_recommend) {
             if (!isRecommendPressed) {
                 item.setIcon(R.drawable.ic_menu_recommend);
@@ -284,7 +277,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener
             Intent intent = new Intent(this, RecommendActivity.class);
             startActivity(intent);
             return true;
-        }
+        }*/
 
         return super.onOptionsItemSelected(item);
     }
@@ -436,6 +429,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener
     public void onGetAdSuccess(Ad ad) {
         this.ad = ad;
     }
+
 
     Handler handler = new Handler(){
         @Override

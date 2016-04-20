@@ -84,19 +84,19 @@
         <service
             android:name=".service.DownloadService"
             android:enabled="true"
-            android:exported="true"></service>
-        <receiver
-            android:name=".service.DownloadService$MCDownloadReciver"
-            android:enabled="true"
-            android:exported="true">
+            android:exported="true"
+            android:process=":mcdownloader" />
 
-            <intent-filter>
-                <action android:name="ACTION_MCDOWNLOAD_START" />
-                <action android:name="ACTION_MCDOWNLOAD_PAUSE" />
-                <action android:name="ACTION_MCDOWNLOAD_CANCLE" />
-            </intent-filter>
-        </receiver>
-
+        <!--<receiver-->
+            <!--android:name=".service.MCDownloadService$MCDownloadReciver"-->
+            <!--android:enabled="true"-->
+            <!--android:exported="true">-->
+            <!--<intent-filter>-->
+                <!--<action android:name="ACTION_MCDOWNLOAD_START" />-->
+                <!--<action android:name="ACTION_MCDOWNLOAD_PAUSE" />-->
+                <!--<action android:name="ACTION_MCDOWNLOAD_CANCLE" />-->
+            <!--</intent-filter>-->
+        <!--</receiver>-->
 
         <!-- ********************************************各种开放平台的配置********************************** -->
         <!-- ********************************************配置腾讯的相关SDK******************************************** -->
@@ -296,7 +296,14 @@
         <activity android:name=".Activity.ConversationListActivity" />
         <activity android:name=".Activity.RecommendActivity" />
 
-
+        <service
+            android:name=".service.MCDownloadService"
+            android:enabled="true"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="com.mckuai.imc.mcdownload"/>
+            </intent-filter>
+        </service>
     </application>
 
 </manifest>

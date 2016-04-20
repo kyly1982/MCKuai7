@@ -16,6 +16,7 @@ import android.webkit.MimeTypeMap;
 
 import com.mckuai.imc.Bean.Ad;
 import com.umeng.analytics.MobclickAgent;
+import com.umeng.socialize.utils.Log;
 
 import java.io.File;
 
@@ -44,6 +45,7 @@ public class DownloadService extends Service {
 
     public DownloadService() {
     }
+
 
     @Override
     public IBinder onBind(Intent intent) {
@@ -125,10 +127,12 @@ public class DownloadService extends Service {
 
 
     private void download() {
+        Log.e("下载……");
         HttpRequest.download(ad.getDownUrl(), getSaveFile(), new FileDownloadCallback() {
             @Override
             public void onStart() {
                 updateNotificationState(0);
+                Log.e("开始下载");
             }
 
             @Override
@@ -147,6 +151,7 @@ public class DownloadService extends Service {
 
             @Override
             public void onDone() {
+                Log.e("下载完成");
                 lastProgress = 100;
                 updateNotificationProgress();
                 updateNotificationState(1);
@@ -157,6 +162,7 @@ public class DownloadService extends Service {
             @Override
             public void onFailure() {
                 updateNotificationState(-1);
+                Log.e("下载失败");
             }
         });
 
@@ -195,6 +201,7 @@ public class DownloadService extends Service {
 
 
     private void installApk() {
+        Log.e("开始安装");
         android.os.Debug.waitForDebugger();
         Intent intent = new Intent();
         intent.setAction(Intent.ACTION_VIEW);
@@ -249,6 +256,7 @@ public class DownloadService extends Service {
     public class MCDownloadReciver extends BroadcastReceiver {
         @Override
         public void onReceive(Context context, Intent intent) {
+            Log.e("收到消息");
             android.os.Debug.waitForDebugger();
             switch (intent.getAction()){
                 case action_download_pause:
@@ -259,12 +267,13 @@ public class DownloadService extends Service {
                     //开始下载
                     break;
                 case action_download_cancle:
+                    Log.e("收到停止下载消息");
                     stopDownload();
                     break;
                 case Intent.ACTION_PACKAGE_ADDED:
+                    Log.e("收到安装完成消息");
                     if (null != intent.getData() && intent.getData().getScheme().equals("MCKuaiAdInstaller")) {
                         MobclickAgent.onEvent(getApplicationContext(), "MCAD_Installed");
-                        //notificationManager.cancel(id);
                         stopSelf();
                     }
                     break;

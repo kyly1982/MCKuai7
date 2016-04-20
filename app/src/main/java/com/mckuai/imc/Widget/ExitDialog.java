@@ -1,9 +1,12 @@
 package com.mckuai.imc.Widget;
 
 import android.app.DialogFragment;
+import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
+import android.content.ServiceConnection;
 import android.os.Bundle;
-import android.os.Environment;
+import android.os.IBinder;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.AppCompatImageView;
@@ -16,10 +19,8 @@ import android.view.Window;
 import com.mckuai.imc.Base.MCKuai;
 import com.mckuai.imc.Bean.Ad;
 import com.mckuai.imc.R;
-import com.mckuai.imc.service.DownloadService;
+import com.mckuai.imc.service.DownloadInterface;
 import com.nostra13.universalimageloader.core.ImageLoader;
-
-import java.io.File;
 
 /**
  * Created by kyly on 2016/3/8.
@@ -34,6 +35,9 @@ public class ExitDialog extends DialogFragment implements View.OnClickListener {
 
     private OnClickListener mListener;
     private Ad ad;
+
+    private DownloadInterface downloadService = null;
+    private ServiceConnection conn;
 
 
 
@@ -107,10 +111,8 @@ public class ExitDialog extends DialogFragment implements View.OnClickListener {
                     break;
                 case R.id.exitdialog_download:
                     if (null != ad) {
-                        //download(getActivity());
-                        mListener.onDownloadPressed();
                         startDownloadService();
-                        //download();
+                        mListener.onDownloadPressed();
                     } else {
                         mListener.onExitPressed();
                     }
@@ -125,34 +127,42 @@ public class ExitDialog extends DialogFragment implements View.OnClickListener {
                     this.dismiss();
                     break;
                 case R.id.exitdialog_content:
-                    mListener.onPicturePressed();
                     if (null!= ad) {
-                        //download(getActivity());
                         startDownloadService();
-                        //download();
                     }
                     this.dismiss();
+                    mListener.onPicturePressed();
                     break;
             }
     }
 
     private void startDownloadService(){
-        Intent intent = new Intent(getActivity(), DownloadService.class);
-        Bundle bundle = new Bundle();
-        bundle.putSerializable("AD",ad);
-        intent.putExtras(bundle);
-        getActivity().startService(intent);
-    }
+        Intent intent = new Intent("com.mckuai.imc.mcdownload");
+        intent.setClassName("com.mckuai.imc.service","MCDownloadService");//针对5.0及之后必须调用
+        if (null == conn){
+            conn  = new ServiceConnection() {
+                public void onServiceConnected(ComponentName name, IBinder service) {
+                    downloadService = DownloadInterface.Stub.asInterface(service);
+                }
 
-    private String getDownloadPath(){
-        File file = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
-        if (!file.exists()) {
-            file.mkdirs();
+                @Override
+                public void onServiceDisconnected(ComponentName name) {
+                    downloadService = null;
+                    conn = null;
+                }
+            };
         }
-        return file.getPath()+"/";
+        getActivity().bindService(intent,conn, Context.BIND_AUTO_CREATE);
+
+        if (null != downloadService){
+            try {
+                downloadService.addDownload(ad.getDownName(),ad.getDownUrl());
+            } catch (Exception e){
+                e.printStackTrace();
+            }
+
+        }
     }
-
-
 
 
 }
