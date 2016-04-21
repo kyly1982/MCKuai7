@@ -32,7 +32,7 @@ public class CreateCartoonActivity extends BaseActivity
         implements NavigationView.OnNavigationItemSelectedListener
         , BaseFragment.OnFragmentEventListener
         , CreateCartoonFragment.OnActionListener
-        ,ThemeFragment.OnThemeSelectedListener{
+        , ThemeFragment.OnThemeSelectedListener {
     private CreateCartoonFragment createFragment;
     private ThemeFragment themeFragment;
     private MenuItem menu_next;
@@ -52,7 +52,9 @@ public class CreateCartoonActivity extends BaseActivity
         mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                finish();
+                if (!showNext(true)){
+                    finish();
+                }
             }
         });
         initView();
@@ -64,10 +66,11 @@ public class CreateCartoonActivity extends BaseActivity
         if (null == createFragment) {
             initFragment();
             setContentFragment(R.id.context, themeFragment);
+            currentStep++;
         }
     }
 
-    private void initFragment(){
+    private void initFragment() {
 
         themeFragment = new ThemeFragment();
         createFragment = new CreateCartoonFragment();
@@ -105,26 +108,8 @@ public class CreateCartoonActivity extends BaseActivity
         switch (item.getItemId()) {
             case R.id.menu_cartoonaction_next:
                 MobclickAgent.onEvent(this, "createCartoon_next");
-                switch (currentStep){
-                    case 0:
-                        if (!isBackgroundSet){
-                            showMessage("还未选择主题，选择主题后才能进入下一步", null, null);
-                            return super.onOptionsItemSelected(item);
-                        }
-                        break;
-                    case 1:
-                        if (!isWidgetSet){
-                            showMessage("还未添加人物或工具，添加后才能进入下一步", null, null);
-                            return super.onOptionsItemSelected(item);
-                        }
-                        break;
-                }
-                currentStep++;
-                createFragment.showNextStep(currentStep);
-                if (2 == currentStep) {
-                    menu_next.setVisible(false);
-                    menu_publish.setVisible(true);
-                    getWindow().invalidatePanelMenu(Window.FEATURE_OPTIONS_PANEL);
+                if (!showNext(false)) {
+                    return super.onOptionsItemSelected(item);
                 }
                 break;
             case R.id.menu_cartoonaction_publish:
@@ -141,42 +126,96 @@ public class CreateCartoonActivity extends BaseActivity
         return super.onOptionsItemSelected(item);
     }
 
-    private void saveCartoon(){
+    private boolean showNext(boolean isBack) {
+        if (isBack){
+            switch (currentStep){
+                case 1:
+                    //关闭
+                    return false;
+                case 2:
+                    //显示选择主题
+                    currentStep--;
+                    setContentFragment(R.id.context, themeFragment);
+                    break;
+                case 3:
+                    currentStep--;
+                    createFragment.showNextStep(currentStep,true);
+                    break;
+                case 4:
+                    //菜单切换为显示下一步
+                    menu_next.setVisible(true);
+                    menu_publish.setVisible(false);
+                    getWindow().invalidatePanelMenu(Window.FEATURE_OPTIONS_PANEL);
+
+                default:
+                    currentStep--;
+                    createFragment.showNextStep(currentStep,true);
+                    break;
+            }
+        } else {
+            switch (currentStep){
+                case 2:
+                    if (!isBackgroundSet) {
+                        showMessage("还未创建背景，创建背景后才能进入下一步", null, null);
+                        return false;
+                    } else {
+                        currentStep++;
+                        createFragment.showNextStep(currentStep,false);
+                    }
+                    break;
+                case 3:
+                    if (!isWidgetSet) {
+                        showMessage("还未添加人物或工具，添加后才能进入下一步", null, null);
+                        return false;
+                    } else {
+                        currentStep++;
+                        menu_next.setVisible(false);
+                        menu_publish.setVisible(true);
+                        getWindow().invalidatePanelMenu(Window.FEATURE_OPTIONS_PANEL);
+                        createFragment.showNextStep(currentStep,false);
+                    }
+                    break;
+            }
+        }
+        return true;
+    }
+
+    private void saveCartoon() {
         Bitmap cartoon = createFragment.getCartoonBitmap();
         boolean isSuccess = false;
-        if (null != cartoon){
+        if (null != cartoon) {
             String path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES) + "/MCKuai/";
-            String filename = "麦块漫画"+ TimestampConverter.getTime(System.currentTimeMillis())+".png";
-            File file = new File(path,filename);
+            String filename = "麦块漫画" + TimestampConverter.getTime(System.currentTimeMillis()) + ".png";
+            File file = new File(path, filename);
             FileOutputStream outputStream = null;
             try {
                 outputStream = new FileOutputStream(file);
-            } catch (Exception e){
+            } catch (Exception e) {
                 e.printStackTrace();
             }
-            if (null != outputStream){
-                cartoon.compress(Bitmap.CompressFormat.PNG,90,outputStream);
+            if (null != outputStream) {
+                cartoon.compress(Bitmap.CompressFormat.PNG, 90, outputStream);
                 try {
                     outputStream.flush();
                     outputStream.close();
                     isSuccess = true;
-                } catch (Exception e){
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
-            if (isSuccess){
+            if (isSuccess) {
                 ContentValues values = new ContentValues();
-                values.put(MediaStore.Images.ImageColumns.TITLE,"麦块漫画");
-                values.put(MediaStore.Images.ImageColumns.DISPLAY_NAME,filename);
-                values.put(MediaStore.Images.ImageColumns.DATE_TAKEN,System.currentTimeMillis());
+                values.put(MediaStore.Images.ImageColumns.TITLE, "麦块漫画");
+                values.put(MediaStore.Images.ImageColumns.DISPLAY_NAME, filename);
+                values.put(MediaStore.Images.ImageColumns.DATE_TAKEN, System.currentTimeMillis());
                 values.put(MediaStore.Images.ImageColumns.MIME_TYPE, "image/jpeg");
                 values.put(MediaStore.Images.ImageColumns.ORIENTATION, 0);
-                values.put(MediaStore.Images.ImageColumns.DATA, path+filename);
+                values.put(MediaStore.Images.ImageColumns.DATA, path + filename);
                 values.put(MediaStore.Images.ImageColumns.WIDTH, cartoon.getWidth());
                 values.put(MediaStore.Images.ImageColumns.HEIGHT, cartoon.getHeight());
                 try {
                     Uri uri = getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
-                } catch (Exception e){
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
@@ -202,7 +241,7 @@ public class CreateCartoonActivity extends BaseActivity
 
     @Override
     public void onBackPressed() {
-        if (!createFragment.onBackPressed()) {
+        if (!showNext(true)) {
             super.onBackPressed();
         }
     }
@@ -241,12 +280,13 @@ public class CreateCartoonActivity extends BaseActivity
                 finish();
             }
         });
-        shareCartoonDialog.show(getFragmentManager(),"SHARE");
+        shareCartoonDialog.show(getFragmentManager(), "SHARE");
     }
 
     @Override
     public void onThemeSelected(String theme) {
-        MobclickAgent.onEvent(this,"createCartoon_selectedTheme");
+        MobclickAgent.onEvent(this, "createCartoon_selectedTheme");
+        currentStep++;
         createFragment.setTheme(theme);
         setContentFragment(R.id.context, createFragment);
     }

@@ -19,6 +19,7 @@
             android:layout_height="match_parent"
             android:layout_margin="@dimen/createcartoon_frame_builder"
             android:layout_marginTop="@dimen/createcartoon_margin_builder"
+            android:background="@mipmap/bg_builder_default"
             />
     </FrameLayout>
 

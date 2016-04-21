@@ -229,7 +229,6 @@ public class CartoonActivity extends BaseActivity implements CartoonView.OnCarto
     @Override
     public void onCommentCartoonSuccess() {
         isUpdateComment = false;
-        //Snackbar.make(commentEditer,"评论成功",Snackbar.LENGTH_SHORT).show();
         cartoon.setReplyNum(cartoon.getReplyNum() + 1);
         Comment comment = new Comment(new User(mApplication.user), commentEditer.getText().toString());
         if (null == cartoon.getComments()) {

@@ -18,7 +18,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ViewFlipper;
 
-import com.malinskiy.superrecyclerview.SuperRecyclerView;
 import com.mckuai.imc.Adapter.CartoonSceneAdapter;
 import com.mckuai.imc.Base.BaseFragment;
 import com.mckuai.imc.Base.MCKuai;
@@ -54,14 +53,16 @@ public class CreateCartoonFragment extends BaseFragment implements StepView_4.On
     private View view;
     private TouchableLayout cartoonBuilder;
     private AppCompatTextView builderHint;
-    private SuperRecyclerView sceneList;
+    //private SuperRecyclerView sceneList;
     private Point lastPoint;
     private OnActionListener listener;
     private int talkCount = 0;
 
     public interface OnActionListener {
         void onBackgroundSet();
+
         void onWidgetset();
+
         void onPublishSuccess(Cartoon cartoon);
     }
 
@@ -72,23 +73,28 @@ public class CreateCartoonFragment extends BaseFragment implements StepView_4.On
         this.listener = listener;
     }
 
-    public void setTheme(String theme){
+    public void setTheme(String theme) {
         this.theme = theme;
     }
 
 
-    public void showNextStep(int currentStep) {
-        flipper.showNext();
+    public void showNextStep(int currentStep, boolean isBack) {
+        if (isBack) {
+            flipper.showPrevious();
+        } else {
+            flipper.showNext();
+        }
+
         switch (currentStep) {
-            case 0:
+            case 2:
                 MobclickAgent.onEvent(getActivity(), "createCartoon_step2");
                 builderHint.setText(R.string.createcartoon_hint_step1);
                 break;
-            case 1:
+            case 3:
                 MobclickAgent.onEvent(getActivity(), "createCartoon_step3");
                 builderHint.setText(R.string.createcartoon_hint_step2);
                 break;
-            case 2:
+            case 4:
                 MobclickAgent.onEvent(getActivity(), "createCartoon_step4");
                 builderHint.setText(R.string.createcartoon_hint_step3);
                 break;
@@ -98,11 +104,8 @@ public class CreateCartoonFragment extends BaseFragment implements StepView_4.On
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        if (null != view && null != container) {
-            container.removeView(view);
-        }
-        view = inflater.inflate(R.layout.fragment_createcartoon, container, false);
-        if (null == flipper) {
+        if (null == view) {
+            view = inflater.inflate(R.layout.fragment_createcartoon, container, false);
             initView();
         }
         return view;
@@ -122,6 +125,7 @@ public class CreateCartoonFragment extends BaseFragment implements StepView_4.On
                         if (null != bitmap) {
                             cartoonBuilder.setBackgroundDrawable(null);
                             cartoonBuilder.setBitmapBackground(bitmap);
+                            cartoonBuilder.postInvalidate();
                             if (null != listener) {
                                 listener.onBackgroundSet();
                             }
@@ -139,6 +143,7 @@ public class CreateCartoonFragment extends BaseFragment implements StepView_4.On
                         if (null != bitmap) {
                             cartoonBuilder.setBackgroundDrawable(null);
                             cartoonBuilder.setBitmapBackground(bitmap);
+                            cartoonBuilder.postInvalidate();
                             if (null != listener) {
                                 listener.onBackgroundSet();
                             }
@@ -161,32 +166,28 @@ public class CreateCartoonFragment extends BaseFragment implements StepView_4.On
         cartoonBuilder = (TouchableLayout) view.findViewById(R.id.createcartoon_imagebuilder);
 
 
-        sceneList = (SuperRecyclerView) view.findViewById(R.id.createcartoon_scenelist);
         cartoonBuilder.setOnFocusChangeListener(new TouchableLayout.OnFocusChangeListener() {
             @Override
             public void onFocusChange(Point point) {
                 lastPoint = point;
             }
         });
-        cartoonBuilder.setBackgroundResource(R.mipmap.bg_builder_default);
+        //cartoonBuilder.setBackgroundResource(R.mipmap.bg_builder_default);
 
         StepView_1 step1 = new StepView_1(getActivity(), this);
         StepView_2 step2 = new StepView_2(getActivity(), this);
         StepView_3 step3 = new StepView_3(getActivity(), this);
-        StepView_4 step4 = new StepView_4(getActivity(), this);
 
         flipper.addView(step1);
         flipper.addView(step2);
         flipper.addView(step3);
-        flipper.addView(step4);
 
         RecyclerView.LayoutManager manager = new StaggeredGridLayoutManager(3, StaggeredGridLayoutManager.VERTICAL);
         manager.offsetChildrenHorizontal(30);
         manager.offsetChildrenVertical(30);
-        sceneList.setLayoutManager(manager);
     }
 
-    private void showScene(ArrayList<Object> scenes) {
+ /*   private void showScene(ArrayList<Object> scenes) {
         if (null != scenes && !scenes.isEmpty()) {
             if (null == adapter) {
                 adapter = new CartoonSceneAdapter(getActivity(), this);
@@ -235,7 +236,7 @@ public class CreateCartoonFragment extends BaseFragment implements StepView_4.On
 
         return scenes;
     }
-
+*/
 
     @Override
     public void onPhotoClicked() {
@@ -251,8 +252,8 @@ public class CreateCartoonFragment extends BaseFragment implements StepView_4.On
      */
     @Override
     public void onStoragerClicked() {
-        MobclickAgent.onEvent(getActivity(), "createCartoon_openscene");
-        showScene(getScene(true));
+        /*MobclickAgent.onEvent(getActivity(), "createCartoon_openscene");
+        showScene(getScene(true));*/
     }
 
     @Override
@@ -290,7 +291,7 @@ public class CreateCartoonFragment extends BaseFragment implements StepView_4.On
             Bitmap bitmap = drawable.getBitmap();
             if (null != bitmap) {
                 cartoonBuilder.addBitMap(bitmap);
-                if (null != listener){
+                if (null != listener) {
                     listener.onWidgetset();
                 }
             }
@@ -314,7 +315,7 @@ public class CreateCartoonFragment extends BaseFragment implements StepView_4.On
 
     @Override
     public void onSceneSelected(Object scene) {
-        MobclickAgent.onEvent(getActivity(), "createCartoon_checkdscene");
+ /*       MobclickAgent.onEvent(getActivity(), "createCartoon_checkdscene");
         if (null != scene) {
             if (scene instanceof Integer) {
                 cartoonBuilder.setBackgroundResource((int) scene);
@@ -322,7 +323,7 @@ public class CreateCartoonFragment extends BaseFragment implements StepView_4.On
 
             }
         }
-        hideScene();
+        hideScene();*/
     }
 
     @Override
@@ -330,7 +331,7 @@ public class CreateCartoonFragment extends BaseFragment implements StepView_4.On
         MobclickAgent.onEvent(getActivity(), "createCartoon_addtalk");
         talkCount++;
         if (0 < cartoonBuilder.getWidgetCount()) {
-            Lable lable = new Lable(talkCount,lastPoint, talk);
+            Lable lable = new Lable(talkCount, lastPoint, talk);
             cartoonBuilder.addLable(lable);
         } else {
             showMessage("你还未添加有人物或工具", null, null);
@@ -381,7 +382,7 @@ public class CreateCartoonFragment extends BaseFragment implements StepView_4.On
     public void onUploadCartoonSuccess(int cartoonId) {
         isUploading = false;
         MobclickAgent.onEvent(getActivity(), "createCartoon_publish_S");
-        if (null != listener){
+        if (null != listener) {
             Cartoon cartoon = new Cartoon(cartoonId);
             cartoon.setImage(imagePath);
             listener.onPublishSuccess(cartoon);
@@ -414,11 +415,17 @@ public class CreateCartoonFragment extends BaseFragment implements StepView_4.On
 
     @Override
     public boolean onBackPressed() {
-        if (null != sceneList && View.VISIBLE == sceneList.getVisibility()) {
+        /*if (null != sceneList && View.VISIBLE == sceneList.getVisibility()) {
             hideScene();
             return true;
         } else {
             return false;
+        }*/
+        if (2 == flipper.indexOfChild(flipper.getCurrentView())) {
+            return false;
+        } else {
+            showNextStep(flipper.indexOfChild(flipper.getCurrentView()) - 1, true);
+            return true;
         }
     }
 }

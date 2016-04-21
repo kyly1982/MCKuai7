@@ -20,7 +20,9 @@ import com.mckuai.imc.Bean.User;
 import com.mckuai.imc.R;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.assist.FailReason;
 import com.nostra13.universalimageloader.core.assist.ImageScaleType;
+import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 
 import java.util.ArrayList;
 
@@ -51,6 +53,12 @@ public class CompetitionLayout extends RelativeLayout implements View.OnClickLis
 
     private int topOffset,bottomOffset;
 
+    private final int FLAG_NUMBER = 3;
+    private final int IS_TOP_READY= 2;
+    private final int IS_BOTTOM_READY = 1;
+    private Bitmap cacheTop,cacheBottom;//预先加载的图片
+    private int flag = 0;//控制预加载显示，0：普通,1:上方view等待加载2:下方view等待加载
+
     public interface OnActionListener {
         void onShowDetile(Cartoon cartoon);
 
@@ -63,6 +71,7 @@ public class CompetitionLayout extends RelativeLayout implements View.OnClickLis
 
     public void setData(ArrayList<Cartoon> cartoons) {
         isLoadingData = false;
+
         this.cartoons = cartoons;
         if (isFirstSetData) {
             showData();
@@ -86,10 +95,14 @@ public class CompetitionLayout extends RelativeLayout implements View.OnClickLis
                 if (null == loader) {
                     loader = ImageLoader.getInstance();
                 }
-
+                if (cartoons.size() == 4) {
+                    loader.displayImage(cartoons.get(0).getImage(), cartoon_top, getDisplayImageOptions());
+                    loader.displayImage(cartoons.get(1).getImage(), cartoon_bottom, getDisplayImageOptions());
+                } else {
+                    showBigBitmap(true);
+                    showBigBitmap(false);
+                }
                 title.setText(getThemeName(cartoons.get(0).getKindsEx()));
-                loader.displayImage(cartoons.get(0).getImage(), cartoon_top, getDisplayImageOptions());
-                loader.displayImage(cartoons.get(1).getImage(), cartoon_bottom,getDisplayImageOptions());
                 cartoon_top.setTag(cartoons.get(0));
                 cartoon_bottom.setTag(cartoons.get(1));
                 voteTop.setTag(cartoons.get(0));
@@ -105,7 +118,72 @@ public class CompetitionLayout extends RelativeLayout implements View.OnClickLis
                 } else {
                     cartoons.remove(0);
                     cartoons.remove(0);
+                    preLoadBitmap();
                 }
+            }
+        }
+    }
+
+    private void preLoadBitmap(){
+        if (null == loader){
+            loader = ImageLoader.getInstance();
+        }
+
+        for (int i = 0;i < 2;i++){
+            final int index = i;
+            loader.loadImage(cartoons.get(i).getImage(), new ImageLoadingListener() {
+                @Override
+                public void onLoadingStarted(String imageUri, View view) {
+                    if (0 == index){
+                        cacheTop = null;
+                    } else {
+                        cacheBottom = null;
+                    }
+                }
+
+                @Override
+                public void onLoadingFailed(String imageUri, View view, FailReason failReason) {
+
+                }
+
+                @Override
+                public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
+                    if (0 == index){
+                        cacheTop = loadedImage;
+                        if ((flag & IS_TOP_READY) == IS_TOP_READY){
+                            showBigBitmap(true);
+                        }
+                    } else {
+                        cacheBottom = loadedImage;
+                        if ((flag & IS_BOTTOM_READY) == IS_BOTTOM_READY){
+                            showBigBitmap(false);
+                        }
+                    }
+                }
+
+                @Override
+                public void onLoadingCancelled(String imageUri, View view) {
+                }
+            });
+        }
+
+        /*Thread thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+
+            }
+        });
+        thread.run();*/
+    }
+
+    private void showBigBitmap(boolean isTop){
+        Bitmap bitmap = getCacheBitmap(isTop);
+
+        if (null != bitmap){
+            if (isTop){
+                cartoon_top.setImageBitmap(bitmap);
+            } else {
+                cartoon_bottom.setImageBitmap(bitmap);
             }
         }
     }
@@ -197,7 +275,6 @@ public class CompetitionLayout extends RelativeLayout implements View.OnClickLis
             @Override
             public int clampViewPositionVertical(View child, int top, int dy) {
                 if (top <  getTop() ) {
-                    //return 0;
                     return getTop()  ;
                 }
                 if (top > (getBottom() ) ) {
@@ -247,7 +324,6 @@ public class CompetitionLayout extends RelativeLayout implements View.OnClickLis
 
         bg_top = (ImageView) findViewById(R.id.diamond_top);
         bg_bottom = (ImageView) findViewById(R.id.diamond_bottom);
-        //bg_middle = (AppCompatImageView) findViewById(R.id.diamond_middle_background);
         middleView = (ImageView) findViewById(R.id.diamond_middle);
 
         bg_top.setAlpha(0);
@@ -262,7 +338,6 @@ public class CompetitionLayout extends RelativeLayout implements View.OnClickLis
     @Override
     protected void onLayout(boolean changed, int l, int t, int r, int b) {
         super.onLayout(changed, l, t, r, b);
-        //if (null == middle) {
             middle = new Point(middleView.getLeft(), middleView.getTop());
             imageWidth = getResources().getDimensionPixelSize(R.dimen.sidlewidth_competition);
             userCoverWidth = getResources().getDimensionPixelSize(R.dimen.competition_voteuser_coverwidth);
@@ -278,7 +353,6 @@ public class CompetitionLayout extends RelativeLayout implements View.OnClickLis
 
             topOffset = getResources().getDimensionPixelOffset(R.dimen.competition_imagewidth) / 2;
             bottomOffset = topOffset;
-        //}
     }
 
     @Override
@@ -374,6 +448,27 @@ public class CompetitionLayout extends RelativeLayout implements View.OnClickLis
             return stringBuilder.toString();
         }
         return title;
+    }
+
+
+
+    private Bitmap getCacheBitmap(boolean isTop){
+        if (isTop){
+            if (null != cacheTop){
+                flag = flag & (FLAG_NUMBER - IS_TOP_READY);//清除准备标志
+                return cacheTop.copy(cacheTop.getConfig(),cacheTop.isMutable());
+            } else {
+                flag = flag | IS_TOP_READY;//设置准备标志
+            }
+        } else {
+            if (null != cacheBottom){
+                flag = flag & (FLAG_NUMBER - IS_BOTTOM_READY);//清除准备标志
+                return cacheBottom.copy(cacheBottom.getConfig(),cacheBottom.isMutable());
+            } else {
+                flag = flag | IS_BOTTOM_READY;//设置准备标志
+            }
+        }
+        return null;
     }
 
     private DisplayImageOptions getDisplayImageOptions() {
