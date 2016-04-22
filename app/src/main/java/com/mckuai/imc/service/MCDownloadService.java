@@ -47,12 +47,14 @@ public class MCDownloadService extends Service {
     @Override
     public void onCreate() {
         android.os.Debug.waitForDebugger();
+        System.out.println("onCreate");
         super.onCreate();
     }
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         android.os.Debug.waitForDebugger();
+        System.out.println("onStartCommand");
         return super.onStartCommand(intent, flags, startId);
     }
 
@@ -61,18 +63,27 @@ public class MCDownloadService extends Service {
         // TODO: Return the communication channel to the service.
         //throw new UnsupportedOperationException("Not yet implemented");
         android.os.Debug.waitForDebugger();
+        System.out.println("onBind");
         return dlStub;
     }
 
+    @Override
+    public boolean onUnbind(Intent intent) {
+        android.os.Debug.waitForDebugger();
+        System.out.println("onUnbind");
+        return super.onUnbind(intent);
+    }
 
     @Override
     public void onDestroy() {
         unRegisterReceiver();
+        Log.e("onDestroy");
         super.onDestroy();
     }
 
     private void registerReceiver(){
         if (null == reciver) {
+            System.out.println("registerReceiver");
             reciver = new MCDownloadReciver();
             IntentFilter filter = new IntentFilter(Intent.ACTION_PACKAGE_ADDED);
             filter.addAction(action_download_start);
@@ -92,8 +103,12 @@ public class MCDownloadService extends Service {
     }
 
     private void initNotification(){
-        android.os.Debug.waitForDebugger();
-        builder = new NotificationCompat.Builder(getApplicationContext());
+
+        System.out.println("initNotification");
+        if(null == notificationManager){
+            notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+        }
+        builder = new NotificationCompat.Builder(this);
         builder.setProgress(100, 0, false)
                 .setSmallIcon(android.R.drawable.stat_sys_download)
                 .setOngoing(true)
@@ -101,7 +116,6 @@ public class MCDownloadService extends Service {
                 //.setContentIntent(getDefaultIntent(0))//暂停，启动
                 .setContentTitle(title)
                 .setContentText("等待下载...");
-        notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         notificationManager.notify(id, builder.build());
     }
 
@@ -135,38 +149,46 @@ public class MCDownloadService extends Service {
     }
 
     private void startDownload(){
-        HttpRequest.download(url, apkFile, new FileDownloadCallback() {
+        System.out.println("startDownload");
+      /*  Thread thread = new Thread(new Runnable() {
             @Override
-            public void onStart() {
-                updateNotification(1);
-            }
+            public void run() {*/
+                HttpRequest.download(url, apkFile, new FileDownloadCallback() {
+                    @Override
+                    public void onStart() {
+                        updateNotification(1);
+                    }
 
-            @Override
-            public void onProgress(int progress, long networkSpeed) {
+                    @Override
+                    public void onProgress(int progress, long networkSpeed) {
 
-                long time = System.currentTimeMillis();
-                if (progress != lastProgress && time > lastUpdateTime + 1000) {
-                    updateNotification(2);
-                    lastProgress = progress;
-                    lastUpdateTime = time;
-                }
-            }
+                        long time = System.currentTimeMillis();
+                        if (progress != lastProgress && time > lastUpdateTime + 1000) {
+                            updateNotification(2);
+                            lastProgress = progress;
+                            lastUpdateTime = time;
+                        }
+                    }
 
-            @Override
-            public void onDone() {
-                Log.e("下载完成");
-                lastProgress = 100;
-                updateNotification(3);
-                MobclickAgent.onEvent(getApplicationContext(),"MCAD_Downloaded");
-                installApk();
-            }
+                    @Override
+                    public void onDone() {
+                        Log.e("下载完成");
+                        lastProgress = 100;
+                        updateNotification(3);
+                        MobclickAgent.onEvent(getApplicationContext(),"MCAD_Downloaded");
+                        installApk();
+                    }
 
-            @Override
-            public void onFailure() {
-                updateNotification(0);
-                Log.e("下载失败");
-            }
+                    @Override
+                    public void onFailure() {
+                        updateNotification(0);
+                        Log.e("下载失败");
+                    }
+                });
+    /*        }
         });
+        thread.start();*/
+
     }
 
     private void pauseDownload(){
@@ -191,7 +213,7 @@ public class MCDownloadService extends Service {
     }
 
     private void installApk(){
-        Log.e("开始安装");
+        System.out.println("installApk");
         android.os.Debug.waitForDebugger();
         if (null != apkFile && apkFile.exists()) {
             Intent intent = new Intent();
@@ -203,6 +225,7 @@ public class MCDownloadService extends Service {
     }
 
     private void runApk(){
+        System.out.println("runApk");
         Intent intent = new Intent();
         intent.setComponent(new ComponentName(packageName,luncherActivity));
         intent.setAction(Intent.ACTION_VIEW);
@@ -242,7 +265,8 @@ public class MCDownloadService extends Service {
     DownloadInterface.Stub dlStub = new DownloadInterface.Stub() {
         @Override
         public boolean addDownload(String appName, String downloadUrl) throws RemoteException {
-            if (null != title) {
+            System.out.println("addDownload");
+            if (null == title) {
                 title = appName;
                 url = downloadUrl;
                 initNotification();
@@ -265,7 +289,7 @@ public class MCDownloadService extends Service {
     public class MCDownloadReciver extends BroadcastReceiver {
         @Override
         public void onReceive(Context context, Intent intent) {
-            Log.e("收到消息");
+            System.out.println("onReceive");
             android.os.Debug.waitForDebugger();
             switch (intent.getAction()){
                 case action_download_pause:

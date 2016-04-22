@@ -1,5 +1,4 @@
 package com.mckuai.imc.service;
-
 // Declare any non-default types here with import statements
 
 interface DownloadInterface {

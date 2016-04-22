@@ -66,6 +66,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener
     private boolean isRecommendPressed = false;
     private Ad ad;
     private boolean isDownloaded = false;
+    private ServiceConnection connection;
 
 
 
@@ -130,6 +131,10 @@ public class MainActivity extends BaseActivity implements View.OnClickListener
 
     @Override
     protected void onDestroy() {
+       /* if (null != connection){
+            unbindService(connection);
+            connection = null;
+        }*/
         super.onDestroy();
     }
 
@@ -150,8 +155,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener
                 layoutParams.leftMargin = right - msgIndicator.getWidth() - width/5;
                 msgIndicator.setLayoutParams(layoutParams);
                 msgIndicator.postInvalidate();
-                //isMsgIndicatorInit = true;
-                //checkUnReadMsg();
                 chat.getViewTreeObserver().removeGlobalOnLayoutListener(this);
             }
         });
@@ -252,15 +255,21 @@ public class MainActivity extends BaseActivity implements View.OnClickListener
                     MobclickAgent.onEvent(MainActivity.this, "ExitDialog_Download");
                     MobclickAgent.onKillProcess(MainActivity.this);
                     startDownloadService();
-                    isDownloaded = true;
+                    if (null != connection){
+                        isDownloaded = true;
+                        unbindService(connection);
+                        connection = null;
+                    }
                     mApplication.handleExit();
                     System.exit(0);
                 }
 
                 @Override
                 public void onPicturePressed() {
-                    isDownloaded = true;
                     startDownloadService();
+                    if (null != connection){
+                        isDownloaded = true;
+                    }
                     MobclickAgent.onEvent(MainActivity.this, "ExitDialog_Picture");
                 }
             });
@@ -454,14 +463,17 @@ public class MainActivity extends BaseActivity implements View.OnClickListener
     };
 
     private void startDownloadService(){
-        Intent intent = new Intent(MCDownloadService.class.getName());
-        //intent.setClassName("com.mckuai.imc.service","MCDownloadService");//针对5.0及之后必须调用
-        ServiceConnection connection = new ServiceConnection() {
+        Intent intent = new Intent("com.mckuai.imc.service.MCDownloadService");
+        intent.setClass(getApplicationContext(),MCDownloadService.class);//兼容5.0及更高版本
+        startService(intent);
+        //intent.setClassName("com.mckuai.imc.service","MCDownloadService");
+        connection = new ServiceConnection() {
             @Override
             public void onServiceConnected(ComponentName name, IBinder service) {
                 DownloadInterface downloadService = DownloadInterface.Stub.asInterface(service);
                 if (null != downloadService) {
                     try {
+                        Log.e("启动下载");
                         downloadService.addDownload(ad.getDownName(), ad.getDownUrl());
                     } catch (Exception e) {
                         e.printStackTrace();
@@ -471,10 +483,11 @@ public class MainActivity extends BaseActivity implements View.OnClickListener
 
             @Override
             public void onServiceDisconnected(ComponentName name) {
-
             }
         };
-        boolean result = getApplicationContext().bindService(intent,connection, Context.BIND_AUTO_CREATE|BIND_DEBUG_UNBIND);
-        Log.e("start service "+ result);
+        boolean result = getApplicationContext().bindService(intent,connection, Context.BIND_AUTO_CREATE);
+        if (!result){
+            connection = null;
+        }
     }
 }
