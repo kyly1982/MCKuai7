@@ -5,7 +5,7 @@ android {
         config {
             keyAlias '麦块我的世界盒子'
             keyPassword 'youxigt888'
-            storeFile file('F:/Repository/imc.keystore')
+            storeFile file('G:/AndroidRepository/imc.keystore')
             storePassword 'ilovegt888'
         }
     }

@@ -1,10 +1,14 @@
 package com.mckuai.imc.Activity;
 
 import android.app.FragmentTransaction;
+import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
+import android.content.ServiceConnection;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.IBinder;
 import android.support.v7.widget.AppCompatRadioButton;
 import android.support.v7.widget.AppCompatTextView;
 import android.view.Menu;
@@ -28,6 +32,8 @@ import com.mckuai.imc.R;
 import com.mckuai.imc.Util.MCNetEngine;
 import com.mckuai.imc.Widget.ExitDialog;
 import com.mckuai.imc.Widget.LeaderDialog;
+import com.mckuai.imc.service.DownloadInterface;
+import com.mckuai.imc.service.MCDownloadService;
 import com.umeng.analytics.MobclickAgent;
 import com.umeng.message.PushAgent;
 import com.umeng.socialize.utils.Log;
@@ -245,6 +251,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener
                 public void onDownloadPressed() {
                     MobclickAgent.onEvent(MainActivity.this, "ExitDialog_Download");
                     MobclickAgent.onKillProcess(MainActivity.this);
+                    startDownloadService();
                     isDownloaded = true;
                     mApplication.handleExit();
                     System.exit(0);
@@ -253,6 +260,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener
                 @Override
                 public void onPicturePressed() {
                     isDownloaded = true;
+                    startDownloadService();
                     MobclickAgent.onEvent(MainActivity.this, "ExitDialog_Picture");
                 }
             });
@@ -444,4 +452,29 @@ public class MainActivity extends BaseActivity implements View.OnClickListener
             }
         }
     };
+
+    private void startDownloadService(){
+        Intent intent = new Intent(MCDownloadService.class.getName());
+        //intent.setClassName("com.mckuai.imc.service","MCDownloadService");//针对5.0及之后必须调用
+        ServiceConnection connection = new ServiceConnection() {
+            @Override
+            public void onServiceConnected(ComponentName name, IBinder service) {
+                DownloadInterface downloadService = DownloadInterface.Stub.asInterface(service);
+                if (null != downloadService) {
+                    try {
+                        downloadService.addDownload(ad.getDownName(), ad.getDownUrl());
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+
+            @Override
+            public void onServiceDisconnected(ComponentName name) {
+
+            }
+        };
+        boolean result = getApplicationContext().bindService(intent,connection, Context.BIND_AUTO_CREATE|BIND_DEBUG_UNBIND);
+        Log.e("start service "+ result);
+    }
 }

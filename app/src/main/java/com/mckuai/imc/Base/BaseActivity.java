@@ -274,7 +274,11 @@ public class BaseActivity extends AppCompatActivity implements NavigationView.On
 
             @Override
             public void onError(SHARE_MEDIA share_media, Throwable throwable) {
-                showMessage(throwable.getLocalizedMessage(), null, null);
+                if (null != throwable) {
+                    showMessage(throwable.getLocalizedMessage(), null, null);
+                } else {
+                    showMessage("分享到"+share_media.toString()+"失败，原因未知",null,null);
+                }
                 closeSlidmenu();
             }
 

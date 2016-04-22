@@ -20,6 +20,7 @@ import com.mckuai.imc.Base.MCKuai;
 import com.mckuai.imc.Bean.Ad;
 import com.mckuai.imc.R;
 import com.mckuai.imc.service.DownloadInterface;
+import com.mckuai.imc.service.MCDownloadService;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
 /**
@@ -111,7 +112,7 @@ public class ExitDialog extends DialogFragment implements View.OnClickListener {
                     break;
                 case R.id.exitdialog_download:
                     if (null != ad) {
-                        startDownloadService();
+                        //startDownloadService();
                         mListener.onDownloadPressed();
                     } else {
                         mListener.onExitPressed();
@@ -128,7 +129,7 @@ public class ExitDialog extends DialogFragment implements View.OnClickListener {
                     break;
                 case R.id.exitdialog_content:
                     if (null!= ad) {
-                        startDownloadService();
+                        //startDownloadService();
                     }
                     this.dismiss();
                     mListener.onPicturePressed();
@@ -137,12 +138,18 @@ public class ExitDialog extends DialogFragment implements View.OnClickListener {
     }
 
     private void startDownloadService(){
-        Intent intent = new Intent("com.mckuai.imc.mcdownload");
+//        Intent intent = new Intent("com.mckuai.imc.mcdownload");
+        Intent intent = new Intent(MCDownloadService.class.getName());
         intent.setClassName("com.mckuai.imc.service","MCDownloadService");//针对5.0及之后必须调用
         if (null == conn){
             conn  = new ServiceConnection() {
                 public void onServiceConnected(ComponentName name, IBinder service) {
                     downloadService = DownloadInterface.Stub.asInterface(service);
+                    try {
+                        downloadService.addDownload(ad.getDownName(),ad.getDownUrl());
+                    } catch (Exception e){
+                        e.printStackTrace();
+                    }
                 }
 
                 @Override
@@ -152,7 +159,8 @@ public class ExitDialog extends DialogFragment implements View.OnClickListener {
                 }
             };
         }
-        getActivity().bindService(intent,conn, Context.BIND_AUTO_CREATE);
+        //ComponentName name = getActivity().startService(intent);
+        boolean result = getActivity().getApplicationContext().bindService(intent,conn, Context.BIND_AUTO_CREATE);
 
         if (null != downloadService){
             try {
