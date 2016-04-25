@@ -3,12 +3,11 @@ package com.mckuai.imc.Widget;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Point;
-import android.support.design.widget.Snackbar;
+import android.graphics.drawable.BitmapDrawable;
 import android.support.v4.widget.ViewDragHelper;
 import android.support.v7.widget.AppCompatImageButton;
 import android.support.v7.widget.AppCompatTextView;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,6 +25,7 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.assist.FailReason;
 import com.nostra13.universalimageloader.core.assist.ImageScaleType;
 import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
+import com.umeng.socialize.utils.Log;
 
 import java.util.ArrayList;
 
@@ -106,19 +106,44 @@ public class CompetitionLayout extends ViewGroup implements View.OnClickListener
                     loader = ImageLoader.getInstance();
                 }
                 if (isFirstSetData) {
-                    loader.displayImage(cartoons.get(0).getImage(), cartoon_top, getDisplayImageOptions());
+                    loader.loadImage(cartoons.get(0).getImage(), null, getDisplayImageOptions(), new ImageLoadingListener() {
+                        @Override
+                        public void onLoadingStarted(String imageUri, View view) {
+
+                        }
+
+                        @Override
+                        public void onLoadingFailed(String imageUri, View view, FailReason failReason) {
+
+                        }
+
+                        @Override
+                        public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
+                            if (null != loadedImage) {
+                                //cartoon_top.setImageBitmap(loadedImage);
+                                BitmapDrawable drawable = new BitmapDrawable(loadedImage);
+                                cartoon_top.setBackgroundDrawable(drawable);
+                            }
+                        }
+
+                        @Override
+                        public void onLoadingCancelled(String imageUri, View view) {
+
+                        }
+                    });
+
                     loader.displayImage(cartoons.get(1).getImage(), cartoon_bottom, getDisplayImageOptions());
-                    cartoon_top.setTag(R.id.tag_flag,false);
-                    cartoon_bottom.setTag(R.id.tag_flag,false);
+                    cartoon_top.setTag(R.id.tag_flag, false);
+                    cartoon_bottom.setTag(R.id.tag_flag, false);
                 } else {
                     showBigBitmap(true);
                     showBigBitmap(false);
                 }
                 title.setText(getThemeName(cartoons.get(0).getKindsEx()));
-                cartoon_top.setTag(R.id.tag_cartoon,cartoons.get(0));
-                cartoon_bottom.setTag(R.id.tag_cartoon,cartoons.get(1));
-                voteTop.setTag(R.id.tag_cartoon,cartoons.get(0));
-                voteBottom.setTag(R.id.tag_cartoon,cartoons.get(1));
+                cartoon_top.setTag(R.id.tag_cartoon, cartoons.get(0));
+                cartoon_bottom.setTag(R.id.tag_cartoon, cartoons.get(1));
+                voteTop.setTag(R.id.tag_cartoon, cartoons.get(0));
+                voteBottom.setTag(R.id.tag_cartoon, cartoons.get(1));
 
                 showVoteUser(usersRoot_top, cartoons.get(0).getRewardList());
                 showVoteUser(usersRoot_bottom, cartoons.get(1).getRewardList());
@@ -137,6 +162,7 @@ public class CompetitionLayout extends ViewGroup implements View.OnClickListener
         }
         if (isVoted) {
             isVoted = false;
+            slipReadStone.requestLayout();
             postInvalidate();
         }
     }
@@ -164,33 +190,33 @@ public class CompetitionLayout extends ViewGroup implements View.OnClickListener
 
                 @Override
                 public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
-                    boolean isTopNeedDraw = false,isBottomNeedDraw = false;
+                    boolean isTopNeedDraw = false, isBottomNeedDraw = false;
                     if (null != cartoon_top) {
                         isTopNeedDraw = (boolean) cartoon_top.getTag(R.id.tag_flag);
                     }
-                    if (null !=cartoon_bottom) {
+                    if (null != cartoon_bottom) {
                         isBottomNeedDraw = (boolean) cartoon_bottom.getTag(R.id.tag_flag);
                     }
 
-                    if (isTopNeedDraw){
+                    if (isTopNeedDraw) {
                         Cartoon cartoon = (Cartoon) cartoon_top.getTag(R.id.tag_cartoon);
-                        if (cartoon.getImage().equals(imageUri)){
+                        if (cartoon.getImage().equals(imageUri)) {
                             cartoon_top.setImageBitmap(loadedImage);
-                            cartoon_top.setTag(R.id.tag_flag,false);
+                            cartoon_top.setTag(R.id.tag_flag, false);
                             return;
                         }
                     }
 
-                    if (isBottomNeedDraw){
+                    if (isBottomNeedDraw) {
                         Cartoon cartoon = (Cartoon) cartoon_bottom.getTag(R.id.tag_cartoon);
-                        if (cartoon.getImage().equals(imageUri)){
+                        if (cartoon.getImage().equals(imageUri)) {
                             cartoon_bottom.setImageBitmap(loadedImage);
-                            cartoon_bottom.setTag(R.id.tag_flag,false);
+                            cartoon_bottom.setTag(R.id.tag_flag, false);
                             return;
                         }
                     }
 
-                    if (imageUri.equals(cartoons.get(0).getImage())){
+                    if (imageUri.equals(cartoons.get(0).getImage())) {
                         cacheTop = loadedImage;
                     } else {
                         cacheBottom = loadedImage;
@@ -210,10 +236,10 @@ public class CompetitionLayout extends ViewGroup implements View.OnClickListener
 
         if (null != bitmap) {
             imageView.setImageBitmap(bitmap);
-            imageView.setTag(R.id.tag_flag,false);
+            imageView.setTag(R.id.tag_flag, false);
         } else {
             imageView.setImageResource(R.mipmap.image_default);
-            imageView.setTag(R.id.tag_flag,true);
+            imageView.setTag(R.id.tag_flag, true);
         }
     }
 
@@ -246,7 +272,11 @@ public class CompetitionLayout extends ViewGroup implements View.OnClickListener
             public boolean tryCaptureView(View child, int pointerId) {
                 switch (child.getId()) {
                     case R.id.diamond_middle:
-                        return true;
+                        if (!isVoted) {
+                            return true;
+                        } else {
+                            return false;
+                        }
                     default:
                         return false;
                 }
@@ -281,8 +311,8 @@ public class CompetitionLayout extends ViewGroup implements View.OnClickListener
 
             private int getViewAlpha(int top, boolean isTop) {
                 int distance = isTop ? middle.y - slipRedstoneWidth_half - top : top - middle.y - slipRedstoneWidth_half;
-                distance = (int)(distance * 255f / (middle.y - slipRedstoneWidth_half - voteTop_top));
-                return distance > 255 ? 255:distance;
+                distance = (int) (distance * 255f / (middle.y - slipRedstoneWidth_half - voteTop_top));
+                return distance > 255 ? 255 : distance;
             }
 
             @Override
@@ -319,7 +349,7 @@ public class CompetitionLayout extends ViewGroup implements View.OnClickListener
                             mDragger.settleCapturedViewAt(middle.x - (slipReadStone.getWidth() / 2), middle.y - (slipReadStone.getHeight() / 2));
                             invalidate();
                         } else {
-                            switch (voteIndex){
+                            switch (voteIndex) {
                                 case 0:
                                     listener.onVote((Cartoon) cartoon_top.getTag(R.id.tag_cartoon), (Cartoon) cartoon_bottom.getTag(R.id.tag_cartoon));
                                     break;
@@ -412,7 +442,7 @@ public class CompetitionLayout extends ViewGroup implements View.OnClickListener
             }
             voteTop_top = middle.y - (cartoonRoot_Width / 2) - halfofMargin - slipRedstoneWidth_half;
             voteBottom_top = middle.y + halfofMargin + (cartoonRoot_Width / 2) - slipRedstoneWidth_half;
-            userCoverWidth = sidebarRoot_Width - Math.abs(sidebarRoot_offset) - getResources().getDimensionPixelSize(R.dimen.competition_voteuser_padding);
+            userCoverWidth = sidebarRoot_Width - Math.abs(sidebarRoot_offset) - (2 * getResources().getDimensionPixelSize(R.dimen.competition_voteuser_padding));
             isMeasureNeed = true;
         }
         //对各组件进行布局
@@ -429,11 +459,18 @@ public class CompetitionLayout extends ViewGroup implements View.OnClickListener
 
             title.layout(0, halfofMargin, sidebarRoot_Width - sidebarRoot_offset, height - halfofMargin);
         }
+
+        if (isMeasureNeed) {
+            cartoon_top.requestLayout();
+            cartoon_bottom.requestLayout();
+//            usersRoot_bottom.requestLayout();
+//            usersRoot_top.requestLayout();
+        }
     }
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        if (isMeasureNeed && null != cartoonRoot_top) {
+        if (null != cartoonRoot_top) {
             int cartoonRootWidthSpec = MeasureSpec.makeMeasureSpec(cartoonRoot_Width, MeasureSpec.EXACTLY);
             cartoonRoot_top.measure(cartoonRootWidthSpec, cartoonRootWidthSpec);
             cartoonRoot_bottom.measure(cartoonRootWidthSpec, cartoonRootWidthSpec);
@@ -470,11 +507,13 @@ public class CompetitionLayout extends ViewGroup implements View.OnClickListener
         switch (v.getId()) {
             case R.id.cartoon_top:
                 if (null != listener && null != cartoon) {
+//                    Log.e("cartoon", "cartoonId=" + cartoon.getId());
                     listener.onShowDetile(cartoon);
                 }
                 break;
             case R.id.cartoon_bottom:
                 if (null != listener && null != cartoon) {
+//                    Log.e("cartoon", "cartoonId=" + cartoon.getId());
                     listener.onShowDetile(cartoon);
                 }
                 break;
@@ -516,12 +555,14 @@ public class CompetitionLayout extends ViewGroup implements View.OnClickListener
                 loader.displayImage(users.get(i).getHeadImage(), imageView, MCKuai.instence.getCircleOptions());
                 root.addView(imageView, 0);
             }
+            //root.postInvalidate();
         }
     }
 
     private LinearLayout.LayoutParams getImageLayoutParsms() {
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(userCoverWidth, userCoverWidth);
         int margins = (sidebarRoot_Width - sidebarRoot_offset - userCoverWidth) / 2;
+        //Log.e("LayoutParams","userCoverWidth="+userCoverWidth + ",sidebarWidth=" +sidebarRoot_Width + ", sidebarOffset=" + sidebarRoot_offset  + ", margins="+margins);
         params.setMargins(margins, 0, margins, coverDivier);
         return params;
     }

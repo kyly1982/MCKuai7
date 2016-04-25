@@ -282,14 +282,14 @@
         <activity android:name=".Activity.RecommendActivity" />
 
         <!-- 下载服务 -->
-        <service
+      <!--  <service
             android:name=".MCDownloadService"
             android:enabled="true"
             android:exported="true">
             <intent-filter>
                 <action android:name="com.mckuai.imc.MCDownloadService" />
             </intent-filter>
-        </service>
+        </service>-->
         <service
             android:name=".DownloadService"
             android:process=":downloader"

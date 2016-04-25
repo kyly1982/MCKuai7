@@ -6,7 +6,6 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Environment;
 import android.os.IBinder;
@@ -15,7 +14,7 @@ import android.util.Log;
 import com.umeng.analytics.MobclickAgent;
 
 import java.io.File;
-import java.io.StringReader;
+import java.net.URLEncoder;
 
 public class DownloadService extends Service {
     private DownloadManager dm;
@@ -39,6 +38,9 @@ public class DownloadService extends Service {
         name = intent.getStringExtra("NAME");
 
         initDonwloadInfo();
+        url = url.substring(0,url.lastIndexOf("/")+1);
+        url += URLEncoder.encode(fileName);
+        Log.e("url=",url);
 
         receiver = new BroadcastReceiver() {
             @Override
@@ -86,7 +88,7 @@ public class DownloadService extends Service {
             file.mkdirs();
         }
         filePath = file.getPath() + "/";
-        fileName = url.substring(url.lastIndexOf("/"));
+        fileName = url.substring(url.lastIndexOf("/")+1);
         apkFile = new File(filePath,fileName);
         if (apkFile.isFile() && apkFile.exists()){
             apkFile.delete();

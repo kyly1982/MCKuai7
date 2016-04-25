@@ -107,6 +107,7 @@ public class CartoonActivity extends BaseActivity implements CartoonView.OnCarto
     private void showData() {
         if (null != cartoon) {
             if (null == cartoon.getOwner()) {
+//                Log.e("CartoonActivity","reload cartoon,id="+cartoon.getId());
                 mApplication.netEngine.loadCartoonDetail(this, cartoon.getId(), this);
                 return;
             }

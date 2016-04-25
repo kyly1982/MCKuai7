@@ -30,7 +30,6 @@ import com.umeng.socialize.PlatformConfig;
 import com.zhy.http.okhttp.OkHttpUtils;
 
 import java.io.File;
-import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 
 import cn.finalteam.okhttpfinal.OkHttpFinal;
@@ -239,7 +238,7 @@ public class MCKuai extends Application {
             editor.putString(getString(R.string.preferences_addr), user.getAddr());         //地址
             editor.putString(getString(R.string.preferences_token_rongcloud), user.getToken());//融云token
         }
-        editor.commit();
+        editor.apply();
     }
 
     public String getImageCacheDir() {

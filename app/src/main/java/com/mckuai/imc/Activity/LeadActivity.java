@@ -202,6 +202,6 @@ public class LeadActivity extends BaseActivity implements ViewPager.OnPageChange
         isFirstBoot = preferences.getBoolean(getString(R.string.preferences_isFirstBoot), true);
         SharedPreferences.Editor editor = preferences.edit();
         editor.putBoolean(getString(R.string.preferences_isFirstBoot), false);
-        editor.commit();
+        editor.apply();
     }
 }

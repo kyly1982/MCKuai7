@@ -137,8 +137,14 @@ public class CartoonView extends FrameLayout implements View.OnClickListener {
         }
         userName.setText(cartoon.getOwner().getNickEx());
         time.setText(cartoon.getTimeEx());
-        if (cartoon.getReplyNum() != 0) {
-            commentCount.setText(cartoon.getReplyNum() + "");
+        int cc = 0;
+        if (null != cartoon.getComments()){
+            cc = (cartoon.getComments().size() > cartoon.getReplyNum()) ? cartoon.getComments().size():cartoon.getReplyNum();
+        } else {
+            cc = cartoon.getReplyNum();
+        }
+        if (cc != 0) {
+            commentCount.setText(cc + "");
         } else {
             commentCount.setText("");
         }
@@ -148,12 +154,12 @@ public class CartoonView extends FrameLayout implements View.OnClickListener {
             priseCount.setText("");
         }
 
-        pkCount.setText(cartoon.getAllPk()+"");
-        pkWinCount.setText(cartoon.getAllPrise()+"");
-        if (0 == cartoon.getAllPk() || 0 == cartoon.getAllPrise()){
+        pkCount.setText(cartoon.getAllPrise()+"");
+        pkWinCount.setText(cartoon.getPrise()+"");
+        if (0 == cartoon.getPrise() || 0 == cartoon.getAllPrise()){
             pkRate.setText("0");
         } else {
-            pkRate.setText((int) (100 * cartoon.getAllPrise() / cartoon.getAllPk()) + "%");
+            pkRate.setText(((int) (100f * cartoon.getPrise() / cartoon.getAllPrise())) + "%");
         }
 
         if (isDetailed) {

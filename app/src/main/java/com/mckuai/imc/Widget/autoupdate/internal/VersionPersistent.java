@@ -30,13 +30,13 @@ public class VersionPersistent {
         editor.putString(VERSION_FEATURE, version.feature);
         editor.putString(VERSION_NAME, version.name);
         editor.putString(VERSION_URL, version.targetUrl);
-        editor.commit();
+        editor.apply();
     }
 
     public void clear() {
         Editor editor = shared.edit();
         editor.clear();
-        editor.commit();
+        editor.apply();
     }
 
     public Version load() {

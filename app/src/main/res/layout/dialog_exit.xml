@@ -5,17 +5,26 @@
     android:layout_height="210dp"
     android:clickable="true"
     android:layout_gravity="center"
+    android:padding="1dp"
     android:background="@drawable/dialog_background">
 
     <android.support.v7.widget.AppCompatTextView
         android:id="@+id/exitdialog_title"
         android:layout_width="match_parent"
         android:layout_height="35dp"
-        android:paddingLeft="10dp"
         android:gravity="center_vertical"
         android:singleLine="true"
         android:textSize="18sp"
         android:textColor="@color/textColorAccentr" />
+
+    <android.support.v7.widget.AppCompatTextView
+        android:layout_width="match_parent"
+        android:layout_height="140dp"
+        android:layout_below="@id/exitdialog_title"
+        android:gravity="center"
+        android:textSize="@dimen/font_title"
+        android:text="是否退出麦块？"
+        />
 
 
     <android.support.v7.widget.AppCompatImageView
@@ -23,7 +32,9 @@
         android:layout_width="match_parent"
         android:clickable="true"
         android:layout_height="140dp"
-        android:layout_below="@id/exitdialog_title" />
+        android:background="@color/icons"
+        android:layout_below="@id/exitdialog_title"
+        />
 
 
     <android.support.v7.widget.AppCompatButton

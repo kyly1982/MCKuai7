@@ -388,6 +388,12 @@ public class MCNetEngine {
             public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
                 listener.onRewardaCartoonFailure(throwable.getLocalizedMessage());
             }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+                //super.onFailure(statusCode, headers, throwable, errorResponse);
+                listener.onRewardaCartoonFailure(throwable.getLocalizedMessage());
+            }
         });
     }
 

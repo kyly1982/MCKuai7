@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Locale;
 
 /**
  * Created by kyly on 2016/1/21.
@@ -181,8 +182,8 @@ public class Cartoon implements Serializable {
     }
 
     public String getTimeEx()  {
-        SimpleDateFormat sdf_input = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
-        SimpleDateFormat sdf_output = new SimpleDateFormat("MM月dd日");
+        SimpleDateFormat sdf_input = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS",new Locale("zh","CN"));
+        SimpleDateFormat sdf_output = new SimpleDateFormat("MM月dd日",new Locale("zh","CN"));
         try {
             Date date = sdf_input.parse(insertTime);
             return sdf_output.format(date);

@@ -226,7 +226,7 @@ public class MainFragment_Community extends BaseFragment
         this.page = page;
         if (1 == page.getPage()){
             mPosts = posts;
-        } else {
+        } else if (null != posts){
             mPosts.addAll(posts);
         }
         showPost();

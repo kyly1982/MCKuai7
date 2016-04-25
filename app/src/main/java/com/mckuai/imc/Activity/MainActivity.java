@@ -1,14 +1,11 @@
 package com.mckuai.imc.Activity;
 
 import android.app.FragmentTransaction;
-import android.content.ComponentName;
-import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.IBinder;
 import android.support.v7.widget.AppCompatRadioButton;
 import android.support.v7.widget.AppCompatTextView;
 import android.view.Menu;
@@ -32,7 +29,6 @@ import com.mckuai.imc.R;
 import com.mckuai.imc.Util.MCNetEngine;
 import com.mckuai.imc.Widget.ExitDialog;
 import com.mckuai.imc.Widget.LeaderDialog;
-import com.mckuai.imc.MCDownloadService;
 import com.umeng.analytics.MobclickAgent;
 import com.umeng.message.PushAgent;
 import com.umeng.socialize.utils.Log;
@@ -282,8 +278,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        onBackPressed();
-        /*int id = item.getItemId();
+//        onBackPressed();
+        int id = item.getItemId();
         if (id == R.id.action_recommend) {
             if (!isRecommendPressed) {
                 item.setIcon(R.drawable.ic_menu_recommend);
@@ -292,7 +288,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener
             Intent intent = new Intent(this, RecommendActivity.class);
             startActivity(intent);
             return true;
-        }*/
+        }
 
         return super.onOptionsItemSelected(item);
     }

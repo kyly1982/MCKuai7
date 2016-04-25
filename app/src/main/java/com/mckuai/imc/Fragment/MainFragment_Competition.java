@@ -3,7 +3,6 @@ package com.mckuai.imc.Fragment;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -123,7 +122,7 @@ public class MainFragment_Competition extends BaseFragment implements Competitio
     @Override
     public void onVote(Cartoon win,Cartoon fail) {
         MobclickAgent.onEvent(getActivity(),"competitionCartoon");
-        Log.e("onVote","win="+win.getId()+",fail="+fail.getId());
+//        Log.e("onVote","win="+win.getId()+",fail="+fail.getId());
         if (null != win && null != fail) {
             if (application.isLogin()) {
                 MCKuai.instence.netEngine.rewardCartoon(getActivity(),application.user.getId(), win, this);
@@ -186,18 +185,20 @@ public class MainFragment_Competition extends BaseFragment implements Competitio
     public void onRewardaCartoonFailure(String msg) {
         if (msg.equals("已赞")){
             MobclickAgent.onEvent(getActivity(),"competitionCartoon_FR");
+//            Log.e("onReward","Failure_FR");
+            competitionLayout.showData();
             return;
         }
         showMessage(msg,null,null);
         MobclickAgent.onEvent(getActivity(), "competitionCartoon_F");
-        Log.e("onReward","Failure");
+//        Log.e("onReward","Failure");
         competitionLayout.showData();
     }
 
     @Override
     public void onRewardCartoonSuccess() {
         MobclickAgent.onEvent(getActivity(),"competitionCartoon_S");
-        Log.e("onReward","Success");
+//        Log.e("onReward","Success");
         competitionLayout.showData();
     }
 }

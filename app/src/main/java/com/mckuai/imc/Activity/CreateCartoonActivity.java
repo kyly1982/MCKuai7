@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
@@ -211,8 +212,10 @@ public class CreateCartoonActivity extends BaseActivity
                 values.put(MediaStore.Images.ImageColumns.MIME_TYPE, "image/jpeg");
                 values.put(MediaStore.Images.ImageColumns.ORIENTATION, 0);
                 values.put(MediaStore.Images.ImageColumns.DATA, path + filename);
-                values.put(MediaStore.Images.ImageColumns.WIDTH, cartoon.getWidth());
-                values.put(MediaStore.Images.ImageColumns.HEIGHT, cartoon.getHeight());
+                if (Build.VERSION.SDK_INT > 15) {
+                    values.put(MediaStore.Images.ImageColumns.WIDTH, cartoon.getWidth());
+                    values.put(MediaStore.Images.ImageColumns.HEIGHT, cartoon.getHeight());
+                }
                 try {
                     Uri uri = getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
                 } catch (Exception e) {

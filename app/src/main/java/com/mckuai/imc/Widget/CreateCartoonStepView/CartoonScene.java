@@ -3,6 +3,7 @@ package com.mckuai.imc.Widget.CreateCartoonStepView;
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
+import android.util.AttributeSet;
 import android.widget.RelativeLayout;
 
 import com.malinskiy.superrecyclerview.SuperRecyclerView;
@@ -27,7 +28,21 @@ public class CartoonScene extends RelativeLayout implements CartoonSceneAdapter.
         public void onSelected(Object scene);
     }
 
-    public CartoonScene(Context context,OnSceneSelectedListener listener,boolean isMCScene) {
+    public CartoonScene(Context context) {
+        super(context);
+        this.context = context;
+        this.listener = null;
+        initView(context);
+    }
+
+    public CartoonScene(Context context, AttributeSet attrs) {
+        super(context, attrs);
+        this.context = context;
+        this.listener = null;
+        initView(context);
+    }
+
+    public CartoonScene(Context context, OnSceneSelectedListener listener, boolean isMCScene) {
         super(context);
         this.context = context;
         this.listener = listener;

@@ -92,6 +92,7 @@
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:background="@null"
                 android:layout_alignBottom="@id/layout_top"
                 android:layout_alignTop="@id/layout_top"
                 android:layout_toRightOf="@id/layout_top"
@@ -109,6 +110,7 @@
                     android:id="@+id/root_top"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:background="@null"
                     android:layout_centerHorizontal="true"
                     android:gravity="center_horizontal"
                     android:layout_above="@id/vote_top"
@@ -121,6 +123,7 @@
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:background="@null"
                 android:layout_alignParentRight="true"
                 android:layout_toRightOf="@id/layout_bottom"
                 android:layout_alignTop="@id/layout_bottom"
@@ -139,6 +142,7 @@
                     android:id="@+id/root_bottom"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:background="@null"
                     android:layout_centerHorizontal="true"
                     android:gravity="center_horizontal"
                     android:layout_above="@id/vote_bottom"
