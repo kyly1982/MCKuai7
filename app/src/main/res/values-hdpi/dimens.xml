@@ -53,7 +53,8 @@
     <dimen name="competition_cardwidth">240dp</dimen>
     <dimen name="competition_cardheight">371dp</dimen>
     <dimen name="sidlewidth_competition">41dp</dimen>
-    <dimen name="competition_imagewidth">165dp</dimen>
+    <dimen name="competition_rootwidth">165dp</dimen>
+    <dimen name="competition_imagewidth">161dp</dimen>
     <dimen name="competition_voteuser_coverwidth">20dp</dimen>
     <dimen name="competition_imagewidth_middle">117.5dp</dimen>
     <dimen name="competition_centerdivier_width">4dp</dimen>

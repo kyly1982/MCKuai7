@@ -1,4 +1,4 @@
-package com.mckuai.imc.service;
+package com.mckuai.imc;
 
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -48,6 +48,7 @@ public class MCDownloadService extends Service {
     public void onCreate() {
         android.os.Debug.waitForDebugger();
         System.out.println("onCreate");
+        Log.e("onCreate");
         super.onCreate();
     }
 
@@ -55,6 +56,14 @@ public class MCDownloadService extends Service {
     public int onStartCommand(Intent intent, int flags, int startId) {
         android.os.Debug.waitForDebugger();
         System.out.println("onStartCommand");
+        Log.e("onCreate");
+        title = intent.getStringExtra("NAME");
+        url = intent.getStringExtra("URL");
+        url = "https://qd.myapp.com/myapp/qqteam/AndroidQQ/mobileqq_android.apk";
+        initNotification();
+        registerReceiver();
+        initDonwloadInfo();
+        startDownload();
         return super.onStartCommand(intent, flags, startId);
     }
 
@@ -63,13 +72,31 @@ public class MCDownloadService extends Service {
         // TODO: Return the communication channel to the service.
         //throw new UnsupportedOperationException("Not yet implemented");
         android.os.Debug.waitForDebugger();
+        Log.e("onBind");
         System.out.println("onBind");
-        return dlStub;
+        return null;
+      /*  return new DownloadInterface.Stub() {
+            @Override
+            public void addDownload(String appName, String downloadUrl) throws RemoteException {
+                Log.e("addDownload");
+                System.out.println("addDownload");
+                if (null == title) {
+                    title = appName;
+                    url = downloadUrl;
+                    url = "https://qd.myapp.com/myapp/qqteam/AndroidQQ/mobileqq_android.apk";
+                    initNotification();
+                    registerReceiver();
+                    initDonwloadInfo();
+                    startDownload();
+                }
+            }
+        };*/
     }
 
     @Override
     public boolean onUnbind(Intent intent) {
         android.os.Debug.waitForDebugger();
+        Log.e("onUnbind");
         System.out.println("onUnbind");
         return super.onUnbind(intent);
     }
@@ -82,6 +109,7 @@ public class MCDownloadService extends Service {
     }
 
     private void registerReceiver(){
+        Log.e("registerReceiver");
         if (null == reciver) {
             System.out.println("registerReceiver");
             reciver = new MCDownloadReciver();
@@ -95,6 +123,7 @@ public class MCDownloadService extends Service {
     }
 
     private void unRegisterReceiver(){
+        Log.e("unRegisterReceiver");
         if (null != reciver){
             unregisterReceiver(reciver);
             reciver = null;
@@ -103,10 +132,10 @@ public class MCDownloadService extends Service {
     }
 
     private void initNotification(){
-
+        Log.e("initNotification");
         System.out.println("initNotification");
         if(null == notificationManager){
-            notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+            notificationManager = (NotificationManager) super.getSystemService(NOTIFICATION_SERVICE);
         }
         builder = new NotificationCompat.Builder(this);
         builder.setProgress(100, 0, false)
@@ -120,6 +149,7 @@ public class MCDownloadService extends Service {
     }
 
     private void updateNotification(int status){
+        Log.e("updateNotification");
         if (0 <= status) {
             switch (status) {
                 case 0:
@@ -150,6 +180,7 @@ public class MCDownloadService extends Service {
 
     private void startDownload(){
         System.out.println("startDownload");
+        Log.e("startDownload");
       /*  Thread thread = new Thread(new Runnable() {
             @Override
             public void run() {*/
@@ -196,6 +227,7 @@ public class MCDownloadService extends Service {
     }
 
     private void stopDownload(){
+        Log.e("stopDownload");
         HttpRequest.cancel(url);
         title = null;
         url = null;
@@ -203,6 +235,7 @@ public class MCDownloadService extends Service {
     }
 
     private void initDonwloadInfo(){
+        Log.e("initDonwloadInfo");
         File file = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
         if (!file.exists()) {
             file.mkdirs();
@@ -213,6 +246,7 @@ public class MCDownloadService extends Service {
     }
 
     private void installApk(){
+        Log.e("installApk");
         System.out.println("installApk");
         android.os.Debug.waitForDebugger();
         if (null != apkFile && apkFile.exists()) {
@@ -225,6 +259,7 @@ public class MCDownloadService extends Service {
     }
 
     private void runApk(){
+        Log.e("runApk");
         System.out.println("runApk");
         Intent intent = new Intent();
         intent.setComponent(new ComponentName(packageName,luncherActivity));
@@ -262,33 +297,31 @@ public class MCDownloadService extends Service {
         return pendingIntent;
     }
 
-    DownloadInterface.Stub dlStub = new DownloadInterface.Stub() {
+   /* DownloadInterface.Stub dlStub = new DownloadInterface.Stub() {
         @Override
-        public boolean addDownload(String appName, String downloadUrl) throws RemoteException {
+        public void addDownload(String appName, String downloadUrl) throws RemoteException {
+            Log.e("addDownload");
             System.out.println("addDownload");
             if (null == title) {
                 title = appName;
                 url = downloadUrl;
-                initNotification();
-                registerReceiver();
-                initDonwloadInfo();
+                url = "https://qd.myapp.com/myapp/qqteam/AndroidQQ/mobileqq_android.apk";
+                try {
+                    initNotification();
+                    registerReceiver();
+                    initDonwloadInfo();
+                } catch (Exception e){
+                    e.printStackTrace();
+                }
                 startDownload();
-                return true;
-            } else {
-                return false;
             }
         }
-    };
-
-    public class MCDSBinder extends Binder{
-        public MCDownloadService getService(){
-            return MCDownloadService.this;
-        }
-    }
+    };*/
 
     public class MCDownloadReciver extends BroadcastReceiver {
         @Override
         public void onReceive(Context context, Intent intent) {
+            Log.e("onReceive");
             System.out.println("onReceive");
             android.os.Debug.waitForDebugger();
             switch (intent.getAction()){

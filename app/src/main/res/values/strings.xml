@@ -256,5 +256,9 @@
     <string name="setting_user_nick">昵称：%1$s</string>
     <string name="setting_user_address">地址：%1$s</string>
 
+    <!--PK-->
+    <item type="id" name="tag_cartoon"></item>
+    <item type="id" name="tag_flag"></item>
+
 
 </resources>

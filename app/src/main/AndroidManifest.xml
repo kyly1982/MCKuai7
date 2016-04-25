@@ -19,6 +19,8 @@
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS" />
     <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.BIND_CARRIER_SERVICES" />
+    <uses-permission android:name="android.permission.DOWNLOAD_WITHOUT_NOTIFICATION" />
 
     <uses-feature android:name="android.hardware.camera" />
     <uses-feature android:name="android.hardware.camera.autofocus" />
@@ -28,6 +30,7 @@
     <application
         android:name=".Base.MCKuai"
         android:allowBackup="true"
+        android:hardwareAccelerated="true"
         android:icon="@mipmap/ic_launcher"
         android:label="${APP_NAME}"
         android:supportsRtl="true"
@@ -79,7 +82,6 @@
             android:label="${APP_NAME}"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
-
 
         <!-- ********************************************各种开放平台的配置********************************** -->
         <!-- ********************************************配置腾讯的相关SDK******************************************** -->
@@ -279,16 +281,20 @@
         <activity android:name=".Activity.ConversationListActivity" />
         <activity android:name=".Activity.RecommendActivity" />
 
-        <!-- 下载服务-->
+        <!-- 下载服务 -->
         <service
-            android:name=".service.MCDownloadService"
-            android:process="mcdownload"
+            android:name=".MCDownloadService"
             android:enabled="true"
             android:exported="true">
             <intent-filter>
-                <action android:name="com.mckuai.imc.service.MCDownloadService"/>
+                <action android:name="com.mckuai.imc.MCDownloadService" />
             </intent-filter>
         </service>
+        <service
+            android:name=".DownloadService"
+            android:process=":downloader"
+            android:enabled="true"
+            android:exported="true"></service>
     </application>
 
 </manifest>

@@ -11,9 +11,7 @@
         android:layout_centerInParent="true"
         android:elevation="8dp"
         app:cardBackgroundColor="@color/competitionbackground"
-        app:cardCornerRadius="5dp"
-        app:contentPaddingBottom="5dp"
-        app:contentPaddingTop="5dp">
+        app:cardCornerRadius="5dp">
 
         <com.mckuai.imc.Widget.CompetitionLayout
             android:id="@+id/competition"
@@ -22,22 +20,15 @@
 
 
 
-            <View
-                android:id="@+id/competition_center"
-                android:layout_width="@dimen/competition_centerdivier_width"
-                android:layout_height="@dimen/competition_centerdivier_width"
-                android:layout_centerInParent="true" />
-
-
 
 
             <RelativeLayout
                 android:id="@+id/layout_top"
-                android:layout_width="@dimen/competition_imagewidth"
-                android:layout_height="@dimen/competition_imagewidth"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:layout_centerHorizontal="true"
                 android:background="@drawable/bg_competition"
-                android:padding="4dp">
+                android:padding="2dp">
 
                 <ImageView
                     android:id="@+id/cartoon_top"
@@ -58,12 +49,12 @@
 
             <RelativeLayout
                 android:id="@+id/layout_bottom"
-                android:layout_width="@dimen/competition_imagewidth"
-                android:layout_height="@dimen/competition_imagewidth"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:layout_alignParentBottom="true"
                 android:layout_centerHorizontal="true"
                 android:background="@drawable/bg_competition"
-                android:padding="4dp">
+                android:padding="2dp">
 
                 <ImageView
                     android:id="@+id/cartoon_bottom"
@@ -87,19 +78,20 @@
                 android:layout_width="@dimen/competition_votebutton_width"
                 android:layout_height="@dimen/competition_votebutton_width"
                 android:layout_centerInParent="true"
-                android:src="@mipmap/ic_diamond_big_normal" />
+                android:background="@mipmap/ic_diamond_big_normal" />
 
 
-            <ImageView
+            <View
                 android:id="@+id/diamond_middle"
                 android:layout_width="@dimen/competition_votebutton_width"
                 android:layout_height="@dimen/competition_votebutton_width"
                 android:layout_centerInParent="true"
-                android:src="@mipmap/ic_diamond_big_activited" />
+                android:clickable="true"
+                android:background="@mipmap/ic_diamond_big_activited" />
 
             <RelativeLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:layout_alignBottom="@id/layout_top"
                 android:layout_alignTop="@id/layout_top"
                 android:layout_toRightOf="@id/layout_top"
@@ -115,9 +107,10 @@
 
                 <LinearLayout
                     android:id="@+id/root_top"
-                    android:layout_width="@dimen/competition_voteuser_coverwidth"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerHorizontal="true"
+                    android:gravity="center_horizontal"
                     android:layout_above="@id/vote_top"
                     android:orientation="vertical">
 
@@ -126,8 +119,8 @@
             </RelativeLayout>
 
             <RelativeLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:layout_alignParentRight="true"
                 android:layout_toRightOf="@id/layout_bottom"
                 android:layout_alignTop="@id/layout_bottom"
@@ -144,9 +137,10 @@
 
                 <LinearLayout
                     android:id="@+id/root_bottom"
-                    android:layout_width="@dimen/competition_voteuser_coverwidth"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerHorizontal="true"
+                    android:gravity="center_horizontal"
                     android:layout_above="@id/vote_bottom"
                     android:orientation="vertical"></LinearLayout>
 
@@ -157,8 +151,6 @@
                 android:id="@+id/theme"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:layout_alignParentLeft="true"
-                android:layout_toLeftOf="@id/layout_top"
                 android:gravity="center|top"
                 android:textColor="@color/textColorPrimary_Light" />
 

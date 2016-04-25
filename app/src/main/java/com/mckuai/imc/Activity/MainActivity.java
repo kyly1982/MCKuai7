@@ -32,8 +32,7 @@ import com.mckuai.imc.R;
 import com.mckuai.imc.Util.MCNetEngine;
 import com.mckuai.imc.Widget.ExitDialog;
 import com.mckuai.imc.Widget.LeaderDialog;
-import com.mckuai.imc.service.DownloadInterface;
-import com.mckuai.imc.service.MCDownloadService;
+import com.mckuai.imc.MCDownloadService;
 import com.umeng.analytics.MobclickAgent;
 import com.umeng.message.PushAgent;
 import com.umeng.socialize.utils.Log;
@@ -254,7 +253,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener
                 public void onDownloadPressed() {
                     MobclickAgent.onEvent(MainActivity.this, "ExitDialog_Download");
                     MobclickAgent.onKillProcess(MainActivity.this);
-                    startDownloadService();
                     if (null != connection){
                         isDownloaded = true;
                         unbindService(connection);
@@ -266,7 +264,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener
 
                 @Override
                 public void onPicturePressed() {
-                    startDownloadService();
+                    //startDownloadService();
                     if (null != connection){
                         isDownloaded = true;
                     }
@@ -462,32 +460,4 @@ public class MainActivity extends BaseActivity implements View.OnClickListener
         }
     };
 
-    private void startDownloadService(){
-        Intent intent = new Intent("com.mckuai.imc.service.MCDownloadService");
-        intent.setClass(getApplicationContext(),MCDownloadService.class);//兼容5.0及更高版本
-        startService(intent);
-        //intent.setClassName("com.mckuai.imc.service","MCDownloadService");
-        connection = new ServiceConnection() {
-            @Override
-            public void onServiceConnected(ComponentName name, IBinder service) {
-                DownloadInterface downloadService = DownloadInterface.Stub.asInterface(service);
-                if (null != downloadService) {
-                    try {
-                        Log.e("启动下载");
-                        downloadService.addDownload(ad.getDownName(), ad.getDownUrl());
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                }
-            }
-
-            @Override
-            public void onServiceDisconnected(ComponentName name) {
-            }
-        };
-        boolean result = getApplicationContext().bindService(intent,connection, Context.BIND_AUTO_CREATE);
-        if (!result){
-            connection = null;
-        }
-    }
 }
