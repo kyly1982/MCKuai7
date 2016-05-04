@@ -20,6 +20,7 @@ import com.mckuai.imc.Base.BaseActivity;
 import com.mckuai.imc.Base.BaseFragment;
 import com.mckuai.imc.Base.MCKuai;
 import com.mckuai.imc.Bean.Ad;
+import com.mckuai.imc.Bean.MCCartoonPKNotificationMessage;
 import com.mckuai.imc.Bean.User;
 import com.mckuai.imc.Fragment.MainFragment_Chat;
 import com.mckuai.imc.Fragment.MainFragment_Community;
@@ -64,7 +65,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener
     private ServiceConnection connection;
 
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -87,7 +87,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener
     @Override
     protected void onResume() {
         super.onResume();
-        if (null == fragments){
+        if (null == fragments) {
             initFragment();
             initDrawer();
             initView();
@@ -121,7 +121,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener
             dialog.show(getFragmentManager(), "DIALOG");
         }
         //checkUnReadMsg();
-        handler.sendMessageDelayed(handler.obtainMessage(1),1500);
+        handler.sendMessageDelayed(handler.obtainMessage(1), 1500);
     }
 
     @Override
@@ -147,7 +147,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener
                 int right = chat.getRight();
                 int width = chat.getWidth();
                 RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) msgIndicator.getLayoutParams();
-                layoutParams.leftMargin = right - msgIndicator.getWidth() - width/5;
+                layoutParams.leftMargin = right - msgIndicator.getWidth() - width / 5;
                 msgIndicator.setLayoutParams(layoutParams);
                 msgIndicator.postInvalidate();
                 chat.getViewTreeObserver().removeGlobalOnLayoutListener(this);
@@ -219,6 +219,13 @@ public class MainActivity extends BaseActivity implements View.OnClickListener
         }
     }
 
+    private void handleCartoonPkMsg(Message message,int i){
+        MCCartoonPKNotificationMessage msg = (MCCartoonPKNotificationMessage) message.getContent();
+        if (null != msg){
+            msg.getWinner();
+        }
+    }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -249,7 +256,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener
                 public void onDownloadPressed() {
                     MobclickAgent.onEvent(MainActivity.this, "ExitDialog_Download");
                     MobclickAgent.onKillProcess(MainActivity.this);
-                    if (null != connection){
+                    if (null != connection) {
                         isDownloaded = true;
                         unbindService(connection);
                         connection = null;
@@ -261,7 +268,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener
                 @Override
                 public void onPicturePressed() {
                     //startDownloadService();
-                    if (null != connection){
+                    if (null != connection) {
                         isDownloaded = true;
                     }
                     MobclickAgent.onEvent(MainActivity.this, "ExitDialog_Picture");
@@ -273,7 +280,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener
             super.onBackPressed();
         }
     }
-
 
 
     @Override
@@ -378,14 +384,22 @@ public class MainActivity extends BaseActivity implements View.OnClickListener
     @Override
     public boolean onReceived(Message message, int i) {
         if (null != message)
-            runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    checkUnReadMsg();
-                    ((MainFragment_Chat)fragments.get(1)).onNewMsgRecived();
-                }
+            switch (message.getObjectName()) {
+                case "mckuai:cartoonpk":
+                    handleCartoonPkMsg(message,i);
+                    return true;
+                default:
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            checkUnReadMsg();
+                            ((MainFragment_Chat) fragments.get(1)).onNewMsgRecived();
+                        }
 
-            });
+                    });
+                    break;
+            }
+
 
         return false;
     }
@@ -395,7 +409,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-               checkUnReadMsg();
+                checkUnReadMsg();
             }
         });
     }
@@ -442,10 +456,10 @@ public class MainActivity extends BaseActivity implements View.OnClickListener
     }
 
 
-    Handler handler = new Handler(){
+    Handler handler = new Handler() {
         @Override
         public void handleMessage(android.os.Message msg) {
-            switch (msg.what){
+            switch (msg.what) {
                 case 1:
                     checkUnReadMsg();
                     break;
