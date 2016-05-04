@@ -38,47 +38,52 @@ public class DownloadService extends Service {
         name = intent.getStringExtra("NAME");
 
         initDonwloadInfo();
-        url = url.substring(0,url.lastIndexOf("/")+1);
-        url += URLEncoder.encode(fileName);
-        Log.e("url=",url);
+        initReceiver();
 
-        receiver = new BroadcastReceiver() {
-            @Override
-            public void onReceive(Context context, Intent intent) {
-                switch (intent.getAction()) {
-                    case DownloadManager.ACTION_DOWNLOAD_COMPLETE:
-                        MobclickAgent.onEvent(getApplicationContext(),"MCAD_Downloaded");
-                        MobclickAgent.onKillProcess(getApplicationContext());
-                        intent = new Intent(Intent.ACTION_VIEW);
-                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                        intent.setDataAndType(Uri.fromFile(apkFile), "application/vnd.android.package-archive");
-                        startActivity(intent);
-                        stopSelf();
-                        break;
-                    case Intent.ACTION_PACKAGE_ADDED:
-                        Log.e("","");
-                        stopSelf();
-                        break;
-                    case Intent.ACTION_INSTALL_PACKAGE:
-                        Log.e("","");
-                        stopSelf();
-                        break;
-                }
-            }
-        };
-        IntentFilter intentFilter = new IntentFilter();
-        intentFilter.addAction(DownloadManager.ACTION_DOWNLOAD_COMPLETE);
-        intentFilter.addAction(Intent.ACTION_PACKAGE_ADDED);
-        intentFilter.addAction(Intent.ACTION_INSTALL_PACKAGE);
-        registerReceiver(receiver, intentFilter);
         startDownload();
         return Service.START_STICKY;
     }
 
     @Override
     public void onDestroy() {
-        unregisterReceiver(receiver);
+        if (null != receiver) {
+            unregisterReceiver(receiver);
+        }
         super.onDestroy();
+    }
+
+    private void initReceiver(){
+        if (null == receiver){
+            receiver = new BroadcastReceiver() {
+                @Override
+                public void onReceive(Context context, Intent intent) {
+                    switch (intent.getAction()) {
+                        case DownloadManager.ACTION_DOWNLOAD_COMPLETE:
+                            MobclickAgent.onEvent(getApplicationContext(),"MCAD_Downloaded");
+                            MobclickAgent.onKillProcess(getApplicationContext());
+                            intent = new Intent(Intent.ACTION_VIEW);
+                            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                            intent.setDataAndType(Uri.fromFile(apkFile), "application/vnd.android.package-archive");
+                            startActivity(intent);
+                            stopSelf();
+                            break;
+                        case Intent.ACTION_PACKAGE_ADDED:
+                            Log.e("","");
+                            stopSelf();
+                            break;
+                        case Intent.ACTION_INSTALL_PACKAGE:
+                            Log.e("","");
+                            stopSelf();
+                            break;
+                    }
+                }
+            };
+            IntentFilter intentFilter = new IntentFilter();
+            intentFilter.addAction(DownloadManager.ACTION_DOWNLOAD_COMPLETE);
+            intentFilter.addAction(Intent.ACTION_PACKAGE_ADDED);
+            intentFilter.addAction(Intent.ACTION_INSTALL_PACKAGE);
+            registerReceiver(receiver, intentFilter);
+        }
     }
 
     private void initDonwloadInfo(){
@@ -93,6 +98,10 @@ public class DownloadService extends Service {
         if (apkFile.isFile() && apkFile.exists()){
             apkFile.delete();
         }
+        //处理中文文件名
+        url = url.substring(0,url.lastIndexOf("/")+1);
+        url += URLEncoder.encode(fileName);
+        Log.e("url=",url);
     }
 
     private void startDownload() {
