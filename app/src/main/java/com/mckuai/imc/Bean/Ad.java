@@ -1,5 +1,7 @@
 package com.mckuai.imc.Bean;
 
+import android.graphics.Bitmap;
+
 import java.io.Serializable;
 
 /**
@@ -11,6 +13,7 @@ public class Ad implements Serializable {
     private String downUrl;
     private String imageUrl;
     private String title;
+    private Bitmap bitmap;
 
     public String getDownName() {
         return downName;
@@ -50,5 +53,13 @@ public class Ad implements Serializable {
 
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    public Bitmap getBitmap() {
+        return bitmap;
+    }
+
+    public void setBitmap(Bitmap bitmap) {
+        this.bitmap = bitmap;
     }
 }
