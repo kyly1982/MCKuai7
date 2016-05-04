@@ -37,6 +37,9 @@
     <dimen name="createcartoon_button_addtalk_height">30dp</dimen>
     <dimen name="createcartoon_builder_width">325dp</dimen>
 
+    <!--PK-->
+    <dimen name="competition_voteuser_padding">1dp</dimen>
+
 </resources>
 
 
