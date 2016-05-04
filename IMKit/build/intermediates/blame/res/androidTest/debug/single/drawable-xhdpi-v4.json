@@ -1,13 +1,5 @@
 [
     {
-        "merged": "F:\\Repository\\MCKuai7\\IMKit\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable-xhdpi-v4\\rc_sound_off.png",
-        "source": "F:\\Repository\\MCKuai7\\IMKit\\build\\intermediates\\bundles\\debug\\res\\drawable-xhdpi-v4\\rc_sound_off.png"
-    },
-    {
-        "merged": "F:\\Repository\\MCKuai7\\IMKit\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable-xhdpi-v4\\rc_sound_off_down.png",
-        "source": "F:\\Repository\\MCKuai7\\IMKit\\build\\intermediates\\bundles\\debug\\res\\drawable-xhdpi-v4\\rc_sound_off_down.png"
-    },
-    {
         "merged": "F:\\Repository\\MCKuai7\\IMKit\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable-xhdpi-v4\\u1f47c.png",
         "source": "F:\\Repository\\MCKuai7\\IMKit\\build\\intermediates\\bundles\\debug\\res\\drawable-xhdpi-v4\\u1f47c.png"
     },
@@ -18,10 +10,6 @@
     {
         "merged": "F:\\Repository\\MCKuai7\\IMKit\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable-xhdpi-v4\\rc_ed_pub_service_search_hover.9.png",
         "source": "F:\\Repository\\MCKuai7\\IMKit\\build\\intermediates\\bundles\\debug\\res\\drawable-xhdpi-v4\\rc_ed_pub_service_search_hover.9.png"
-    },
-    {
-        "merged": "F:\\Repository\\MCKuai7\\IMKit\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable-xhdpi-v4\\rc_ic_portrait_voip.png",
-        "source": "F:\\Repository\\MCKuai7\\IMKit\\build\\intermediates\\bundles\\debug\\res\\drawable-xhdpi-v4\\rc_ic_portrait_voip.png"
     },
     {
         "merged": "F:\\Repository\\MCKuai7\\IMKit\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable-xhdpi-v4\\rc_ic_menu_keyboard.png",
@@ -50,6 +38,10 @@
     {
         "merged": "F:\\Repository\\MCKuai7\\IMKit\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable-xhdpi-v4\\u1f613.png",
         "source": "F:\\Repository\\MCKuai7\\IMKit\\build\\intermediates\\bundles\\debug\\res\\drawable-xhdpi-v4\\u1f613.png"
+    },
+    {
+        "merged": "F:\\Repository\\MCKuai7\\IMKit\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable-xhdpi-v4\\rc_ic_star.png",
+        "source": "F:\\Repository\\MCKuai7\\IMKit\\build\\intermediates\\bundles\\debug\\res\\drawable-xhdpi-v4\\rc_ic_star.png"
     },
     {
         "merged": "F:\\Repository\\MCKuai7\\IMKit\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable-xhdpi-v4\\rc_ic_volume_1.png",
@@ -88,20 +80,32 @@
         "source": "F:\\Repository\\MCKuai7\\IMKit\\build\\intermediates\\bundles\\debug\\res\\drawable-xhdpi-v4\\u1f615.png"
     },
     {
+        "merged": "F:\\Repository\\MCKuai7\\IMKit\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable-xhdpi-v4\\rc_ic_no.png",
+        "source": "F:\\Repository\\MCKuai7\\IMKit\\build\\intermediates\\bundles\\debug\\res\\drawable-xhdpi-v4\\rc_ic_no.png"
+    },
+    {
         "merged": "F:\\Repository\\MCKuai7\\IMKit\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable-xhdpi-v4\\u1f601.png",
         "source": "F:\\Repository\\MCKuai7\\IMKit\\build\\intermediates\\bundles\\debug\\res\\drawable-xhdpi-v4\\u1f601.png"
+    },
+    {
+        "merged": "F:\\Repository\\MCKuai7\\IMKit\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable-xhdpi-v4\\rc_ic_location_selected.png",
+        "source": "F:\\Repository\\MCKuai7\\IMKit\\build\\intermediates\\bundles\\debug\\res\\drawable-xhdpi-v4\\rc_ic_location_selected.png"
     },
     {
         "merged": "F:\\Repository\\MCKuai7\\IMKit\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable-xhdpi-v4\\rc_radio_button_on.png",
         "source": "F:\\Repository\\MCKuai7\\IMKit\\build\\intermediates\\bundles\\debug\\res\\drawable-xhdpi-v4\\rc_radio_button_on.png"
     },
     {
-        "merged": "F:\\Repository\\MCKuai7\\IMKit\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable-xhdpi-v4\\rc_hands_free_disable.png",
-        "source": "F:\\Repository\\MCKuai7\\IMKit\\build\\intermediates\\bundles\\debug\\res\\drawable-xhdpi-v4\\rc_hands_free_disable.png"
-    },
-    {
         "merged": "F:\\Repository\\MCKuai7\\IMKit\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable-xhdpi-v4\\u1f46a.png",
         "source": "F:\\Repository\\MCKuai7\\IMKit\\build\\intermediates\\bundles\\debug\\res\\drawable-xhdpi-v4\\u1f46a.png"
+    },
+    {
+        "merged": "F:\\Repository\\MCKuai7\\IMKit\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable-xhdpi-v4\\rc_ic_star_hover.png",
+        "source": "F:\\Repository\\MCKuai7\\IMKit\\build\\intermediates\\bundles\\debug\\res\\drawable-xhdpi-v4\\rc_ic_star_hover.png"
+    },
+    {
+        "merged": "F:\\Repository\\MCKuai7\\IMKit\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable-xhdpi-v4\\rc_ic_location_normal.png",
+        "source": "F:\\Repository\\MCKuai7\\IMKit\\build\\intermediates\\bundles\\debug\\res\\drawable-xhdpi-v4\\rc_ic_location_normal.png"
     },
     {
         "merged": "F:\\Repository\\MCKuai7\\IMKit\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable-xhdpi-v4\\u1f60f.png",
@@ -110,10 +114,6 @@
     {
         "merged": "F:\\Repository\\MCKuai7\\IMKit\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable-xhdpi-v4\\rc_volume_zero.png",
         "source": "F:\\Repository\\MCKuai7\\IMKit\\build\\intermediates\\bundles\\debug\\res\\drawable-xhdpi-v4\\rc_volume_zero.png"
-    },
-    {
-        "merged": "F:\\Repository\\MCKuai7\\IMKit\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable-xhdpi-v4\\rc_call_answer_down.png",
-        "source": "F:\\Repository\\MCKuai7\\IMKit\\build\\intermediates\\bundles\\debug\\res\\drawable-xhdpi-v4\\rc_call_answer_down.png"
     },
     {
         "merged": "F:\\Repository\\MCKuai7\\IMKit\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable-xhdpi-v4\\u1f630.png",
@@ -134,10 +134,6 @@
     {
         "merged": "F:\\Repository\\MCKuai7\\IMKit\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable-xhdpi-v4\\rc_ic_volume_3.png",
         "source": "F:\\Repository\\MCKuai7\\IMKit\\build\\intermediates\\bundles\\debug\\res\\drawable-xhdpi-v4\\rc_ic_volume_3.png"
-    },
-    {
-        "merged": "F:\\Repository\\MCKuai7\\IMKit\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable-xhdpi-v4\\rc_ic_text.png",
-        "source": "F:\\Repository\\MCKuai7\\IMKit\\build\\intermediates\\bundles\\debug\\res\\drawable-xhdpi-v4\\rc_ic_text.png"
     },
     {
         "merged": "F:\\Repository\\MCKuai7\\IMKit\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable-xhdpi-v4\\u1f3c0.png",
@@ -212,12 +208,12 @@
         "source": "F:\\Repository\\MCKuai7\\IMKit\\build\\intermediates\\bundles\\debug\\res\\drawable-xhdpi-v4\\rc_conversation_list_msg_sending.png"
     },
     {
-        "merged": "F:\\Repository\\MCKuai7\\IMKit\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable-xhdpi-v4\\rc_unread_remind_without_count.png",
-        "source": "F:\\Repository\\MCKuai7\\IMKit\\build\\intermediates\\bundles\\debug\\res\\drawable-xhdpi-v4\\rc_unread_remind_without_count.png"
+        "merged": "F:\\Repository\\MCKuai7\\IMKit\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable-xhdpi-v4\\rc_ic_picture_selected.png",
+        "source": "F:\\Repository\\MCKuai7\\IMKit\\build\\intermediates\\bundles\\debug\\res\\drawable-xhdpi-v4\\rc_ic_picture_selected.png"
     },
     {
-        "merged": "F:\\Repository\\MCKuai7\\IMKit\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable-xhdpi-v4\\rc_btn_voice_normal.9.png",
-        "source": "F:\\Repository\\MCKuai7\\IMKit\\build\\intermediates\\bundles\\debug\\res\\drawable-xhdpi-v4\\rc_btn_voice_normal.9.png"
+        "merged": "F:\\Repository\\MCKuai7\\IMKit\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable-xhdpi-v4\\rc_unread_remind_without_count.png",
+        "source": "F:\\Repository\\MCKuai7\\IMKit\\build\\intermediates\\bundles\\debug\\res\\drawable-xhdpi-v4\\rc_unread_remind_without_count.png"
     },
     {
         "merged": "F:\\Repository\\MCKuai7\\IMKit\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable-xhdpi-v4\\rc_ic_bubble_white.9.png",
@@ -226,6 +222,10 @@
     {
         "merged": "F:\\Repository\\MCKuai7\\IMKit\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable-xhdpi-v4\\rc_voice_icon_right.png",
         "source": "F:\\Repository\\MCKuai7\\IMKit\\build\\intermediates\\bundles\\debug\\res\\drawable-xhdpi-v4\\rc_voice_icon_right.png"
+    },
+    {
+        "merged": "F:\\Repository\\MCKuai7\\IMKit\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable-xhdpi-v4\\rc_btn_voice_normal.9.png",
+        "source": "F:\\Repository\\MCKuai7\\IMKit\\build\\intermediates\\bundles\\debug\\res\\drawable-xhdpi-v4\\rc_btn_voice_normal.9.png"
     },
     {
         "merged": "F:\\Repository\\MCKuai7\\IMKit\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable-xhdpi-v4\\rc_volume_one.png",
@@ -264,8 +264,8 @@
         "source": "F:\\Repository\\MCKuai7\\IMKit\\build\\intermediates\\bundles\\debug\\res\\drawable-xhdpi-v4\\rc_receive_voice_one.png"
     },
     {
-        "merged": "F:\\Repository\\MCKuai7\\IMKit\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable-xhdpi-v4\\rc_ic_phone.png",
-        "source": "F:\\Repository\\MCKuai7\\IMKit\\build\\intermediates\\bundles\\debug\\res\\drawable-xhdpi-v4\\rc_ic_phone.png"
+        "merged": "F:\\Repository\\MCKuai7\\IMKit\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable-xhdpi-v4\\rc_ic_yes_hover.png",
+        "source": "F:\\Repository\\MCKuai7\\IMKit\\build\\intermediates\\bundles\\debug\\res\\drawable-xhdpi-v4\\rc_ic_yes_hover.png"
     },
     {
         "merged": "F:\\Repository\\MCKuai7\\IMKit\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable-xhdpi-v4\\u26c5.png",
@@ -306,10 +306,6 @@
     {
         "merged": "F:\\Repository\\MCKuai7\\IMKit\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable-xhdpi-v4\\u270c.png",
         "source": "F:\\Repository\\MCKuai7\\IMKit\\build\\intermediates\\bundles\\debug\\res\\drawable-xhdpi-v4\\u270c.png"
-    },
-    {
-        "merged": "F:\\Repository\\MCKuai7\\IMKit\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable-xhdpi-v4\\rc_ic_picture.png",
-        "source": "F:\\Repository\\MCKuai7\\IMKit\\build\\intermediates\\bundles\\debug\\res\\drawable-xhdpi-v4\\rc_ic_picture.png"
     },
     {
         "merged": "F:\\Repository\\MCKuai7\\IMKit\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable-xhdpi-v4\\u1f623.png",
@@ -368,24 +364,12 @@
         "source": "F:\\Repository\\MCKuai7\\IMKit\\build\\intermediates\\bundles\\debug\\res\\drawable-xhdpi-v4\\rc_volume_two.png"
     },
     {
-        "merged": "F:\\Repository\\MCKuai7\\IMKit\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable-xhdpi-v4\\rc_sound_off_disable.png",
-        "source": "F:\\Repository\\MCKuai7\\IMKit\\build\\intermediates\\bundles\\debug\\res\\drawable-xhdpi-v4\\rc_sound_off_disable.png"
-    },
-    {
         "merged": "F:\\Repository\\MCKuai7\\IMKit\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable-xhdpi-v4\\u1f632.png",
         "source": "F:\\Repository\\MCKuai7\\IMKit\\build\\intermediates\\bundles\\debug\\res\\drawable-xhdpi-v4\\u1f632.png"
     },
     {
         "merged": "F:\\Repository\\MCKuai7\\IMKit\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable-xhdpi-v4\\u1f377.png",
         "source": "F:\\Repository\\MCKuai7\\IMKit\\build\\intermediates\\bundles\\debug\\res\\drawable-xhdpi-v4\\u1f377.png"
-    },
-    {
-        "merged": "F:\\Repository\\MCKuai7\\IMKit\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable-xhdpi-v4\\rc_ic_location.png",
-        "source": "F:\\Repository\\MCKuai7\\IMKit\\build\\intermediates\\bundles\\debug\\res\\drawable-xhdpi-v4\\rc_ic_location.png"
-    },
-    {
-        "merged": "F:\\Repository\\MCKuai7\\IMKit\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable-xhdpi-v4\\rc_call_refuse_down.png",
-        "source": "F:\\Repository\\MCKuai7\\IMKit\\build\\intermediates\\bundles\\debug\\res\\drawable-xhdpi-v4\\rc_call_refuse_down.png"
     },
     {
         "merged": "F:\\Repository\\MCKuai7\\IMKit\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable-xhdpi-v4\\u1f494.png",
@@ -460,8 +444,16 @@
         "source": "F:\\Repository\\MCKuai7\\IMKit\\build\\intermediates\\bundles\\debug\\res\\drawable-xhdpi-v4\\u1f36b.png"
     },
     {
+        "merged": "F:\\Repository\\MCKuai7\\IMKit\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable-xhdpi-v4\\rc_ic_text_normal.png",
+        "source": "F:\\Repository\\MCKuai7\\IMKit\\build\\intermediates\\bundles\\debug\\res\\drawable-xhdpi-v4\\rc_ic_text_normal.png"
+    },
+    {
         "merged": "F:\\Repository\\MCKuai7\\IMKit\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable-xhdpi-v4\\u1f60d.png",
         "source": "F:\\Repository\\MCKuai7\\IMKit\\build\\intermediates\\bundles\\debug\\res\\drawable-xhdpi-v4\\u1f60d.png"
+    },
+    {
+        "merged": "F:\\Repository\\MCKuai7\\IMKit\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable-xhdpi-v4\\rc_ic_camera_normal.png",
+        "source": "F:\\Repository\\MCKuai7\\IMKit\\build\\intermediates\\bundles\\debug\\res\\drawable-xhdpi-v4\\rc_ic_camera_normal.png"
     },
     {
         "merged": "F:\\Repository\\MCKuai7\\IMKit\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable-xhdpi-v4\\u1f3b5.png",
@@ -548,12 +540,20 @@
         "source": "F:\\Repository\\MCKuai7\\IMKit\\build\\intermediates\\bundles\\debug\\res\\drawable-xhdpi-v4\\rc_ic_bubble_left.9.png"
     },
     {
+        "merged": "F:\\Repository\\MCKuai7\\IMKit\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable-xhdpi-v4\\rc_ic_yes.png",
+        "source": "F:\\Repository\\MCKuai7\\IMKit\\build\\intermediates\\bundles\\debug\\res\\drawable-xhdpi-v4\\rc_ic_yes.png"
+    },
+    {
         "merged": "F:\\Repository\\MCKuai7\\IMKit\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable-xhdpi-v4\\u1f62d.png",
         "source": "F:\\Repository\\MCKuai7\\IMKit\\build\\intermediates\\bundles\\debug\\res\\drawable-xhdpi-v4\\u1f62d.png"
     },
     {
         "merged": "F:\\Repository\\MCKuai7\\IMKit\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable-xhdpi-v4\\u1f4a1.png",
         "source": "F:\\Repository\\MCKuai7\\IMKit\\build\\intermediates\\bundles\\debug\\res\\drawable-xhdpi-v4\\u1f4a1.png"
+    },
+    {
+        "merged": "F:\\Repository\\MCKuai7\\IMKit\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable-xhdpi-v4\\rc_ic_text_selected.png",
+        "source": "F:\\Repository\\MCKuai7\\IMKit\\build\\intermediates\\bundles\\debug\\res\\drawable-xhdpi-v4\\rc_ic_text_selected.png"
     },
     {
         "merged": "F:\\Repository\\MCKuai7\\IMKit\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable-xhdpi-v4\\rc_btn_send_hover.9.png",
@@ -620,6 +620,10 @@
         "source": "F:\\Repository\\MCKuai7\\IMKit\\build\\intermediates\\bundles\\debug\\res\\drawable-xhdpi-v4\\u1f624.png"
     },
     {
+        "merged": "F:\\Repository\\MCKuai7\\IMKit\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable-xhdpi-v4\\rc_icon_admin.png",
+        "source": "F:\\Repository\\MCKuai7\\IMKit\\build\\intermediates\\bundles\\debug\\res\\drawable-xhdpi-v4\\rc_icon_admin.png"
+    },
+    {
         "merged": "F:\\Repository\\MCKuai7\\IMKit\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable-xhdpi-v4\\u1f60e.png",
         "source": "F:\\Repository\\MCKuai7\\IMKit\\build\\intermediates\\bundles\\debug\\res\\drawable-xhdpi-v4\\u1f60e.png"
     },
@@ -632,16 +636,8 @@
         "source": "F:\\Repository\\MCKuai7\\IMKit\\build\\intermediates\\bundles\\debug\\res\\drawable-xhdpi-v4\\u1f62b.png"
     },
     {
-        "merged": "F:\\Repository\\MCKuai7\\IMKit\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable-xhdpi-v4\\rc_hands_free.png",
-        "source": "F:\\Repository\\MCKuai7\\IMKit\\build\\intermediates\\bundles\\debug\\res\\drawable-xhdpi-v4\\rc_hands_free.png"
-    },
-    {
         "merged": "F:\\Repository\\MCKuai7\\IMKit\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable-xhdpi-v4\\u1f356.png",
         "source": "F:\\Repository\\MCKuai7\\IMKit\\build\\intermediates\\bundles\\debug\\res\\drawable-xhdpi-v4\\u1f356.png"
-    },
-    {
-        "merged": "F:\\Repository\\MCKuai7\\IMKit\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable-xhdpi-v4\\rc_call_over_down.png",
-        "source": "F:\\Repository\\MCKuai7\\IMKit\\build\\intermediates\\bundles\\debug\\res\\drawable-xhdpi-v4\\rc_call_over_down.png"
     },
     {
         "merged": "F:\\Repository\\MCKuai7\\IMKit\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable-xhdpi-v4\\u261d.png",
@@ -700,16 +696,16 @@
         "source": "F:\\Repository\\MCKuai7\\IMKit\\build\\intermediates\\bundles\\debug\\res\\drawable-xhdpi-v4\\rc_radio_button_off.png"
     },
     {
+        "merged": "F:\\Repository\\MCKuai7\\IMKit\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable-xhdpi-v4\\rc_ic_no_hover.png",
+        "source": "F:\\Repository\\MCKuai7\\IMKit\\build\\intermediates\\bundles\\debug\\res\\drawable-xhdpi-v4\\rc_ic_no_hover.png"
+    },
+    {
         "merged": "F:\\Repository\\MCKuai7\\IMKit\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable-xhdpi-v4\\rc_ic_location_item_default.png",
         "source": "F:\\Repository\\MCKuai7\\IMKit\\build\\intermediates\\bundles\\debug\\res\\drawable-xhdpi-v4\\rc_ic_location_item_default.png"
     },
     {
         "merged": "F:\\Repository\\MCKuai7\\IMKit\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable-xhdpi-v4\\rc_default_discussion_portrait.png",
         "source": "F:\\Repository\\MCKuai7\\IMKit\\build\\intermediates\\bundles\\debug\\res\\drawable-xhdpi-v4\\rc_default_discussion_portrait.png"
-    },
-    {
-        "merged": "F:\\Repository\\MCKuai7\\IMKit\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable-xhdpi-v4\\rc_call_answer.png",
-        "source": "F:\\Repository\\MCKuai7\\IMKit\\build\\intermediates\\bundles\\debug\\res\\drawable-xhdpi-v4\\rc_call_answer.png"
     },
     {
         "merged": "F:\\Repository\\MCKuai7\\IMKit\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable-xhdpi-v4\\rc_btn_pub_service_enter_normal.png",
@@ -726,6 +722,10 @@
     {
         "merged": "F:\\Repository\\MCKuai7\\IMKit\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable-xhdpi-v4\\u1f635.png",
         "source": "F:\\Repository\\MCKuai7\\IMKit\\build\\intermediates\\bundles\\debug\\res\\drawable-xhdpi-v4\\u1f635.png"
+    },
+    {
+        "merged": "F:\\Repository\\MCKuai7\\IMKit\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable-xhdpi-v4\\rc_ic_phone_normal.png",
+        "source": "F:\\Repository\\MCKuai7\\IMKit\\build\\intermediates\\bundles\\debug\\res\\drawable-xhdpi-v4\\rc_ic_phone_normal.png"
     },
     {
         "merged": "F:\\Repository\\MCKuai7\\IMKit\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable-xhdpi-v4\\rc_ic_volume_7.png",
@@ -748,12 +748,12 @@
         "source": "F:\\Repository\\MCKuai7\\IMKit\\build\\intermediates\\bundles\\debug\\res\\drawable-xhdpi-v4\\u1f3e1.png"
     },
     {
-        "merged": "F:\\Repository\\MCKuai7\\IMKit\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable-xhdpi-v4\\u1f60b.png",
-        "source": "F:\\Repository\\MCKuai7\\IMKit\\build\\intermediates\\bundles\\debug\\res\\drawable-xhdpi-v4\\u1f60b.png"
-    },
-    {
         "merged": "F:\\Repository\\MCKuai7\\IMKit\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable-xhdpi-v4\\rc_mebmer_delete.png",
         "source": "F:\\Repository\\MCKuai7\\IMKit\\build\\intermediates\\bundles\\debug\\res\\drawable-xhdpi-v4\\rc_mebmer_delete.png"
+    },
+    {
+        "merged": "F:\\Repository\\MCKuai7\\IMKit\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable-xhdpi-v4\\u1f60b.png",
+        "source": "F:\\Repository\\MCKuai7\\IMKit\\build\\intermediates\\bundles\\debug\\res\\drawable-xhdpi-v4\\u1f60b.png"
     },
     {
         "merged": "F:\\Repository\\MCKuai7\\IMKit\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable-xhdpi-v4\\rc_checkbox_pressed.png",
@@ -776,8 +776,8 @@
         "source": "F:\\Repository\\MCKuai7\\IMKit\\build\\intermediates\\bundles\\debug\\res\\drawable-xhdpi-v4\\u1f636.png"
     },
     {
-        "merged": "F:\\Repository\\MCKuai7\\IMKit\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable-xhdpi-v4\\rc_call_refuse.png",
-        "source": "F:\\Repository\\MCKuai7\\IMKit\\build\\intermediates\\bundles\\debug\\res\\drawable-xhdpi-v4\\rc_call_refuse.png"
+        "merged": "F:\\Repository\\MCKuai7\\IMKit\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable-xhdpi-v4\\rc_icon_admin_hover.png",
+        "source": "F:\\Repository\\MCKuai7\\IMKit\\build\\intermediates\\bundles\\debug\\res\\drawable-xhdpi-v4\\rc_icon_admin_hover.png"
     },
     {
         "merged": "F:\\Repository\\MCKuai7\\IMKit\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable-xhdpi-v4\\rc_add_people.png",
@@ -864,10 +864,6 @@
         "source": "F:\\Repository\\MCKuai7\\IMKit\\build\\intermediates\\bundles\\debug\\res\\drawable-xhdpi-v4\\u1f64f.png"
     },
     {
-        "merged": "F:\\Repository\\MCKuai7\\IMKit\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable-xhdpi-v4\\rc_ic_camera.png",
-        "source": "F:\\Repository\\MCKuai7\\IMKit\\build\\intermediates\\bundles\\debug\\res\\drawable-xhdpi-v4\\rc_ic_camera.png"
-    },
-    {
         "merged": "F:\\Repository\\MCKuai7\\IMKit\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable-xhdpi-v4\\u1f4de.png",
         "source": "F:\\Repository\\MCKuai7\\IMKit\\build\\intermediates\\bundles\\debug\\res\\drawable-xhdpi-v4\\u1f4de.png"
     },
@@ -944,14 +940,6 @@
         "source": "F:\\Repository\\MCKuai7\\IMKit\\build\\intermediates\\bundles\\debug\\res\\drawable-xhdpi-v4\\u1f600.png"
     },
     {
-        "merged": "F:\\Repository\\MCKuai7\\IMKit\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable-xhdpi-v4\\rc_hands_free_down.png",
-        "source": "F:\\Repository\\MCKuai7\\IMKit\\build\\intermediates\\bundles\\debug\\res\\drawable-xhdpi-v4\\rc_hands_free_down.png"
-    },
-    {
-        "merged": "F:\\Repository\\MCKuai7\\IMKit\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable-xhdpi-v4\\rc_call_over.png",
-        "source": "F:\\Repository\\MCKuai7\\IMKit\\build\\intermediates\\bundles\\debug\\res\\drawable-xhdpi-v4\\rc_call_over.png"
-    },
-    {
         "merged": "F:\\Repository\\MCKuai7\\IMKit\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable-xhdpi-v4\\u1f616.png",
         "source": "F:\\Repository\\MCKuai7\\IMKit\\build\\intermediates\\bundles\\debug\\res\\drawable-xhdpi-v4\\u1f616.png"
     },
@@ -980,6 +968,10 @@
         "source": "F:\\Repository\\MCKuai7\\IMKit\\build\\intermediates\\bundles\\debug\\res\\drawable-xhdpi-v4\\rc_read_receipt.png"
     },
     {
+        "merged": "F:\\Repository\\MCKuai7\\IMKit\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable-xhdpi-v4\\rc_ic_phone_selected.png",
+        "source": "F:\\Repository\\MCKuai7\\IMKit\\build\\intermediates\\bundles\\debug\\res\\drawable-xhdpi-v4\\rc_ic_phone_selected.png"
+    },
+    {
         "merged": "F:\\Repository\\MCKuai7\\IMKit\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable-xhdpi-v4\\u1f3b2.png",
         "source": "F:\\Repository\\MCKuai7\\IMKit\\build\\intermediates\\bundles\\debug\\res\\drawable-xhdpi-v4\\u1f3b2.png"
     },
@@ -1000,7 +992,15 @@
         "source": "F:\\Repository\\MCKuai7\\IMKit\\build\\intermediates\\bundles\\debug\\res\\drawable-xhdpi-v4\\u1f4aa.png"
     },
     {
+        "merged": "F:\\Repository\\MCKuai7\\IMKit\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable-xhdpi-v4\\rc_ic_camera_selected.png",
+        "source": "F:\\Repository\\MCKuai7\\IMKit\\build\\intermediates\\bundles\\debug\\res\\drawable-xhdpi-v4\\rc_ic_camera_selected.png"
+    },
+    {
         "merged": "F:\\Repository\\MCKuai7\\IMKit\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable-xhdpi-v4\\u1f60a.png",
         "source": "F:\\Repository\\MCKuai7\\IMKit\\build\\intermediates\\bundles\\debug\\res\\drawable-xhdpi-v4\\u1f60a.png"
+    },
+    {
+        "merged": "F:\\Repository\\MCKuai7\\IMKit\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable-xhdpi-v4\\rc_ic_picture_normal.png",
+        "source": "F:\\Repository\\MCKuai7\\IMKit\\build\\intermediates\\bundles\\debug\\res\\drawable-xhdpi-v4\\rc_ic_picture_normal.png"
     }
 ]

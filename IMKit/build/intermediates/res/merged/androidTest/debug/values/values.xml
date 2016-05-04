@@ -340,6 +340,7 @@
     <item name="rc_warning" type="id"/>
     <integer name="rc_audio_encoding_bit_rate">7950</integer>
     <integer name="rc_chatroom_first_pull_message_count">10</integer>
+    <integer name="rc_custom_service_evaluation_interval">60</integer>
     <integer name="rc_image_quality">85</integer>
     <integer name="rc_image_size">960</integer>
     <string name="rc_called_accept">对方接受了通话请求</string>
@@ -363,6 +364,10 @@
     <string name="rc_conversation_list_popup_set_top">已置顶</string>
     <string name="rc_conversation_list_public_service">公众服务</string>
     <string name="rc_conversation_list_system_conversation">系统消息</string>
+    <string name="rc_cs_cancel">取消</string>
+    <string name="rc_cs_evaluate_human">请对本次服务做出评价</string>
+    <string name="rc_cs_evaluate_robot">机器人是否解决了您的问题</string>
+    <string name="rc_cs_submit">提交</string>
     <string name="rc_dialog_cancel">取消</string>
     <string name="rc_dialog_item_message_copy">复制消息</string>
     <string name="rc_dialog_item_message_delete">删除消息</string>
@@ -383,6 +388,7 @@
     <string name="rc_info_not_in_chatroom">你不在该聊天室</string>
     <string name="rc_info_not_in_discussion">你不在该讨论组</string>
     <string name="rc_info_not_in_group">你不在该群</string>
+    <string name="rc_init_failed">连接客服失败</string>
     <string name="rc_input_send">发送</string>
     <string name="rc_input_voice">按住 说话</string>
     <string name="rc_kicked_from_chatroom">你已被踢出聊天室</string>
@@ -421,6 +427,7 @@
     <string name="rc_pub_service_info_enter">进入公众号</string>
     <string name="rc_pub_service_info_follow">关注</string>
     <string name="rc_pub_service_info_unfollow">取消关注</string>
+    <string name="rc_quit_custom_service">客服已结束</string>
     <string name="rc_read_all">阅读全文</string>
     <string name="rc_rejected_by_blacklist_prompt">您的消息已经发出，但被对方拒收</string>
     <string name="rc_send_format">发送(%1$s)</string>
@@ -507,7 +514,17 @@
     <style name="custom_checkbox" parent="@android:style/Widget.CompoundButton.CheckBox">
         <item name="android:background">@drawable/rc_photo_checkbox</item>
     </style>
+    <style name="horizontal_light_thin_divider">
+        <item name="android:layout_height">0.5dp</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:background">@android:color/darker_gray</item>
+    </style>
     <style name="preview_checkbox" parent="@android:style/Widget.CompoundButton.CheckBox">
         <item name="android:button">@drawable/rc_preview_checkbox</item>
+    </style>
+    <style name="vertical_light_thin_divider">
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_width">0.5dp</item>
+        <item name="android:background">@android:color/darker_gray</item>
     </style>
 </resources>

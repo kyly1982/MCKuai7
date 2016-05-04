@@ -1,5 +1,9 @@
 [
     {
+        "merged": "F:\\Repository\\MCKuai7\\IMKit\\build\\intermediates\\res\\merged\\androidTest\\debug\\layout\\rc_cs_alert_human_evaluation.xml",
+        "source": "F:\\Repository\\MCKuai7\\IMKit\\build\\intermediates\\bundles\\debug\\res\\layout\\rc_cs_alert_human_evaluation.xml"
+    },
+    {
         "merged": "F:\\Repository\\MCKuai7\\IMKit\\build\\intermediates\\res\\merged\\androidTest\\debug\\layout\\rc_wi_ext_pager.xml",
         "source": "F:\\Repository\\MCKuai7\\IMKit\\build\\intermediates\\bundles\\debug\\res\\layout\\rc_wi_ext_pager.xml"
     },
@@ -68,10 +72,6 @@
         "source": "F:\\Repository\\MCKuai7\\IMKit\\build\\intermediates\\bundles\\debug\\res\\layout\\rc_item_public_service_message.xml"
     },
     {
-        "merged": "F:\\Repository\\MCKuai7\\IMKit\\build\\intermediates\\res\\merged\\androidTest\\debug\\layout\\rc_callside_layout.xml",
-        "source": "F:\\Repository\\MCKuai7\\IMKit\\build\\intermediates\\bundles\\debug\\res\\layout\\rc_callside_layout.xml"
-    },
-    {
         "merged": "F:\\Repository\\MCKuai7\\IMKit\\build\\intermediates\\res\\merged\\androidTest\\debug\\layout\\rc_ui_voice_cover.xml",
         "source": "F:\\Repository\\MCKuai7\\IMKit\\build\\intermediates\\bundles\\debug\\res\\layout\\rc_ui_voice_cover.xml"
     },
@@ -102,6 +102,14 @@
     {
         "merged": "F:\\Repository\\MCKuai7\\IMKit\\build\\intermediates\\res\\merged\\androidTest\\debug\\layout\\rc_fr_messageinput.xml",
         "source": "F:\\Repository\\MCKuai7\\IMKit\\build\\intermediates\\bundles\\debug\\res\\layout\\rc_fr_messageinput.xml"
+    },
+    {
+        "merged": "F:\\Repository\\MCKuai7\\IMKit\\build\\intermediates\\res\\merged\\androidTest\\debug\\layout\\rc_cs_alert_robot_evaluation.xml",
+        "source": "F:\\Repository\\MCKuai7\\IMKit\\build\\intermediates\\bundles\\debug\\res\\layout\\rc_cs_alert_robot_evaluation.xml"
+    },
+    {
+        "merged": "F:\\Repository\\MCKuai7\\IMKit\\build\\intermediates\\res\\merged\\androidTest\\debug\\layout\\rc_cs_alert_warning.xml",
+        "source": "F:\\Repository\\MCKuai7\\IMKit\\build\\intermediates\\bundles\\debug\\res\\layout\\rc_cs_alert_warning.xml"
     },
     {
         "merged": "F:\\Repository\\MCKuai7\\IMKit\\build\\intermediates\\res\\merged\\androidTest\\debug\\layout\\rc_wi_input.xml",
@@ -146,10 +154,6 @@
     {
         "merged": "F:\\Repository\\MCKuai7\\IMKit\\build\\intermediates\\res\\merged\\androidTest\\debug\\layout\\rc_wi_block.xml",
         "source": "F:\\Repository\\MCKuai7\\IMKit\\build\\intermediates\\bundles\\debug\\res\\layout\\rc_wi_block.xml"
-    },
-    {
-        "merged": "F:\\Repository\\MCKuai7\\IMKit\\build\\intermediates\\res\\merged\\androidTest\\debug\\layout\\rc_calledside_layout.xml",
-        "source": "F:\\Repository\\MCKuai7\\IMKit\\build\\intermediates\\bundles\\debug\\res\\layout\\rc_calledside_layout.xml"
     },
     {
         "merged": "F:\\Repository\\MCKuai7\\IMKit\\build\\intermediates\\res\\merged\\androidTest\\debug\\layout\\rc_wi_text_btn.xml",
