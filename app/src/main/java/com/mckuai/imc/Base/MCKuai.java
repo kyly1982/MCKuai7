@@ -9,6 +9,7 @@ import android.os.Environment;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 
+import com.mckuai.imc.Bean.MCCartoonPKNotificationMessage;
 import com.mckuai.imc.Bean.MCUser;
 import com.mckuai.imc.Bean.Token;
 import com.mckuai.imc.R;
@@ -110,6 +111,7 @@ public class MCKuai extends Application {
                 }
             }
             if (null != RongIM.getInstance()) {
+                RongIM.registerMessageType(MCCartoonPKNotificationMessage.class);
                 isIMInited = true;
             }
         }
