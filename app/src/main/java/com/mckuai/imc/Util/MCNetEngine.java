@@ -1295,6 +1295,43 @@ public class MCNetEngine {
         });
     }
 
+    /**
+     * 获取插入广告列表
+     */
+
+    public interface OnGetAdsResponse {
+        void onGetAdSuccess(ArrayList<Ad> ads);
+
+        void onGetAdFailure(String msg);
+    }
+
+    public void getAds(final Context context, final OnGetAdsResponse listener) {
+        String url = "http://api.mckuai.com/interface.do?act=timeAdv";
+        httpClient.get(url, new JsonHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                ParseResponse result = new ParseResponse(context, response);
+                if (result.isSuccess) {
+                    Gson gson = new Gson();
+                    ArrayList<Ad> ads = gson.fromJson(result.msg, new TypeToken<ArrayList<Ad>>() {
+                    }.getType());
+                    if (null != ads) {
+                        listener.onGetAdSuccess(ads);
+                    } else {
+                        listener.onGetAdFailure("返回数据解析失败！");
+                    }
+                } else {
+                    listener.onGetAdFailure(result.msg);
+                }
+
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                listener.onGetAdFailure(throwable.getLocalizedMessage());
+            }
+        });
+    }
 
     /***************************************************************************
      * 获取主题列表
