@@ -25,7 +25,6 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.assist.FailReason;
 import com.nostra13.universalimageloader.core.assist.ImageScaleType;
 import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
-import com.umeng.socialize.utils.Log;
 
 import java.util.ArrayList;
 
@@ -442,7 +441,7 @@ public class CompetitionLayout extends ViewGroup implements View.OnClickListener
             }
             voteTop_top = middle.y - (cartoonRoot_Width / 2) - halfofMargin - slipRedstoneWidth_half;
             voteBottom_top = middle.y + halfofMargin + (cartoonRoot_Width / 2) - slipRedstoneWidth_half;
-            userCoverWidth = sidebarRoot_Width - Math.abs(sidebarRoot_offset) - (2 * getResources().getDimensionPixelSize(R.dimen.competition_voteuser_padding));
+            userCoverWidth = sidebarRoot_Width - sidebarRoot_offset - (2 * getResources().getDimensionPixelSize(R.dimen.competition_voteuser_padding));
             isMeasureNeed = true;
         }
         //对各组件进行布局
