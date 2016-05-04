@@ -99,7 +99,7 @@ public class TouchableLayout extends FrameLayout {
     }
 
     public int getWidgetCount() {
-        return stickers.size();
+        return null == stickers ? 0:stickers.size();
     }
 
     public TouchableLayout(Context context, AttributeSet attrs) {

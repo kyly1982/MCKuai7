@@ -238,6 +238,10 @@ public class CreateCartoonFragment extends BaseFragment implements StepView_4.On
     }
 */
 
+    public int getWidgetCount(){
+        return cartoonBuilder.getWidgetCount();
+    }
+
     @Override
     public void onPhotoClicked() {
         //打开相册

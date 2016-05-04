@@ -132,18 +132,22 @@ public class CreateCartoonActivity extends BaseActivity
             switch (currentStep){
                 case 1:
                     //关闭
+                    MobclickAgent.onEvent(this,"createCartoon_Exit");
                     return false;
                 case 2:
                     //显示选择主题
+                    MobclickAgent.onEvent(this,"createCartoon_return_step1");
                     currentStep--;
                     setContentFragment(R.id.context, themeFragment);
                     break;
                 case 3:
+                    MobclickAgent.onEvent(this,"createCartoon_return_step2");
                     currentStep--;
                     createFragment.showNextStep(currentStep,true);
                     break;
                 case 4:
                     //菜单切换为显示下一步
+                    MobclickAgent.onEvent(this,"createCartoon_return_step3");
                     menu_next.setVisible(true);
                     menu_publish.setVisible(false);
                     getWindow().invalidatePanelMenu(Window.FEATURE_OPTIONS_PANEL);
@@ -165,7 +169,7 @@ public class CreateCartoonActivity extends BaseActivity
                     }
                     break;
                 case 3:
-                    if (!isWidgetSet) {
+                    if (createFragment.getWidgetCount() == 0) {
                         showMessage("还未添加人物或工具，添加后才能进入下一步", null, null);
                         return false;
                     } else {
