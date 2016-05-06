@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v7.widget.AppCompatButton;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -208,25 +209,26 @@ public class MainFragment_Competition extends BaseFragment implements Competitio
             //TextMessage message = TextMessage.obtain("恭喜你，你的漫画在与 \"" + lose.getOwner().getNickEx() + "\" 的漫画的PK中取得了胜利。");
             MCCartoonPKNotificationMessage msg = new MCCartoonPKNotificationMessage(win,lose);
 
-            RongIM.getInstance().getRongIMClient().sendMessage(Conversation.ConversationType.SYSTEM, win.getOwner().getName(), msg, application.user.getNike() + "你的漫画在PK中取得了胜利！", "", new RongIMClient.SendMessageCallback() {
+            RongIM.getInstance().getRongIMClient().sendMessage(Conversation.ConversationType.SYSTEM, "03ACA49629989DA8BF83CC4B125A87FC", msg, application.user.getNike() + "你的漫画在PK中取得了胜利！", "", new RongIMClient.SendMessageCallback() {
                 @Override
                 public void onError(Integer integer, RongIMClient.ErrorCode errorCode) {
-
+                    Log.e("SMC","onError,code="+errorCode.getValue()+" ,message:"+errorCode.getMessage());
                 }
 
                 @Override
                 public void onSuccess(Integer integer) {
+                    Log.e("SMC","onSuccess");
 
                 }
             }, new RongIMClient.ResultCallback<Message>() {
                 @Override
                 public void onSuccess(Message message) {
-
+                    Log.e("rc","onSuccess");
                 }
 
                 @Override
                 public void onError(RongIMClient.ErrorCode errorCode) {
-
+                    Log.e("rc","onError,code="+errorCode.getValue() +",message:"+errorCode.getMessage());
                 }
             });
         }

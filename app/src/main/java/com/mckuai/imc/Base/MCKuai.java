@@ -53,6 +53,7 @@ public class MCKuai extends Application {
     private final int CONNECT_TIME = 5 * 1000;// 连接时间
     private final int TIME_OUT = 10 * 1000;// 超时时间
     private final int MEM_CACHE_SIZE = 8 * 1024 * 1024;//内存缓存大小
+    private boolean isInited = false;
 
     private String mCacheDir;
     public boolean isFirstBoot = true;
@@ -60,6 +61,7 @@ public class MCKuai extends Application {
     private int imLoginTryCount = 0;
     public boolean isIMLogined = false;
     public long leadTag;
+
 
     public interface IMLoginListener {
         void onInitError();
@@ -75,25 +77,29 @@ public class MCKuai extends Application {
     public void onCreate() {
         super.onCreate();
         instence = this;
+        init();
     }
 
 
     public void init() {
-        readPreference();
-        daoHelper = new MCDaoHelper(this);
-        netEngine = new MCNetEngine();
-        initUMPlatform();
-        initImageLoader();
-        initRongIM();
-        if (isIMInited && null != user && user.isUserValid() && null != user.getToken() && 10 < user.getToken().length()) {
-            loginIM(null);
+        if (!isInited) {
+            isInited = true;
+            readPreference();
+            daoHelper = new MCDaoHelper(this);
+            netEngine = new MCNetEngine();
+            initUMPlatform();
+            initImageLoader();
+            initRongIM();
+            if (isIMInited && null != user && user.isUserValid() && null != user.getToken() && 10 < user.getToken().length()) {
+                loginIM(null);
+            }
+            OkHttpClient.Builder builder = new OkHttpClient.Builder();
+            builder.connectTimeout(TIME_OUT, TimeUnit.MILLISECONDS)
+                    .retryOnConnectionFailure(true);
+            OkHttpUtils.getInstance(builder.build());
+            OkHttpFinalConfiguration.Builder builder1 = new OkHttpFinalConfiguration.Builder().setRetryOnConnectionFailure(false);
+            OkHttpFinal.getInstance().init(builder1.build());
         }
-        OkHttpClient.Builder builder = new OkHttpClient.Builder();
-        builder.connectTimeout(TIME_OUT, TimeUnit.MILLISECONDS)
-                .retryOnConnectionFailure(true);
-        OkHttpUtils.getInstance(builder.build());
-        OkHttpFinalConfiguration.Builder builder1 = new OkHttpFinalConfiguration.Builder().setRetryOnConnectionFailure(false);
-        OkHttpFinal.getInstance().init(builder1.build());
     }
 
     /**
